@@ -55,7 +55,7 @@ sections:
       title: Experience
       # Date format for experience
       #   Refer to https://wowchemy.com/docs/customization/#date-format
-      date_format: Oct 2023
+      date_format: jan 2006
       # Experiences.
       #   Add/remove as many `experience` items below as you like.
       #   Required fields are `title`, `company`, and `date_start`.
@@ -74,7 +74,7 @@ sections:
 
               * Analysing
               * Modelling
-              * Deploying
+              * Teaching
         - title: Research assistant
           company: Ferdi
           company_url: 'https://ferdi.fr/'
@@ -82,7 +82,7 @@ sections:
           location: Clermont-Ferrand, France
           date_start: '2022-10-01'
           date_end: '2023-09-30'
-          description: development economics, international development finance.
+          description: Development economics, international development finance.
     design:
       columns: '2'
   - block: accomplishments
@@ -91,7 +91,7 @@ sections:
       title: 'Accomplish&shy;ments'
       subtitle:
       # Date format: https://wowchemy.com/docs/customization/#date-format
-      date_format: Sep 2016
+      date_format: JAn 20à6
       # Accomplishments.
       #   Add/remove as many `item` blocks below as you like.
       #   `title`, `organization`, and `date_start` are the required parameters.
@@ -160,8 +160,8 @@ sections:
       buttons:
         - name: All
           tag: '*'
-        - name: Deep Learning
-          tag: Deep Learning
+        - name: Publications
+          tag: Publications
         - name: Other
           tag: Demo
     design:

@@ -78,8 +78,8 @@ sections:
         - title: Research assistant
           company: Ferdi
           company_url: 'https://ferdi.fr/'
-          company_logo: org-x
-          location: California
+          company_logo: Ferdi
+          location: Clermont-Ferrand, France
           date_start: '2022-10-01'
           date_end: '2023-09-30'
           description: development economics, international development finance.

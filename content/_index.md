@@ -65,7 +65,7 @@ sections:
         - title: PhD student
           company: CERDI CNRS UCA IRD
           company_url: 'https://cerdi.uca.fr/#/'
-          company_logo: org-gc
+          company_logo: CERDI
           location: Clermont-Ferrand
           date_start: '2023-10-01'
           date_end: ''
@@ -78,7 +78,7 @@ sections:
         - title: Research assistant
           company: Ferdi
           company_url: 'https://ferdi.fr/'
-          company_logo: org-x
+          company_logo: Ferdi
           location: Clermont-Ferrand, France
           date_start: '2022-10-01'
           date_end: '2023-09-30'

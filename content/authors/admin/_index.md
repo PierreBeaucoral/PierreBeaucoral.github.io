@@ -37,7 +37,7 @@ interests:
 education:
   courses:
     - course: PhD in Climate finance
-      institution: Stanford University
+      institution: Clermont Auvergne University
       year: 2023
     - course: Master degree in development economics, with honours
       institution: Clermont Auvergne University

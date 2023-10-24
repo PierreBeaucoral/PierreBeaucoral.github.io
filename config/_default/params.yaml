@@ -18,16 +18,17 @@ marketing:
     site_type: Person
     local_business_type: ''
     org_name: ''
-    description: 'A highly-customizable Hugo academic resume theme powered by Wowchemy website builder.'
-    twitter: 'wowchemy'
+    description: 'Pierre Beaucoral, economist special website'
+    twitter: 'pierrebeaucoral'
   analytics:
     google_analytics: ''
     baidu_tongji: ''
-    google_tag_manager: ''
+    google_tag_manager: 'GTM-M27JJH29'
     microsoft_clarity: ''  
   verification:
     google: ''
     baidu: ''
+    bing: ''
 
 # Site header
 

@@ -81,7 +81,7 @@ sections:
           company_logo: org-x
           location: California
           date_start: '2022-10-01'
-          date_end: '2023-09-31'
+          date_end: '2023-09-30'
           description: development economics, international development finance.
     design:
       columns: '2'

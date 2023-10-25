@@ -25,7 +25,7 @@ organizations:
     url: https://cerdi.uca.fr/#/admin
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include development economics, climate adaptation and mitigation, environnement, development and climate finance
+bio: My research interests include development economics, climate adaptation and mitigation, environnement, development and climate finance.
 
 # Interests to show in About widget
 interests:
@@ -120,5 +120,5 @@ social:
 highlight_name: true
 ---
 
- Pierre Beaucoral is a PHD student in development economics in CERDI. His research interests include climate finance, development finance and environment.
+This is the officialwebsite of Pierre Beaucoral, a PhD student specializing in development economics at CERDI.My research focuses on climate finance, development finance, and aid allocation and effectiveness in relation to environmental issues.
 {style="text-align: justify;"}

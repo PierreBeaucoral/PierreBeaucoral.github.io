@@ -120,5 +120,5 @@ social:
 highlight_name: true
 ---
 
-This is the officialwebsite of Pierre Beaucoral, a PhD student specializing in development economics at CERDI.My research focuses on climate finance, development finance, and aid allocation and effectiveness in relation to environmental issues.
+This is the official website of Pierre Beaucoral, a PhD student specializing in development economics at CERDI. My research focuses on climate finance, development finance, and aid allocation and effectiveness in relation to environmental issues.
 {style="text-align: justify;"}

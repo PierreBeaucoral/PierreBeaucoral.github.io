@@ -25,12 +25,12 @@ organizations:
     url: https://cerdi.uca.fr/#/admin
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include development economics, climate adaptation and mitigation, environnement, development and climate finance.
+bio: My research interests include development economics, climate adaptation and mitigation, environment, development and climate finance.
 
 # Interests to show in About widget
 interests:
   - Development economics
-  - Environnement
+  - Environment
   - Development finance
 
 # Education to show in About widget

@@ -147,6 +147,7 @@ sections:
     id: projects
     content:
       title: Projects
+      page_type: project
       filters:
         folders:
           - project
@@ -167,9 +168,9 @@ sections:
     design:
       # Choose how many columns the section has. Valid values: '1' or '2'.
       columns: '1'
-      view: showcase
+      view: masonry
       # For Showcase view, flip alternate rows?
-      flip_alt_rows: false
+      flip_alt_rows: true
   - block: collection
     id: featured
     content:

@@ -147,7 +147,6 @@ sections:
     id: projects
     content:
       title: Projects
-      page_type: project
       filters:
         folders:
           - project
@@ -161,18 +160,18 @@ sections:
       buttons:
         - name: All
           tag: '*'
-        - name: Publications
-          tag: Publications
-        - name: Ongoing work
-          tag: ongoingwork
+        - name: Ongoing works
+          tag: Ongoing works
+        - name: Machine learning
+          tag: Machine learning
+        - name: Other
+          tag: Demo
     design:
       # Choose how many columns the section has. Valid values: '1' or '2'.
       columns: '1'
-      view: masonry
+      view: showcase
       # For Showcase view, flip alternate rows?
-      flip_alt_rows: true
-      background: {}
-      spacing: {padding: [0, 0, 0, 0]}
+      flip_alt_rows: false
   - block: collection
     id: featured
     content:

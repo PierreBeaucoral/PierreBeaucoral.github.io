@@ -164,13 +164,7 @@ sections:
           tag: Publications
         - name: Ongoing work
           tag: ongoingwork
-    design:
-      # Choose how many columns the section has. Valid values: '1' or '2'.
-      columns: '1'
-      view: showcase
-      # For Showcase view, flip alternate rows?
-      flip_alt_rows: false
-  - block: markdown
+      - block: markdown
     content:
       title: Ongoing work
       subtitle: 'Leveraging Natural Langage Processing techniques for a better classification of development projects: A Case Study Using OECD CRS Dataset'
@@ -181,6 +175,13 @@ sections:
           - ongoingwork
     design:
       columns: '1'
+    design:
+      # Choose how many columns the section has. Valid values: '1' or '2'.
+      columns: '1'
+      view: showcase
+      # For Showcase view, flip alternate rows?
+      flip_alt_rows: false
+  
   - block: collection
     id: featured
     content:

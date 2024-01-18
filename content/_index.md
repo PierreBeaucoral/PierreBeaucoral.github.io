@@ -164,6 +164,8 @@ sections:
           tag: Ongoing works
         - name: Machine learning
           tag: Machine learning
+        - name: Climate finance
+          tag: Climate finance 
         - name: Other
           tag: Demo
     design:

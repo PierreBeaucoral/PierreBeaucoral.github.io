@@ -7,7 +7,7 @@ event_url: https://cerdi.uca.fr/version-francaise/actualites/habibou-ibrahim-kas
 location: UCA school of economics
 address:
   street: 26 avenue Léon-Blum
-  city: Clrmont-Ferrand
+  city: Clermont-Ferrand
   region: puy de dôme
   postcode: '63000'
   country: France

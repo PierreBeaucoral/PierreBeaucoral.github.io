@@ -63,4 +63,4 @@ projects:
   - CRS ML
 ---
 
-Slide available upon requests
+Slides available upon requests

@@ -116,29 +116,28 @@ sections:
           url: ''
     design:
       columns: '2'
-  - block: teachings
+  - block: teaching
     content:
-      # Note: `&shy;` is used to add a 'soft' hyphen in a long heading.
       title: Teachings
-      subtitle:
-      # Date format: https://wowchemy.com/docs/customization/#date-format
-      date_format: Jan 2006
-      # Accomplishments.
-      #   Add/remove as many `item` blocks below as you like.
-      #   `title`, `organization`, and `date_start` are the required parameters.
-      #   Leave other parameters empty if not required.
+      # Date format for experience
+      #   Refer to https://wowchemy.com/docs/customization/#date-format
+      date_format: jan 2006
+      # Experiences.
+      #   Add/remove as many `experience` items below as you like.
+      #   Required fields are `title`, `company`, and `date_start`.
+      #   Leave `date_end` empty if it's your current employer.
       #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
       items:
-        - certificate_url: ''
-          date_end: '2023-09-01'
-          date_start: '2023-12-23'
-          description: ''
-          organization: Clermont Auvergne University
-          organization_url: https://www.uca.fr/
-          title: Teaching assistant, Introduction to economics
-          url: ''
+        - title: Introduction to economics
+          company: Universite Clermont Auvergne
+          company_url: 'https://www.uca.fr/'
+          company_logo: UCA
+          location: Clermont-Ferrand
+          date_start: '2023-09-01'
+          date_end: '2023-12-23'
+          description: Teaching assistant, Bachelor level.
     design:
-      columns: '1'
+      columns: '2'
   - block: collection
     id: posts
     content:

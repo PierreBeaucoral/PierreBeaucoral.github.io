@@ -122,6 +122,10 @@ sections:
       title: Teachings 
       subtitle: Teaching assistant
       text: Introduction to economics, bachelor level, Automn 2023.
+    design:
+      # Choose a layout view
+      view: compact
+      columns: '2'
   - block: collection
     id: posts
     content:

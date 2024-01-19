@@ -121,9 +121,7 @@ sections:
     content:
       title: Teachings 
       subtitle: Teaching experiences
-      items: 
-       - title: Teaching assistant
-       text: Introduction to economics, bachelor level, Automn 2023.
+      text: **Teaching assistant:** Introduction to economics, bachelor level, Automn 2023.
     design:
       # Choose a layout view
       view: compact

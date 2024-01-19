@@ -116,10 +116,10 @@ sections:
           url: ''
     design:
       columns: '2'
-  - block: Teachings
+  - block: teachings
     content:
       # Note: `&shy;` is used to add a 'soft' hyphen in a long heading.
-      title: 'Teachings'
+      title: Teachings
       subtitle:
       # Date format: https://wowchemy.com/docs/customization/#date-format
       date_format: Jan 2006

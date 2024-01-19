@@ -116,7 +116,7 @@ sections:
           url: ''
     design:
       columns: '2'
-   - block: teaching
+  - block: teaching
     id: teaching
     content:
       title: Teachings 

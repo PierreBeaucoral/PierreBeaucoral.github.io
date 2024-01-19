@@ -132,10 +132,10 @@ sections:
         - certificate_url: ''
           date_end: '2023-09-01'
           date_start: '2023-12-23'
-          description: 'Introduction to economics'
+          description: ''
           organization: Clermont Auvergne University
           organization_url: https://www.uca.fr/
-          title: Teaching assistant
+          title: Teaching assistant, Introduction to economics
           url: ''
     design:
       columns: '2'

@@ -116,28 +116,12 @@ sections:
           url: ''
     design:
       columns: '2'
-  - block: teaching
+   - block: teaching
+    id: teaching
     content:
-      title: Teachings
-      # Date format for experience
-      #   Refer to https://wowchemy.com/docs/customization/#date-format
-      date_format: jan 2006
-      # Experiences.
-      #   Add/remove as many `experience` items below as you like.
-      #   Required fields are `title`, `company`, and `date_start`.
-      #   Leave `date_end` empty if it's your current employer.
-      #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
-      items:
-        - title: Introduction to economics
-          company: Universite Clermont Auvergne
-          company_url: 'https://www.uca.fr/'
-          company_logo: UCA
-          location: Clermont-Ferrand
-          date_start: '2023-09-01'
-          date_end: '2023-12-23'
-          description: Teaching assistant, Bachelor level.
-    design:
-      columns: '2'
+      title: Teachings 
+      subtitle: Teaching assistant
+      text: Introduction to economics, bachelor level, Automn 2023.
   - block: collection
     id: posts
     content:

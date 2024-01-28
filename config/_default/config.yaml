@@ -31,7 +31,7 @@ module:
 
 marketing:
   verification:
-    google: "google-site-verification=s-FEw6CCEIjGmGrP-vjWOnjaa0jd-1s6TnWCm0NbK-s" 
+    google_analytics: "G-0V150P3Y8N" 
 enableGitInfo: false
 summaryLength: 30
 paginate: 10

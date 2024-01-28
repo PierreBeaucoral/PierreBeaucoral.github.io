@@ -31,7 +31,7 @@ module:
 
 marketing:
   verification:
-    google_analytics: "G-0V150P3Y8N" 
+    google_tag_manager: "G-0V150P3Y8N" 
 enableGitInfo: false
 summaryLength: 30
 paginate: 10

@@ -4,7 +4,7 @@
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
 title: Pierre Beaucoral # Website name
-baseURL: 'https://example.com/' # Website URL
+baseURL: 'https://pierrebeaucoral.github.io/' # Website URL
 
 ############################
 ## LANGUAGE
@@ -28,7 +28,10 @@ module:
 ############################
 ## ADVANCED
 ############################
-google_site_verification: google-site-verification=s-FEw6CCEIjGmGrP-vjWOnjaa0jd-1s6TnWCm0NbK-s
+
+marketing:
+  verification:
+    google: "google-site-verification=s-FEw6CCEIjGmGrP-vjWOnjaa0jd-1s6TnWCm0NbK-s" 
 enableGitInfo: false
 summaryLength: 30
 paginate: 10

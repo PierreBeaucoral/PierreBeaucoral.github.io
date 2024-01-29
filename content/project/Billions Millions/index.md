@@ -2,15 +2,18 @@
 title: "Millions for billions: Accelerating African entrepreneurial emergence for accelerated, sustainable and job-rich growth"
 summary: The article below argues for the need to strongly accelerate public involvement in support of entrepreneurial emergence in poor and fragile countries. After mentioning the economic and employment issue, it explains how this priority has long disappeared from the international agenda as well as from domestic public policies, particularly in Africa. Efforts to promote the private sector have in practice focused on foreign direct investment and the largest companies. Middle- and emerging income countries, and a limited number of sectors and financial instruments, such as debt, have been valued. The article evokes the gradual change of perception on this subject from the beginning of the century and the emergence of new so- called impact actors focused particularly on SMEs in poor countries, accompanied by some public private sector financing institutions (DFIs), development agencies or foundations..
 tags:
-- Other
+- Demo
 date: '2016-04-27T00:00:00Z'
+
+authors: Jean-Michel Severino
+
 
 # Optional external URL for project (replaces project detail page).
 external_link: 'https://ferdi.fr/publications/des-millions-pour-des-milliards-accelerer-l-emergence-entrepreneuriale-africaine-pour-une-croissance-acceleree-durable-et-riche-en-emplois'
 
 image:
   caption: Photo by Ferdi
-  focal_point: Smart
+  focal_point: Right
 
 links:
   - icon: twitter
@@ -27,6 +30,6 @@ url_video: ''
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: example
+slides: ""
 ---
 Publication from Jean-Michel Severino (https://ferdi.fr/biographies/jean-michel-severino) where I provided an appendix aiming to reveal the actual support provided by development finance institutions to the African private sector.

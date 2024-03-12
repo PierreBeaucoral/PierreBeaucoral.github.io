@@ -176,6 +176,8 @@ sections:
           tag: Machine learning
         - name: Climate finance
           tag: Climate finance 
+        - name: Development finance
+          tag: Development finance 
         - name: Other
           tag: Demo
     design:

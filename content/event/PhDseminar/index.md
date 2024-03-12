@@ -13,7 +13,9 @@ address:
   country: France
 
 summary: "Better classification of international development finance for a better understanding of climate finance: the role of machine learning."
-abstract: 'Gaining a better understanding of climate finance is critical to addressing the climate risks we face today. In this talk, we will discuss the role of new technologies and artificial intelligence in classifying narrative descriptions of development projects to determine the true level of climate engagement in development finance and where donors are focusing their efforts to improve global climate finance allocation.'
+abstract: |-
+Gaining a better understanding of climate finance is critical to addressing the climate risks we face today. In this talk, we will discuss the role of new technologies and artificial intelligence in classifying narrative descriptions of development projects to determine the true level of climate engagement in development finance and where donors are focusing their efforts to improve global climate finance allocation.
+ {style="text-align: justify;"}
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.

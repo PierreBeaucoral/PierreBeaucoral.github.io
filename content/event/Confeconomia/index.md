@@ -41,7 +41,7 @@ image:
 
 links:
   - icon: calendar-days
-    icon_pack: fab
+    icon_pack: fas
     name: Event link
     url: https://economia.sciencesconf.org/
   - icon: twitter

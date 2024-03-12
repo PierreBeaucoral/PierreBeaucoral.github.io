@@ -9,7 +9,7 @@ address:
   street: 16 avenue Léon Duguit
   city: Pessac
   region: Gironde
-  postcode: '33608 CEDEX'
+  postcode: '33608'
   country: France
 
 summary: "Leveraging Natural Langage processing techniques for a better classification of development projects: a case study using OECD CRS dataset."

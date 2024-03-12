@@ -35,7 +35,7 @@ tags:
 featured: false
 
 image:
-  caption: 'Image credit: [**Econom'ia**](https://economia.sciencesconf.org/)'
+  caption: 'Image credit: [**BSE**](https://economia.sciencesconf.org/)'
   focal_point: Right
 
 links:

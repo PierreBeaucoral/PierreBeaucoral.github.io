@@ -1,5 +1,5 @@
 ---
-title: 'Millions for billions: Accelerating African entrepreneurial emergence for accelerated, sustainable and job-rich growth'
+title: 'Are development finance institutions supporting the private sector in Africa?'
 
 # Authors
 # If you created a profile for a user (e.g. the default `admin` user), write the username (folder name) here
@@ -31,7 +31,7 @@ publication_short: ""
 abstract: The article below argues for the need to strongly accelerate public involvement in support of entrepreneurial emergence in poor and fragile countries. After mentioning the economic and employment issue, it explains how this priority has long disappeared from the international agenda as well as from domestic public policies, particularly in Africa. Efforts to promote the private sector have in practice focused on foreign direct investment and the largest companies. Middle- and emerging income countries, and a limited number of sectors and financial instruments, such as debt, have been valued. The article evokes the gradual change of perception on this subject from the beginning of the century and the emergence of new so- called impact actors focused particularly on SMEs in poor countries, accompanied by some public private sector financing institutions (DFIs), development agencies or foundations.
 
 # Summary. An optional shortened abstract.
-summary: ""
+summary: "Redacted appendix for this insightfull article from Jean-Michel Severino"
 
 tags: 
 - Development finance

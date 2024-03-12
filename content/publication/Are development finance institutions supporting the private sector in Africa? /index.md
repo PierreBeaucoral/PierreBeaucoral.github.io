@@ -28,10 +28,13 @@ publication_types: ['article']
 publication: In *Ferdi development policies working paper series*
 publication_short: ""
 
-abstract: The article below argues for the need to strongly accelerate public involvement in support of entrepreneurial emergence in poor and fragile countries. After mentioning the economic and employment issue, it explains how this priority has long disappeared from the international agenda as well as from domestic public policies, particularly in Africa. Efforts to promote the private sector have in practice focused on foreign direct investment and the largest companies. Middle- and emerging income countries, and a limited number of sectors and financial instruments, such as debt, have been valued. The article evokes the gradual change of perception on this subject from the beginning of the century and the emergence of new so- called impact actors focused particularly on SMEs in poor countries, accompanied by some public private sector financing institutions (DFIs), development agencies or foundations.
+abstract: |-
+ Redacted appendix for this insightfull article from Jean-Michel Severino. 
+ The article below argues for the need to strongly accelerate public involvement in support of entrepreneurial emergence in poor and fragile countries. After mentioning the economic and employment issue, it explains how this priority has long disappeared from the international agenda as well as from domestic public policies, particularly in Africa. Efforts to promote the private sector have in practice focused on foreign direct investment and the largest companies. Middle- and emerging income countries, and a limited number of sectors and financial instruments, such as debt, have been valued. The article evokes the gradual change of perception on this subject from the beginning of the century and the emergence of new so- called impact actors focused particularly on SMEs in poor countries, accompanied by some public private sector financing institutions (DFIs), development agencies or foundations.
+ {style="text-align: justify;"}
 
 # Summary. An optional shortened abstract.
-summary: "Redacted appendix for this insightfull article from Jean-Michel Severino"
+summary: ""
 
 tags: 
 - Development finance

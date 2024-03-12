@@ -39,8 +39,7 @@ image:
   focal_point: Right
 
 links:
-  - name: Event Link
-   url: https://economia.sciencesconf.org/
+url: 'https://economia.sciencesconf.org/'
   - icon: twitter
     icon_pack: fab
     name: Follow

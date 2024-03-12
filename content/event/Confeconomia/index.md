@@ -1,7 +1,7 @@
 ---
-title: EconomIA conference
+title: Econom'IA conference
 
-event: EconomIA conference
+event: Econom'IA conference
 event_url: https://economia.sciencesconf.org/
 
 location: BSE

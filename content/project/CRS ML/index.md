@@ -4,6 +4,7 @@ summary: Categorising development projects is crucial for understanding donors' 
 tags:
 - Ongoing works
 - Machine learning
+- Development finance
 date: '2016-04-27T00:00:00Z'
 
 # Optional external URL for project (replaces project detail page).

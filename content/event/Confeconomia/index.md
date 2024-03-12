@@ -11,7 +11,7 @@ address:
   region: Gironde
   postcode: '33608'
   country: France
-  
+
 summary: "Leveraging Natural Langage processing techniques for a better classification of development projects: a case study using OECD CRS dataset."
 abstract: 'Categorising development projects is crucial for understanding donors' aid strategies, recipients' priorities, and on-the-ground actions. While the OECD CRS provides a rich source of information on development strategies, it falls short in informing project categories due to its reporting process based on self-declared main objectives. This research employs an innovative approach that combines Machine Learning (ML) techniques, specifically Natural Language Processing (NLP), to categorise development projects based on their narrative descriptions. The study utilises the Organisation for Economic Co-operation and Development's (OECD) Creditor Reporting System (CRS) dataset, which provides a rich source of project narratives from diverse sectors (approx. 5.5 million projects).'
 
@@ -28,8 +28,7 @@ authors: [admin]
 tags:
  - Ongoing work 
  - Machine learning
- - Development finance
-
+ 
 # Is this a featured talk? (true/false)
 featured: false
 

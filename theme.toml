@@ -1,8 +1,8 @@
 name = "Academic"
 license = "MIT"
 licenselink = "https://github.com/wowchemy/starter-hugo-academic/blob/master/LICENSE.md"
-description = "Use the website builder to easily build your site with 50+ widgets and deploy with one click! Fully customize your site with themes, plugins, and language packs."
-homepage = "https://github.com/wowchemy/starter-hugo-academic/"
+description = "Pierre Beaucoral personnal website. PhD student which research interests include development economics, climate adaptation and mitigation, environment, development and climate finance."
+homepage = "https://pierrebeaucoral.github.io/"
 demosite = "https://wowchemy.com/hugo-themes/"
 tags = ["widgets",
         "resume",
@@ -33,14 +33,23 @@ tags = ["widgets",
         "customizable",
         "technical",
         "product",
-        "slide"
+        "slide", 
+        "Development", 
+        "Climate", 
+        "Finance", 
+        "Environnement", 
+        "Machine learning",
+        "International financial flows", 
+        "Economics",
+        "Research", 
+        "Academic"
         ]
 features = ["page builder", "widgets", "themes", "search", "research publication system", "filterable portfolio",
             "blog", "create courses", "talks", "events", "slides", "gallery", "contact form"]
 
 [author]
-  name = "George Cushen"
-  homepage = "https://georgecushen.com"
+  name = "Pierre Beaucoral"
+  homepage = "https://pierrebeaucoral.github.io/"
 
 # If porting an existing theme
 [original]

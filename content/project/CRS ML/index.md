@@ -53,7 +53,7 @@ All scripts and codes will be available in this [GitHub repository](https://gith
 
 # Setup Explanation
 
-This unsupervised machine learning clustering has been created using BERTopic ([BERTopic](https://maartengr.github.io/BERTopic/index.html)), and has been inspired by the works of Toetzke et al. (2022): [GitHub](https://github.com/MalteToetzke/Monitoring-Global-Development-Aid-With-Machine-Learning). Code is available at the following link.
+This unsupervised machine learning clustering has been created using BERTopic ([BERTopic](https://maartengr.github.io/BERTopic/index.html)), and has been inspired by the works of Toetzke et al. (2022): [Code is available at the following link.](https://github.com/MalteToetzke/Monitoring-Global-Development-Aid-With-Machine-Learning)
 
 ## Dataset used
 

@@ -39,4 +39,4 @@ Categorising development projects is crucial for understanding donors' aid strat
 
 Add here links to the maps that you have created:
 
- - [Link to test map](https://pierrebeaucoral.github.io/project/crs-ml/test_map.html)
+ - [Link to test map](https://pierrebeaucoral.github.io/project/crs-ml/fig_word.html)

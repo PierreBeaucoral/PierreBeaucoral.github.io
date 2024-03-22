@@ -7,7 +7,7 @@ tags:
 - Ongoing works
 - Machine learning
 - Development finance
-date: '{{ now.Format "2006-01-02T15:04:05Z07:00" }}'
+date: '2024-03-22'
 
 # Optional external URL for project (replaces project detail page).
 external_link: ''

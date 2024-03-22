@@ -1,0 +1,17 @@
+<html> 
+  <head> 
+    <script src="jquery.js"></script> 
+    <script> 
+    $(function(){
+      $("#includedContent").load("https://pierrebeaucoral.github.io/project/crs-ml/topics_visualization.html.html"); 
+    });
+    </script> 
+  </head> 
+
+  <body> 
+    <div id="explanation">
+      <p>This is the text explanation you want to add.</p>
+    </div>
+    <div id="includedContent"></div>
+  </body> 
+</html>

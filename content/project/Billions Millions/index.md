@@ -6,7 +6,8 @@ The article below argues for the need to strongly accelerate public involvement 
 
 authors: [Jean-Michel Severino]
 tags:
-- Demo
+- Private sector
+- Development finance
 date: '2016-04-27T00:00:00Z'
 
 

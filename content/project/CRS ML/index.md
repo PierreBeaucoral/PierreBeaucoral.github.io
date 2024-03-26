@@ -13,7 +13,7 @@ date: '2024-03-22'
 external_link: ''
 
 image:
-  caption: Photo by giph on giphy
+  caption: Created with assistance of DALL·E 2
   focal_point: Smart
 
 links:

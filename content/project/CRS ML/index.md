@@ -79,7 +79,9 @@ HDBSCAN is used for clustering because of its strong performance on large datase
 
 Select a topic visualization from the following links. They are preliminary results and may be updated and vary over time. 
 
-### Topic Visualizations
+### Distribution of project descriptions among topics
+
+In the following links, you may find several visualizations giving you informations about the different clusters, their size in terms of project numbers or their importance over years and donors. Keep in mind that if two projects have the exact same description, they will count as "only" one project.
 
 - [**Topic 2D visualization**](https://pierrebeaucoral.github.io/project/crs-ml/topics_visualization.html): Cluster visualization by size (number of descriptions/projects inside of each cluster). You can use the slider to select the topic which then lights up red. If you hover over a topic, then general information is given about the topic, including the size of the topic and its corresponding words.
 

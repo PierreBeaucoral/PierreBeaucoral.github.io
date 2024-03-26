@@ -38,7 +38,7 @@ summary: ""
 
 tags: 
 - Development finance
-- Demo
+- Private sector
 # Display this page in the Featured widget?
 featured: false
 

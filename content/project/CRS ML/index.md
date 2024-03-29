@@ -37,7 +37,7 @@ slides: example
 
 # Motivations
 
-Categorising development projects is crucial for understanding donors' aid strategies, recipients' priorities, and on-the-ground actions. While the OECD CRS provides a rich source of information on development strategies, it falls short in informing project categories due to its reporting process based on self-declared main objectives. This research employs an innovative approach that combines Machine Learning (ML) techniques, specifically Natural Language Processing (NLP), to categorise development projects based on their narrative descriptions. The study utilises the Organisation for Economic Co-operation and Development's (OECD) Creditor Reporting System (CRS) dataset, which provides a rich source of project narratives from diverse sectors (approx. 5.5 million projects).
+Categorising development projects is crucial for understanding donors' aid strategies, recipients' priorities, and on-the-ground actions. While the OECD CRS provides a rich source of information on development strategies, it falls short in informing project categories due to its reporting process based on self-declared main objectives. This research employs an innovative approach that combines Machine Learning (ML) techniques, specifically Natural Language Processing (NLP), to categorise development projects based on their narrative descriptions. The study utilises the Organisation for Economic Co-operation and Development's (OECD) Creditor Reporting System (CRS) dataset, which provides a rich source of project narratives from diverse sectors (approx. 5 million projects).
 
 ## What would you be able to find here?
 
@@ -45,39 +45,39 @@ This work is based on an article (currently under redaction, first version avala
 
 ## Where do these data come from?
 
-In this study, we include all declarations made at the OECD, including bilateral (e.g. governments) and multilateral (such as the Green Climate Fund or the United Nations) development finance but also private institutions (as the Bill and Melinda Gates Foundation). This completeness allows for comparison of multiple types of donors on similar subjects. The declarations on the OECD CRS system may have different start times regarding the type of donors.
+This work is based on an article (currently under redaction, first version available upon request) that aims to demonstrate the potential of machine learning for text classification. The goal is to achieve the most accurate development project classification based on their descriptions. The study aims to enable policymakers, researchers, and individuals from civil society to gain a better understanding of declared development projects by bilateral, multilateral, and private institutions. This will enable readers to replicate the methodology for studying specific development finance topics. The text includes several visualisations to aid in understanding the work and its potential.
 
 ## How may I replicate this work for my own purposes?
 
-All scripts and codes will be available in this [GitHub repository](https://github.com). From the extraction of the CRS raw dataset to the clustering process. Additionally, you can find more information about the special settings we used in the setup explanation menu of this website.
+All scripts and codes will be available in this [GitHub repository](https://github.com), from the extraction of the CRS raw dataset to the clustering process. Further information about the special settings used in the setup explanation menu of this website can also be found here.
 
 # Setup Explanation
 
-This unsupervised machine learning clustering has been created using BERTopic ([BERTopic](https://maartengr.github.io/BERTopic/index.html)), and has been inspired by the works of Toetzke et al. (2022): [Code is available at the following link.](https://github.com/MalteToetzke/Monitoring-Global-Development-Aid-With-Machine-Learning)
+This clustering was created using BERTopic ([BERTopic](https://maartengr.github.io/BERTopic/index.html)), an unsupervised machine learning technique. The approach was inspired by the works of Toetzke et al. (2022): [Code is available at the following link.](https://github.com/MalteToetzke/Monitoring-Global-Development-Aid-With-Machine-Learning)
 
 ## Dataset used
 
-We used the OECD CRS Dataset, one of the most complete and comprehensive datasets regarding development financial flows. Thanks to this dataset, we have been able to categorize registered development projects from 1973 to 2022 accounting for bilateral, multilateral and private flows.
+The OECD CRS Dataset was used, which is one of the most comprehensive datasets on development financial flows. This dataset enabled us to categorise registered development projects from 1973 to 2022, taking into account bilateral, multilateral and private flows.
 
 ## Parameters settings
 
-In this machine learning setting, fine-tuning requires several parameters at different steps, particularly for word embeddings and cluster construction methodology.
+In this machine learning context, the clustering and topic modelling process requires several parameters at different stages, particularly for word embeddings and cluster construction methodology.
 
 ### Data preparation
 
-One advantage of transformer models is that they feed themselves from context and do not require any form of text preprocessing. To increase computation speed, we assigned the same label to each project with the same description, inspired by the work of [Toetzke et al. (2022)](https://doi.org/10.1038/s41893-022-00874-z). This allowed us to cluster projects with the same description together.
+One advantage of transformer models is that they can use context without requiring text preprocessing. To increase computation speed, we assigned the same label to each project with the same description, following the approach of [Toetzke et al. (2022)](https://doi.org/10.1038/s41893-022-00874-z). This enabled us to cluster projects with similar descriptions together.
 
 ### Word embeddings
 
-We use a sentence transformers model ([paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)) for word embeddings because it supports multilingual settings, which is necessary for our setup. Although we considered more recent AI models such as Mistral or Llama, we found that our sentence transformers model was better suited for fine-tuning. If you want to replicate this work with other embeddings, BERTopic can help you. Please refer to the BERTopic documentation (link provided above) for more information.
+We utilise a sentence transformers model ([paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2)) for word embeddings as it supports multilingual settings, which is essential for our setup. This is because project descriptions may be in languages such as French, German or Dutch. Although more recent AI models such as Mistral or Llama were considered, we found that our sentence transformers model was better suited for fine-tuning. If you wish to replicate this work with other embeddings, BERTopic can assist you. Please refer to the BERTopic documentation (link provided above) for further information.
 
 ### Clustering
 
-HDBSCAN is used for clustering because of its strong performance on large datasets with high-dimensional embeddings. Another advantage of HDBSCAN over other clustering processes, such as K-Means, is that it supports non-convex vectorization of texts and finds the optimal number of clusters without any parameters, such as silhouette score, for example. The minimum cluster size is set at 1000, meaning that each cluster contains at least 1000 unique project descriptions to ensure a sufficient yet consistent number of projects in each cluster. Dimensions of the embeddings are reduced to 15 using UMAP to avoid the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality).
+HDBSCAN is a popular clustering algorithm due to its strong performance on large datasets with high-dimensional embeddings. HDBSCAN has an advantage over other clustering processes, such as K-Means, as it supports non-convex structures of vectorized data, such as texts, and finds the optimal number of clusters without any parameters, such as silhouette score. The minimum cluster size is set at 500, ensuring a sufficient yet consistent number of projects in each cluster. To avoid the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality), the dimensions of the embeddings are reduced to 15 using UMAP.
 
 ## Visualizations
 
-Select a topic visualization from the following links. They are preliminary results and may be updated and vary over time. 
+Several visualizations of the clustering output are available here. The first part is based on project classification according to their descriptions. Further development of this work will be added to focus on the effect of clustering on several common development finance indicators. Please select a topic visualization from the following links. These are preliminary results and may be updated and vary over time. 
 
 ### Distribution of project descriptions among topics
 

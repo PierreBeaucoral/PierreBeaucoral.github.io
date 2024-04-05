@@ -4,6 +4,7 @@ date: '2024-04-04'
 summary: I was pleased to take part of the event of the creation of the PCDI
 ---
 
+<div style="text-align: justify;">
 
 ## A new centre for development and development activities
 

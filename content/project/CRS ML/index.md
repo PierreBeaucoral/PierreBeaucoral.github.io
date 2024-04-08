@@ -92,4 +92,21 @@ In the following links, you may find several visualizations giving you informati
 - [**Topic per Donor**](https://pierrebeaucoral.github.io/project/crs-ml/topics_per_donor_visualization.html): You can vizualise by clicking on the topics which donors have more projects assigned to each topics.
 - [**Topic Hierarchy**](https://pierrebeaucoral.github.io/project/crs-ml/hierarchy_visualization.html): The concept of hierarchical clustering involves examining the outcome of cluster agglomeration. During this process, high-frequency words are recalculated to provide a more accurate representation of each node. This can be observed by hovering over the black circles. The BERTopic package enables you to recluster projects based on the level of detail you require to answer your question. Of course, the further right on the graph, the more projects will be aggregated and the less clustering will make sense.
 
+### Allocation of aid among different topics ###
+
+In the same way one can categorize the projet distribution by topics, one can also study the commited and disbursed amount for each topic, by donor and by year. These analyses might provide valuable insights concerning aid allocation. 
+
+#### Analysis over time ####
+
+The links below provide information on the allocation of aid flows by topic over the years, including committed and disbursed amounts in deflated USD: 
+
+- [**USD Commitment per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentyear_plot.html)
+- [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
+
+#### Donor analysis ####
+
+The distribution of aid flows allocation by topics across all donors registered in the OECD CRS dataset, committed and disbursed in deflated USD can be found at the following links:
+
+- [**USD Commitment per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentdonor_plot.html)
+- [**USD Disbursement per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentdonor_plot.html)
 

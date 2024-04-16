@@ -14,6 +14,11 @@ This event marked the official launch of a new centre of excellence in Clermont-
 
 This event was full of insightful interventions, speeches and meetings. I had the opportunity to discuss their vision of development policy and climate action with many senior officials from the French Ministry of Finance, the French Development Agency and, of course, Chrysoula Zacharopoulou, Minister of State for Development and International Partnerships, attached to the Minister of European and Foreign Affairs.
 
-![png](1712252848728.jpeg)
 
-Photo by [Jonathan Sarago](https://www.linkedin.com/in/jonathan-sarago/)
+<div class="side-by-side">
+  <img src="1712252848728.jpeg" alt="Image 1" style="width: 40%;">
+  <img src="2024-04-04-17-44-IMG_7831_Original.jpg" alt="Image 2" style="width: 40%;">
+</div>
+
+
+Photo by [Jonathan Sarago](https://www.linkedin.com/in/jonathan-sarago/) and [Emilie Connois](http://studiomyosotis.fr/)

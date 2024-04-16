@@ -84,13 +84,20 @@ Several visualizations of the clustering output are available here. The first pa
 In the following links, you may find several visualizations giving you informations about the different clusters, their size in terms of project numbers or their importance over years and donors. Keep in mind that if two projects have the exact same description, they will count as "only" one project.
 
 - [**Topic 2D visualization**](https://pierrebeaucoral.github.io/project/crs-ml/topics_visualization.html): Cluster visualization by size (number of descriptions/projects inside of each cluster). You can use the slider to select the topic which then lights up red. If you hover over a topic, then general information is given about the topic, including the size of the topic and its corresponding words.
-
+  
 - [**Topic Rank distribution**](https://pierrebeaucoral.github.io/project/crs-ml/term_rank_visualization.html): Topics are represented by a number of words starting with the best representative word. Each word is represented by a c-TF-IDF score. The higher the score, the more representative a word to the topic is. Since the topic words are sorted by their c-TF-IDF score, the scores slowly decline with each word that is added. At some point adding words to the topic representation only marginally increases the total c-TF-IDF score and would not be beneficial for its representation. To visualize this effect, we can plot the c-TF-IDF scores for each topic by the term rank of each word. In other words, the position of the words (term rank), where the words with the highest c-TF-IDF score will have a rank of 1, will be put on the x-axis. Whereas the y-axis will be populated by the c-TF-IDF scores. The result is a visualization that shows you the decline of c-TF-IDF score when adding words to the topic representation. It allows you, using the elbow method, the select the best number of words in a topic.
+
 - [**Topic Similarity Matrix**](https://pierrebeaucoral.github.io/project/crs-ml/heatmap_visualization.html): We can create a similarity matrix by simply applying cosine similarities through those topic embeddings. The result will be a matrix indicating how similar certain topics are to each other.
+
 - [**Topic Probability Distribution**](https://pierrebeaucoral.github.io/project/crs-ml/distribution_visualization.html): The distribution of the probabilities does not give an indication to the distribution of the frequencies of topics across a document. It merely shows how confident the algorithm is that certain topics can be found in a document.
+
 - [**Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/topics_over_time_visualization.html): You can double-click on a topic to make it appears lonely on the graph. Then you can add more topics by clicking on each desired topics.
+
 - [**Topic per Donor**](https://pierrebeaucoral.github.io/project/crs-ml/topics_per_donor_visualization.html): You can vizualise by clicking on the topics which donors have more projects assigned to each topics.
+
 - [**Topic Hierarchy**](https://pierrebeaucoral.github.io/project/crs-ml/hierarchy_visualization.html): The concept of hierarchical clustering involves examining the outcome of cluster agglomeration. During this process, high-frequency words are recalculated to provide a more accurate representation of each node. This can be observed by hovering over the black circles. The BERTopic package enables you to recluster projects based on the level of detail you require to answer your question. Of course, the further right on the graph, the more projects will be aggregated and the less clustering will make sense.
+
+- [**Topic word scores**](https://pierrebeaucoral.github.io/project/crs-ml/fig_word.html): This barchart shows the top 5 words according to their c-TF-IDF scores for each topic reprensentation.
 
 ### Allocation of aid among different topics ###
 

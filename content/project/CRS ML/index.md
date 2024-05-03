@@ -49,7 +49,7 @@ This work is based on an article (currently under redaction, first version avail
 
 ## How may I replicate this work for my own purposes?
 
-All scripts and codes will be available in this [GitHub repository]([https://github.com](https://github.com/PierreBeaucoral/ML-clustering-of-development-activities), from the extraction of the CRS raw dataset to the clustering process. Further information about the special settings used in the setup explanation menu of this website can also be found here.
+All scripts and codes will be available in this [GitHub repository](https://github.com/PierreBeaucoral/ML-clustering-of-development-activities), from the extraction of the CRS raw dataset to the clustering process. Further information about the special settings used in the setup explanation menu of this website can also be found here.
 
 # Setup Explanation
 

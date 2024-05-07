@@ -73,7 +73,7 @@ We utilise a sentence transformers model ([paraphrase-multilingual-MiniLM-L12-v2
 
 ### Clustering
 
-HDBSCAN is a popular clustering algorithm due to its strong performance on large datasets with high-dimensional embeddings. HDBSCAN has an advantage over other clustering processes, such as K-Means, as it supports non-convex structures of vectorized data, such as texts, and finds the optimal number of clusters without any parameters, such as silhouette score. The minimum cluster size is set at 500, ensuring a sufficient yet consistent number of projects in each cluster. To avoid the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality), the dimensions of the embeddings are reduced to 15 using UMAP.
+HDBSCAN is a popular clustering algorithm due to its strong performance on large datasets with high-dimensional embeddings. HDBSCAN has an advantage over other clustering processes, such as K-Means, as it supports non-convex structures of vectorized data, such as texts, and finds the optimal number of clusters without any parameters, such as silhouette score. The minimum cluster size is set at 500, ensuring a sufficient yet consistent number of projects in each cluster. To avoid the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality), the dimensions of the embeddings are reduced to 12 using UMAP.
 
 ## Visualizations
 

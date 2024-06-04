@@ -21,7 +21,7 @@ role: PhD Candidate
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: CERDI CNRS UCA IRD
+  - name: CERDI UCA CNRS IRD
     url: https://cerdi.uca.fr/#/admin
 
 # Short bio (displayed in user profile at end of posts)
@@ -51,16 +51,16 @@ education:
 skills:
   - name: Technical
     items:
-    - name: Python
-      description: ''
-      percent: 60
-      icon: python
-      icon_pack: fab
     - name: Econometrics
       description: ''
       percent: 100
       icon: chart-line
       icon_pack: fas
+    - name: Python
+      description: ''
+      percent: 70
+      icon: python
+      icon_pack: fab
     - name: R
       description: ''
       percent: 80

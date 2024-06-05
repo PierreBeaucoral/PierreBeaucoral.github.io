@@ -114,7 +114,7 @@ In the following links, you may find several visualizations giving you informati
 
 - [**Topic Hierarchy**](https://pierrebeaucoral.github.io/project/crs-ml/hierarchy_visualization.html): The concept of hierarchical clustering involves examining the outcome of cluster agglomeration. During this process, high-frequency words are recalculated to provide a more accurate representation of each node. This can be observed by hovering over the black circles. The BERTopic package enables you to recluster projects based on the level of detail you require to answer your question. Of course, the further right on the graph, the more projects will be aggregated and the less clustering will make sense.
 
-<iframe src="hierarchy_visualization.html"></iframe>
+<iframe src="hierarchy_visualization.html" style="width:100%; height: 100%; border: 0px;"></iframe>
 
 - [**Topic word scores**](https://pierrebeaucoral.github.io/project/crs-ml/fig_word.html): This barchart shows the top 5 words according to their c-TF-IDF scores for each topic reprensentation.
 

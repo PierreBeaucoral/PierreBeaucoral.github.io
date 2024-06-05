@@ -106,7 +106,7 @@ In the following links, you may find several visualizations giving you informati
 
 - [**Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/topics_over_time_visualization.html): You can double-click on a topic to make it appears lonely on the graph. Then you can add more topics by clicking on each desired topics.
 
-<iframe src="topics_over_time_visualization.html" style="width:1200px; height: 800px; border: 0px;""></iframe>
+<iframe src="topics_over_time_visualization.html" style="width:1000px; height: 680px; border: 0px;""></iframe>
 
 - [**Topic per Donor**](https://pierrebeaucoral.github.io/project/crs-ml/topics_per_donor_visualization.html): You can vizualise by clicking on the topics which donors have more projects assigned to each topics.
 

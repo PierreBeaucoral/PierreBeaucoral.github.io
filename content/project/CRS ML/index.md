@@ -98,7 +98,7 @@ In the following links, you may find several visualizations giving you informati
 
 - [**Topic Similarity Matrix**](https://pierrebeaucoral.github.io/project/crs-ml/heatmap_visualization.html): We can create a similarity matrix by simply applying cosine similarities through those topic embeddings. The result will be a matrix indicating how similar certain topics are to each other.
 
-<iframe src="heatmap_visualization.html" style="width:100%; height: 800px; border: 0px;""></iframe>
+<iframe src="heatmap_visualization.html" style="width:100%; height: 1000px; border: 0px;""></iframe>
 
 - [**Topic Probability Distribution**](https://pierrebeaucoral.github.io/project/crs-ml/distribution_visualization.html): The distribution of the probabilities does not give an indication to the distribution of the frequencies of topics across a document. It merely shows how confident the algorithm is that certain topics can be found in a document.
 
@@ -106,7 +106,7 @@ In the following links, you may find several visualizations giving you informati
 
 - [**Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/topics_over_time_visualization.html): You can double-click on a topic to make it appears lonely on the graph. Then you can add more topics by clicking on each desired topics.
 
-<iframe src="topics_over_time_visualization.html" style="width:100%; height: 600px; border: 0px;""></iframe>
+<iframe src="topics_over_time_visualization.html" style="width:100%; height: 450px; border: 0px;""></iframe>
 
 - [**Topic per Donor**](https://pierrebeaucoral.github.io/project/crs-ml/topics_per_donor_visualization.html): You can vizualise by clicking on the topics which donors have more projects assigned to each topics.
 

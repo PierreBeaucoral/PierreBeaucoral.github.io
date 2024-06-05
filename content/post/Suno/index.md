@@ -12,5 +12,5 @@ Suno AI, or simply Suno, is an innovative artificial intelligence music creation
 
 # How did I use it? 
 
-I use the summary of my research project on NLP and the OECD CRS dataset and give some instructions about the style (initially "old emotional rap"), then I let the machine do the maths and [here is the result]([https://pierrebeaucoral.github.io/post/Suno/OECD.mp4](https://github.com/PierreBeaucoral/PierreBeaucoral.github.io/assets/148867967/92edbbdc-c570-4ec2-952e-263969c52e42
+I use the summary of my research project on NLP and the OECD CRS dataset and give some instructions about the style (initially "old emotional rap"), then I let the machine do the maths and [here is the result](https://pierrebeaucoral.github.io/post/Suno/OECD.mp4](https://github.com/PierreBeaucoral/PierreBeaucoral.github.io/assets/148867967/92edbbdc-c570-4ec2-952e-263969c52e42
 )

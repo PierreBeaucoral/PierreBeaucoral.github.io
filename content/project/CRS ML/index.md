@@ -94,7 +94,7 @@ In the following links, you may find several visualizations giving you informati
   
 - [**Topic Rank distribution**](https://pierrebeaucoral.github.io/project/crs-ml/term_rank_visualization.html): Topics are represented by a number of words starting with the best representative word. Each word is represented by a c-TF-IDF score. The higher the score, the more representative a word to the topic is. Since the topic words are sorted by their c-TF-IDF score, the scores slowly decline with each word that is added. At some point adding words to the topic representation only marginally increases the total c-TF-IDF score and would not be beneficial for its representation. To visualize this effect, we can plot the c-TF-IDF scores for each topic by the term rank of each word. In other words, the position of the words (term rank), where the words with the highest c-TF-IDF score will have a rank of 1, will be put on the x-axis. Whereas the y-axis will be populated by the c-TF-IDF scores. The result is a visualization that shows you the decline of c-TF-IDF score when adding words to the topic representation. It allows you, using the elbow method, the select the best number of words in a topic.
 
-<iframe src="term_rank_visualization.html" style="width:1200px; height: 800px; border: 0px;""></iframe>
+<iframe src="term_rank_visualization.html" style="width:1400px; height: 800px; border: 0px;""></iframe>
 
 - [**Topic Similarity Matrix**](https://pierrebeaucoral.github.io/project/crs-ml/heatmap_visualization.html): We can create a similarity matrix by simply applying cosine similarities through those topic embeddings. The result will be a matrix indicating how similar certain topics are to each other.
 

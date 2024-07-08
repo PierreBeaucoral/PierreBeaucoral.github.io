@@ -128,13 +128,23 @@ In the same way one can categorize the projet distribution by topics, one can al
 
 The links below provide information on the allocation of aid flows by topic over the years, including committed and disbursed amounts in deflated USD: 
 
-- [**USD Commitment per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentyear_plot.html)
+- [**USD Commitment per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentyear_plot.html):
+
+<iframe src="commitmentyear_plot.html" style="width:100%; height: 450px; border: 0px;""></iframe>
+
 - [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
+
+<iframe src="disbursmentyear_plot.html" style="width:100%; height: 450px; border: 0px;""></iframe>
 
 #### Donor analysis ####
 
 The distribution of aid flows allocation by topics across all donors registered in the OECD CRS dataset, committed and disbursed in deflated USD can be found at the following links:
 
 - [**USD Commitment per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentdonor_plot.html)
+
+<iframe src="commitmentdonor_plot.html" style="width:100%; height: 800px; border: 0px;""></iframe>
+
 - [**USD Disbursement per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentdonor_plot.html)
+
+<iframe src="disbursmentdonor_plot.html" style="width:100%; height: 800px; border: 0px;""></iframe>
 

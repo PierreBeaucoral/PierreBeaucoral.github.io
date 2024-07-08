@@ -133,13 +133,13 @@ The links below provide information on the allocation of aid flows by topic over
 <style>
 /* Ensuring the iframe is responsive */
 iframe {
-    width: 125%;
+    width: 130%;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-containr {
-    width: 125%;
+    width: 130%;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -165,15 +165,13 @@ The distribution of aid flows allocation by topics across all donors registered 
 <style>
 /* Ensuring the iframe is responsive */
 iframe {
-    width: 110%;
-    height: 800px;
+    width: 120%;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-container {
-    width: 110%;
-    height: 800px;
+    width: 120%;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */

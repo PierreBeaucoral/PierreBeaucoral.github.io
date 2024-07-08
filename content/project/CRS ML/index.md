@@ -133,14 +133,14 @@ The links below provide information on the allocation of aid flows by topic over
 <style>
 /* Ensuring the iframe is responsive */
 iframe {
-    width: 150%;
+    width: 125%;
     height: 450px;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-containr {
-    width: 150%;
+    width: 125%;
     height: 450px;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */
@@ -154,8 +154,9 @@ iframe {
 
 - [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
 
-<iframe src="disbursmentyear_plot.html" style="width:100%; height: 450px; border: 0px;""></iframe>
-
+<div class="iframe-containr">
+    <iframe src="disbursmentyear_plot.html"></iframe>
+</div>
 #### Donor analysis ####
 
 The distribution of aid flows allocation by topics across all donors registered in the OECD CRS dataset, committed and disbursed in deflated USD can be found at the following links:

@@ -134,14 +134,14 @@ The links below provide information on the allocation of aid flows by topic over
 /* Ensuring the iframe is responsive */
 iframe {
     width: 125%;
-    height: 450px;
+    height: 600px;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-containr {
     width: 125%;
-    height: 450px;
+    height: 600px;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
@@ -157,6 +157,7 @@ iframe {
 <div class="iframe-containr">
     <iframe src="disbursmentyear_plot.html"></iframe>
 </div>
+
 #### Donor analysis ####
 
 The distribution of aid flows allocation by topics across all donors registered in the OECD CRS dataset, committed and disbursed in deflated USD can be found at the following links:

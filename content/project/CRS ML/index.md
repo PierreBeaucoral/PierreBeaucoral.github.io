@@ -139,7 +139,7 @@ iframe {
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
-.iframe-containr {
+.iframe-container {
     width: 150%;
     height: 450px;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
@@ -148,7 +148,7 @@ iframe {
 }
 </style>
 
-<div class="iframe-containr">
+<div class="iframe-container">
     <iframe src="ccommitmentyear_plot.html"></iframe>
 </div>
 
@@ -165,14 +165,14 @@ The distribution of aid flows allocation by topics across all donors registered 
 <style>
 /* Ensuring the iframe is responsive */
 iframe {
-    width: 160%;
+    width: 125%;
     height: 800px;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-container {
-    width: 160%;
+    width: 125%;
     height: 800px;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */

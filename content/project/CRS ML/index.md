@@ -142,7 +142,7 @@ The distribution of aid flows allocation by topics across all donors registered 
 
 - [**USD Commitment per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentdonor_plot.html)
 
-<iframe src="commitmentdonor_plot.html" style="width:100%; height: 800px; border: 0px;""></iframe>
+<iframe src="commitmentdonor_plot.html" style="width:150%; height: 800px; border: 0px;"></iframe>
 
 - [**USD Disbursement per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentdonor_plot.html)
 

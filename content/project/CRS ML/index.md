@@ -149,7 +149,7 @@ iframe {
 </style>
 
 <div class="iframe-container">
-    <iframe src="ccommitmentyear_plot.html"></iframe>
+    <iframe src="commitmentyear_plot.html"></iframe>
 </div>
 
 - [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
@@ -165,14 +165,14 @@ The distribution of aid flows allocation by topics across all donors registered 
 <style>
 /* Ensuring the iframe is responsive */
 iframe {
-    width: 125%;
+    width: 100%;
     height: 800px;
     border: 0;
     overflow: auto;
 }
 /* Wrapper to enable scrolling */
 .iframe-container {
-    width: 125%;
+    width: 100%;
     height: 800px;
     overflow-x: auto; /* Enables horizontal scrolling if needed */
     overflow-y: hidden; /* Disable vertical scrolling if not needed */

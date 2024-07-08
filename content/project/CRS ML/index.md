@@ -130,7 +130,27 @@ The links below provide information on the allocation of aid flows by topic over
 
 - [**USD Commitment per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentyear_plot.html):
 
-<iframe src="commitmentyear_plot.html" style="width:100%; height: 450px; border: 0px;""></iframe>
+<style>
+/* Ensuring the iframe is responsive */
+iframe {
+    width: 150%;
+    height: 450px;
+    border: 0;
+    overflow: auto;
+}
+/* Wrapper to enable scrolling */
+.iframe-containerb {
+    width: 150%;
+    height: 450px;
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+    overflow-y: hidden; /* Disable vertical scrolling if not needed */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+</style>
+
+<div class="iframe-containerb">
+    <iframe src="ccommitmentyear_plot.html"></iframe>
+</div>
 
 - [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
 
@@ -166,5 +186,6 @@ iframe {
 
 - [**USD Disbursement per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentdonor_plot.html)
 
-<iframe src="disbursmentdonor_plot.html" style="width:100%; height: 800px; border: 0px;""></iframe>
-
+<div class="iframe-container">
+    <iframe src="disbursmentdonor_plot.html"></iframe>
+</div>

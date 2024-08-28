@@ -51,7 +51,7 @@ links:
 url_code: ''
 url_pdf: ''
 url_slides: ''
-url_video: ''
+url_video: 'https://mediapod.u-bordeaux.fr/video/46162-economia-2024-pierre-beaucoral-leveraging-natural-langage-processing-techniques-for-a-better-classification-of-development-projects-a-case-study-using-oecd-crs-dataset/'
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.

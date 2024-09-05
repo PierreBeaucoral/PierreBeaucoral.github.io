@@ -28,3 +28,13 @@ url_video: ''
 #   Otherwise, set `slides = ""`.
 slides: "https://github.com/PierreBeaucoral/PierreBeaucoral.github.io/blob/main/content/teachings/R%20for%20beginners/CoursR.html"
 ---
+
+<div style="text-align: justify;">
+
+# Course outline
+Suno AI, or simply Suno, is an innovative artificial intelligence music creation program designed to produce lifelike songs incorporating vocals and instrumentation, or solely instrumental compositions. Widely accessible since December 20, 2023, Suno was introduced through a web application launch and a strategic partnership with Microsoft, which integrated Suno as a plugin in Microsoft Copilot. This program operates by generating songs based on textual prompts provided by users. While Suno keeps its training dataset undisclosed, it assures users of measures taken to prevent plagiarism and copyright infringements.
+
+
+# Required files
+
+Data required can be downloaded here, course with code and explanation can be downloaded here. 

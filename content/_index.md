@@ -220,11 +220,12 @@ sections:
       columns: '2'
       view: citation
   - block: collection
+    id: course
     content:
-      title: Teachings
+      title: Course
       filters:
         folders:
-          - teachings
+          - course
     design:
       columns: '2'
       view: compact

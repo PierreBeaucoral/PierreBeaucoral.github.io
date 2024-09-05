@@ -219,7 +219,7 @@ sections:
     design:
       columns: '2'
       view: citation
- - block: collection
+  - block: collection
     content:
       title: Teachings
       filters:
@@ -228,9 +228,6 @@ sections:
     design:
       columns: '2'
       view: compact
-    design:
-      columns: '2'
-      view: citation
   - block: collection
     id: talks
     content:

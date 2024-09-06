@@ -7,6 +7,7 @@ tags:
 - Ongoing work
 - Machine learning
 - Development finance
+- Climate Finance
 date: '2024-09-06'
 
 image:

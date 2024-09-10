@@ -4,7 +4,7 @@ summary: "This course is designed for those with no prior experience of data ana
 
 authors: 
 tags:
-date: '2016-04-27T00:00:00Z'
+date: '2024-09-10T00:00:00Z'
 
 
 image:

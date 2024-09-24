@@ -8,7 +8,7 @@ summary: Or a little break using Suno to sum up a research project.
 
 # An AI powered podcast 
 
-Want to learn more about development finance and categorization of development projects? Here you can find a quick summary of my research project: 
+Want to learn more about development finance and categorization of development projects? Here you can find a quick summary of my [research project](https://pierrebeaucoral.github.io/project/crs-ml/): 
 
 https://github.com/user-attachments/assets/5e11695c-2b9d-40a2-85de-9b47e95f9f15
 

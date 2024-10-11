@@ -122,6 +122,7 @@ sections:
       title: Teachings 
       subtitle: Teaching experiences
       text: __Teaching assistant:__ Introduction to economics, bachelor level, Automn 2023.
+      text: __R programming:__ Introduction to R for statistical analysis, [Economic Policy Management (GPE) training programme](https://ferdi.fr/en/training-ihedd/gpe-program), master level, Automn 2024.
     design:
       # Choose a layout view
       view: compact

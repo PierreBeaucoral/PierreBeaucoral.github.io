@@ -14,9 +14,6 @@ The Economic Policy Management (GPE) training programme is a leading French cour
 
 The objective of this course was to equip them with the skills to utilise R programming for data analysis and visualisation, including basic statistics and visualisation. The final course comprised an exercise in which they selected a key data set related to their field of expertise to highlight. In only 18 hours discovering this tool, they manage to get some remarquable progress! here are some of the results:
 
-| ![Image 1](Rplot03.png) | ![Image 2](GPE31 Travail Mme AGBAVO.png) | ![Image 3](Evolution du PIB par branche d'activité Mauritanie 2016-2023.png) |
+| ![Image 1](Rplot03.png) | ![Image 2](GPE31_Travail_Mme_AGBAVO.png) | ![Image 3](Evolution_du_PIB_par_branche_d'activité_Mauritanie_2016-2023.png) |
 |:--:|:--:|:--:|
-| *Graphs by Bio Bertrand Mama, Akouvi Sophie Agbavo and Biri Salatou Diagana* |
-
-
-Graphs by Bio Bertrand Mama, Akouvi Sophie Agbavo and Biri Salatou Diagana
+| *Graphs by Bio Bertrand Mama* |*Akouvi Sophie Agbavo* | *and Biri Salatou Diagana* |

@@ -138,6 +138,7 @@ sections:
         *Introduction to economics*, bachelor level, Autumn 2023. 
         **R programming:**  
         *Introduction to R for statistical analysis*, [Economic Policy Management (GPE) training programme](https://ferdi.fr/en/training-ihedd/gpe-program), master level, Autumn 2024.
+    
     design:
       # Choose a layout view
       view: compact

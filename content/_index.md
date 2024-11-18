@@ -121,8 +121,11 @@ sections:
     content:
       title: Teachings 
       subtitle: Teaching experiences
-      text: __Teaching assistant:__ Introduction to economics, bachelor level, Automn 2023.
-      text: __R programming:__ Introduction to R for statistical analysis, [Economic Policy Management (GPE) training programme](https://ferdi.fr/en/training-ihedd/gpe-program), master level, Automn 2024.
+      text: |2-
+        **Teaching assistant:**  
+        *Introduction to economics*, bachelor level, Autumn 2023. 
+        **R programming:**  
+        *Introduction to R for statistical analysis*, [Economic Policy Management (GPE) training programme](https://ferdi.fr/en/training-ihedd/gpe-program), master level, Autumn 2024.
     design:
       # Choose a layout view
       view: compact

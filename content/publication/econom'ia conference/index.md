@@ -20,8 +20,11 @@ publication_short: ""
 abstract: Categorising development projects is crucial for understanding donors’ aid strategies, recipients’ priorities, and on-the-ground actions. In this area, the Organisation for Economic Co-operation and Development’s (OECD) Creditor Reporting System (CRS) dataset is a reference data source. This dataset provides a vast collection of project narratives from various sectors (approximately 5 million projects). While the OECD CRS provides a rich source of information on development strategies, it falls short in informing project categories due to its reporting process based on self-declared (donors’) main objectives. Our research employs a novel approach that combines Machine Learning (ML) techniques, specifically Natural Language Processing (NLP), an innovative Python topic modeling technique called BERTopic, to categorise (cluster) development projects based on their narrative descriptions. 
 
 tags:
-  - Large Language Models
-featured: false
+- Ongoing work
+- Machine learning
+- Development finance
+
+featured: true
 
 # links:
 # - name: ""

@@ -37,7 +37,7 @@ jobs:
         with:
           go-version: '1.21'
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v4
+        uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: '0.119.0'
           extended: true
@@ -48,7 +48,7 @@ jobs:
         run: |
           hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
 

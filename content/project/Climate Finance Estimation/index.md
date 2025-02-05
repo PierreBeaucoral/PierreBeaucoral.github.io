@@ -19,6 +19,9 @@ links:
     name: Follow
     url: https://twitter.com/PBeaucoral
 
+# Optional external URL for project (replaces project detail page).
+external_link: 'https://pierrebeaucoral.github.io/Under_canopy/'
+
 slides: ""
 ---
 

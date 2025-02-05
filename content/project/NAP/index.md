@@ -23,7 +23,7 @@ links:
     url: https://twitter.com/PBeaucoral
 
 # Optional external URL for project (replaces project detail page).
-external_link: 'https://pierrebeaucoral.github.io/NAP/'
+external_link:  'https://pierrebeaucoral.github.io/NAP/'
 
 slides: ""
 ---

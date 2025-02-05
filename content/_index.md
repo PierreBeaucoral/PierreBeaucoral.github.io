@@ -186,7 +186,7 @@ sections:
         - name: All
           tag: '*'
         - name: Ongoing works
-          tag: Ongoing works
+          tag: Ongoing work
         - name: Machine learning
           tag: Machine learning
         - name: Climate finance

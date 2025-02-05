@@ -48,7 +48,7 @@ sections:
         color: black
         image:
           # Add your image background to `assets/media/`.
-          filename: pexels-samandgos-709552.jpg
+          filename: pexels-enginakyurt-1435752.jpg
           filters:
             brightness: 1.0
           size: cover

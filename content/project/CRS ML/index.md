@@ -10,7 +10,7 @@ tags:
 date: '2024-03-22'
 
 # Optional external URL for project (replaces project detail page).
-external_link: ''
+external_link: 'https://pierrebeaucoral.github.io/cracking_the_code/'
 
 image:
   caption: Created with assistance of DALL·E 2
@@ -41,7 +41,7 @@ Categorising  development projects is crucial for understanding donors’ aid st
 
 ## What would you be able to find here?
 
-This work is based on an article (currently under redaction, first version avalaible upon request) that aims to demonstrate the potential of machine learning for text classification. The goal is to achieve the most accurate development project classification based on their descriptions. The study aims to enable policymakers, researchers, and individuals from civil society to gain a better understanding of declared development projects by bilateral, multilateral, and private institutions. This will allow them to replicate the methodology for studying specific development finance topics. You will find here several vizualisations in order to get a better understanding of the work itself and its potentials.
+This work is based on an article (currently under revision, first version avalaible upon request) that aims to demonstrate the potential of machine learning for text classification. The goal is to achieve the most accurate development project classification based on their descriptions. The study aims to enable policymakers, researchers, and individuals from civil society to gain a better understanding of declared development projects by bilateral, multilateral, and private institutions. This will allow them to replicate the methodology for studying specific development finance topics. You will find here several vizualisations in order to get a better understanding of the work itself and its potentials.
 
 ## Where do these data come from?
 
@@ -78,101 +78,6 @@ HDBSCAN is a popular clustering algorithm due to its strong performance on large
 ### Labelling topics
 
 To obtain a precise description of the created topics, we employed a cluster-based TF-IDF approach to extract the top five words for each cluster in comparison to others. **Upcoming Extension**: We are currently utilizing a new large language model (LLM) derived from Mistral. Zephyr-7B-β is the second model in this series, and it is a fine-tuned version of Mistral-7B-v0.1, trained on a mixture of publicly available and synthetic datasets using Direct Preference Optimization (DPO). We have formulated a prompt for this LLM to generate appropriate names for our clusters based on their top five words and representative documents (project descriptions that accurately characterize each cluster).
-
-## Visualizations
-
-Several visualizations of the clustering output are available here. The first part is based on project classification according to their descriptions. Further development of this work will be added to focus on the effect of clustering on several common development finance indicators. Please select a topic visualization from the following links. These are preliminary results and may be updated and vary over time. 
-
-### Distribution of project descriptions among topics
-
-In the following links, you may find several visualizations giving you informations about the different clusters, their size in terms of project numbers or their importance over years and donors. Keep in mind that if two projects have the exact same description, they will count as "only" one project.
-
-- [**Topic 2D visualization**](https://pierrebeaucoral.github.io/project/crs-ml/topics_visualization.html): Cluster visualization by size (number of descriptions/projects inside of each cluster). You can use the slider to select the topic which then lights up red. If you hover over a topic, then general information is given about the topic, including the size of the topic and its corresponding words.
-
-<iframe src="topics_visualization.html" style="width:1200px; height: 800px; border: 0px;""></iframe>
-
-
-- [**Topic Similarity Matrix**](https://pierrebeaucoral.github.io/project/crs-ml/heatmap_visualization.html): We can create a similarity matrix by simply applying cosine similarities through those topic embeddings. The result will be a matrix indicating how similar certain topics are to each other.
-
-<iframe src="heatmap_visualization.html" style="width:100%; height: 1000px; border: 0px;""></iframe>
-
-- [**Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/topics_over_time_visualization.html): You can double-click on a topic to make it appears lonely on the graph. Then you can add more topics by clicking on each desired topics.
-
-<iframe src="topics_over_time_visualization.html" style="width:100%; height: 450px; border: 0px;""></iframe>
-
-- [**Topic per Donor**](https://pierrebeaucoral.github.io/project/crs-ml/topics_per_donor_visualization.html): You can vizualise by clicking on the topics which donors have more projects assigned to each topics.
-
-<iframe src="topics_per_donor_visualization.html" style="width:100%; height: 800px; border: 0px;""></iframe>
-
-- [**Topic Hierarchy**](https://pierrebeaucoral.github.io/project/crs-ml/hierarchy_visualization.html): The concept of hierarchical clustering involves examining the outcome of cluster agglomeration. During this process, high-frequency words are recalculated to provide a more accurate representation of each node. This can be observed by hovering over the black circles. The BERTopic package enables you to recluster projects based on the level of detail you require to answer your question. Of course, the further right on the graph, the more projects will be aggregated and the less clustering will make sense.
-
-<iframe src="hierarchy_visualization.html" style="width:100%;height: 1000px; border: 0px;"></iframe>
-
-### Allocation of aid among different topics ###
-
-In the same way one can categorize the projet distribution by topics, one can also study the commited and disbursed amount for each topic, by donor and by year. These analyses might provide valuable insights concerning aid allocation. 
-
-#### Analysis over time ####
-
-The links below provide information on the allocation of aid flows by topic over the years, including committed and disbursed amounts in deflated USD: 
-
-- [**USD Commitment per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentyear_plot.html):
-
-<style>
-/* Ensuring the iframe is responsive */
-iframe {
-    width: 130%;
-    height: 800px;
-    border: 0;
-    overflow: auto;
-}
-/* Wrapper to enable scrolling */
-.iframe-containr {
-    width: 130%;
-    height: 800px;
-    overflow-x: auto; /* Enables horizontal scrolling if needed */
-    overflow-y: hidden; /* Disable vertical scrolling if not needed */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-</style>
-
-<div class="iframe-containr">
-    <iframe src="commitmentyear_plot.html"></iframe>
-</div>
-
-- [**USD Disbursement per Topic Over Time**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentyear_plot.html)
-
-<div class="iframe-containr">
-    <iframe src="disbursmentyear_plot.html"></iframe>
-</div>
-
-#### Donor analysis ####
-
-The distribution of aid flows allocation by topics across all donors registered in the OECD CRS dataset, committed and disbursed in deflated USD can be found at the following links:
-
-- [**USD Commitment per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/commitmentdonor_plot.html)
-
-<style>
-/* Ensuring the iframe is responsive */
-iframe {
-    width: 120%;
-    height: 800px;
-    border: 0;
-    overflow: auto;
-}
-/* Wrapper to enable scrolling */
-.iframe-container {
-    width: 120%;
-    height: 800px;
-    overflow-x: auto; /* Enables horizontal scrolling if needed */
-    overflow-y: hidden; /* Disable vertical scrolling if not needed */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-</style>
-
-<div class="iframe-container">
-    <iframe src="commitmentdonor_plot.html"></iframe>
-</div>
 
 - [**USD Disbursement per Topic by Donors**](https://pierrebeaucoral.github.io/project/crs-ml/disbursmentdonor_plot.html)
 

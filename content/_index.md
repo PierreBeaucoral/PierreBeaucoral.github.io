@@ -48,7 +48,7 @@ sections:
         color: black
         image:
           # Add your image background to `assets/media/`.
-          filename: dalle2.jpeg
+          filename: pexels-samandgos-709552.jpg
           filters:
             brightness: 1.0
           size: cover

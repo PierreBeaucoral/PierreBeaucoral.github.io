@@ -9,10 +9,9 @@ authors:
   - Sebastien Marchand
 tags:
 - Ongoing work
-- Machine learning
 - Development finance
 - Climate Finance
-date: '2024-09-06'
+date: '2025-01-01'
 
 image:
   caption: Created with assistance of deepai

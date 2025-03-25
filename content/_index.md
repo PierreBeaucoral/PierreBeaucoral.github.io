@@ -54,7 +54,7 @@ sections:
           size: cover
           position: center
           parallax: false
-  - block: skills
+ # - block: skills
     content:
       title: Skills
       text: ''
@@ -83,7 +83,6 @@ sections:
           date_end: ''
           description: |2-
               Responsibilities include:
-
               * Analysing
               * Modelling
               * Teaching

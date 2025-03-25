@@ -54,14 +54,6 @@ sections:
           size: cover
           position: center
           parallax: false
- # - block: skills
-    content:
-      title: Skills
-      text: ''
-      # Choose a user to display skills from (a folder name within `content/authors/`)
-      username: admin
-    design:
-      columns: '1'
   - block: experience
     content:
       title: Experience
@@ -94,37 +86,6 @@ sections:
           date_start: '2022-10-01'
           date_end: '2023-09-30'
           description: Development economics, international development finance.
-    design:
-      columns: '2'
- # - block: accomplishments
-    content:
-      # Note: `&shy;` is used to add a 'soft' hyphen in a long heading.
-      title: 'Accomplish&shy;ments'
-      subtitle:
-      # Date format: https://wowchemy.com/docs/customization/#date-format
-      date_format: Jan 2006
-      # Accomplishments.
-      #   Add/remove as many `item` blocks below as you like.
-      #   `title`, `organization`, and `date_start` are the required parameters.
-      #   Leave other parameters empty if not required.
-      #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
-      items:
-        - certificate_url: ''
-          date_end: '2021-09-01'
-          date_start: '2019-09-01'
-          description: ''
-          organization: Clermont Auvergne University
-          organization_url: https://www.uca.fr/
-          title: Master degree in development economics
-          url: ''
-        - certificate_url: ''
-          date_end: '2018-09-01'
-          date_start: '2016-09-01'
-          description: ''
-          organization: Clermont Auvergne University
-          organization_url: https://www.uca.fr/
-          title: Bachelor in economics
-          url: ''
     design:
       columns: '2'
   - block: markdown

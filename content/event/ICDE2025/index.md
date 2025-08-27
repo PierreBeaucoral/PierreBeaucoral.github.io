@@ -52,12 +52,12 @@ links:
   - icon: video
     icon_pack: fab
     name: Recap
-    url: https://www.linkedin.com/posts/afedev_video-wrap-up-of-the-5th-icde-earlier-this-activity-7366008984119504897-sRJl?utm_source=share&utm_medium=member_desktop&rcm=ACoAACfuWCEBW-HGOLsEshGoaWxtDlxWyniAEhI
+    url: https://afedev.fr/wp-content/uploads/2025/08/ICDE2025_video.mp4
     
 url_code: ''
 url_pdf: ''
 url_slides: ''
-url_video: 'https://www.linkedin.com/posts/afedev_video-wrap-up-of-the-5th-icde-earlier-this-activity-7366008984119504897-sRJl?utm_source=share&utm_medium=member_desktop&rcm=ACoAACfuWCEBW-HGOLsEshGoaWxtDlxWyniAEhI'
+url_video: 'https://afedev.fr/wp-content/uploads/2025/08/ICDE2025_video.mp4'
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.

@@ -26,5 +26,7 @@ These results are based on EFFIS rapid mapping data and should be read as **esti
 
 ---
 
+The blog is available [here](https://pierrebeaucoral.github.io/post/Fire/wildfires-europe-2025-local.html)
+
 </div>
 

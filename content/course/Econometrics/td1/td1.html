@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Équipe pédagogique UCA – Économie">
+<meta name="dcterms.date" content="2025-09-15">
+
+<title>TD 1 — Prise en main d’EViews – Introduction à l’économétrie — L3 UCA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a14e3238c51140e99ccc48519b6ed9ce.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Introduction à l’économétrie — L3 UCA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../syllabus.html"> 
+<span class="menu-text">Cours</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../guidance.html"> 
+<span class="menu-text">Guidance</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../td1/td1.html" aria-current="page"> 
+<span class="menu-text">TD 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td2/td2.html"> 
+<span class="menu-text">TD 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td3/td3.html"> 
+<span class="menu-text">TD 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td4/td4.html"> 
+<span class="menu-text">TD 4</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td5/td5.html"> 
+<span class="menu-text">TD 5</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td6/td6.html"> 
+<span class="menu-text">TD 6</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td7/td7.html"> 
+<span class="menu-text">TD 7</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../td8/td8.html"> 
+<span class="menu-text">TD 8</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../slides/global-slides.html"> 
+<span class="menu-text">Global slides</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#corrélation-et-causalité" id="toc-corrélation-et-causalité" class="nav-link" data-scroll-target="#corrélation-et-causalité"><span class="header-section-number">2</span> Corrélation et causalité</a></li>
+  <li><a href="#principe-de-léconométrie-appliquée" id="toc-principe-de-léconométrie-appliquée" class="nav-link" data-scroll-target="#principe-de-léconométrie-appliquée"><span class="header-section-number">3</span> Principe de l’économétrie appliquée</a></li>
+  <li><a href="#organisation-des-td" id="toc-organisation-des-td" class="nav-link" data-scroll-target="#organisation-des-td"><span class="header-section-number">4</span> Organisation des TD</a></li>
+  <li><a href="#types-de-données-en-économétrie" id="toc-types-de-données-en-économétrie" class="nav-link" data-scroll-target="#types-de-données-en-économétrie"><span class="header-section-number">5</span> Types de données en économétrie</a></li>
+  <li><a href="#le-logiciel-eviews" id="toc-le-logiciel-eviews" class="nav-link" data-scroll-target="#le-logiciel-eviews"><span class="header-section-number">6</span> Le logiciel EViews</a>
+  <ul class="collapse">
+  <li><a href="#avantages" id="toc-avantages" class="nav-link" data-scroll-target="#avantages"><span class="header-section-number">6.1</span> Avantages</a></li>
+  <li><a href="#inconvénients" id="toc-inconvénients" class="nav-link" data-scroll-target="#inconvénients"><span class="header-section-number">6.2</span> Inconvénients</a></li>
+  </ul></li>
+  <li><a href="#travailler-sous-eviews" id="toc-travailler-sous-eviews" class="nav-link" data-scroll-target="#travailler-sous-eviews"><span class="header-section-number">7</span> Travailler sous EViews</a>
+  <ul class="collapse">
+  <li><a href="#environnement-et-logique-de-fonctionnement" id="toc-environnement-et-logique-de-fonctionnement" class="nav-link" data-scroll-target="#environnement-et-logique-de-fonctionnement"><span class="header-section-number">7.1</span> Environnement et logique de fonctionnement</a></li>
+  <li><a href="#types-de-fichiers" id="toc-types-de-fichiers" class="nav-link" data-scroll-target="#types-de-fichiers"><span class="header-section-number">7.2</span> Types de fichiers</a></li>
+  <li><a href="#types-dobjets" id="toc-types-dobjets" class="nav-link" data-scroll-target="#types-dobjets"><span class="header-section-number">7.3</span> Types d’objets</a></li>
+  </ul></li>
+  <li><a href="#création-dun-workfile" id="toc-création-dun-workfile" class="nav-link" data-scroll-target="#création-dun-workfile"><span class="header-section-number">8</span> Création d’un workfile</a></li>
+  <li><a href="#importation-de-données" id="toc-importation-de-données" class="nav-link" data-scroll-target="#importation-de-données"><span class="header-section-number">9</span> Importation de données</a>
+  <ul class="collapse">
+  <li><a href="#création-du-workfile-et-importation-en-une-seule-étape" id="toc-création-du-workfile-et-importation-en-une-seule-étape" class="nav-link" data-scroll-target="#création-du-workfile-et-importation-en-une-seule-étape"><span class="header-section-number">9.1</span> Création du workfile et importation en une seule étape</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">TD 1 — Prise en main d’EViews</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Équipe pédagogique UCA – Économie </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 15, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>L’économétrie s’inscrit dans une <strong>démarche scientifique dite hypothético-déductive</strong>, telle que l’a définie Karl Popper.<br>
+Cette démarche comporte trois étapes :</p>
+<ol type="1">
+<li><strong>Modélisation</strong> : formuler une théorie économique et la traduire sous forme de modèle.</li>
+<li><strong>Vérification empirique</strong> : utiliser l’économétrie pour confronter le modèle aux données.</li>
+<li><strong>Validation ou révision</strong> : confirmer ou modifier la théorie selon les résultats.</li>
+</ol>
+<p><img src="images/clipboard-447235873.png" class="img-fluid"></p>
+<p>En pratique, l’économétrie est une <strong>méthode d’analyse des données économiques</strong> qui, grâce aux outils de la statistique et des mathématiques, permet de mettre en évidence les relations entre variables.<br>
+Elle poursuit plusieurs objectifs :</p>
+<ul>
+<li>tester la véracité empirique d’une théorie ;</li>
+<li>prévoir l’évolution d’un phénomène économique ;</li>
+<li>estimer la valeur des paramètres d’un modèle théorique.</li>
+</ul>
+</section>
+<section id="corrélation-et-causalité" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="corrélation-et-causalité"><span class="header-section-number">2</span> Corrélation et causalité</h2>
+<p>Une idée clé à garder à l’esprit : <strong>corrélation n’est pas causalité</strong>.<br>
+L’économétrie mesure des corrélations. Pour parler de causalité, il faut des arguments théoriques solides et, souvent, des méthodes spécifiques (variables instrumentales, expériences naturelles, etc.).<br>
+Pour s’en convaincre, on peut consulter le site <a href="https://www.tylervigen.com/spurious-correlations">Spurious Correlations</a> qui illustre de fausses corrélations amusantes.</p>
+</section>
+<section id="principe-de-léconométrie-appliquée" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="principe-de-léconométrie-appliquée"><span class="header-section-number">3</span> Principe de l’économétrie appliquée</h2>
+<p>Supposons que l’on veuille expliquer le <strong>nombre de buts marqués par un joueur de football</strong>.<br>
+On dispose d’une <strong>variable à expliquer</strong> (le nombre de buts) et de <strong>variables explicatives</strong> (poste du joueur, taille, club…).<br>
+L’économétrie cherche à identifier s’il existe une relation entre ces variables.<br>
+Avec un <strong>apport théorique préalable</strong>, une corrélation observée peut alors être interprétée comme un lien causal.</p>
+<p>Dans ce cours :</p>
+<ul>
+<li>les <strong>concepts théoriques</strong> sont présentés en cours magistral (M. Brun) ;</li>
+<li>la <strong>mise en pratique</strong> se fait en Travaux Dirigés, en utilisant le logiciel EViews.</li>
+</ul>
+</section>
+<section id="organisation-des-td" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="organisation-des-td"><span class="header-section-number">4</span> Organisation des TD</h2>
+<p>Le cycle de TD se déroule en plusieurs séances :</p>
+<ol type="1">
+<li>Présentation et prise en main d’EViews</li>
+<li>Gestion et exploration d’une base de données</li>
+<li>Régression économétrique</li>
+<li>Tests d’hypothèses économétriques</li>
+<li>Tests d’hypothèses économiques</li>
+<li>Variables instrumentales</li>
+<li>Contrôle continu</li>
+<li>Correction du contrôle</li>
+</ol>
+</section>
+<section id="types-de-données-en-économétrie" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="types-de-données-en-économétrie"><span class="header-section-number">5</span> Types de données en économétrie</h2>
+<p>Les données utilisées peuvent être de trois grands types :</p>
+<ul>
+<li><strong>Données transversales</strong> : observations sur plusieurs individus à un instant donné (ex. : un ensemble de pays en 2024).</li>
+<li><strong>Données temporelles</strong> : observations sur un même individu ou pays à plusieurs dates.</li>
+<li><strong>Données de panel</strong> : combinaison des deux précédentes, plusieurs individus observés sur plusieurs périodes.</li>
+</ul>
+<p><img src="images/clipboard-2653678569.png" class="img-fluid"></p>
+<blockquote class="blockquote">
+<p>Dans le cadre de ce premier TD, nous travaillerons uniquement sur des <strong>données transversales</strong>.</p>
+</blockquote>
+</section>
+<section id="le-logiciel-eviews" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="le-logiciel-eviews"><span class="header-section-number">6</span> Le logiciel EViews</h2>
+<p>EViews est un logiciel d’économétrie développé par <em>Quantitative Micro Software</em>.<br>
+Parmi les autres logiciels largement utilisés, on peut citer <strong>Stata</strong>, <strong>R</strong>, <strong>Rats</strong>, <strong>Matlab</strong>, ou encore <strong>Limdep</strong>.</p>
+<section id="avantages" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="avantages"><span class="header-section-number">6.1</span> Avantages</h3>
+<ul>
+<li>Interface graphique simple d’utilisation ;</li>
+<li>Performant pour l’analyse de séries temporelles.</li>
+</ul>
+</section>
+<section id="inconvénients" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="inconvénients"><span class="header-section-number">6.2</span> Inconvénients</h3>
+<ul>
+<li>Logiciel spécialisé uniquement en économétrie ;</li>
+<li>Nécessite un <strong>pré-traitement des données</strong> (peu flexible pour la manipulation de bases).</li>
+</ul>
+</section>
+</section>
+<section id="travailler-sous-eviews" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="travailler-sous-eviews"><span class="header-section-number">7</span> Travailler sous EViews</h2>
+<section id="environnement-et-logique-de-fonctionnement" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="environnement-et-logique-de-fonctionnement"><span class="header-section-number">7.1</span> Environnement et logique de fonctionnement</h3>
+<p>On peut travailler sous EViews de trois manières :</p>
+<ol type="1">
+<li><strong>Interface graphique</strong> : menus et fenêtres.</li>
+<li><strong>Fenêtre de commande</strong> : en tapant directement les instructions.</li>
+<li><strong>Programme (.prg)</strong> : regroupement des commandes dans un script.</li>
+</ol>
+<p>Dans ce TD, nous utiliserons surtout les <strong>deux premières méthodes</strong>, plus intuitives.</p>
+</section>
+<section id="types-de-fichiers" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="types-de-fichiers"><span class="header-section-number">7.2</span> Types de fichiers</h3>
+<ul>
+<li><strong>Fichier texte (.txt) ou Excel (.xls)</strong> : contient la base de données d’origine.</li>
+<li><strong>Fichier workfile (.wf1)</strong> : enregistre votre travail et vos objets EViews.</li>
+<li><strong>Fichier programme (.prg)</strong> : stocke des commandes, non utilisé dans ce TD.</li>
+</ul>
+</section>
+<section id="types-dobjets" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="types-dobjets"><span class="header-section-number">7.3</span> Types d’objets</h3>
+<p>Dans un <strong>workfile</strong>, on trouve différents objets :<br>
+variables numériques, listes de texte, équations, graphiques, coefficients et résidus estimés, scalaires et matrices.<br>
+Pour consulter un objet, il suffit de <strong>double-cliquer sur son icône</strong>.</p>
+</section>
+</section>
+<section id="création-dun-workfile" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="création-dun-workfile"><span class="header-section-number">8</span> Création d’un workfile</h2>
+<p>Avant d’importer une base de données, il faut créer un <strong>workfile</strong> :</p>
+<ul>
+<li>Menu : <strong>File → New → Workfile</strong>.</li>
+</ul>
+<p>Trois structures sont possibles :</p>
+<ol type="1">
+<li><strong>Unstructured/Undated</strong> (pour des données transversales).
+<ul>
+<li><em>Data Range</em> : nombre d’observations (ex. nombre de pays).</li>
+</ul></li>
+<li><strong>Dated–regular frequency</strong> (pour des séries temporelles).
+<ul>
+<li><em>Frequency</em> : fréquence (annuelle, mensuelle, …).</li>
+<li><em>Start date</em> et <em>End date</em> : période couverte.</li>
+</ul></li>
+<li><strong>Balanced Panel</strong> (pour des données de panel).
+<ul>
+<li>même principe que pour les séries temporelles, en précisant le nombre d’individus.</li>
+</ul></li>
+</ol>
+<p>Options complémentaires : - <em>Name</em> : nom du workfile ; - <em>Page</em> : numéro de page.</p>
+<p><strong>Sauvegarder le workfile</strong> :<br>
+- première fois via <strong>File → Save as</strong>,<br>
+- ensuite <strong>File → Save</strong> ou <strong>Ctrl + S</strong>.</p>
+<p>Pour rouvrir un workfile existant : <strong>File → Open → Workfile</strong>.</p>
+</section>
+<section id="importation-de-données" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="importation-de-données"><span class="header-section-number">9</span> Importation de données</h2>
+<p>Avant l’importation, assurez-vous que le fichier Excel ne contient <strong>aucune formule</strong>.<br>
+Ensuite :</p>
+<ol type="1">
+<li>Fermez la feuille Excel.</li>
+<li>Menu : <strong>File → Import → Import from file</strong>.</li>
+<li>Sélectionnez la base de données.</li>
+</ol>
+<p>Une première fenêtre permet de choisir la plage de données : - <em>Predefined Range</em> si aucun changement n’est nécessaire ; - <em>Custom Range</em> pour définir précisément les cellules.</p>
+<p>Une seconde fenêtre permet de : - indiquer le nombre de lignes d’en-tête (<em>Column headers</em>) ; - modifier le nom, le type et le label des variables (<em>Column info</em>).</p>
+<p>Une troisième fenêtre offre des opérations plus avancées, par exemple <strong>lier plusieurs bases de données</strong>.</p>
+<p>Une fois l’importation terminée, <strong>sauvegardez le workfile</strong>.</p>
+<section id="création-du-workfile-et-importation-en-une-seule-étape" class="level3" data-number="9.1">
+<h3 data-number="9.1" class="anchored" data-anchor-id="création-du-workfile-et-importation-en-une-seule-étape"><span class="header-section-number">9.1</span> Création du workfile et importation en une seule étape</h3>
+<p>Il est aussi possible de créer le workfile <strong>et</strong> d’importer les données directement : - Menu : <strong>File → Open → Foreign Data as Workfile</strong>.</p>
+<p><strong>Avantage</strong> : gain de temps.<br>
+<strong>Inconvénient</strong> : la base doit être parfaitement préparée en amont.</p>
+<hr>
+<p><em>Ce premier TD avait pour objectif de découvrir l’économétrie, de comprendre la logique d’EViews et de préparer la base de données pour les TD suivants.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/pierrebeaucoral\.github\.io\/course\/Econometrics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

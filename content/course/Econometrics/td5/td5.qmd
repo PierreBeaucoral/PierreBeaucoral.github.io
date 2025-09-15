@@ -1,0 +1,27 @@
+---
+title: "TD 5 — Endogénéité & Variables Instrumentales (MVI / 2SLS)"
+---
+
+## Objectifs
+- Détecter l’**endogénéité** d’une variable explicative (prix) dans des **fonctions d’offre**.
+- Appliquer le **test de Nakamura & Nakamura** (exogénéité d’une variable explicative).
+- Estimer par **MVI / Doubles Moindres Carrés (2SLS)** si nécessaire.
+
+## Données
+Workfile **MARSHALL** (fonctions d’offre) :  
+- Offres : `offre1`, `offre2`, `offre3`, `offre4`  
+- Prix : `P1`, `P2`, `P3`, `P4`  
+- Revenu : `Y` (instrument) — Salaire : `W` (exogène, ajouté dans `offre4`)
+
+## Travail demandé
+1. **Estimer** les quatre fonctions d’offre (MCO) en introduisant `W` dans l’équation d’**offre4**.
+2. **Tester l’exogénéité** des prix via **Nakamura & Nakamura** (instrument principal : `Y`) :  
+   - Étape 1 (instrumentation) : régresser `Pi` sur `Y` (et autres exogènes) → récupérer les **résidus** `ω̂i`.  
+   - Étape 2 (test) : ajouter `ω̂i` dans l’équation d’offre correspondante et **estimer par MCO** ;  
+     tester **H0: φ = 0** (prix **exogène**) **vs** **H1: φ ≠ 0** (prix **endogène**).
+3. Si **prix endogène** ⇒ **ré-estimer** par **2SLS** en listant comme instruments `Y` (et `W` pour `offre4`) + exogènes.
+4. (Optionnel) Vérifier la **pertinence** des instruments (F de première étape) et leur **exogénéité** (test de **Sargan** si sur-identifié).
+
+::: callout-note
+Sous **EViews** : dans la fenêtre d’estimation → *Method* = **TSLS - Two-Stage Least Squares**, puis renseigner la **liste des instruments** (inclure les exogènes).
+:::

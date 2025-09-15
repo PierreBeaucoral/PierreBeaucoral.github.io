@@ -1,0 +1,27 @@
+---
+title: "TD 6 — Correction & explications (MROZ, IV/2SLS)"
+---
+
+## 1) Test de Nakamura & Nakamura
+Soit `lwage = β₀ + β₁ educ + β₂ exper + β₃ expersq + ε`.  
+Étapes :  
+1. `educ = γ₀ + γ₁ instruments + γ₂ exper + γ₃ expersq + ω` (1ère étape)  
+2. Extraire `ω̂` et estimer `lwage = β₀ + β₁ educ + β₂ exper + β₃ expersq + φ ω̂ + ε`  
+3. **H0** : `φ = 0` (exogène) vs **H1** : `φ ≠ 0` (endogène). Décision via **t** (ou **F** si plusieurs instruments).
+
+**Résultats type** : `t(ω̂)` avec 1 instrument ≈ 1.72 (>1.645) ⇒ **rejeter H0** (endogénéité).  
+Avec 2 ou 3 instruments, la statistique **F** est très significative ⇒ **endogénéité** confirmée.
+
+## 2) 2SLS
+- Méthode **TSLS** sous EViews ; instruments : combinaisons de (`motheduc`, `fatheduc`, `huseduc`) + exogènes (`exper`, `expersq`).  
+- Interprétation : comparer coefficients & erreurs standard vs MCO.
+
+## 3) Qualité des instruments
+- **Pertinence** : F de 1ère étape **> 10** ⇒ instruments **forts**.  
+- **Sargan** : `S = N·R²` ~ χ²(k−p). Valeur observée faible ⇒ **non rejet** d’exogénéité des instruments.
+
+## 4) White (sur IV)
+- Si `W < χ²_th` ⇒ **homoscédasticité** plausible ; sinon, préférer **SE robustes**.
+
+## 5) Conclusion
+- `educ` est **endogène** ⇒ **2SLS** requis. Instruments familiaux paraissent **pertinents** et **exogènes** au vu de Sargan ; commenter l’ampleur de l’effet et la robustesse.

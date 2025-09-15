@@ -1,0 +1,36 @@
+---
+title: "TD 6 — IV/2SLS : Nakamura, Sargan & diagnostics"
+format:
+  revealjs:
+    slide-number: true
+    transition: fade
+    toc: true
+    theme: simple
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Objectifs
+- Tester exogénéité (`educ`)
+- 2SLS & diagnostics
+
+---
+
+## Instruments
+- `motheduc`, `fatheduc`, `huseduc`
+- + exogènes (`exper`, `expersq`)
+
+---
+
+## Tests
+- **N&N** (t/F)
+- **Sargan** (χ²)
+- **White** (hétéroscéd.)
+
+---
+
+## EViews
+- IV Diagnostics & Tests
+- TSLS, listes d’instruments

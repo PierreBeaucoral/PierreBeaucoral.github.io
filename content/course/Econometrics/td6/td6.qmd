@@ -1,0 +1,28 @@
+---
+title: "TD 6 — Endogénéité (suite), sur‑identification & diagnostics IV"
+---
+
+## Objectifs
+- Tester l’**exogénéité** de `educ` (éducation) dans le modèle **MROZ** via **Nakamura & Nakamura**.  
+- Estimer par **2SLS** et évaluer la **qualité des instruments** (pertinence, exogénéité).  
+- Appliquer le **test de Sargan** et un test d’**hétéroscédasticité** (White) sur IV.
+
+## Données
+Workfile **MROZ** (micro‑données) :  
+- `lwage` (log salaire), `educ`, `exper`, `expersq`.  
+- Instruments candidats : `motheduc`, `fatheduc`, `huseduc`.
+
+## Travail
+1. **Test de Nakamura & Nakamura** pour `educ` avec trois jeux d’instruments :  
+   i) `motheduc` ; ii) `motheduc` + `fatheduc` ; iii) `motheduc` + `fatheduc` + `huseduc`.  
+2. Si endogénéité détectée ⇒ **2SLS** avec la liste d’instruments correspondante (inclure les **exogènes**).  
+3. **Pertinence** : F de première étape (*Weak instruments diagnostics*).  
+4. **Exogénéité des instruments** (sur‑identification) : **Sargan** `S = N·R² ~ χ²(k−p)`.  
+5. **White** sur l’estimation IV : si hétéroscédasticité, commenter l’impact sur les tests.
+
+::: callout-note
+EViews :  
+- *View → IV Diagnostics and Tests → Weak Instrument Diagnostics* (F de 1ère étape)  
+- *Instrument Orthogonality Test* (Sargan)  
+- *Residual Diagnostics → Heteroskedasticity Tests → White*
+:::

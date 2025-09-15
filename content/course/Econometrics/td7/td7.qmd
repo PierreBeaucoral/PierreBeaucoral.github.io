@@ -1,0 +1,19 @@
+---
+title: "TD 7 — Normalité (Jarque–Bera) & spécification"
+---
+
+## Objectifs
+- Appliquer le **test de normalité de Jarque–Bera** (JB) sur différents sous‑échantillons.  
+- Construire une **variable muette** pour un seuil de revenu et tester des **interactions** (stabilité).
+
+## Données
+Workfile **BERA** : 99 pays (1989). Variables : `TUO89`, `PNBH`, `SUPER`, `TEP`, `TXPNBH`, `JEUNE`.
+
+## Travail
+1. Estimer : `TUO89 = c + a·PNBH + b·log(SUPER) + d·TEP + e·TXPNBH + f·JEUNE` :  
+   - (i) **PNBH < 1290**, (ii) **PNBH ≥ 1290**, (iii) **tous**.  
+   - Pour chaque cas, appliquer **JB** (*Histogram – Normality test*).  
+   - Décider au seuil 5% : **H0** : normalité (df = 2).
+2. Créer `pnbh_dummy = (PNBH ≥ 1290)` et tester la **stabilité** via interactions :  
+   - Ajouter `TEP × pnbh_dummy` (et/ou `TXPNBH × pnbh_dummy`) ;  
+   - Tester la significativité (t ou **Wald**).

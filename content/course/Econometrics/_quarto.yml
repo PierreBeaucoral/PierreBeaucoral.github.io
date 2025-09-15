@@ -1,0 +1,52 @@
+project:
+  type: website
+  render:
+    - index.qmd
+    - syllabus.qmd
+    - guidance.qmd
+    - td*/td*.qmd
+    - td*/td*-correction.qmd
+    - td*/td*-slides.qmd
+    - annexes/tables.qmd
+    - slides/global-slides.qmd
+
+website:
+  title: "Introduction à l’économétrie — L3 UCA"
+  site-url: https://pierrebeaucoral.github.io/course/Econometrics/
+  navbar:
+    right:
+      - text: "Cours"
+        file: syllabus.qmd
+      - text: "Guidance"
+        file: guidance.qmd
+      - text: "TD 1"
+        file: td1/td1.qmd
+      - text: "TD 2"
+        file: td2/td2.qmd
+      - text: "TD 3"
+        file: td3/td3.qmd
+      - text: "TD 4"
+        file: td4/td4.qmd
+      - text: "TD 5"
+        file: td5/td5.qmd
+      - text: "TD 6"
+        file: td6/td6.qmd
+      - text: "TD 7"
+        file: td7/td7.qmd
+      - text: "TD 8"
+        file: td8/td8.qmd
+      - text: "Global slides"
+        href: slides/global-slides.html   # link to the rendered slideshow
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    smooth-scroll: true
+    anchor-sections: true
+  pdf: default
+
+execute:
+  echo: false
+  warning: false
+  message: false

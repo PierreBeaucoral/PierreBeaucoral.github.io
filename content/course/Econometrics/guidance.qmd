@@ -1,0 +1,17 @@
+---
+title: "Conseils pédagogiques & périmètre (L3)"
+---
+
+# Orientations (niveau L3)
+
+- **Pas** de calcul matriciel / vectoriel
+- **Pas** d’usage de *p-values* en TD : **lecture de tables** statistiques
+- Correction de **White** présentée simplement ; **pas** de Newey–West
+- Tests couverts : homoscédasticité (Goldfeld–Quandt, Breusch–Pagan, White), autocorrélation (Durbin–Watson, Breusch–Godfrey), correction **Cochrane–Orcutt**, test **COMFAC**
+- Endogénéité : **Doubles Moindres Carrés (DMC)**, test **Nakamura–Nakamura**, **Sargan**
+- **Hors périmètre** : cointégration, panel, variables qualitatives avancées
+- Vocabulaire : privilégier *paramètre* (population) et *terme d’erreur*
+
+::: {.small}
+Source : *Quelques explications.docx* (enseignant).
+:::

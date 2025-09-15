@@ -1,0 +1,25 @@
+---
+title: "TD 4 — Tests d’hypothèses : normalité, homoscédasticité, indépendance sérielle"
+---
+
+## Objectifs
+- Vérifier les **hypothèses MCO** sur les erreurs : normalité, **homoscédasticité**, **indépendance sérielle**.
+- Mettre en œuvre les **tests** dans EViews et **corriger** si nécessaire.
+
+## Données
+Utiliser le **workfile AUTO** (séries américaines) contenant :
+- **Dépenses** : habillement `DEPHAB`, téléphone `DEPTELE`, transport aérien `DEPAIR`  
+- **Prix réels** : `PRHAB`, `PRTELE`, `PRAIR`  
+- **Revenu** : `REVENU`
+
+## Travail
+1. **Estimer**, pour chaque secteur (habillement, téléphone, aérien), une équation du type :  
+   `DEPx = c + REVENU + PRx`  
+   et **tester Durbin–Watson** (autocorrélation d’ordre 1).  
+2. **Tester Breusch–Godfrey** (ordre 1) et conclure.  
+3. **Corriger** l’autocorrélation éventuelle par **Cochrane–Orcutt** (*AR(1)* dans EViews) et commenter.  
+4. **COMFAC** (dépenses téléphone) : tester la pertinence de la correction **Cochrane–Orcutt** et discuter la **meilleure spécification**.
+
+::: callout-note
+Sous EViews : `View → Residual Diagnostics → Serial Correlation LM Test` pour **Breusch–Godfrey** ; la statistique **Durbin–Watson** est dans la table d’estimation.
+:::

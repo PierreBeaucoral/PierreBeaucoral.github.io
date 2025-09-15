@@ -1,0 +1,29 @@
+---
+title: "TD 8 — Révisions (IV & White)"
+format:
+  revealjs:
+    slide-number: true
+    transition: fade
+    toc: true
+    theme: simple
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Objectifs
+- IV / 2SLS & Sargan
+- Hétéroscédasticité (White)
+
+---
+
+## Sujet A
+- Offre cacao (IV)
+- 2SLS, Sargan
+
+---
+
+## Sujet B
+- Demande cigarettes
+- White, BP, GQ

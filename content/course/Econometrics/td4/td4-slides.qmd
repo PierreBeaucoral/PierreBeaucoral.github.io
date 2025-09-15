@@ -1,0 +1,36 @@
+---
+title: "TD 4 — Tests & corrections (DW, BG, CO, COMFAC)"
+format:
+  revealjs:
+    slide-number: true
+    transition: fade
+    toc: true
+    theme: simple
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Objectifs
+- Vérifier les hypothèses MCO
+- Corriger si besoin
+
+---
+
+## Tests clés
+- **Durbin–Watson** (AR1)
+- **Breusch–Godfrey** (AR(p))
+- **COMFAC** (validité CO)
+
+---
+
+## EViews
+- DW : dans le tableau
+- BG : Residual Diagnostics → Serial Correlation LM
+
+---
+
+## Correction
+- **Cochrane–Orcutt** : `AR(1)`
+- Comparer avant / après

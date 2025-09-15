@@ -1,0 +1,26 @@
+---
+title: "TD 2 — Correction & rappels théoriques"
+---
+
+## Préparation
+- `Accidents = fatal + non_fatal`  
+- `Acc_pass = Accidents / passagers` ; `Dummy_acc = (Accidents >= 1)`  
+- Dummies séparées : `Dummy_fatal`, `Dummy_non_fatal`  
+- Distribution de `passagers` : histogramme (souvent asymétrie à droite)
+
+## Estimation MCO
+- Modèle log-linéaire : `logpassagers` ~ (ratio / fatal/passagers / non_fatal/passagers) + contrôles  
+- **Interprétation** : coefficients ⇒ variations **%** de `passagers`
+
+## Tests
+- **Student (t)** : H0: coefficient = 0 → décision via |t| vs t\_critique (table)  
+- **Fisher (F)** : significativité **conjointe** de plusieurs coefficients (ddl: q, N−p)  
+- **R² / R² ajusté** : pouvoir explicatif (attention à l’ajout mécanique de variables)
+
+## Importance économique
+- **Coefficients standardisés** (View → Coefficients diagnostics → Scaled)  
+- Variable saillante (souvent `intercontinental`) : interprétation en **%** si Y en log
+
+::: callout-important
+**Tables statistiques** : utiliser **tables de Student & Fisher** (pas de p-values en TD).
+:::

@@ -1,0 +1,31 @@
+---
+title: "TD 2 — Régressions MCO (EViews)"
+format:
+  revealjs:
+    slide-number: true
+    transition: fade
+    toc: true
+    theme: simple
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Objectifs
+- Estimer des MCO
+- Lire / interpréter
+
+---
+
+## Préparer les variables
+- `logpassagers = log(passagers)`
+- `Accidents = fatal + non_fatal`
+- Ratios par passager
+
+---
+
+## Estimation & tests
+- Modèle log-linéaire
+- **t** (individuel), **F** (conjoint), **R²**
+- Importance **éco.** : coefficients standardisés

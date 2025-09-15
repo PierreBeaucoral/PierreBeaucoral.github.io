@@ -1,0 +1,38 @@
+---
+title: "TD 3 — Correction & explications"
+---
+
+## Étapes
+
+1.  **Importer** le workfile et **estimer** l’équation MCO.\
+2.  **Tester** l’homoscédasticité :
+    -   *Breusch–Pagan–Godfrey* (BP) : ( BP = N R\^2 \sim \chi\^2(K-1) )\
+    -   *White* : ( W \sim \chi\^2 ) avec carrés & interactions des X\
+    -   *Goldfeld–Quandt* : test de ratio de variances (F)
+3.  **Conclure** (H0: homoscédasticité).\
+4.  **Corriger** si nécessaire :
+    -   **Matrice de covariance robuste de White** (erreurs robustes)\
+    -   ou **Moindres Carrés Généralisés (MCG)** si une forme de variance est modélisable.
+
+## Interprétation type
+
+-   Si BP \< χ²\_{K-1} et White \< χ²\_{ddl} aux seuils usuels → **ne pas rejeter H0** → **homoscédasticité**.\
+-   Sinon → **hétéroscédasticité** : préférer **erreurs robustes** (White) pour les **tests t/F**, ou MCG.
+
+## Procédure EViews (rappel)
+
+-   *View → Residual Diagnostics → Heteroskedasticity Tests*\
+    (choisir **Breusch–Pagan–Godfrey** ou **White**)\
+-   *View → Coefficients Diagnostics → Scaled coefficients* pour l’importance économique\
+-   Pour un **Wald/F-test** conjoint :
+    -   *View → Coefficient Diagnostics → Wald test* (ex. `c(3)=0, c(5)=0`)\
+    -   ou calcul manuel : $( F = \frac{SCR_r - SCR_{nr}}{SCR_{nr}}\times\frac{N - p}{q} )$
+
+## Notes pédagogiques
+
+-   **Normalité des résidus**, **espérance nulle**, **indépendance sérielle**, **orthogonalité** aux X sont des hypothèses classiques utiles pour l’inférence.\
+-   Une **significativité statistique** n’implique pas forcément une **importance économique** : interpréter les **ordres de grandeur** (forme linéaire, log-linéaire, log-log).
+
+## Conclusion type
+
+Dans l’exemple fourni, les statistiques **Breusch–Pagan** et **White** sont **inférieures** aux valeurs tabulées à 5% → **homoscédasticité**. Aucune correction nécessaire ; à défaut, choisir des **erreurs robustes** (White) pour préserver la validité des tests.

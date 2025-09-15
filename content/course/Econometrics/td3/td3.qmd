@@ -1,0 +1,37 @@
+---
+title: "TD 3 — Homoscédasticité (tests & corrections)"
+---
+
+## Objectifs
+- Tester l’**homoscédasticité** des erreurs d’un modèle MCO
+- **Appliquer** une correction si nécessaire
+- Consolider la **lecture** des sorties EViews (R², t, F)
+
+## Travail
+1. Importer le **workfile** compagnies aériennes (`td3.wf1` ou données équivalentes).  
+2. Estimer l’**équation MCO** utilisée dans les TD précédents.  
+3. Tester l’**homoscédasticité** du terme d’erreur avec :
+   - **Goldfeld–Quandt**
+   - **Breusch–Pagan–Koenker**
+   - **White**  
+4. Conclure : homoscédasticité respectée ou **hétéroscédasticité** ?  
+5. Si nécessaire, proposer une **correction** (covariance robuste de White, MCG) et réévaluer les conclusions.
+
+## Rappels (cours)
+- **Homoscédasticité** : variance des erreurs **constante**.  
+- **Hétéroscédasticité** : variance **variable** → erreurs standard biaisées, tests faussés.  
+- Tests usuels (sous H0: **homoscédasticité**) :  
+  - **Breusch–Pagan (BP)** : \( BP = N R^2 \sim \chi^2(K-1) \)  
+  - **White** : statistique \( W \sim \chi^2 \) avec carrés & interactions des X  
+  - **Goldfeld–Quandt** : comparaison de variances par sous-échantillons
+- **Décision** : rejeter H0 si la statistique calculée \(>\) valeur tabulée (χ² ou F).
+
+::: callout-tip
+**EViews** → *View → Residual Diagnostics → Heteroskedasticity Tests* (BP, White).  
+Pour **Goldfeld–Quandt**, utiliser la procédure dédiée (comparaison de variances).
+:::
+
+## À rendre (suggestion)
+- Capture de l’**estimation MCO** (tableau complet)  
+- Résultats des **tests** (BP, White, GQ) + décision (1%, 5%, 10%)  
+- Si hétéroscédasticité : **ré-estimation** avec **erreurs robustes** et commentaire

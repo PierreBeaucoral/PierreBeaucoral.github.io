@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-html/tabby.min.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
   <title>Introduction à l’économétrie — L3 UCA – TD 1 — EViews : prise en main</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -28,11 +28,11 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-8a5cdbf101a0845817b98f2425171703.css">
-  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-8a5cdbf101a0845817b98f2425171703.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -137,9 +137,25 @@
 <ul>
 <li><a href="#/objectifs" id="/toc-objectifs">Objectifs</a>
 <ul>
-<li><a href="#/démarche-définitions" id="/toc-démarche-définitions">Démarche &amp; définitions</a></li>
+
+</ul></li>
+<li><a href="#/introduction" id="/toc-introduction">Introduction</a>
+<ul>
+<li><a href="#/corrélation-et-causalité" id="/toc-corrélation-et-causalité">Corrélation et causalité</a></li>
+<li><a href="#/principe-de-léconométrie" id="/toc-principe-de-léconométrie">Principe de l’économétrie</a></li>
+<li><a href="#/plan-du-cours" id="/toc-plan-du-cours">Plan du cours</a></li>
+<li><a href="#/les-données-utilisées-en-économétrie" id="/toc-les-données-utilisées-en-économétrie">Les données utilisées en économétrie</a></li>
+
+</ul></li>
+<li><a href="#/travailler-sous-eviews" id="/toc-travailler-sous-eviews">Travailler sous EViews</a>
+<ul>
 <li><a href="#/eviews-environnement" id="/toc-eviews-environnement">EViews — Environnement</a></li>
-<li><a href="#/importer-nettoyer" id="/toc-importer-nettoyer">Importer &amp; nettoyer</a></li>
+<li><a href="#/environnement-et-logique-de-fonctionnement" id="/toc-environnement-et-logique-de-fonctionnement">Environnement et logique de fonctionnement</a></li>
+<li><a href="#/les-différents-types-de-fichiers" id="/toc-les-différents-types-de-fichiers">Les différents types de fichiers</a></li>
+<li><a href="#/les-différents-types-dobjets" id="/toc-les-différents-types-dobjets">Les différents types d’objets</a></li>
+<li><a href="#/création-du-workfile-.wf1" id="/toc-création-du-workfile-.wf1">Création du workfile (.wf1)</a></li>
+<li><a href="#/importation-de-données" id="/toc-importation-de-données">Importation de données</a></li>
+<li><a href="#/création-du-workfile-et-importation-en-une-étape" id="/toc-création-du-workfile-et-importation-en-une-étape">Création du workfile et importation en une étape</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -148,56 +164,172 @@
 <section id="objectifs" class="title-slide slide level1 center">
 <h1>Objectifs</h1>
 <ul>
+<li>Comprendre la base de l’économétrie</li>
 <li>Prendre en main <strong>EViews</strong></li>
-<li>Préparer la <strong>base</strong></li>
+<li>Préparer la <strong>base pour les futurs TDs</strong></li>
 </ul>
 </section>
-<section id="démarche-définitions" class="slide level2">
-<h2>Démarche &amp; définitions</h2>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
 <ul>
-<li>Hypothético–déductif</li>
-<li>Corrélation vs causalité</li>
-<li>Types de données</li>
+<li>L’économétrie s’inscrit dans une démarche scientifique dite <strong>hypothético-déductive</strong> (Popper)</li>
 </ul>
+
+<img data-src="images/clipboard-447235873.png" class="r-stretch"><ul>
+<li><p>L’économétrie est une méthode d’analyse des données des phénomènes économiques qui, par l’utilisation de la statistique et des mathématiques, établit des corrélations entre les variables.</p></li>
+<li><p>Objectifs :</p>
+<p>▶ Tester la véracité empirique d’une théorie</p>
+<p>▶ Prévoir l’évolution d’un phénomène</p>
+<p>▶ Calculer la valeur de paramètres des modèles théoriques</p></li>
+</ul>
+</section>
+<section id="corrélation-et-causalité" class="slide level2">
+<h2>Corrélation et causalité</h2>
+<p>Corrélation n’est pas synonyme de causalité, or l’économétrie ne mesure que des corrélations!</p>
+<blockquote>
+<p>Preuve, ce<a href="https://www.tylervigen.com/spurious-correlations">site web</a> (cliquer si temps disponible)</p>
+</blockquote>
+</section>
+<section id="principe-de-léconométrie" class="slide level2">
+<h2>Principe de l’économétrie</h2>
+<p><code>Principe</code> : Vous disposez d’une variable à expliquer (le nombre de buts) et d’une [ou plusieurs] variable[s] explicative[s] (poste du joueur, taille, club) et vous essayez de savoir s’il existe une relation entre celles-ci. Avec un apport théorique préalable, une corrélation peut être suspectée de causale.</p>
+<p><code>Cours</code>:</p>
+<p>▶ Présentation des concepts en CM (M. Brun)</p>
+<p>▶ Mise en pratique sur EViews en TD</p>
+</section>
+<section id="plan-du-cours" class="slide level2">
+<h2>Plan du cours</h2>
+<p><code>Nos séances de TD :</code></p>
+<p>▶ TD 1 : Présentation et prise en main d’EViews</p>
+<p>▶ TD 2 : Gestion et exploration de la base de données</p>
+<p>▶ TD 3 : Régression économétrique</p>
+<p>▶ TD 4 : Les tests d’hypothèses économétriques</p>
+<p>▶ TD 5 : Les tests d’hypothèses économiques</p>
+<p>▶ TD 6 : Les variables instrumentales</p>
+<p>▶ TD 7 : Contrôle continu</p>
+<p>▶ TD 8: Correction du contrôle</p>
+</section>
+<section id="les-données-utilisées-en-économétrie" class="slide level2">
+<h2>Les données utilisées en économétrie</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Les données utilisées en économétrie sont de trois types :</p>
+<p>1. Données transversales :</p>
+<p>Données sur plusieurs individus à un instant donné</p>
+<p>2. Données temporelles :</p>
+<p>Données sur un seul individu à des périodes différentes</p>
+<p>3. Données de panel :</p>
+<p>Données enregistrées pour différents individus à différentes périodes</p>
+<blockquote>
+<p>Dans le cadre de ce cours, seules les données transversales seront étudiées</p>
+</blockquote>
+</div><div class="column" style="width:40%;">
+<p><img data-src="images/clipboard-2653678569.png"></p>
+</div></div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="travailler-sous-eviews" class="title-slide slide level1 center">
+<h1>Travailler sous EViews</h1>
+
 </section>
 <section id="eviews-environnement" class="slide level2">
 <h2>EViews — Environnement</h2>
-<ul>
-<li>Interface, commandes, scripts <code>.prg</code></li>
-<li>Workfile <code>.wf1</code> &amp; objets (séries, équations, graphiques)</li>
-</ul>
+<p>EViews est un logiciel développé par <em>Quantitative Micro Software</em></p>
+<p>Il existe de nombreux autres logiciels d’économétrie.</p>
+<blockquote>
+<p>Les plus utilisés sont <a href="https://www.stata.com/">stata</a> ou <a href="https://www.r-project.org/">R</a></p>
+</blockquote>
+<p><code>Avantages d’EViews :</code></p>
+<p>▶ Simple d’utilisation (fonctionnement avec une interface)</p>
+<p>▶ Performant pour les séries temporelles</p>
+<p><code>Inconvénients :</code></p>
+<p>▶ Il s’agit uniquement d’un logiciel d’économétrie</p>
+<p>La traitement de données doit être fait au préalable</p>
+<p>▶ Peu flexible</p>
 </section>
-<section id="importer-nettoyer" class="slide level2">
-<h2>Importer &amp; nettoyer</h2>
+<section id="environnement-et-logique-de-fonctionnement" class="slide level2">
+<h2>Environnement et logique de fonctionnement</h2>
+<p>Trois manières de travailler sous EViews : 1. Par l’interface graphique 2. En rentrant le nom de la commande dans la fenêtre de commande 3. En regroupant les commandes dans un programme</p>
+<blockquote>
+<p>Nous utiliserons uniquement les deux premières méthodes.</p>
+</blockquote>
+</section>
+<section id="les-différents-types-de-fichiers" class="slide level2">
+<h2>Les différents types de fichiers</h2>
 <ol type="1">
-<li><strong>Workfile</strong> (94 obs.)</li>
-<li><em>Import from file</em> (<code>TD1.xls</code>)</li>
-<li>Recoder <code>Public</code> → <code>dummy_public</code></li>
+<li><strong>Fichier texte (.txt) ou Excel (.xls)</strong> : contient la base de données<br>
+</li>
+<li><strong>Fichier workfile (.wf1)</strong> : enregistre le travail<br>
+</li>
+<li><strong>Fichier programme (.prg)</strong> : enregistre le programme <em>(non utilisé ici)</em></li>
 </ol>
+</section>
+<section id="les-différents-types-dobjets" class="slide level2">
+<h2>Les différents types d’objets</h2>
+<p>Un objet est un élément stockant différents types d’informations, rassemblés dans le <strong>workfile</strong>.<br>
+Double-cliquer sur l’icône pour l’ouvrir.</p>
+<p>Objets les plus fréquents : - Variables numériques - Liste d’éléments en texte - Équation - Graphique - Coefficients et résidus estimés - Scalaire et matrices</p>
+</section>
+<section id="création-du-workfile-.wf1" class="slide level2">
+<h2>Création du workfile (.wf1)</h2>
+<p>Première étape avant d’importer une base de données.</p>
+<p>Menu : <strong>File → New → Workfile</strong></p>
+<p>Trois structures possibles : 1. <strong>Unstructured/Undated</strong> (données transversales)<br>
+- <em>Data Range</em> : nombre d’observations (ex. nombre de pays) 2. <strong>Dated–regular frequency</strong> (données temporelles)<br>
+- <em>Frequency</em> : fréquence des données (annuelle, …)<br>
+- <em>Start date</em> : date initiale (ex. 1970)<br>
+- <em>End date</em> : date de fin (ex. 2008) 3. <strong>Balanced Panel</strong> (données de panel)<br>
+- <em>Frequency, Start date, End date</em> : cf.&nbsp;ci-dessus<br>
+- <em>Number of Cross-section</em> : nombre d’individus</p>
+<p><strong>Modules optionnels :</strong> - <em>Name</em> : nom du workfile - <em>Page</em> : numéro de page</p>
+<p><strong>Sauvegarde :</strong> - Première sauvegarde : <strong>File → Save as</strong> - Ensuite : <strong>File → Save</strong> ou <strong>Ctrl+S</strong></p>
+<p><strong>Ouvrir un workfile existant :</strong> - <strong>File → Open → Workfile</strong> - Choisir le fichier à ouvrir</p>
+</section>
+<section id="importation-de-données" class="slide level2">
+<h2>Importation de données</h2>
+<p><strong>Préalable :</strong> - Seules les données sont acceptées (le fichier Excel ne doit pas contenir de formules).</p>
+<p><strong>Procédure :</strong> 1. Fermer la feuille Excel 2. <strong>File → Import → Import from file</strong> 3. Sélectionner le fichier (base de données)</p>
+<p>Une première fenêtre s’ouvre : - <em>Predefined Range</em> : aucun changement - <em>Custom range</em> : pour modifier la feuille, la première et la dernière cellule</p>
+<p>Puis une deuxième fenêtre permet de modifier : - Nb de lignes définissant le statut (<em>Column headers</em>) - Nom et type des variables et leurs labels (<em>Column info</em>)</p>
+<p>Une troisième fenêtre offre des opérations plus complexes (lier différentes bases de données).</p>
+<p><strong>Terminer</strong> puis sauvegarder le workfile (<strong>File → Save</strong> ou <strong>Ctrl+S</strong>).</p>
+</section>
+<section id="création-du-workfile-et-importation-en-une-étape" class="slide level2">
+<h2>Création du workfile et importation en une étape</h2>
+<p>Possible via : <strong>File → Open → Foreign Data as Workfile</strong></p>
+<p><strong>Avantage :</strong> - Gain de temps</p>
+<p><strong>Inconvénient :</strong> - La base doit être parfaitement préparée.</p>
 
 
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-
+<p>Econométrie L3 - UCA</p>
 </div>
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -213,7 +345,7 @@
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,

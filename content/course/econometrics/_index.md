@@ -38,8 +38,6 @@ données réelles.
 sur-identification (Sargan).  
 * Introduire des **variables muettes** ou des **termes polynomiaux** pour capter
 des effets non linéaires.  
-* Découvrir les **simulations de Monte Carlo** pour évaluer les performances des
-estimateurs.
 
 ---
 

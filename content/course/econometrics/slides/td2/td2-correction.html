@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>TD 1 — Correction &amp; explications – Introduction à l’économétrie — L3 UCA</title>
+<title>TD 2 — Correction &amp; rappels théoriques – Introduction à l’économétrie — L3 UCA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3879,18 +3879,19 @@ vertical-align: -.125em;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#méthode-hypothéticodéductive" id="toc-méthode-hypothéticodéductive" class="nav-link active" data-scroll-target="#méthode-hypothéticodéductive">Méthode hypothético–déductive</a></li>
-  <li><a href="#rappels-utiles" id="toc-rappels-utiles" class="nav-link" data-scroll-target="#rappels-utiles">Rappels utiles</a></li>
-  <li><a href="#correction-synthétique" id="toc-correction-synthétique" class="nav-link" data-scroll-target="#correction-synthétique">Correction synthétique</a></li>
+  <li><a href="#préparation" id="toc-préparation" class="nav-link active" data-scroll-target="#préparation">Préparation</a></li>
+  <li><a href="#estimation-mco" id="toc-estimation-mco" class="nav-link" data-scroll-target="#estimation-mco">Estimation MCO</a></li>
+  <li><a href="#tests" id="toc-tests" class="nav-link" data-scroll-target="#tests">Tests</a></li>
+  <li><a href="#importance-économique" id="toc-importance-économique" class="nav-link" data-scroll-target="#importance-économique">Importance économique</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td1-correction.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td2-correction.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">TD 1 — Correction &amp; explications</h1>
+<h1 class="title">TD 2 — Correction &amp; rappels théoriques</h1>
 </div>
 
 
@@ -3907,43 +3908,54 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="méthode-hypothéticodéductive" class="level2">
-<h2 class="anchored" data-anchor-id="méthode-hypothéticodéductive">Méthode hypothético–déductive</h2>
-<p>Formuler une hypothèse → modéliser → <strong>tester</strong> sur données.</p>
-</section>
-<section id="rappels-utiles" class="level2">
-<h2 class="anchored" data-anchor-id="rappels-utiles">Rappels utiles</h2>
+<section id="préparation" class="level2">
+<h2 class="anchored" data-anchor-id="préparation">Préparation</h2>
 <ul>
-<li><strong>Corrélation</strong> ≠ causalité</li>
-<li><strong>Variables</strong> : quantitatives (continues/discrètes), qualitatives (nominales/ordinaires), <strong>binaires</strong></li>
-<li><strong>Types de données</strong> : transversales, temporelles, <strong>panel</strong></li>
+<li><code>Accidents = fatal + non_fatal</code><br>
+</li>
+<li><code>Acc_pass = Accidents / passagers</code> ; <code>Dummy_acc = (Accidents &gt;= 1)</code><br>
+</li>
+<li>Dummies séparées : <code>Dummy_fatal</code>, <code>Dummy_non_fatal</code><br>
+</li>
+<li>Distribution de <code>passagers</code> : histogramme (souvent asymétrie à droite)</li>
 </ul>
 </section>
-<section id="correction-synthétique" class="level2">
-<h2 class="anchored" data-anchor-id="correction-synthétique">Correction synthétique</h2>
-<ol type="1">
-<li><strong>Workfile (94 obs.)</strong> → <em>File → New → Workfile</em> ; enregistrer tôt (<em>Save as</em>).<br>
-</li>
-<li><strong>Import</strong> <code>TD1.xls</code> → <em>File → Import → Import from file</em> (Excel fermé).<br>
-</li>
-<li><strong>Nettoyage / recodage</strong>
+<section id="estimation-mco" class="level2">
+<h2 class="anchored" data-anchor-id="estimation-mco">Estimation MCO</h2>
 <ul>
-<li><code>Compagnie</code> est <strong>texte</strong> (nominale) → OK</li>
-<li><code>Public</code> (yes/no) → créer <code>dummy_public = @recode(public=&quot;yes&quot;,1,0)</code></li>
-<li>Autres corrections mineures selon la base (ex. <code>Intercontinental</code>)</li>
-</ul></li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
+<li>Modèle log-linéaire : <code>logpassagers</code> ~ (ratio / fatal/passagers / non_fatal/passagers) + contrôles<br>
+</li>
+<li><strong>Interprétation</strong> : coefficients ⇒ variations <strong>%</strong> de <code>passagers</code></li>
+</ul>
+</section>
+<section id="tests" class="level2">
+<h2 class="anchored" data-anchor-id="tests">Tests</h2>
+<ul>
+<li><strong>Student (t)</strong> : H0: coefficient = 0 → décision via |t| vs t_critique (table)<br>
+</li>
+<li><strong>Fisher (F)</strong> : significativité <strong>conjointe</strong> de plusieurs coefficients (ddl: q, N−p)<br>
+</li>
+<li><strong>R² / R² ajusté</strong> : pouvoir explicatif (attention à l’ajout mécanique de variables)</li>
+</ul>
+</section>
+<section id="importance-économique" class="level2">
+<h2 class="anchored" data-anchor-id="importance-économique">Importance économique</h2>
+<ul>
+<li><strong>Coefficients standardisés</strong> (View → Coefficients diagnostics → Scaled)<br>
+</li>
+<li>Variable saillante (souvent <code>intercontinental</code>) : interprétation en <strong>%</strong> si Y en log</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Astuce</strong> : <em>File → Open → Foreign Data as Workfile</em> (création + import en <strong>1 étape</strong>) si la base est propre.</p>
+<p><strong>Tables statistiques</strong> : utiliser <strong>tables de Student &amp; Fisher</strong> (pas de p-values en TD).</p>
 </div>
 </div>
 

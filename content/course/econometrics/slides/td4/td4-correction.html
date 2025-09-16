@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>TD 1 — Correction &amp; explications – Introduction à l’économétrie — L3 UCA</title>
+<title>TD 4 — Correction &amp; explications – Introduction à l’économétrie — L3 UCA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3879,18 +3879,20 @@ vertical-align: -.125em;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#méthode-hypothéticodéductive" id="toc-méthode-hypothéticodéductive" class="nav-link active" data-scroll-target="#méthode-hypothéticodéductive">Méthode hypothético–déductive</a></li>
-  <li><a href="#rappels-utiles" id="toc-rappels-utiles" class="nav-link" data-scroll-target="#rappels-utiles">Rappels utiles</a></li>
-  <li><a href="#correction-synthétique" id="toc-correction-synthétique" class="nav-link" data-scroll-target="#correction-synthétique">Correction synthétique</a></li>
+  <li><a href="#durbinwatson-dw" id="toc-durbinwatson-dw" class="nav-link active" data-scroll-target="#durbinwatson-dw">1) Durbin–Watson (DW)</a></li>
+  <li><a href="#breuschgodfrey-bg-ordre-1" id="toc-breuschgodfrey-bg-ordre-1" class="nav-link" data-scroll-target="#breuschgodfrey-bg-ordre-1">2) Breusch–Godfrey (BG, ordre 1)</a></li>
+  <li><a href="#correction-cochraneorcutt-ar1" id="toc-correction-cochraneorcutt-ar1" class="nav-link" data-scroll-target="#correction-cochraneorcutt-ar1">3) Correction : Cochrane–Orcutt (AR(1))</a></li>
+  <li><a href="#comfac-téléphone" id="toc-comfac-téléphone" class="nav-link" data-scroll-target="#comfac-téléphone">4) COMFAC (téléphone)</a></li>
+  <li><a href="#remarques-pédagogiques" id="toc-remarques-pédagogiques" class="nav-link" data-scroll-target="#remarques-pédagogiques">Remarques pédagogiques</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td1-correction.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td4-correction.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">TD 1 — Correction &amp; explications</h1>
+<h1 class="title">TD 4 — Correction &amp; explications</h1>
 </div>
 
 
@@ -3907,45 +3909,61 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="méthode-hypothéticodéductive" class="level2">
-<h2 class="anchored" data-anchor-id="méthode-hypothéticodéductive">Méthode hypothético–déductive</h2>
-<p>Formuler une hypothèse → modéliser → <strong>tester</strong> sur données.</p>
-</section>
-<section id="rappels-utiles" class="level2">
-<h2 class="anchored" data-anchor-id="rappels-utiles">Rappels utiles</h2>
+<section id="durbinwatson-dw" class="level2">
+<h2 class="anchored" data-anchor-id="durbinwatson-dw">1) Durbin–Watson (DW)</h2>
 <ul>
-<li><strong>Corrélation</strong> ≠ causalité</li>
-<li><strong>Variables</strong> : quantitatives (continues/discrètes), qualitatives (nominales/ordinaires), <strong>binaires</strong></li>
-<li><strong>Types de données</strong> : transversales, temporelles, <strong>panel</strong></li>
+<li>H0 : <strong>pas</strong> d’autocorrélation d’ordre 1 ; H1 : autocorrélation d’ordre 1.</li>
+<li>Lecture : zone <strong>[0, DL]</strong> (rejet H0), <strong>[DU, 2]</strong> (non-rejet H0), entre <strong>DL et DU</strong> = <strong>doute</strong> (tables DW).</li>
+<li>Exemple (issus du workfile AUTO) :
+<ul>
+<li><strong>Habillement</strong> : DW ≈ 1.68 → entre <strong>DU</strong> et <strong>2</strong> ⇒ <strong>pas d’autocorrélation</strong> (ordre 1).<br>
+</li>
+<li><strong>Téléphone</strong> : DW ≈ 0.90 → <strong>&lt; DL</strong> ⇒ <strong>autocorrélation</strong>.<br>
+</li>
+<li><strong>Aérien</strong> : DW ≈ 1.46 → <strong>entre DL &amp; DU</strong> ⇒ <strong>zone d’incertitude</strong>.</li>
+</ul></li>
 </ul>
 </section>
-<section id="correction-synthétique" class="level2">
-<h2 class="anchored" data-anchor-id="correction-synthétique">Correction synthétique</h2>
-<ol type="1">
-<li><strong>Workfile (94 obs.)</strong> → <em>File → New → Workfile</em> ; enregistrer tôt (<em>Save as</em>).<br>
-</li>
-<li><strong>Import</strong> <code>TD1.xls</code> → <em>File → Import → Import from file</em> (Excel fermé).<br>
-</li>
-<li><strong>Nettoyage / recodage</strong>
+<section id="breuschgodfrey-bg-ordre-1" class="level2">
+<h2 class="anchored" data-anchor-id="breuschgodfrey-bg-ordre-1">2) Breusch–Godfrey (BG, ordre 1)</h2>
 <ul>
-<li><code>Compagnie</code> est <strong>texte</strong> (nominale) → OK</li>
-<li><code>Public</code> (yes/no) → créer <code>dummy_public = @recode(public=&quot;yes&quot;,1,0)</code></li>
-<li>Autres corrections mineures selon la base (ex. <code>Intercontinental</code>)</li>
+<li>Statistique : <strong>BG = T·R²</strong> de l’équation de test (régression du résidu sur ses retards et X). Décision via <strong>χ²(1)</strong>.</li>
+<li>Procédure : <code>View → Residual Diagnostics → Serial Correlation LM Test</code> (choisir <strong>lags</strong>).</li>
+<li>Exemple :
+<ul>
+<li><strong>Habillement</strong> : BG &lt;&lt; 3.84 ⇒ <strong>pas d’autocorrélation</strong>.<br>
+</li>
+<li><strong>Téléphone</strong> : BG &gt;&gt; 3.84 ⇒ <strong>autocorrélation</strong>.<br>
+</li>
+<li><strong>Aérien</strong> : BG &lt;&lt; 3.84 ⇒ <strong>pas d’autocorrélation</strong>.</li>
 </ul></li>
-</ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Astuce</strong> : <em>File → Open → Foreign Data as Workfile</em> (création + import en <strong>1 étape</strong>) si la base est propre.</p>
-</div>
-</div>
+</ul>
+</section>
+<section id="correction-cochraneorcutt-ar1" class="level2">
+<h2 class="anchored" data-anchor-id="correction-cochraneorcutt-ar1">3) Correction : Cochrane–Orcutt (AR(1))</h2>
+<ul>
+<li>Ajouter <code>AR(1)</code> dans la <strong>spécification</strong> de l’équation sous EViews (estime ρ).<br>
+</li>
+<li>Re-estimer et <strong>comparer</strong> : SE, t, R² ajusté, <strong>Durbin–Watson</strong> (→ proche de 2 si correction pertinente).</li>
+</ul>
+</section>
+<section id="comfac-téléphone" class="level2">
+<h2 class="anchored" data-anchor-id="comfac-téléphone">4) COMFAC (téléphone)</h2>
+<ul>
+<li>H0 : <strong>contraintes</strong> de Cochrane–Orcutt <strong>valides</strong> ; H1 : <strong>invalides</strong> (spécification alternative avec variables retardées).<br>
+</li>
+<li>Statistique : <strong>T · ln(SCRC / SCRNC)</strong> ~ χ²(c), où <strong>c</strong> = nb de contraintes CO.<br>
+</li>
+<li>Interprétation : si <strong>rejet H0</strong>, la spécification <strong>avec AR(1)</strong> n’est pas suffisante → privilégier un <strong>modèle alternatif</strong> (par ex. lags des variables).</li>
+</ul>
+</section>
+<section id="remarques-pédagogiques" class="level2">
+<h2 class="anchored" data-anchor-id="remarques-pédagogiques">Remarques pédagogiques</h2>
+<ul>
+<li>L’<strong>indépendance sérielle</strong> est cruciale pour l’<strong>efficience</strong> des MCO (BLUE).<br>
+</li>
+<li>En présence d’autocorrélation : <strong>erreurs standards</strong> biaisées → tests t/F non fiables sans correction.</li>
+</ul>
 
 
 </section>

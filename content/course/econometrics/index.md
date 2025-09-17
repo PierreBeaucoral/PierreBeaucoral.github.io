@@ -11,10 +11,10 @@ image:
 
 # Bienvenue
 
-Ce site accompagne le cours **Introduction à l’économétrie appliquée** dispensé
+Ce [site](https://pierrebeaucoral.github.io/course/econometrics/site.html) accompagne le cours **Introduction à l’économétrie appliquée** dispensé
 en **Licence 3 – École d’Économie (Université Clermont Auvergne)**.
 
-Ce cours de **30 heures** (cours magistraux + travaux dirigés) propose une
+Ce [cours](https://pierrebeaucoral.github.io/course/econometrics/site.html) de **30 heures** (cours magistraux + travaux dirigés) propose une
 **initiation pratique à l’économétrie**, c’est-à-dire l’ensemble des méthodes
 statistiques utilisées pour tester des théories économiques ou analyser des
 données réelles.
@@ -44,8 +44,8 @@ des effets non linéaires.
 ## Ressources du site
 
 * [Syllabus complet](syllabus.html)
-* Notes de cours, TD et corrigés disponibles après chaque séance.
-* Jeux de données et scripts EViews fournis dans la rubrique **Travaux dirigés**.
+* [Notes de cours, TD et corrigés](https://pierrebeaucoral.github.io/course/econometrics/site.html) disponibles après chaque séance.
+* Jeux de données et scripts EViews fournis dans l'ENT.
 
 ---
 

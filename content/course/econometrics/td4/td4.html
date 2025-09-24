@@ -4004,6 +4004,10 @@ window.Quarto = {
 <span class="menu-text">TD 8</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../td9/td9.html"> 
+<span class="menu-text">TD 9</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../slides/global-slides.html"> 
 <span class="menu-text">Global slides</span></a>
   </li>  
@@ -4055,10 +4059,12 @@ window.Quarto = {
   <li><a href="#corriger-pour-des-inférences-valides" id="toc-corriger-pour-des-inférences-valides" class="nav-link" data-scroll-target="#corriger-pour-des-inférences-valides"><span class="header-section-number">7</span> Corriger pour des inférences valides</a></li>
   <li><a href="#questions-réponses-td4" id="toc-questions-réponses-td4" class="nav-link" data-scroll-target="#questions-réponses-td4"><span class="header-section-number">8</span> Questions – Réponses (TD4)</a>
   <ul class="collapse">
-  <li><a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question"><span class="header-section-number">8.0.1</span> Question :</a></li>
-  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1"><span class="header-section-number">8.0.2</span> Question :</a></li>
-  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2"><span class="header-section-number">8.0.3</span> Question :</a></li>
-  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3"><span class="header-section-number">8.0.4</span> Question :</a></li>
+  <li><a href="#importez-le-fichier-de-travail-sur-les-compagnies-aériennes." id="toc-importez-le-fichier-de-travail-sur-les-compagnies-aériennes." class="nav-link" data-scroll-target="#importez-le-fichier-de-travail-sur-les-compagnies-aériennes."><span class="header-section-number">8.1</span> Importez le fichier de travail sur les compagnies aériennes.</a></li>
+  <li><a href="#estimez-léquation-suivante-par-les-mco" id="toc-estimez-léquation-suivante-par-les-mco" class="nav-link" data-scroll-target="#estimez-léquation-suivante-par-les-mco"><span class="header-section-number">8.2</span> Estimez l’équation suivante par les MCO :</a></li>
+  <li><a href="#homoscédasticité" id="toc-homoscédasticité" class="nav-link" data-scroll-target="#homoscédasticité"><span class="header-section-number">8.3</span> Homoscédasticité</a></li>
+  <li><a href="#homoscédasticité-1" id="toc-homoscédasticité-1" class="nav-link" data-scroll-target="#homoscédasticité-1"><span class="header-section-number">8.4</span> Homoscédasticité</a></li>
+  <li><a href="#corrections" id="toc-corrections" class="nav-link" data-scroll-target="#corrections"><span class="header-section-number">8.5</span> Correction(s)</a></li>
+  <li><a href="#corrections-1" id="toc-corrections-1" class="nav-link" data-scroll-target="#corrections-1"><span class="header-section-number">8.6</span> Correction(s)</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td4.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -4157,10 +4163,10 @@ Caution
 <h2 data-number="2.3" class="anchored" data-anchor-id="hypothèses-problèmes-et-corrections"><span class="header-section-number">2.3</span> Hypothèses, problèmes et corrections</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 27%">
-<col style="width: 24%">
-<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -4180,7 +4186,7 @@ Caution
 <tr class="even">
 <td><strong>Efficience</strong> (sphéricité des erreurs)</td>
 <td>Estimation non efficace (mais pas de biais)</td>
-<td>Homoscédasticité : Breusch–Pagan, White ;<br>Indépendance sérielle : Durbin–Watson, Breusch–Godfrey</td>
+<td><strong>Homoscédasticité</strong> : Breusch–Pagan, White ; <strong>Indépendance sérielle</strong>: Durbin–Watson, Breusch–Godfrey</td>
 <td>Erreurs standards <strong>White</strong> (robustes) ; <strong>HAC</strong> (Newey–West)</td>
 </tr>
 </tbody>
@@ -4223,7 +4229,7 @@ Important
 <tr class="even">
 <td><strong>H3 : Homoscédasticité</strong></td>
 <td>Goldfeld–Quandt</td>
-<td>—</td>
+<td>✓</td>
 </tr>
 <tr class="odd">
 <td></td>
@@ -4434,56 +4440,65 @@ Tip
 </section>
 <section id="questions-réponses-td4" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Questions – Réponses (TD4)</h1>
-<section id="question" class="level3" data-number="8.0.1">
-<h3 data-number="8.0.1" class="anchored" data-anchor-id="question"><span class="header-section-number">8.0.1</span> Question :</h3>
-<p>Vous devez estimer les équations où la dépense qui porte sur un secteur dépend d’une constante, du revenu et du prix réel dans le secteur en question et tester la présence d’une autocorrélation à l’ordre un dans le terme d’erreurs à l’aide du test de Durbin et Watson. Qu’en concluez-vous ?</p>
+<section id="importez-le-fichier-de-travail-sur-les-compagnies-aériennes." class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="importez-le-fichier-de-travail-sur-les-compagnies-aériennes."><span class="header-section-number">8.1</span> Importez le fichier de travail sur les compagnies aériennes.</h2>
+<hr>
+</section>
+<section id="estimez-léquation-suivante-par-les-mco" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="estimez-léquation-suivante-par-les-mco"><span class="header-section-number">8.2</span> Estimez l’équation suivante par les MCO :</h2>
+<p><span class="math inline">\(log(Pass_i) =\beta_0 + \beta_1 Fatal_Passagers_i + \beta_2 NonFatal_Passagers_i + \beta_3 Low_cost_i \ + \beta_4 Public_i + \beta_5 Inter_i + \beta_6 Age_i + \beta_7 Trafic_nat_i + \beta_8 Trafic_dest_i +\varepsilon_i\)</span></p>
+<hr>
+</section>
+<section id="homoscédasticité" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="homoscédasticité"><span class="header-section-number">8.3</span> Homoscédasticité</h2>
+<p>· Qu’est-ce que l’homoscédasticité et quel problème induit son non-respect pour les MCO ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Le test de Durbin‑Watson est utile pour détecter une autocorrélation d’ordre 1.<br>
-Hypothèses : <strong>H₀</strong> pas d’autocorrélation d’ordre 1 ; <strong>H₁</strong> autocorrélation présente.</p>
-<p>Résultats : <strong>Habillement</strong> DW = 1,679 (entre DU = 1,55 et 2) → pas d’autocorrélation.<br>
-<strong>Téléphone</strong> DW = 0,901 (&lt; DL = 1,21) → autocorrélation présente.<br>
-<strong>Transport aérien</strong> DW = 1,462 (entre DL et DU) → <strong>zone d’incertitude</strong>.</p>
+<p><strong>Homoscédasticité</strong> = la variance de l’erreur est <strong>constante</strong> pour toutes les valeurs des régressseurs :<br>
+</p>
+<p><span class="math inline">\(\mathrm{Var}(u_i\mid X)=\sigma^2\)</span> pour tout <span class="math inline">\(i\)</span>.</p>
+<p><strong>Si cette hypothèse est violée (hétéroscédasticité)</strong> :</p>
+<ul>
+<li><p>Les estimateurs MCO <span class="math inline">\(\hat\beta\)</span>​ restent <strong>sans biais</strong> et <strong>consistants</strong> si <span class="math inline">\(E[u\mid X]=0\)</span> tient, mais ils <strong>ne sont plus efficaces</strong> (plus BLUE) : il existe de meilleurs estimateurs (GLS/WLS).</p></li>
+<li><p>Les <strong>écarts-types MCO “classiques”</strong> sont <strong>faussés</strong> ⇒ <strong>tests t/F et IC</strong> peuvent être trompeurs (trop optimistes ou trop prudents).</p></li>
+<li><p>Conséquence pratique majeure : <strong>mauvaise inférence</strong>.</p></li>
+</ul>
+<p><strong>Que faire ?</strong></p>
+<ul>
+<li>Utiliser des <strong>erreurs-types robustes à l’hétéroscédasticité</strong> (HC0–HC3/“White”).</li>
+</ul>
 </details>
 <hr>
 </section>
-<section id="question-1" class="level3" data-number="8.0.2">
-<h3 data-number="8.0.2" class="anchored" data-anchor-id="question-1"><span class="header-section-number">8.0.2</span> Question :</h3>
-<p>Testez la présence d’une autocorrélation à l’ordre un dans le terme d’erreurs par le test de Breusch‑Godfrey. Qu’en concluez‑vous ?</p>
+<section id="homoscédasticité-1" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="homoscédasticité-1"><span class="header-section-number">8.4</span> Homoscédasticité</h2>
+<p>· A l’aide des tests de Goldfeld et Quandt, de Breusch-Pagan-Koenker et de White, que peut-on conclure quant à l’homoscédasticité du terme d’erreurs ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Hypothèses : <strong>H₀</strong> pas d’autocorrélation jusqu’au nombre de retards choisi ; <strong>H₁</strong> autocorrélation.<br>
-Statistique : BG = T × R² → χ²(t).</p>
-<p>Résultats : <strong>Habillement</strong> BG = 0,018 &lt; 3,841 → pas d’autocorrélation.<br>
-<strong>Téléphone</strong> BG = 0,281 &gt; 3,841 → autocorrélation.<br>
-<strong>Transport aérien</strong> BG = 0,051 &lt; 3,841 → pas d’autocorrélation.</p>
 </details>
 <hr>
 </section>
-<section id="question-2" class="level3" data-number="8.0.3">
-<h3 data-number="8.0.3" class="anchored" data-anchor-id="question-2"><span class="header-section-number">8.0.3</span> Question :</h3>
-<p>Corrigez l’autocorrélation éventuelle par la procédure automatique de Cochrane‑Orcutt. Qu’en concluez‑vous ?</p>
+<section id="corrections" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="corrections"><span class="header-section-number">8.5</span> Correction(s)</h2>
+<p>· En fonction des résultats des divers tests, proposez une correction le cas échéant.</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Correction via <strong>Cochrane–Orcutt</strong> : inclure un terme <strong>AR(1)</strong> dans l’équation (EViews : option AR(1)).<br>
-Conclusion : pas de correction particulière à retenir pour les <strong>dépenses téléphoniques</strong> après application.</p>
 </details>
 <hr>
 </section>
-<section id="question-3" class="level3" data-number="8.0.4">
-<h3 data-number="8.0.4" class="anchored" data-anchor-id="question-3"><span class="header-section-number">8.0.4</span> Question :</h3>
-<p>Faites un test des facteurs communs (COMFAC) pour les dépenses en téléphone et dégagez la meilleure spécification de l’équation explicative pour ces dépenses.</p>
+<section id="corrections-1" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="corrections-1"><span class="header-section-number">8.6</span> Correction(s)</h2>
+<p>· Vos conclusions quant à l’effet des accidents mortels et non mortels sont-elles modifiées ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Aucun résultat détaillé n’est fourni dans la correction pour cette question (COMFAC).</p>
 </details>
 
 

@@ -1040,22 +1040,12 @@ Pierre Beaucoral
 </ul></li>
 <li><a href="#/questions-réponses-td4" id="/toc-questions-réponses-td4"><span class="header-section-number">6</span> Questions – Réponses (TD4)</a>
 <ul>
-<li>
-<ul>
-<li><a href="#/question" id="/toc-question"><span class="header-section-number">6.0.1</span> Question :</a></li>
-</ul></li>
-<li>
-<ul>
-<li><a href="#/question-1" id="/toc-question-1"><span class="header-section-number">6.0.2</span> Question :</a></li>
-</ul></li>
-<li>
-<ul>
-<li><a href="#/question-2" id="/toc-question-2"><span class="header-section-number">6.0.3</span> Question :</a></li>
-</ul></li>
-<li>
-<ul>
-<li><a href="#/question-3" id="/toc-question-3"><span class="header-section-number">6.0.4</span> Question :</a></li>
-</ul></li>
+<li><a href="#/importez-le-fichier-de-travail-sur-les-compagnies-aériennes." id="/toc-importez-le-fichier-de-travail-sur-les-compagnies-aériennes."><span class="header-section-number">6.1</span> Importez le fichier de travail sur les compagnies aériennes.</a></li>
+<li><a href="#/estimez-léquation-suivante-par-les-mco" id="/toc-estimez-léquation-suivante-par-les-mco"><span class="header-section-number">6.2</span> Estimez l’équation suivante par les MCO :</a></li>
+<li><a href="#/homoscédasticité-1" id="/toc-homoscédasticité-1"><span class="header-section-number">6.3</span> Homoscédasticité</a></li>
+<li><a href="#/homoscédasticité-2" id="/toc-homoscédasticité-2"><span class="header-section-number">6.4</span> Homoscédasticité</a></li>
+<li><a href="#/corrections" id="/toc-corrections"><span class="header-section-number">6.5</span> Correction(s)</a></li>
+<li><a href="#/corrections-1" id="/toc-corrections-1"><span class="header-section-number">6.6</span> Correction(s)</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -1120,10 +1110,10 @@ Pierre Beaucoral
 <h2><span class="header-section-number">1.3</span> Hypothèse et propriétés des estimateurs</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 26%">
-<col style="width: 24%">
-<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1560,53 +1550,60 @@ Rejeter <span class="math inline">\(H₀\)</span> si <span class="math inline">\
 <h1><span class="header-section-number">6</span> Questions – Réponses (TD4)</h1>
 
 </section>
-<section class="slide level2">
-
-<h3 data-number="6.0.1" id="question"><span class="header-section-number">6.0.1</span> Question :</h3>
-<p>Vous devez estimer les équations où la dépense qui porte sur un secteur dépend d’une constante, du revenu et du prix réel dans le secteur en question et tester la présence d’une autocorrélation à l’ordre un dans le terme d’erreurs à l’aide du test de Durbin et Watson. Qu’en concluez-vous ?</p>
+<section id="importez-le-fichier-de-travail-sur-les-compagnies-aériennes." class="slide level2" data-number="6.1">
+<h2><span class="header-section-number">6.1</span> Importez le fichier de travail sur les compagnies aériennes.</h2>
+</section>
+<section id="estimez-léquation-suivante-par-les-mco" class="slide level2" data-number="6.2">
+<h2><span class="header-section-number">6.2</span> Estimez l’équation suivante par les MCO :</h2>
+<p><span class="math inline">\(log(Pass_i) =\beta_0 + \beta_1 Fatal_Passagers_i + \beta_2 NonFatal_Passagers_i + \beta_3 Low_cost_i \ + \beta_4 Public_i + \beta_5 Inter_i + \beta_6 Age_i + \beta_7 Trafic_nat_i + \beta_8 Trafic_dest_i +\varepsilon_i\)</span></p>
+</section>
+<section id="homoscédasticité-1" class="slide level2" data-number="6.3">
+<h2><span class="header-section-number">6.3</span> Homoscédasticité</h2>
+<p>· Qu’est-ce que l’homoscédasticité et quel problème induit son non-respect pour les MCO ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Le test de Durbin-Watson est particulièrement utile pour détecter une autocorrélation d’ordre 1.<br>
-Hypothèses : - <strong>H₀ :</strong> pas d’autocorrélation d’ordre 1 dans les résidus. - <strong>H₁ :</strong> autocorrélation d’ordre 1 présente.</p>
-<p>Résultats : - <strong>Dépenses habillement :</strong> DW = 1,679, compris entre DU = 1,55 et 2 → pas d’autocorrélation d’ordre 1. - <strong>Téléphone :</strong> DW = 0,901, inférieur à DL = 1,21 → présence d’autocorrélation d’ordre 1. - <strong>Transport aérien :</strong> DW = 1,462, entre DL et DU → zone d’incertitude, conclusion indéterminée.</p>
+<p><strong>Homoscédasticité</strong> = la variance de l’erreur est <strong>constante</strong> pour toutes les valeurs des régressseurs :<br>
+</p>
+<p><span class="math inline">\(\mathrm{Var}(u_i\mid X)=\sigma^2\)</span> pour tout <span class="math inline">\(i\)</span>.</p>
+<p><strong>Si cette hypothèse est violée (hétéroscédasticité)</strong> :</p>
+<ul>
+<li><p>Les estimateurs MCO <span class="math inline">\(\hat\beta\)</span>​ restent <strong>sans biais</strong> et <strong>consistants</strong> si <span class="math inline">\(E[u\mid X]=0\)</span> tient, mais ils <strong>ne sont plus efficaces</strong> (plus BLUE) : il existe de meilleurs estimateurs (GLS/WLS).</p></li>
+<li><p>Les <strong>écarts-types MCO “classiques”</strong> sont <strong>faussés</strong> ⇒ <strong>tests t/F et IC</strong> peuvent être trompeurs (trop optimistes ou trop prudents).</p></li>
+<li><p>Conséquence pratique majeure : <strong>mauvaise inférence</strong>.</p></li>
+</ul>
+<p><strong>Que faire ?</strong></p>
+<ul>
+<li>Utiliser des <strong>erreurs-types robustes à l’hétéroscédasticité</strong> (HC0–HC3/“White”).</li>
+</ul>
 </details>
 </section>
-<section class="slide level2">
-
-<h3 data-number="6.0.2" id="question-1"><span class="header-section-number">6.0.2</span> Question :</h3>
-<p>Testez la présence d’une autocorrélation à l’ordre un dans le terme d’erreurs par le test de Breusch-Godfrey. Qu’en concluez-vous ?</p>
+<section id="homoscédasticité-2" class="slide level2" data-number="6.4">
+<h2><span class="header-section-number">6.4</span> Homoscédasticité</h2>
+<p>· A l’aide des tests de Goldfeld et Quandt, de Breusch-Pagan-Koenker et de White, que peut-on conclure quant à l’homoscédasticité du terme d’erreurs ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Hypothèses : - <strong>H₀ :</strong> pas d’autocorrélation des erreurs jusqu’au nombre de retards spécifié. - <strong>H₁ :</strong> autocorrélation présente.</p>
-<p>Statistique : BG = T × R² → loi χ²(t) avec t = ordre du processus (ici 1).</p>
-<p>Résultats : - <strong>Habillement :</strong> BG = 0,018 &lt; 3,841 → on ne rejette pas H₀ → pas d’autocorrélation. - <strong>Téléphone :</strong> BG = 0,281 &gt; 3,841 → on rejette H₀ → autocorrélation présente. - <strong>Transport aérien :</strong> BG = 0,051 &lt; 3,841 → pas d’autocorrélation.</p>
 </details>
 </section>
-<section class="slide level2">
-
-<h3 data-number="6.0.3" id="question-2"><span class="header-section-number">6.0.3</span> Question :</h3>
-<p>Corrigez l’autocorrélation éventuelle par la procédure automatique de Cochrane-Orcutt. Qu’en concluez-vous ?</p>
+<section id="corrections" class="slide level2" data-number="6.5">
+<h2><span class="header-section-number">6.5</span> Correction(s)</h2>
+<p>· En fonction des résultats des divers tests, proposez une correction le cas échéant.</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Pour corriger l’autocorrélation des erreurs, on applique la procédure <strong>Cochrane–Orcutt</strong> : inclure un terme AR(1) dans l’équation (sur EViews, ajouter AR(1) dans l’équation).</p>
-<p>Conclusion : il n’y a pas de correction particulière à faire pour les dépenses téléphoniques après l’application de cette procédure.</p>
 </details>
 </section>
-<section class="slide level2">
-
-<h3 data-number="6.0.4" id="question-3"><span class="header-section-number">6.0.4</span> Question :</h3>
-<p>Faites un test des facteurs communs (COMFAC) pour les dépenses en téléphone et dégagez la meilleure spécification de l’équation explicative pour ces dépenses.</p>
+<section id="corrections-1" class="slide level2" data-number="6.6">
+<h2><span class="header-section-number">6.6</span> Correction(s)</h2>
+<p>· Vos conclusions quant à l’effet des accidents mortels et non mortels sont-elles modifiées ?</p>
 <details>
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
-<p>Aucun test spécifique n’a été effectué pour cette question (pas de résultat fourni dans la correction).</p>
 </details>
 
 

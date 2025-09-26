@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 }
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -3799,7 +3834,6 @@ vertical-align: -.125em;
     "search-label": "Search"
   }
 }</script>
-<style>html{ scroll-behavior: smooth; }</style>
 
   <script>/*
  * Polyfill service v3.111.0
@@ -4044,7 +4078,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">TD 1 — Modèle de Poisson (R)</h1>
+<div class="quarto-title-block"><div><h1 class="title">TD 1 — Modèle de Poisson (R)</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
 <p class="subtitle lead">Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable</p>
 </div>
 
@@ -4090,6 +4124,21 @@ window.Quarto = {
 </section>
 <section id="packages" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="packages"><span class="header-section-number">1.2</span> Packages</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># installer si nécessaire : install.packages(c(&quot;readxl&quot;,&quot;dplyr&quot;,&quot;tidyr&quot;,&quot;janitor&quot;,&quot;ggplot2&quot;,&quot;broom&quot;,&quot;gt&quot;,&quot;performance&quot;,&quot;DescTools&quot;))</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)   <span class="co"># check_overdispersion</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)     <span class="co"># PChisq for GOF (si besoin)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 <section id="import-et-manipulation-des-données" class="level1" data-number="2">
@@ -4117,6 +4166,27 @@ Note
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Chemin suggéré : placez le fichier dans data/smoking_dat.xlsx</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Si vous avez un CSV, remplacez read_excel par read.csv(...)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="st">&quot;data/smoking_dat.xlsx&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(data_path) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Harmonisation de noms</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># On s&#39;attend à des colonnes: age (classes), smoking_status (4 classes), population, deaths</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">matches</span>(<span class="st">&quot;^age$|^age_class|^agecat&quot;</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">smoking_status =</span> <span class="fu">matches</span>(<span class="st">&quot;^smoking|^smoke&quot;</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">population =</span> <span class="fu">matches</span>(<span class="st">&quot;^pop|^population&quot;</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">deaths =</span> <span class="fu">matches</span>(<span class="st">&quot;^deaths|^dead&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 36
 Columns: 4
@@ -4135,6 +4205,17 @@ $ deaths         &lt;dbl&gt; 18, 22, 19, 55, 117, 170, 179, 120, 120, 2, 4, 3, 3
 <p>En R, il suffit de déclarer les variables comme <code>factor</code>.</p>
 </blockquote>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">factor</span>(age, <span class="at">ordered =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">smoking_status =</span> <span class="fu">factor</span>(smoking_status, <span class="at">ordered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification des niveaux</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df<span class="sc">$</span>age); <span class="fu">levels</span>(df<span class="sc">$</span>smoking_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;40-44&quot; &quot;45-59&quot; &quot;50-54&quot; &quot;55-59&quot; &quot;60-64&quot; &quot;65-69&quot; &quot;70-74&quot; &quot;75-79&quot; &quot;80+&quot;  </code></pre>
 </div>
@@ -4159,6 +4240,19 @@ Note
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="unité-dexposition"><span class="header-section-number">2.2.1</span> Unité d’exposition</h3>
 <p>L’énoncé précise que <code>population</code> est en <strong>centaines de milliers</strong>. Pour une interprétation plus intuitive, on peut ramener l’exposition à l’unité <strong>personne</strong> (facultatif) :</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ici, on transforme &#39;population&#39; en nombre de personnes si besoin.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple: si population = 2.3 signifie 2.3 * 100 000 personnes :</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>expo_personnes <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>scale_factor <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">exposure =</span> <span class="cf">if</span> (expo_personnes) population <span class="sc">*</span> scale_factor <span class="cf">else</span> population</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df<span class="sc">$</span>exposure)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
   9800000  36925000  85850000 155894444 230550000 605200000 </code></pre>
@@ -4193,6 +4287,13 @@ Cette structure garantit que la prédiction est <strong>positive</strong> et que
 </div>
 <p>Nous voulons expliquer le nombre de décès par l’âge et le statut tabagique, en tenant compte de l’exposition.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> smoking_status <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)), </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>), <span class="at">data =</span> df)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -4242,6 +4343,12 @@ Important
 <section id="calculer-la-déviance-du-modèle-ajusté.-dev1" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="calculer-la-déviance-du-modèle-ajusté.-dev1"><span class="header-section-number">3.2</span> Calculer la déviance du modèle ajusté. DEV1</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dev1 <span class="ot">&lt;-</span> <span class="fu">deviance</span>(mod1)     <span class="co"># Deviance du modèle vs saturé</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_dev1 <span class="ot">&lt;-</span> <span class="fu">df.residual</span>(mod1)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">dev1 =</span> dev1, <span class="at">df =</span> df_dev1, <span class="at">p_value =</span> <span class="fu">pchisq</span>(dev1, df_dev1, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>     dev1        df   p_value 
 21.486738 24.000000  0.609872 </code></pre>
@@ -4261,6 +4368,14 @@ Important
 </section>
 <section id="sauvegarde-du-modèle-utile-pour-lr-tests" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="sauvegarde-du-modèle-utile-pour-lr-tests"><span class="header-section-number">3.4</span> Sauvegarde du modèle (utile pour LR tests)</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># En R, on garde l&#39;objet en mémoire (mod1). Pas besoin d&#39;&quot;estimates store&quot;.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># On peut aussi l&#39;ajouter à une liste si on veut gérer plusieurs modèles :</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mod1 =</span> mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="tester-lajustement-de-ce-modèle" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="tester-lajustement-de-ce-modèle"><span class="header-section-number">3.5</span> Tester l’ajustement de ce modèle</h2>
@@ -4270,21 +4385,42 @@ Important
 <li><p><strong>Pearson GOF</strong> (comparaison effectifs attendus vs observés). Les <strong>degrés de liberté</strong> correspondent ici au nombre de cellules moins le nombre de paramètres estimés (y compris l’interception). L’énoncé suggère <strong>24 df</strong> pour chacun de ces tests (voir justification plus bas).</p></li>
 </ul>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Deviance test (déjà calculé ci-dessus)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>dev_stat  <span class="ot">&lt;-</span> <span class="fu">deviance</span>(mod1)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>dev_df    <span class="ot">&lt;-</span> <span class="fu">df.residual</span>(mod1)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>dev_p     <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(dev_stat, dev_df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson GOF (somme (y - mu)^2 / mu) et chi2 approx avec mêmes df résiduels)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>mu_hat    <span class="ot">&lt;-</span> <span class="fu">fitted</span>(mod1)         <span class="co"># comptages attendus</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>y_obs     <span class="ot">&lt;-</span> df<span class="sc">$</span>deaths</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>pearson   <span class="ot">&lt;-</span> <span class="fu">sum</span>((y_obs <span class="sc">-</span> mu_hat)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> mu_hat)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>pearson_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(pearson, dev_df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">test =</span> <span class="fu">c</span>(<span class="st">&quot;Deviance GOF&quot;</span>, <span class="st">&quot;Pearson GOF&quot;</span>),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">c</span>(dev_stat, pearson),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> <span class="fu">c</span>(dev_df, dev_df),</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value =</span> <span class="fu">c</span>(dev_p, pearson_p)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="jzyznuandw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jzyznuandw table {
+<div id="aeataydowd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aeataydowd table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#jzyznuandw thead, #jzyznuandw tbody, #jzyznuandw tfoot, #jzyznuandw tr, #jzyznuandw td, #jzyznuandw th {
+#aeataydowd thead, #aeataydowd tbody, #aeataydowd tfoot, #aeataydowd tr, #aeataydowd td, #aeataydowd th {
 border-style: none;
 }
-#jzyznuandw p {
+#aeataydowd p {
 margin: 0;
 padding: 0;
 }
-#jzyznuandw .gt_table {
+#aeataydowd .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -4309,11 +4445,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#jzyznuandw .gt_caption {
+#aeataydowd .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#jzyznuandw .gt_title {
+#aeataydowd .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -4324,7 +4460,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#jzyznuandw .gt_subtitle {
+#aeataydowd .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -4335,7 +4471,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#jzyznuandw .gt_heading {
+#aeataydowd .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -4346,12 +4482,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#jzyznuandw .gt_bottom_border {
+#aeataydowd .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jzyznuandw .gt_col_headings {
+#aeataydowd .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4365,7 +4501,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#jzyznuandw .gt_col_heading {
+#aeataydowd .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4384,7 +4520,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#jzyznuandw .gt_column_spanner_outer {
+#aeataydowd .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4395,13 +4531,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#jzyznuandw .gt_column_spanner_outer:first-child {
+#aeataydowd .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#jzyznuandw .gt_column_spanner_outer:last-child {
+#aeataydowd .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#jzyznuandw .gt_column_spanner {
+#aeataydowd .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -4412,10 +4548,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#jzyznuandw .gt_spanner_row {
+#aeataydowd .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#jzyznuandw .gt_group_heading {
+#aeataydowd .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4440,7 +4576,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#jzyznuandw .gt_empty_group_heading {
+#aeataydowd .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -4454,13 +4590,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#jzyznuandw .gt_from_md > :first-child {
+#aeataydowd .gt_from_md > :first-child {
 margin-top: 0;
 }
-#jzyznuandw .gt_from_md > :last-child {
+#aeataydowd .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#jzyznuandw .gt_row {
+#aeataydowd .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4478,7 +4614,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#jzyznuandw .gt_stub {
+#aeataydowd .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4490,7 +4626,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jzyznuandw .gt_stub_row_group {
+#aeataydowd .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4503,13 +4639,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#jzyznuandw .gt_row_group_first td {
+#aeataydowd .gt_row_group_first td {
 border-top-width: 2px;
 }
-#jzyznuandw .gt_row_group_first th {
+#aeataydowd .gt_row_group_first th {
 border-top-width: 2px;
 }
-#jzyznuandw .gt_summary_row {
+#aeataydowd .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4518,14 +4654,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jzyznuandw .gt_first_summary_row {
+#aeataydowd .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#jzyznuandw .gt_first_summary_row.thick {
+#aeataydowd .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#jzyznuandw .gt_last_summary_row {
+#aeataydowd .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4534,7 +4670,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jzyznuandw .gt_grand_summary_row {
+#aeataydowd .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4543,7 +4679,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jzyznuandw .gt_first_grand_summary_row {
+#aeataydowd .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4552,7 +4688,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#jzyznuandw .gt_last_grand_summary_row_top {
+#aeataydowd .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4561,10 +4697,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#jzyznuandw .gt_striped {
+#aeataydowd .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#jzyznuandw .gt_table_body {
+#aeataydowd .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4572,7 +4708,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jzyznuandw .gt_footnotes {
+#aeataydowd .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4585,7 +4721,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#jzyznuandw .gt_footnote {
+#aeataydowd .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -4593,7 +4729,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jzyznuandw .gt_sourcenotes {
+#aeataydowd .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4606,64 +4742,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#jzyznuandw .gt_sourcenote {
+#aeataydowd .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jzyznuandw .gt_left {
+#aeataydowd .gt_left {
 text-align: left;
 }
-#jzyznuandw .gt_center {
+#aeataydowd .gt_center {
 text-align: center;
 }
-#jzyznuandw .gt_right {
+#aeataydowd .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#jzyznuandw .gt_font_normal {
+#aeataydowd .gt_font_normal {
 font-weight: normal;
 }
-#jzyznuandw .gt_font_bold {
+#aeataydowd .gt_font_bold {
 font-weight: bold;
 }
-#jzyznuandw .gt_font_italic {
+#aeataydowd .gt_font_italic {
 font-style: italic;
 }
-#jzyznuandw .gt_super {
+#aeataydowd .gt_super {
 font-size: 65%;
 }
-#jzyznuandw .gt_footnote_marks {
+#aeataydowd .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#jzyznuandw .gt_asterisk {
+#aeataydowd .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#jzyznuandw .gt_indent_1 {
+#aeataydowd .gt_indent_1 {
 text-indent: 5px;
 }
-#jzyznuandw .gt_indent_2 {
+#aeataydowd .gt_indent_2 {
 text-indent: 10px;
 }
-#jzyznuandw .gt_indent_3 {
+#aeataydowd .gt_indent_3 {
 text-indent: 15px;
 }
-#jzyznuandw .gt_indent_4 {
+#aeataydowd .gt_indent_4 {
 text-indent: 20px;
 }
-#jzyznuandw .gt_indent_5 {
+#aeataydowd .gt_indent_5 {
 text-indent: 25px;
 }
-#jzyznuandw .katex-display {
+#aeataydowd .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#jzyznuandw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#aeataydowd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -4717,6 +4853,13 @@ Tip
 <h2 data-number="3.7" class="anchored" data-anchor-id="ajuster-un-modèle-sans-la-variable-smoke-et-effectuer-un-test-de-rapport-de-vraisemblance-entre-ce-nouveau-modèle-et-celui-précédemment-sauvegardé"><span class="header-section-number">3.7</span> Ajuster un modèle sans la variable smoke, et effectuer un test de rapport de vraisemblance entre ce nouveau modèle et celui précédemment sauvegardé</h2>
 <p>On ajuste un modèle <strong>sans tabac</strong> et on compare à <code>mod1</code> par <strong>LR test</strong>. En Stata : <code>lrtest</code>. En R : <code>anova(mod0, mod1, test=&quot;Chisq&quot;)</code>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod0, mod1, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
@@ -4737,6 +4880,16 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <h2 data-number="4.1" class="anchored" data-anchor-id="construire-une-nouvelle-variable-qui-prend-la-valeur-1-si-lindividu-fume-des-cigarettes-0-sil-nen-fume-pas."><span class="header-section-number">4.1</span> Construire une nouvelle variable qui prend la valeur 1 si l’individu fume des cigarettes, 0 s’il n’en fume pas.</h2>
 <p>Créer une variable <code>cigarette_user</code> égale à <strong>1 si l’individu fume des cigarettes</strong>, <strong>0 sinon</strong> : l’énoncé demande de distinguer le type de produit et de concentrer l’attention sur la <strong>cigarette</strong>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adaptez le motif à vos libellés (ex.: &quot;fume seulement la cigarette&quot;, &quot;cigarette + cigare/pipe&quot;, etc.)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># On classera 1 si l&#39;étiquette contient &quot;cigarette&quot;, 0 sinon.</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigarette_user =</span> <span class="fu">as.integer</span>(<span class="fu">grepl</span>(<span class="st">&quot;cigarrette&quot;</span>, <span class="fu">tolower</span>(<span class="fu">as.character</span>(smoking_status)))))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>cigarette_user, df<span class="sc">$</span>smoking_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   
     cigarPipeOnly cigarretteOnly cigarrettePlus no
@@ -4748,6 +4901,13 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <section id="ajuster-un-troisième-modèle-avec-effet-de-lâge-et-de-cette-variable-dusage-de-la-cigarette." class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="ajuster-un-troisième-modèle-avec-effet-de-lâge-et-de-cette-variable-dusage-de-la-cigarette."><span class="header-section-number">4.2</span> Ajuster un troisième modèle avec effet de l’âge et de cette variable d’usage de la cigarette.</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> cigarette_user <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)),</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -4777,6 +4937,10 @@ AIC: 352.26
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
@@ -4800,6 +4964,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <h1 data-number="5"><span class="header-section-number">5</span> Comparer ce modèle avec le modèle initial par un test de rapport de vraisemblance</h1>
 <p>On compare le <strong>modèle multiniveaux par type de tabac</strong> (<code>mod1</code>) avec le <strong>modèle binaire cigarette vs non</strong> (<code>mod2</code>).</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, mod1, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Deviance Table
 
@@ -4817,21 +4985,29 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <h1 data-number="6"><span class="header-section-number">6</span> Le type de produit fumé semble-t-il influencer la probabilité de décès par cancer du poumon ?</h1>
 <p>En Poisson log-linéaire : <strong>IRR = exp(coef)</strong>. On reporte aussi des <strong>IC 95%</strong> exponentiés.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(mod1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate, conf.low, conf.high, p.value) <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(estimate)) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;IRR (modèle 1) — exp(coef) avec IC 95%&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="wydebuufxn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wydebuufxn table {
+<div id="jggbbpzuqp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jggbbpzuqp table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#wydebuufxn thead, #wydebuufxn tbody, #wydebuufxn tfoot, #wydebuufxn tr, #wydebuufxn td, #wydebuufxn th {
+#jggbbpzuqp thead, #jggbbpzuqp tbody, #jggbbpzuqp tfoot, #jggbbpzuqp tr, #jggbbpzuqp td, #jggbbpzuqp th {
 border-style: none;
 }
-#wydebuufxn p {
+#jggbbpzuqp p {
 margin: 0;
 padding: 0;
 }
-#wydebuufxn .gt_table {
+#jggbbpzuqp .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -4856,11 +5032,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#wydebuufxn .gt_caption {
+#jggbbpzuqp .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#wydebuufxn .gt_title {
+#jggbbpzuqp .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -4871,7 +5047,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#wydebuufxn .gt_subtitle {
+#jggbbpzuqp .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -4882,7 +5058,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#wydebuufxn .gt_heading {
+#jggbbpzuqp .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -4893,12 +5069,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#wydebuufxn .gt_bottom_border {
+#jggbbpzuqp .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#wydebuufxn .gt_col_headings {
+#jggbbpzuqp .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4912,7 +5088,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#wydebuufxn .gt_col_heading {
+#jggbbpzuqp .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4931,7 +5107,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#wydebuufxn .gt_column_spanner_outer {
+#jggbbpzuqp .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4942,13 +5118,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#wydebuufxn .gt_column_spanner_outer:first-child {
+#jggbbpzuqp .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#wydebuufxn .gt_column_spanner_outer:last-child {
+#jggbbpzuqp .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#wydebuufxn .gt_column_spanner {
+#jggbbpzuqp .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -4959,10 +5135,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#wydebuufxn .gt_spanner_row {
+#jggbbpzuqp .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#wydebuufxn .gt_group_heading {
+#jggbbpzuqp .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4987,7 +5163,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#wydebuufxn .gt_empty_group_heading {
+#jggbbpzuqp .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -5001,13 +5177,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#wydebuufxn .gt_from_md > :first-child {
+#jggbbpzuqp .gt_from_md > :first-child {
 margin-top: 0;
 }
-#wydebuufxn .gt_from_md > :last-child {
+#jggbbpzuqp .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#wydebuufxn .gt_row {
+#jggbbpzuqp .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5025,7 +5201,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#wydebuufxn .gt_stub {
+#jggbbpzuqp .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5037,7 +5213,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wydebuufxn .gt_stub_row_group {
+#jggbbpzuqp .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5050,13 +5226,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#wydebuufxn .gt_row_group_first td {
+#jggbbpzuqp .gt_row_group_first td {
 border-top-width: 2px;
 }
-#wydebuufxn .gt_row_group_first th {
+#jggbbpzuqp .gt_row_group_first th {
 border-top-width: 2px;
 }
-#wydebuufxn .gt_summary_row {
+#jggbbpzuqp .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5065,14 +5241,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wydebuufxn .gt_first_summary_row {
+#jggbbpzuqp .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#wydebuufxn .gt_first_summary_row.thick {
+#jggbbpzuqp .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#wydebuufxn .gt_last_summary_row {
+#jggbbpzuqp .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5081,7 +5257,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#wydebuufxn .gt_grand_summary_row {
+#jggbbpzuqp .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5090,7 +5266,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wydebuufxn .gt_first_grand_summary_row {
+#jggbbpzuqp .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5099,7 +5275,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#wydebuufxn .gt_last_grand_summary_row_top {
+#jggbbpzuqp .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5108,10 +5284,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#wydebuufxn .gt_striped {
+#jggbbpzuqp .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#wydebuufxn .gt_table_body {
+#jggbbpzuqp .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5119,7 +5295,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#wydebuufxn .gt_footnotes {
+#jggbbpzuqp .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5132,7 +5308,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#wydebuufxn .gt_footnote {
+#jggbbpzuqp .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -5140,7 +5316,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wydebuufxn .gt_sourcenotes {
+#jggbbpzuqp .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5153,64 +5329,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#wydebuufxn .gt_sourcenote {
+#jggbbpzuqp .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wydebuufxn .gt_left {
+#jggbbpzuqp .gt_left {
 text-align: left;
 }
-#wydebuufxn .gt_center {
+#jggbbpzuqp .gt_center {
 text-align: center;
 }
-#wydebuufxn .gt_right {
+#jggbbpzuqp .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#wydebuufxn .gt_font_normal {
+#jggbbpzuqp .gt_font_normal {
 font-weight: normal;
 }
-#wydebuufxn .gt_font_bold {
+#jggbbpzuqp .gt_font_bold {
 font-weight: bold;
 }
-#wydebuufxn .gt_font_italic {
+#jggbbpzuqp .gt_font_italic {
 font-style: italic;
 }
-#wydebuufxn .gt_super {
+#jggbbpzuqp .gt_super {
 font-size: 65%;
 }
-#wydebuufxn .gt_footnote_marks {
+#jggbbpzuqp .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#wydebuufxn .gt_asterisk {
+#jggbbpzuqp .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#wydebuufxn .gt_indent_1 {
+#jggbbpzuqp .gt_indent_1 {
 text-indent: 5px;
 }
-#wydebuufxn .gt_indent_2 {
+#jggbbpzuqp .gt_indent_2 {
 text-indent: 10px;
 }
-#wydebuufxn .gt_indent_3 {
+#jggbbpzuqp .gt_indent_3 {
 text-indent: 15px;
 }
-#wydebuufxn .gt_indent_4 {
+#jggbbpzuqp .gt_indent_4 {
 text-indent: 20px;
 }
-#wydebuufxn .gt_indent_5 {
+#jggbbpzuqp .gt_indent_5 {
 text-indent: 25px;
 }
-#wydebuufxn .katex-display {
+#jggbbpzuqp .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#wydebuufxn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jggbbpzuqp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -5325,21 +5501,35 @@ height: 0px !important;
 <section id="comptes-attendus-tableau-observé-vs-attendu" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="comptes-attendus-tableau-observé-vs-attendu"><span class="header-section-number">7.1</span> Comptes attendus &amp; tableau Observé vs Attendu</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>df_preds <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_obs =</span> deaths,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_hat =</span> <span class="fu">fitted</span>(mod1)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>df_preds <span class="sc">|&gt;</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, smoking_status, exposure, y_obs, mu_hat) <span class="sc">|&gt;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age, smoking_status) <span class="sc">|&gt;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(exposure, y_obs, mu_hat), <span class="at">decimals =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="clqlgqrlsi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#clqlgqrlsi table {
+<div id="gofalzdpkh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#gofalzdpkh table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#clqlgqrlsi thead, #clqlgqrlsi tbody, #clqlgqrlsi tfoot, #clqlgqrlsi tr, #clqlgqrlsi td, #clqlgqrlsi th {
+#gofalzdpkh thead, #gofalzdpkh tbody, #gofalzdpkh tfoot, #gofalzdpkh tr, #gofalzdpkh td, #gofalzdpkh th {
 border-style: none;
 }
-#clqlgqrlsi p {
+#gofalzdpkh p {
 margin: 0;
 padding: 0;
 }
-#clqlgqrlsi .gt_table {
+#gofalzdpkh .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -5364,11 +5554,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_caption {
+#gofalzdpkh .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#clqlgqrlsi .gt_title {
+#gofalzdpkh .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -5379,7 +5569,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#clqlgqrlsi .gt_subtitle {
+#gofalzdpkh .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -5390,7 +5580,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#clqlgqrlsi .gt_heading {
+#gofalzdpkh .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -5401,12 +5591,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_bottom_border {
+#gofalzdpkh .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_col_headings {
+#gofalzdpkh .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5420,7 +5610,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_col_heading {
+#gofalzdpkh .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5439,7 +5629,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#clqlgqrlsi .gt_column_spanner_outer {
+#gofalzdpkh .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5450,13 +5640,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#clqlgqrlsi .gt_column_spanner_outer:first-child {
+#gofalzdpkh .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#clqlgqrlsi .gt_column_spanner_outer:last-child {
+#gofalzdpkh .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#clqlgqrlsi .gt_column_spanner {
+#gofalzdpkh .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -5467,10 +5657,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#clqlgqrlsi .gt_spanner_row {
+#gofalzdpkh .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#clqlgqrlsi .gt_group_heading {
+#gofalzdpkh .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5495,7 +5685,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#clqlgqrlsi .gt_empty_group_heading {
+#gofalzdpkh .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -5509,13 +5699,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#clqlgqrlsi .gt_from_md > :first-child {
+#gofalzdpkh .gt_from_md > :first-child {
 margin-top: 0;
 }
-#clqlgqrlsi .gt_from_md > :last-child {
+#gofalzdpkh .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#clqlgqrlsi .gt_row {
+#gofalzdpkh .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5533,7 +5723,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#clqlgqrlsi .gt_stub {
+#gofalzdpkh .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5545,7 +5735,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#clqlgqrlsi .gt_stub_row_group {
+#gofalzdpkh .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5558,13 +5748,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#clqlgqrlsi .gt_row_group_first td {
+#gofalzdpkh .gt_row_group_first td {
 border-top-width: 2px;
 }
-#clqlgqrlsi .gt_row_group_first th {
+#gofalzdpkh .gt_row_group_first th {
 border-top-width: 2px;
 }
-#clqlgqrlsi .gt_summary_row {
+#gofalzdpkh .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5573,14 +5763,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#clqlgqrlsi .gt_first_summary_row {
+#gofalzdpkh .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_first_summary_row.thick {
+#gofalzdpkh .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#clqlgqrlsi .gt_last_summary_row {
+#gofalzdpkh .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5589,7 +5779,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_grand_summary_row {
+#gofalzdpkh .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5598,7 +5788,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#clqlgqrlsi .gt_first_grand_summary_row {
+#gofalzdpkh .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5607,7 +5797,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_last_grand_summary_row_top {
+#gofalzdpkh .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5616,10 +5806,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_striped {
+#gofalzdpkh .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#clqlgqrlsi .gt_table_body {
+#gofalzdpkh .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5627,7 +5817,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_footnotes {
+#gofalzdpkh .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5640,7 +5830,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_footnote {
+#gofalzdpkh .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -5648,7 +5838,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#clqlgqrlsi .gt_sourcenotes {
+#gofalzdpkh .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5661,64 +5851,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#clqlgqrlsi .gt_sourcenote {
+#gofalzdpkh .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#clqlgqrlsi .gt_left {
+#gofalzdpkh .gt_left {
 text-align: left;
 }
-#clqlgqrlsi .gt_center {
+#gofalzdpkh .gt_center {
 text-align: center;
 }
-#clqlgqrlsi .gt_right {
+#gofalzdpkh .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#clqlgqrlsi .gt_font_normal {
+#gofalzdpkh .gt_font_normal {
 font-weight: normal;
 }
-#clqlgqrlsi .gt_font_bold {
+#gofalzdpkh .gt_font_bold {
 font-weight: bold;
 }
-#clqlgqrlsi .gt_font_italic {
+#gofalzdpkh .gt_font_italic {
 font-style: italic;
 }
-#clqlgqrlsi .gt_super {
+#gofalzdpkh .gt_super {
 font-size: 65%;
 }
-#clqlgqrlsi .gt_footnote_marks {
+#gofalzdpkh .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#clqlgqrlsi .gt_asterisk {
+#gofalzdpkh .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#clqlgqrlsi .gt_indent_1 {
+#gofalzdpkh .gt_indent_1 {
 text-indent: 5px;
 }
-#clqlgqrlsi .gt_indent_2 {
+#gofalzdpkh .gt_indent_2 {
 text-indent: 10px;
 }
-#clqlgqrlsi .gt_indent_3 {
+#gofalzdpkh .gt_indent_3 {
 text-indent: 15px;
 }
-#clqlgqrlsi .gt_indent_4 {
+#gofalzdpkh .gt_indent_4 {
 text-indent: 20px;
 }
-#clqlgqrlsi .gt_indent_5 {
+#gofalzdpkh .gt_indent_5 {
 text-indent: 25px;
 }
-#clqlgqrlsi .katex-display {
+#gofalzdpkh .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#clqlgqrlsi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#gofalzdpkh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -5999,6 +6189,10 @@ height: 0px !important;
 <p>Le GLM Poisson suppose <code>Var(Y) = E[Y]</code>. Si <code>Var(Y) &gt;&gt; E[Y]</code>, la <strong>sur-dispersion</strong> peut invalider les tests usuels (SE sous-estimés).</p>
 </blockquote>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># Overdispersion test
 
@@ -6014,6 +6208,16 @@ height: 0px !important;
 <section id="graphiques-facultatifs" class="level2" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="graphiques-facultatifs"><span class="header-section-number">7.3</span> Graphiques (facultatifs)</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>shapes_9 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)  <span class="co"># à ta convenance</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_preds, <span class="fu">aes</span>(mu_hat, y_obs, <span class="at">color =</span> smoking_status, <span class="at">shape =</span> age)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> shapes_9) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Comptes attendus (mod1)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Comptes observés&quot;</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Observé vs Attendu — GLM Poisson (mod1)&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -6035,6 +6239,8 @@ height: 0px !important;
 <p><strong>Conseil pratique</strong> : en recherche appliquée, vérifiez toujours la sur-dispersion et documentez les hypothèses de variance (Poisson vs quasi-Poisson vs binomiale négative).</p>
 </blockquote>
 
+
+<!-- -->
 
 </section>
 </section>
@@ -6109,6 +6315,57 @@ height: 0px !important;
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -6438,11 +6695,398 @@ height: 0px !important;
       }
     }
   });
-  </script>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
+<div class="sourceCode" id="cb30" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;TD 1 — Modèle de Poisson (R)&quot;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable&quot;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Régression log-linéaire — Tabac &amp; cancer du poumon&quot;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Pierre Beaucoral&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: theme-light-edu</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: true</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co">    progress: true</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">    hash: true</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co">    center: false</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: slide</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co">    code-overflow: scroll</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true </span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf: default</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> </span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Contexte**: On étudie d’anciennes données reliant **tabagisme** et</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **décès par cancer du poumon**. Variables : </span><span class="in">`age`</span><span class="at"> (classes),</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="in">`smoking status`</span><span class="at"> (4 classes), </span><span class="in">`population`</span><span class="at"> (centaines de milliers),</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="in">`deaths`</span><span class="at"> (décès annuels).</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="fu"># Préparation</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objectifs de ce TD</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Importer et préparer un tableau **comptages + exposition**</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    (population à risque).</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ajuster un **GLM Poisson** avec *offset* (log-exposition).</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Évaluer l’ajustement : **déviance** (vs modèle saturé) &amp;</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    **Pearson**.</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Comparer des modèles via **tests de rapport de vraisemblance (LR)**.</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interpréter en **ratios de taux d&#39;incidence (IRR)** et produire des</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    **comptes attendus**.</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a><span class="co"># installer si nécessaire : install.packages(c(&quot;readxl&quot;,&quot;dplyr&quot;,&quot;tidyr&quot;,&quot;janitor&quot;,&quot;ggplot2&quot;,&quot;broom&quot;,&quot;gt&quot;,&quot;performance&quot;,&quot;DescTools&quot;))</span></span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)   <span class="co"># check_overdispersion</span></span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)     <span class="co"># PChisq for GOF (si besoin)</span></span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a><span class="fu"># Import et manipulation des données</span></span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importer les données `smoking_dat.xlsx`</span></span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Dans l’énoncé, les données à importer sont </span><span class="in">`smoking_dat.xlsx`</span><span class="at"> et les</span></span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; variables </span><span class="in">`age`</span><span class="at">, </span><span class="in">`smoking status`</span><span class="at">, </span><span class="in">`population`</span><span class="at">, </span><span class="in">`deaths`</span><span class="at">.</span></span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a>Dictionnaire des variables :\</span>
+<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a>• age: en classes (40-44, 45-49, 50-54, 55-59, 60-64, 65-69, 70-74,</span>
+<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a>75-79, 80+).\</span>
+<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a>• smoking status: 4 classes (ne fume pas / fume le cigare ou la pipe /</span>
+<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a>fume la cigarette et le cigare ou la pipe ; fume seulement la</span>
+<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a>cigarette)\</span>
+<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a>• population: en centaine de milliers de personnes\</span>
+<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a>• deaths: comptage des décès par cancer du poumon en un an.</span>
+<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-83"><a href="#cb30-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-84"><a href="#cb30-84" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: import</span></span>
+<span id="cb30-85"><a href="#cb30-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Chemin suggéré : placez le fichier dans data/smoking_dat.xlsx</span></span>
+<span id="cb30-86"><a href="#cb30-86" aria-hidden="true" tabindex="-1"></a><span class="co"># Si vous avez un CSV, remplacez read_excel par read.csv(...)</span></span>
+<span id="cb30-87"><a href="#cb30-87" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="st">&quot;data/smoking_dat.xlsx&quot;</span></span>
+<span id="cb30-88"><a href="#cb30-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-89"><a href="#cb30-89" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(data_path) <span class="sc">|&gt;</span></span>
+<span id="cb30-90"><a href="#cb30-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb30-91"><a href="#cb30-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-92"><a href="#cb30-92" aria-hidden="true" tabindex="-1"></a><span class="co"># Harmonisation de noms</span></span>
+<span id="cb30-93"><a href="#cb30-93" aria-hidden="true" tabindex="-1"></a><span class="co"># On s&#39;attend à des colonnes: age (classes), smoking_status (4 classes), population, deaths</span></span>
+<span id="cb30-94"><a href="#cb30-94" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb30-95"><a href="#cb30-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb30-96"><a href="#cb30-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">matches</span>(<span class="st">&quot;^age$|^age_class|^agecat&quot;</span>),</span>
+<span id="cb30-97"><a href="#cb30-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">smoking_status =</span> <span class="fu">matches</span>(<span class="st">&quot;^smoking|^smoke&quot;</span>),</span>
+<span id="cb30-98"><a href="#cb30-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">population =</span> <span class="fu">matches</span>(<span class="st">&quot;^pop|^population&quot;</span>),</span>
+<span id="cb30-99"><a href="#cb30-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">deaths =</span> <span class="fu">matches</span>(<span class="st">&quot;^deaths|^dead&quot;</span>)</span>
+<span id="cb30-100"><a href="#cb30-100" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-101"><a href="#cb30-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-102"><a href="#cb30-102" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span>
+<span id="cb30-103"><a href="#cb30-103" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-104"><a href="#cb30-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-105"><a href="#cb30-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Coder les deux variables enregistrées en texte avec des chiffres</span></span>
+<span id="cb30-106"><a href="#cb30-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-107"><a href="#cb30-107" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; En Stata on ferait </span><span class="in">`encode`</span><span class="at"> + </span><span class="in">`i.variable`</span><span class="at">.\</span></span>
+<span id="cb30-108"><a href="#cb30-108" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb30-109"><a href="#cb30-109" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; En R, il suffit de déclarer les variables comme </span><span class="in">`factor`</span><span class="at">.</span></span>
+<span id="cb30-110"><a href="#cb30-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-113"><a href="#cb30-113" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-114"><a href="#cb30-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: factors</span></span>
+<span id="cb30-115"><a href="#cb30-115" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb30-116"><a href="#cb30-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb30-117"><a href="#cb30-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">factor</span>(age, <span class="at">ordered =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb30-118"><a href="#cb30-118" aria-hidden="true" tabindex="-1"></a>    <span class="at">smoking_status =</span> <span class="fu">factor</span>(smoking_status, <span class="at">ordered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-119"><a href="#cb30-119" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-120"><a href="#cb30-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-121"><a href="#cb30-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification des niveaux</span></span>
+<span id="cb30-122"><a href="#cb30-122" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(df<span class="sc">$</span>age); <span class="fu">levels</span>(df<span class="sc">$</span>smoking_status)</span>
+<span id="cb30-123"><a href="#cb30-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-124"><a href="#cb30-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-125"><a href="#cb30-125" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb30-126"><a href="#cb30-126" aria-hidden="true" tabindex="-1"></a>**Rappel** : Les facteurs indiquent à R qu’il s’agit de variables</span>
+<span id="cb30-127"><a href="#cb30-127" aria-hidden="true" tabindex="-1"></a>qualitatives. Chaque modalité sera transformée en **variable</span>
+<span id="cb30-128"><a href="#cb30-128" aria-hidden="true" tabindex="-1"></a>indicatrice** (dummy) dans la régression.</span>
+<span id="cb30-129"><a href="#cb30-129" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-130"><a href="#cb30-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-131"><a href="#cb30-131" aria-hidden="true" tabindex="-1"></a><span class="fu">### Unité d&#39;exposition</span></span>
+<span id="cb30-132"><a href="#cb30-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-133"><a href="#cb30-133" aria-hidden="true" tabindex="-1"></a>L’énoncé précise que <span class="in">`population`</span> est en **centaines de milliers**. Pour</span>
+<span id="cb30-134"><a href="#cb30-134" aria-hidden="true" tabindex="-1"></a>une interprétation plus intuitive, on peut ramener l’exposition à</span>
+<span id="cb30-135"><a href="#cb30-135" aria-hidden="true" tabindex="-1"></a>l’unité **personne** (facultatif) :</span>
+<span id="cb30-136"><a href="#cb30-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-139"><a href="#cb30-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-140"><a href="#cb30-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: exposure-scale</span></span>
+<span id="cb30-141"><a href="#cb30-141" aria-hidden="true" tabindex="-1"></a><span class="co"># Ici, on transforme &#39;population&#39; en nombre de personnes si besoin.</span></span>
+<span id="cb30-142"><a href="#cb30-142" aria-hidden="true" tabindex="-1"></a><span class="co"># Exemple: si population = 2.3 signifie 2.3 * 100 000 personnes :</span></span>
+<span id="cb30-143"><a href="#cb30-143" aria-hidden="true" tabindex="-1"></a>expo_personnes <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb30-144"><a href="#cb30-144" aria-hidden="true" tabindex="-1"></a>scale_factor <span class="ot">&lt;-</span> <span class="fl">1e5</span></span>
+<span id="cb30-145"><a href="#cb30-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-146"><a href="#cb30-146" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb30-147"><a href="#cb30-147" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb30-148"><a href="#cb30-148" aria-hidden="true" tabindex="-1"></a>    <span class="at">exposure =</span> <span class="cf">if</span> (expo_personnes) population <span class="sc">*</span> scale_factor <span class="cf">else</span> population</span>
+<span id="cb30-149"><a href="#cb30-149" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-150"><a href="#cb30-150" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df<span class="sc">$</span>exposure)</span>
+<span id="cb30-151"><a href="#cb30-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-152"><a href="#cb30-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-153"><a href="#cb30-153" aria-hidden="true" tabindex="-1"></a><span class="fu"># Estimations</span></span>
+<span id="cb30-154"><a href="#cb30-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-155"><a href="#cb30-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appliquer un premier modèle de régression log-linéaire</span></span>
+<span id="cb30-156"><a href="#cb30-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-157"><a href="#cb30-157" aria-hidden="true" tabindex="-1"></a>Modèle Poisson **log-linéaire** avec effets de <span class="in">`smoking_status`</span> et</span>
+<span id="cb30-158"><a href="#cb30-158" aria-hidden="true" tabindex="-1"></a><span class="in">`age`</span>, et *offset* <span class="in">`log(exposure)`</span> : c’est l’équivalent de Stata</span>
+<span id="cb30-159"><a href="#cb30-159" aria-hidden="true" tabindex="-1"></a><span class="in">`poisson deaths i.smokecod i.agecod, exposure(pop)`</span>.</span>
+<span id="cb30-160"><a href="#cb30-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-161"><a href="#cb30-161" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb30-162"><a href="#cb30-162" aria-hidden="true" tabindex="-1"></a>**Pourquoi un modèle de Poisson ?**\</span>
+<span id="cb30-163"><a href="#cb30-163" aria-hidden="true" tabindex="-1"></a>Les données sont des **comptages** (nombre de décès).\</span>
+<span id="cb30-164"><a href="#cb30-164" aria-hidden="true" tabindex="-1"></a>Le modèle de Poisson relie l’**espérance** de ces comptages à des</span>
+<span id="cb30-165"><a href="#cb30-165" aria-hidden="true" tabindex="-1"></a>variables explicatives par une fonction de lien log :\</span>
+<span id="cb30-166"><a href="#cb30-166" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb30-167"><a href="#cb30-167" aria-hidden="true" tabindex="-1"></a>\log(\mathbb{E}<span class="co">[</span><span class="ot">Y</span><span class="co">]</span>) = X\beta</span>
+<span id="cb30-168"><a href="#cb30-168" aria-hidden="true" tabindex="-1"></a>$$\</span>
+<span id="cb30-169"><a href="#cb30-169" aria-hidden="true" tabindex="-1"></a>Cette structure garantit que la prédiction est **positive** et que la</span>
+<span id="cb30-170"><a href="#cb30-170" aria-hidden="true" tabindex="-1"></a>variance est proportionnelle à la moyenne (hypothèse de Poisson).</span>
+<span id="cb30-171"><a href="#cb30-171" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-172"><a href="#cb30-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-173"><a href="#cb30-173" aria-hidden="true" tabindex="-1"></a>Nous voulons expliquer le nombre de décès par l’âge et le statut</span>
+<span id="cb30-174"><a href="#cb30-174" aria-hidden="true" tabindex="-1"></a>tabagique, en tenant compte de l’exposition.</span>
+<span id="cb30-175"><a href="#cb30-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-178"><a href="#cb30-178" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-179"><a href="#cb30-179" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: poisson1</span></span>
+<span id="cb30-180"><a href="#cb30-180" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> smoking_status <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)), </span>
+<span id="cb30-181"><a href="#cb30-181" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>), <span class="at">data =</span> df)</span>
+<span id="cb30-182"><a href="#cb30-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-183"><a href="#cb30-183" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span>
+<span id="cb30-184"><a href="#cb30-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-185"><a href="#cb30-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-186"><a href="#cb30-186" aria-hidden="true" tabindex="-1"></a>::: callout-important</span>
+<span id="cb30-187"><a href="#cb30-187" aria-hidden="true" tabindex="-1"></a>L’argument <span class="in">`offset(log(exposure))`</span> ajoute le **log de l’exposition**</span>
+<span id="cb30-188"><a href="#cb30-188" aria-hidden="true" tabindex="-1"></a>avec un coefficient fixé à 1. Cela revient à modéliser un **taux** de</span>
+<span id="cb30-189"><a href="#cb30-189" aria-hidden="true" tabindex="-1"></a>décès (décès / population).</span>
+<span id="cb30-190"><a href="#cb30-190" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-191"><a href="#cb30-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-192"><a href="#cb30-192" aria-hidden="true" tabindex="-1"></a><span class="fu">## Calculer la déviance du modèle ajusté. DEV1</span></span>
+<span id="cb30-193"><a href="#cb30-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-196"><a href="#cb30-196" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-197"><a href="#cb30-197" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: deviance1</span></span>
+<span id="cb30-198"><a href="#cb30-198" aria-hidden="true" tabindex="-1"></a>dev1 <span class="ot">&lt;-</span> <span class="fu">deviance</span>(mod1)     <span class="co"># Deviance du modèle vs saturé</span></span>
+<span id="cb30-199"><a href="#cb30-199" aria-hidden="true" tabindex="-1"></a>df_dev1 <span class="ot">&lt;-</span> <span class="fu">df.residual</span>(mod1)</span>
+<span id="cb30-200"><a href="#cb30-200" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">dev1 =</span> dev1, <span class="at">df =</span> df_dev1, <span class="at">p_value =</span> <span class="fu">pchisq</span>(dev1, df_dev1, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb30-201"><a href="#cb30-201" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-202"><a href="#cb30-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-203"><a href="#cb30-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quel est l’effet de l’âge sur la probabilité de décès par cancer du poumon ?</span></span>
+<span id="cb30-204"><a href="#cb30-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-205"><a href="#cb30-205" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Interprétez les coefficients associés aux **modalités d’âge**</span></span>
+<span id="cb30-206"><a href="#cb30-206" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; (comparées à la catégorie de référence) en termes d’IRR (voir section</span></span>
+<span id="cb30-207"><a href="#cb30-207" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; IRR) et/ou d’impact sur le **taux de décès** (à exposition fixée).</span></span>
+<span id="cb30-208"><a href="#cb30-208" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; (Discussion attendue.)</span></span>
+<span id="cb30-209"><a href="#cb30-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-210"><a href="#cb30-210" aria-hidden="true" tabindex="-1"></a>Interprétez les coefficients d’âge (IRR = <span class="in">`exp(coef)`</span>) :</span>
+<span id="cb30-211"><a href="#cb30-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-212"><a href="#cb30-212" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>IRR <span class="sc">\&gt;</span> 1 : taux de décès plus élevé que la catégorie de référence.</span>
+<span id="cb30-213"><a href="#cb30-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-214"><a href="#cb30-214" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>IRR <span class="sc">\&lt;</span> 1 : taux plus faible.</span>
+<span id="cb30-215"><a href="#cb30-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-216"><a href="#cb30-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sauvegarde du modèle (utile pour LR tests)</span></span>
+<span id="cb30-217"><a href="#cb30-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-220"><a href="#cb30-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-221"><a href="#cb30-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: store1</span></span>
+<span id="cb30-222"><a href="#cb30-222" aria-hidden="true" tabindex="-1"></a><span class="co"># En R, on garde l&#39;objet en mémoire (mod1). Pas besoin d&#39;&quot;estimates store&quot;.</span></span>
+<span id="cb30-223"><a href="#cb30-223" aria-hidden="true" tabindex="-1"></a><span class="co"># On peut aussi l&#39;ajouter à une liste si on veut gérer plusieurs modèles :</span></span>
+<span id="cb30-224"><a href="#cb30-224" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">mod1 =</span> mod1)</span>
+<span id="cb30-225"><a href="#cb30-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-226"><a href="#cb30-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-227"><a href="#cb30-227" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tester l’ajustement de ce modèle</span></span>
+<span id="cb30-228"><a href="#cb30-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-229"><a href="#cb30-229" aria-hidden="true" tabindex="-1"></a>Pour cela nous allons réaliser **deux tests** :</span>
+<span id="cb30-230"><a href="#cb30-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-231"><a href="#cb30-231" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Deviance GOF** (modèle ajusté vs **saturé**).</span>
+<span id="cb30-232"><a href="#cb30-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-233"><a href="#cb30-233" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Pearson GOF** (comparaison effectifs attendus vs observés). Les</span>
+<span id="cb30-234"><a href="#cb30-234" aria-hidden="true" tabindex="-1"></a>    **degrés de liberté** correspondent ici au nombre de cellules moins</span>
+<span id="cb30-235"><a href="#cb30-235" aria-hidden="true" tabindex="-1"></a>    le nombre de paramètres estimés (y compris l’interception). L’énoncé</span>
+<span id="cb30-236"><a href="#cb30-236" aria-hidden="true" tabindex="-1"></a>    suggère **24 df** pour chacun de ces tests (voir justification plus</span>
+<span id="cb30-237"><a href="#cb30-237" aria-hidden="true" tabindex="-1"></a>    bas).</span>
+<span id="cb30-238"><a href="#cb30-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-241"><a href="#cb30-241" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-242"><a href="#cb30-242" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: gof</span></span>
+<span id="cb30-243"><a href="#cb30-243" aria-hidden="true" tabindex="-1"></a><span class="co"># Deviance test (déjà calculé ci-dessus)</span></span>
+<span id="cb30-244"><a href="#cb30-244" aria-hidden="true" tabindex="-1"></a>dev_stat  <span class="ot">&lt;-</span> <span class="fu">deviance</span>(mod1)</span>
+<span id="cb30-245"><a href="#cb30-245" aria-hidden="true" tabindex="-1"></a>dev_df    <span class="ot">&lt;-</span> <span class="fu">df.residual</span>(mod1)</span>
+<span id="cb30-246"><a href="#cb30-246" aria-hidden="true" tabindex="-1"></a>dev_p     <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(dev_stat, dev_df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-247"><a href="#cb30-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-248"><a href="#cb30-248" aria-hidden="true" tabindex="-1"></a><span class="co"># Pearson GOF (somme (y - mu)^2 / mu) et chi2 approx avec mêmes df résiduels)</span></span>
+<span id="cb30-249"><a href="#cb30-249" aria-hidden="true" tabindex="-1"></a>mu_hat    <span class="ot">&lt;-</span> <span class="fu">fitted</span>(mod1)         <span class="co"># comptages attendus</span></span>
+<span id="cb30-250"><a href="#cb30-250" aria-hidden="true" tabindex="-1"></a>y_obs     <span class="ot">&lt;-</span> df<span class="sc">$</span>deaths</span>
+<span id="cb30-251"><a href="#cb30-251" aria-hidden="true" tabindex="-1"></a>pearson   <span class="ot">&lt;-</span> <span class="fu">sum</span>((y_obs <span class="sc">-</span> mu_hat)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> mu_hat)</span>
+<span id="cb30-252"><a href="#cb30-252" aria-hidden="true" tabindex="-1"></a>pearson_p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(pearson, dev_df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-253"><a href="#cb30-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-254"><a href="#cb30-254" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb30-255"><a href="#cb30-255" aria-hidden="true" tabindex="-1"></a>  <span class="at">test =</span> <span class="fu">c</span>(<span class="st">&quot;Deviance GOF&quot;</span>, <span class="st">&quot;Pearson GOF&quot;</span>),</span>
+<span id="cb30-256"><a href="#cb30-256" aria-hidden="true" tabindex="-1"></a>  <span class="at">statistic =</span> <span class="fu">c</span>(dev_stat, pearson),</span>
+<span id="cb30-257"><a href="#cb30-257" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> <span class="fu">c</span>(dev_df, dev_df),</span>
+<span id="cb30-258"><a href="#cb30-258" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value =</span> <span class="fu">c</span>(dev_p, pearson_p)</span>
+<span id="cb30-259"><a href="#cb30-259" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb30-260"><a href="#cb30-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span>
+<span id="cb30-261"><a href="#cb30-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-262"><a href="#cb30-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-263"><a href="#cb30-263" aria-hidden="true" tabindex="-1"></a><span class="fu">## Justifiez pourquoi ces tests sont effectués avec le même **df**.</span></span>
+<span id="cb30-264"><a href="#cb30-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-265"><a href="#cb30-265" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb30-266"><a href="#cb30-266" aria-hidden="true" tabindex="-1"></a>Rappel : pour un GLM Poisson, <span class="in">`df = N - p`</span>, où <span class="in">`N`</span> est le nombre de</span>
+<span id="cb30-267"><a href="#cb30-267" aria-hidden="true" tabindex="-1"></a>cellules et <span class="in">`p`</span> le nombre de paramètres estimés (y compris</span>
+<span id="cb30-268"><a href="#cb30-268" aria-hidden="true" tabindex="-1"></a>l’interception). Discuter les **conditions d’un χ²** (souvent</span>
+<span id="cb30-269"><a href="#cb30-269" aria-hidden="true" tabindex="-1"></a>$\hat\mu ≥ 5$ dans la plupart des cellules).</span>
+<span id="cb30-270"><a href="#cb30-270" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb30-271"><a href="#cb30-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-272"><a href="#cb30-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ajuster un modèle sans la variable smoke, et effectuer un test de rapport de vraisemblance entre ce nouveau modèle et celui précédemment sauvegardé</span></span>
+<span id="cb30-273"><a href="#cb30-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-274"><a href="#cb30-274" aria-hidden="true" tabindex="-1"></a>On ajuste un modèle **sans tabac** et on compare à <span class="in">`mod1`</span> par **LR</span>
+<span id="cb30-275"><a href="#cb30-275" aria-hidden="true" tabindex="-1"></a>test**. En Stata : <span class="in">`lrtest`</span>. En R : <span class="in">`anova(mod0, mod1, test=&quot;Chisq&quot;)`</span>.</span>
+<span id="cb30-276"><a href="#cb30-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-279"><a href="#cb30-279" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-280"><a href="#cb30-280" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: poisson0</span></span>
+<span id="cb30-281"><a href="#cb30-281" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)),</span>
+<span id="cb30-282"><a href="#cb30-282" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb30-283"><a href="#cb30-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-284"><a href="#cb30-284" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod0, mod1, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb30-285"><a href="#cb30-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-286"><a href="#cb30-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-287"><a href="#cb30-287" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclure sur l’impact de l’usage du tabac sur la probabilité de décès par cancer du poumon.</span></span>
+<span id="cb30-288"><a href="#cb30-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-289"><a href="#cb30-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## Construire une nouvelle variable qui prend la valeur 1 si l’individu fume des cigarettes, 0 s’il n’en fume pas.</span></span>
+<span id="cb30-290"><a href="#cb30-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-291"><a href="#cb30-291" aria-hidden="true" tabindex="-1"></a>Créer une variable <span class="in">`cigarette_user`</span> égale à **1 si l’individu fume des</span>
+<span id="cb30-292"><a href="#cb30-292" aria-hidden="true" tabindex="-1"></a>cigarettes**, **0 sinon** : l’énoncé demande de distinguer le type de</span>
+<span id="cb30-293"><a href="#cb30-293" aria-hidden="true" tabindex="-1"></a>produit et de concentrer l’attention sur la **cigarette**.</span>
+<span id="cb30-294"><a href="#cb30-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-297"><a href="#cb30-297" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-298"><a href="#cb30-298" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: binary-cig</span></span>
+<span id="cb30-299"><a href="#cb30-299" aria-hidden="true" tabindex="-1"></a><span class="co"># Adaptez le motif à vos libellés (ex.: &quot;fume seulement la cigarette&quot;, &quot;cigarette + cigare/pipe&quot;, etc.)</span></span>
+<span id="cb30-300"><a href="#cb30-300" aria-hidden="true" tabindex="-1"></a><span class="co"># On classera 1 si l&#39;étiquette contient &quot;cigarette&quot;, 0 sinon.</span></span>
+<span id="cb30-301"><a href="#cb30-301" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb30-302"><a href="#cb30-302" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb30-303"><a href="#cb30-303" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigarette_user =</span> <span class="fu">as.integer</span>(<span class="fu">grepl</span>(<span class="st">&quot;cigarrette&quot;</span>, <span class="fu">tolower</span>(<span class="fu">as.character</span>(smoking_status)))))</span>
+<span id="cb30-304"><a href="#cb30-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-305"><a href="#cb30-305" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(df<span class="sc">$</span>cigarette_user, df<span class="sc">$</span>smoking_status)</span>
+<span id="cb30-306"><a href="#cb30-306" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-307"><a href="#cb30-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-308"><a href="#cb30-308" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ajuster un troisième modèle avec effet de l’âge et de cette variable d’usage de la cigarette.</span></span>
+<span id="cb30-309"><a href="#cb30-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-312"><a href="#cb30-312" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-313"><a href="#cb30-313" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: poisson2</span></span>
+<span id="cb30-314"><a href="#cb30-314" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(deaths <span class="sc">~</span> cigarette_user <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(exposure)),</span>
+<span id="cb30-315"><a href="#cb30-315" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson, <span class="at">data =</span> df)</span>
+<span id="cb30-316"><a href="#cb30-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-317"><a href="#cb30-317" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span>
+<span id="cb30-318"><a href="#cb30-318" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb30-319"><a href="#cb30-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-320"><a href="#cb30-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-321"><a href="#cb30-321" aria-hidden="true" tabindex="-1"></a><span class="fu"># Comparer ce modèle avec le modèle initial par un test de rapport de vraisemblance</span></span>
+<span id="cb30-322"><a href="#cb30-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-323"><a href="#cb30-323" aria-hidden="true" tabindex="-1"></a>On compare le **modèle multiniveaux par type de tabac** (<span class="in">`mod1`</span>) avec le</span>
+<span id="cb30-324"><a href="#cb30-324" aria-hidden="true" tabindex="-1"></a>**modèle binaire cigarette vs non** (<span class="in">`mod2`</span>).</span>
+<span id="cb30-325"><a href="#cb30-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-328"><a href="#cb30-328" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-329"><a href="#cb30-329" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: lr-1-2</span></span>
+<span id="cb30-330"><a href="#cb30-330" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, mod1, <span class="at">test =</span> <span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb30-331"><a href="#cb30-331" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-332"><a href="#cb30-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-333"><a href="#cb30-333" aria-hidden="true" tabindex="-1"></a><span class="fu"># Le type de produit fumé semble-t-il influencer la probabilité de décès par cancer du poumon ?</span></span>
+<span id="cb30-334"><a href="#cb30-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-335"><a href="#cb30-335" aria-hidden="true" tabindex="-1"></a>En Poisson log-linéaire : **IRR = exp(coef)**. On reporte aussi des **IC</span>
+<span id="cb30-336"><a href="#cb30-336" aria-hidden="true" tabindex="-1"></a>95%** exponentiés.</span>
+<span id="cb30-337"><a href="#cb30-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-340"><a href="#cb30-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-341"><a href="#cb30-341" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: irr</span></span>
+<span id="cb30-342"><a href="#cb30-342" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(mod1, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-343"><a href="#cb30-343" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate, conf.low, conf.high, p.value) <span class="sc">|&gt;</span></span>
+<span id="cb30-344"><a href="#cb30-344" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(estimate)) <span class="sc">|&gt;</span></span>
+<span id="cb30-345"><a href="#cb30-345" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb30-346"><a href="#cb30-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;IRR (modèle 1) — exp(coef) avec IC 95%&quot;</span>)</span>
+<span id="cb30-347"><a href="#cb30-347" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-348"><a href="#cb30-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-349"><a href="#cb30-349" aria-hidden="true" tabindex="-1"></a><span class="fu"># Extensions</span></span>
+<span id="cb30-350"><a href="#cb30-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-351"><a href="#cb30-351" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comptes attendus &amp; tableau Observé vs Attendu</span></span>
+<span id="cb30-352"><a href="#cb30-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-355"><a href="#cb30-355" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-356"><a href="#cb30-356" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: nij</span></span>
+<span id="cb30-357"><a href="#cb30-357" aria-hidden="true" tabindex="-1"></a>df_preds <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb30-358"><a href="#cb30-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb30-359"><a href="#cb30-359" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_obs =</span> deaths,</span>
+<span id="cb30-360"><a href="#cb30-360" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_hat =</span> <span class="fu">fitted</span>(mod1)</span>
+<span id="cb30-361"><a href="#cb30-361" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-362"><a href="#cb30-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-363"><a href="#cb30-363" aria-hidden="true" tabindex="-1"></a>df_preds <span class="sc">|&gt;</span></span>
+<span id="cb30-364"><a href="#cb30-364" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, smoking_status, exposure, y_obs, mu_hat) <span class="sc">|&gt;</span></span>
+<span id="cb30-365"><a href="#cb30-365" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age, smoking_status) <span class="sc">|&gt;</span></span>
+<span id="cb30-366"><a href="#cb30-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb30-367"><a href="#cb30-367" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(exposure, y_obs, mu_hat), <span class="at">decimals =</span> <span class="dv">2</span>)</span>
+<span id="cb30-368"><a href="#cb30-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-369"><a href="#cb30-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-370"><a href="#cb30-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vérification d’éventuelle sur-dispersion</span></span>
+<span id="cb30-371"><a href="#cb30-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-372"><a href="#cb30-372" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Le GLM Poisson suppose </span><span class="in">`Var(Y) = E[Y]`</span><span class="at">. Si </span><span class="in">`Var(Y) &gt;&gt; E[Y]`</span><span class="at">, la</span></span>
+<span id="cb30-373"><a href="#cb30-373" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **sur-dispersion** peut invalider les tests usuels (SE sous-estimés).</span></span>
+<span id="cb30-374"><a href="#cb30-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-377"><a href="#cb30-377" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-378"><a href="#cb30-378" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: overdisp</span></span>
+<span id="cb30-379"><a href="#cb30-379" aria-hidden="true" tabindex="-1"></a><span class="fu">check_overdispersion</span>(mod1)</span>
+<span id="cb30-380"><a href="#cb30-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-381"><a href="#cb30-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-382"><a href="#cb30-382" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; En cas de sur-dispersion marquée, envisagez **Quasi-Poisson**</span></span>
+<span id="cb30-383"><a href="#cb30-383" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; (</span><span class="in">`family = quasipoisson`</span><span class="at">) ou **Négative Binomiale** (</span><span class="in">`MASS::glm.nb`</span><span class="at">)</span></span>
+<span id="cb30-384"><a href="#cb30-384" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; et comparez l’ajustement.</span></span>
+<span id="cb30-385"><a href="#cb30-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-386"><a href="#cb30-386" aria-hidden="true" tabindex="-1"></a><span class="fu">## Graphiques (facultatifs)</span></span>
+<span id="cb30-387"><a href="#cb30-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-390"><a href="#cb30-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-391"><a href="#cb30-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: plot-fitted</span></span>
+<span id="cb30-392"><a href="#cb30-392" aria-hidden="true" tabindex="-1"></a>shapes_9 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)  <span class="co"># à ta convenance</span></span>
+<span id="cb30-393"><a href="#cb30-393" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_preds, <span class="fu">aes</span>(mu_hat, y_obs, <span class="at">color =</span> smoking_status, <span class="at">shape =</span> age)) <span class="sc">+</span></span>
+<span id="cb30-394"><a href="#cb30-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb30-395"><a href="#cb30-395" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb30-396"><a href="#cb30-396" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> shapes_9) <span class="sc">+</span></span>
+<span id="cb30-397"><a href="#cb30-397" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Comptes attendus (mod1)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Comptes observés&quot;</span>,</span>
+<span id="cb30-398"><a href="#cb30-398" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Observé vs Attendu — GLM Poisson (mod1)&quot;</span>)</span>
+<span id="cb30-399"><a href="#cb30-399" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-400"><a href="#cb30-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-401"><a href="#cb30-401" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bilan</span></span>
+<span id="cb30-402"><a href="#cb30-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-403"><a href="#cb30-403" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Le modèle de Poisson permet d’estimer des **taux de décès** en</span>
+<span id="cb30-404"><a href="#cb30-404" aria-hidden="true" tabindex="-1"></a>    fonction du tabagisme et de l’âge.</span>
+<span id="cb30-405"><a href="#cb30-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-406"><a href="#cb30-406" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Les **tests d’ajustement** (déviance, Pearson) valident le modèle si</span>
+<span id="cb30-407"><a href="#cb30-407" aria-hidden="true" tabindex="-1"></a>    p-value élevée.</span>
+<span id="cb30-408"><a href="#cb30-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-409"><a href="#cb30-409" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Le **tabagisme** a un impact significatif sur la mortalité par</span>
+<span id="cb30-410"><a href="#cb30-410" aria-hidden="true" tabindex="-1"></a>    cancer du poumon.</span>
+<span id="cb30-411"><a href="#cb30-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-412"><a href="#cb30-412" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Les **IRR** offrent une interprétation intuitive : *par rapport à la</span>
+<span id="cb30-413"><a href="#cb30-413" aria-hidden="true" tabindex="-1"></a>    catégorie de référence, combien de fois le taux de décès est-il</span>
+<span id="cb30-414"><a href="#cb30-414" aria-hidden="true" tabindex="-1"></a>    multiplié*.</span>
+<span id="cb30-415"><a href="#cb30-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-416"><a href="#cb30-416" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Conseil pratique** : en recherche appliquée, vérifiez toujours la</span></span>
+<span id="cb30-417"><a href="#cb30-417" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; sur-dispersion et documentez les hypothèses de variance (Poisson vs</span></span>
+<span id="cb30-418"><a href="#cb30-418" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; quasi-Poisson vs binomiale négative).</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<script>!function(t,e){"function"==typeof define&&define.amd?define([],e()):"object"==typeof module&&module.exports?module.exports=e():function n(){document&&document.body?t.zenscroll=e():setTimeout(n,9)}()}(this,function(){"use strict";var t=function(t){return t&&"getComputedStyle"in window&&"smooth"===window.getComputedStyle(t)["scroll-behavior"]};if("undefined"==typeof window||!("document"in window))return{};var e=function(e,n,o){n=n||999,o||0===o||(o=9);var i,r=function(t){i=t},u=function(){clearTimeout(i),r(0)},c=function(t){return Math.max(0,e.getTopOf(t)-o)},a=function(o,i,c){if(u(),0===i||i&&i<0||t(e.body))e.toY(o),c&&c();else{var a=e.getY(),f=Math.max(0,o)-a,s=(new Date).getTime();i=i||Math.min(Math.abs(f),n),function t(){r(setTimeout(function(){var n=Math.min(1,((new Date).getTime()-s)/i),o=Math.max(0,Math.floor(a+f*(n<.5?2*n*n:n*(4-2*n)-1)));e.toY(o),n<1&&e.getHeight()+o<e.body.scrollHeight?t():(setTimeout(u,99),c&&c())},9))}()}},f=function(t,e,n){a(c(t),e,n)},s=function(t,n,i){var r=t.getBoundingClientRect().height,u=e.getTopOf(t)+r,s=e.getHeight(),l=e.getY(),d=l+s;c(t)<l||r+o>s?f(t,n,i):u+o>d?a(u-s+o,n,i):i&&i()},l=function(t,n,o,i){a(Math.max(0,e.getTopOf(t)-e.getHeight()/2+(o||t.getBoundingClientRect().height/2)),n,i)};return{setup:function(t,e){return(0===t||t)&&(n=t),(0===e||e)&&(o=e),{defaultDuration:n,edgeOffset:o}},to:f,toY:a,intoView:s,center:l,stop:u,moving:function(){return!!i},getY:e.getY,getTopOf:e.getTopOf}},n=document.documentElement,o=function(){return window.scrollY||n.scrollTop},i=e({body:document.scrollingElement||document.body,toY:function(t){window.scrollTo(0,t)},getY:o,getHeight:function(){return window.innerHeight||n.clientHeight},getTopOf:function(t){return t.getBoundingClientRect().top+o()-n.offsetTop}});if(i.createScroller=function(t,o,i){return e({body:t,toY:function(e){t.scrollTop=e},getY:function(){return t.scrollTop},getHeight:function(){return Math.min(t.clientHeight,window.innerHeight||n.clientHeight)},getTopOf:function(t){return t.offsetTop}},o,i)},"addEventListener"in window&&!window.noZensmooth&&!t(document.body)){var r="history"in window&&"pushState"in history,u=r&&"scrollRestoration"in history;u&&(history.scrollRestoration="auto"),window.addEventListener("load",function(){u&&(setTimeout(function(){history.scrollRestoration="manual"},9),window.addEventListener("popstate",function(t){t.state&&"zenscrollY"in t.state&&i.toY(t.state.zenscrollY)},!1)),window.location.hash&&setTimeout(function(){var t=i.setup().edgeOffset;if(t){var e=document.getElementById(window.location.href.split("#")[1]);if(e){var n=Math.max(0,i.getTopOf(e)-t),o=i.getY()-n;0<=o&&o<9&&window.scrollTo(0,n)}}},9)},!1);var c=new RegExp("(^|\\s)noZensmooth(\\s|$)");window.addEventListener("click",function(t){for(var e=t.target;e&&"A"!==e.tagName;)e=e.parentNode;if(!(!e||1!==t.which||t.shiftKey||t.metaKey||t.ctrlKey||t.altKey)){if(u){var n=history.state&&"object"==typeof history.state?history.state:{};n.zenscrollY=i.getY();try{history.replaceState(n,"")}catch(t){}}var o=e.getAttribute("href")||"";if(0===o.indexOf("#")&&!c.test(e.className)){var a=0,f=document.getElementById(o.substring(1));if("#"!==o){if(!f)return;a=i.getTopOf(f)}t.preventDefault();var s=function(){window.location=o},l=i.setup().edgeOffset;l&&(a=Math.max(0,a-l),r&&(s=function(){history.pushState({},"",o)})),i.toY(a,null,s)}}},!1)}return i});</script>
 </body></html>

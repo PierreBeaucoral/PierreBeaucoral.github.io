@@ -11,7 +11,7 @@ image:
 
 # Bienvenue
 
-Ce [site](https://pierrebeaucoral.github.io/course/modelisation-statistique/index.html) accompagne le cours **Modélisation statistique** dispensé
+Ce [site](https://pierrebeaucoral.github.io/course/modelisation-statistique/site.html) accompagne le cours **Modélisation statistique** dispensé
 en **master 2 – École d’Économie (Université Clermont Auvergne)**.
 
 

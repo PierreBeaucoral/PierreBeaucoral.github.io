@@ -1,0 +1,261 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n\n[1] 2"
+  },
+  {
+    "objectID": "td1/enonce-td1.html",
+    "href": "td1/enonce-td1.html",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "",
+    "text": "On étudie d’anciennes données reliant tabagisme et décès par cancer du poumon.\nVariables : age (classes), smoking status (4 classes), population (centaines de milliers), deaths (décès annuels)."
+  },
+  {
+    "objectID": "td1/enonce-td1.html#objectifs-de-ce-td",
+    "href": "td1/enonce-td1.html#objectifs-de-ce-td",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "2.1 Objectifs de ce TD",
+    "text": "2.1 Objectifs de ce TD\n\nImporter et préparer un tableau « comptages + exposition » (population à risque).\nAjuster un GLM Poisson avec offset (log-exposition).\nÉvaluer l’ajustement : déviance (vs modèle saturé) & Pearson.\nComparer des modèles via tests de rapport de vraisemblance (LR).\nInterpréter en ratios de taux d’incidence (IRR) et produire des comptes attendus."
+  },
+  {
+    "objectID": "td1/enonce-td1.html#modèle-de-base",
+    "href": "td1/enonce-td1.html#modèle-de-base",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.1 Modèle de base",
+    "text": "4.1 Modèle de base\n\nAjuster un modèle Poisson log-linéaire avec effets de smoking_status et age et offset log(exposure).\n\nQ1 : Pourquoi utiliser des variables indicatrices plutôt que des codes numériques continus ?\n\nCalculer la déviance du modèle ajusté.\n\nQ2 : Interpréter la déviance et le p-value (DEV1).\n\nInterpréter l’effet de l’âge sur la probabilité de décès.\n\nQ3 : Que disent les coefficients d’âge en termes d’IRR ?"
+  },
+  {
+    "objectID": "td1/enonce-td1.html#ajustement-du-modèle",
+    "href": "td1/enonce-td1.html#ajustement-du-modèle",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.2 Ajustement du modèle",
+    "text": "4.2 Ajustement du modèle\n\nRéaliser les deux tests d’ajustement : déviance GOF et Pearson GOF.\n\nQ4 : Justifier les degrés de liberté.\nQ5 : Discuter les conditions d’application du test du χ²."
+  },
+  {
+    "objectID": "td1/enonce-td1.html#comparaison-de-modèles",
+    "href": "td1/enonce-td1.html#comparaison-de-modèles",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.3 Comparaison de modèles",
+    "text": "4.3 Comparaison de modèles\n\nAjuster un modèle sans la variable tabac et effectuer un test LR entre les deux modèles.\n\nQ6 : Conclure sur l’impact de l’usage du tabac sur la probabilité de décès."
+  },
+  {
+    "objectID": "td1/enonce-td1.html#variable-binaire-cigarette",
+    "href": "td1/enonce-td1.html#variable-binaire-cigarette",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.4 Variable binaire « cigarette »",
+    "text": "4.4 Variable binaire « cigarette »\n\nCréer une variable binaire cigarette_user (=1 si l’individu fume des cigarettes, 0 sinon).\nAjuster un modèle avec age + cigarette_user.\nComparer ce modèle avec le modèle initial par un test LR.\n\nQ7 : Le type de produit fumé influence-t-il différemment le taux de décès ?"
+  },
+  {
+    "objectID": "td1/enonce-td1.html#extensions-facultatif",
+    "href": "td1/enonce-td1.html#extensions-facultatif",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.5 Extensions (facultatif)",
+    "text": "4.5 Extensions (facultatif)\n\nCalculer et présenter les IRR avec IC à 95 %.\nPrésenter les comptes observés vs attendus et commenter.\nVérifier la présence éventuelle de sur-dispersion et proposer, si nécessaire, un modèle adapté (Quasi-Poisson ou Négative Binomiale)."
+  },
+  {
+    "objectID": "td1/td1.html",
+    "href": "td1/td1.html",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "",
+    "text": "Contexte: On étudie d’anciennes données reliant tabagisme et décès par cancer du poumon. Variables : age (classes), smoking status (4 classes), population (centaines de milliers), deaths (décès annuels)."
+  },
+  {
+    "objectID": "td1/td1.html#objectifs-de-ce-td",
+    "href": "td1/td1.html#objectifs-de-ce-td",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "1.1 Objectifs de ce TD",
+    "text": "1.1 Objectifs de ce TD\n\nImporter et préparer un tableau comptages + exposition (population à risque).\nAjuster un GLM Poisson avec offset (log-exposition).\nÉvaluer l’ajustement : déviance (vs modèle saturé) & Pearson.\nComparer des modèles via tests de rapport de vraisemblance (LR).\nInterpréter en ratios de taux d’incidence (IRR) et produire des comptes attendus."
+  },
+  {
+    "objectID": "td1/td1.html#packages",
+    "href": "td1/td1.html#packages",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "1.2 Packages",
+    "text": "1.2 Packages"
+  },
+  {
+    "objectID": "td1/td1.html#importer-les-données-smoking_dat.xlsx",
+    "href": "td1/td1.html#importer-les-données-smoking_dat.xlsx",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "2.1 Importer les données smoking_dat.xlsx",
+    "text": "2.1 Importer les données smoking_dat.xlsx\n\nDans l’énoncé, les données à importer sont smoking_dat.xlsx et les variables age, smoking status, population, deaths.\n\n\n\n\n\n\n\nNote\n\n\n\nDictionnaire des variables :\n• age: en classes (40-44, 45-49, 50-54, 55-59, 60-64, 65-69, 70-74, 75-79, 80+).\n• smoking status: 4 classes (ne fume pas / fume le cigare ou la pipe / fume la cigarette et le cigare ou la pipe ; fume seulement la cigarette)\n• population: en centaine de milliers de personnes\n• deaths: comptage des décès par cancer du poumon en un an.\n\n\n\n\nRows: 36\nColumns: 4\n$ age            &lt;chr&gt; \"40-44\", \"45-59\", \"50-54\", \"55-59\", \"60-64\", \"65-69\", \"…\n$ smoking_status &lt;chr&gt; \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"…\n$ population     &lt;dbl&gt; 656, 359, 249, 632, 1067, 897, 668, 361, 274, 145, 104,…\n$ deaths         &lt;dbl&gt; 18, 22, 19, 55, 117, 170, 179, 120, 120, 2, 4, 3, 38, 1…"
+  },
+  {
+    "objectID": "td1/td1.html#coder-les-deux-variables-enregistrées-en-texte-avec-des-chiffres",
+    "href": "td1/td1.html#coder-les-deux-variables-enregistrées-en-texte-avec-des-chiffres",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "2.2 Coder les deux variables enregistrées en texte avec des chiffres",
+    "text": "2.2 Coder les deux variables enregistrées en texte avec des chiffres\n\nEn Stata on ferait encode + i.variable.\n\nEn R, il suffit de déclarer les variables comme factor.\n\n\n\n[1] \"40-44\" \"45-59\" \"50-54\" \"55-59\" \"60-64\" \"65-69\" \"70-74\" \"75-79\" \"80+\"  \n\n\n[1] \"cigarPipeOnly\"  \"cigarretteOnly\" \"cigarrettePlus\" \"no\"            \n\n\n\n\n\n\n\n\nNote\n\n\n\nRappel : Les facteurs indiquent à R qu’il s’agit de variables qualitatives. Chaque modalité sera transformée en variable indicatrice (dummy) dans la régression.\n\n\n\n2.2.1 Unité d’exposition\nL’énoncé précise que population est en centaines de milliers. Pour une interprétation plus intuitive, on peut ramener l’exposition à l’unité personne (facultatif) :\n\n\n     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. \n  9800000  36925000  85850000 155894444 230550000 605200000"
+  },
+  {
+    "objectID": "td1/td1.html#appliquer-un-premier-modèle-de-régression-log-linéaire",
+    "href": "td1/td1.html#appliquer-un-premier-modèle-de-régression-log-linéaire",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.1 Appliquer un premier modèle de régression log-linéaire",
+    "text": "3.1 Appliquer un premier modèle de régression log-linéaire\nModèle Poisson log-linéaire avec effets de smoking_status et age, et offset log(exposure) : c’est l’équivalent de Stata poisson deaths i.smokecod i.agecod, exposure(pop).\n\n\n\n\n\n\nTip\n\n\n\nPourquoi un modèle de Poisson ?\nLes données sont des comptages (nombre de décès).\nLe modèle de Poisson relie l’espérance de ces comptages à des variables explicatives par une fonction de lien log :\n\\[\n\\log(\\mathbb{E}[Y]) = X\\beta\n\\]\nCette structure garantit que la prédiction est positive et que la variance est proportionnelle à la moyenne (hypothèse de Poisson).\n\n\nNous voulons expliquer le nombre de décès par l’âge et le statut tabagique, en tenant compte de l’exposition.\n\n\n\nCall:\nglm(formula = deaths ~ smoking_status + age + offset(log(exposure)), \n    family = poisson(link = \"log\"), data = df)\n\nCoefficients:\n                              Estimate Std. Error  z value Pr(&gt;|z|)    \n(Intercept)                  -15.14514    0.06783 -223.293  &lt; 2e-16 ***\nsmoking_statuscigarretteOnly   0.36915    0.03791    9.737  &lt; 2e-16 ***\nsmoking_statuscigarrettePlus   0.17015    0.03643    4.671 3.00e-06 ***\nsmoking_statusno              -0.04781    0.04699   -1.017    0.309    \nage45-59                       0.55388    0.07999    6.924 4.38e-12 ***\nage50-54                       0.98039    0.07682   12.762  &lt; 2e-16 ***\nage55-59                       1.37946    0.06526   21.138  &lt; 2e-16 ***\nage60-64                       1.65423    0.06257   26.439  &lt; 2e-16 ***\nage65-69                       1.99817    0.06279   31.824  &lt; 2e-16 ***\nage70-74                       2.27141    0.06435   35.296  &lt; 2e-16 ***\nage75-79                       2.55858    0.06778   37.746  &lt; 2e-16 ***\nage80+                         2.84692    0.07242   39.310  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for poisson family taken to be 1)\n\n    Null deviance: 4055.984  on 35  degrees of freedom\nResidual deviance:   21.487  on 24  degrees of freedom\nAIC: 285.51\n\nNumber of Fisher Scoring iterations: 4\n\n\n\n\n\n\n\n\nImportant\n\n\n\nL’argument offset(log(exposure)) ajoute le log de l’exposition avec un coefficient fixé à 1. Cela revient à modéliser un taux de décès (décès / population)."
+  },
+  {
+    "objectID": "td1/td1.html#calculer-la-déviance-du-modèle-ajusté.-dev1",
+    "href": "td1/td1.html#calculer-la-déviance-du-modèle-ajusté.-dev1",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.2 Calculer la déviance du modèle ajusté. DEV1",
+    "text": "3.2 Calculer la déviance du modèle ajusté. DEV1\n\n\n     dev1        df   p_value \n21.486738 24.000000  0.609872"
+  },
+  {
+    "objectID": "td1/td1.html#quel-est-leffet-de-lâge-sur-la-probabilité-de-décès-par-cancer-du-poumon",
+    "href": "td1/td1.html#quel-est-leffet-de-lâge-sur-la-probabilité-de-décès-par-cancer-du-poumon",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.3 Quel est l’effet de l’âge sur la probabilité de décès par cancer du poumon ?",
+    "text": "3.3 Quel est l’effet de l’âge sur la probabilité de décès par cancer du poumon ?\n\nInterprétez les coefficients associés aux modalités d’âge (comparées à la catégorie de référence) en termes d’IRR (voir section IRR) et/ou d’impact sur le taux de décès (à exposition fixée). (Discussion attendue.)\n\nInterprétez les coefficients d’âge (IRR = exp(coef)) :\n\nIRR &gt; 1 : taux de décès plus élevé que la catégorie de référence.\nIRR &lt; 1 : taux plus faible."
+  },
+  {
+    "objectID": "td1/td1.html#sauvegarde-du-modèle-utile-pour-lr-tests",
+    "href": "td1/td1.html#sauvegarde-du-modèle-utile-pour-lr-tests",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.4 Sauvegarde du modèle (utile pour LR tests)",
+    "text": "3.4 Sauvegarde du modèle (utile pour LR tests)"
+  },
+  {
+    "objectID": "td1/td1.html#tester-lajustement-de-ce-modèle",
+    "href": "td1/td1.html#tester-lajustement-de-ce-modèle",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.5 Tester l’ajustement de ce modèle",
+    "text": "3.5 Tester l’ajustement de ce modèle\nPour cela nous allons réaliser deux tests :\n\nDeviance GOF (modèle ajusté vs saturé).\nPearson GOF (comparaison effectifs attendus vs observés). Les degrés de liberté correspondent ici au nombre de cellules moins le nombre de paramètres estimés (y compris l’interception). L’énoncé suggère 24 df pour chacun de ces tests (voir justification plus bas).\n\n\n\n\n\n\n\n\n\ntest\nstatistic\ndf\np_value\n\n\n\n\nDeviance GOF\n21.48674\n24\n0.6098720\n\n\nPearson GOF\n20.61936\n24\n0.6610658"
+  },
+  {
+    "objectID": "td1/td1.html#justifiez-pourquoi-ces-tests-sont-effectués-avec-le-même-df.",
+    "href": "td1/td1.html#justifiez-pourquoi-ces-tests-sont-effectués-avec-le-même-df.",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.6 Justifiez pourquoi ces tests sont effectués avec le même df.",
+    "text": "3.6 Justifiez pourquoi ces tests sont effectués avec le même df.\n\n\n\n\n\n\nTip\n\n\n\nRappel : pour un GLM Poisson, df = N - p, où N est le nombre de cellules et p le nombre de paramètres estimés (y compris l’interception). Discuter les conditions d’un χ² (souvent \\(\\hat\\mu ≥ 5\\) dans la plupart des cellules)."
+  },
+  {
+    "objectID": "td1/td1.html#ajuster-un-modèle-sans-la-variable-smoke-et-effectuer-un-test-de-rapport-de-vraisemblance-entre-ce-nouveau-modèle-et-celui-précédemment-sauvegardé",
+    "href": "td1/td1.html#ajuster-un-modèle-sans-la-variable-smoke-et-effectuer-un-test-de-rapport-de-vraisemblance-entre-ce-nouveau-modèle-et-celui-précédemment-sauvegardé",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "3.7 Ajuster un modèle sans la variable smoke, et effectuer un test de rapport de vraisemblance entre ce nouveau modèle et celui précédemment sauvegardé",
+    "text": "3.7 Ajuster un modèle sans la variable smoke, et effectuer un test de rapport de vraisemblance entre ce nouveau modèle et celui précédemment sauvegardé\nOn ajuste un modèle sans tabac et on compare à mod1 par LR test. En Stata : lrtest. En R : anova(mod0, mod1, test=\"Chisq\").\n\n\nAnalysis of Deviance Table\n\nModel 1: deaths ~ age + offset(log(exposure))\nModel 2: deaths ~ smoking_status + age + offset(log(exposure))\n  Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    \n1        27    191.723                          \n2        24     21.487  3   170.24 &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "td1/td1.html#construire-une-nouvelle-variable-qui-prend-la-valeur-1-si-lindividu-fume-des-cigarettes-0-sil-nen-fume-pas.",
+    "href": "td1/td1.html#construire-une-nouvelle-variable-qui-prend-la-valeur-1-si-lindividu-fume-des-cigarettes-0-sil-nen-fume-pas.",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.1 Construire une nouvelle variable qui prend la valeur 1 si l’individu fume des cigarettes, 0 s’il n’en fume pas.",
+    "text": "4.1 Construire une nouvelle variable qui prend la valeur 1 si l’individu fume des cigarettes, 0 s’il n’en fume pas.\nCréer une variable cigarette_user égale à 1 si l’individu fume des cigarettes, 0 sinon : l’énoncé demande de distinguer le type de produit et de concentrer l’attention sur la cigarette.\n\n\n   \n    cigarPipeOnly cigarretteOnly cigarrettePlus no\n  0             9              0              0  9\n  1             0              9              9  0"
+  },
+  {
+    "objectID": "td1/td1.html#ajuster-un-troisième-modèle-avec-effet-de-lâge-et-de-cette-variable-dusage-de-la-cigarette.",
+    "href": "td1/td1.html#ajuster-un-troisième-modèle-avec-effet-de-lâge-et-de-cette-variable-dusage-de-la-cigarette.",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.2 Ajuster un troisième modèle avec effet de l’âge et de cette variable d’usage de la cigarette.",
+    "text": "4.2 Ajuster un troisième modèle avec effet de l’âge et de cette variable d’usage de la cigarette.\n\n\n\nCall:\nglm(formula = deaths ~ cigarette_user + age + offset(log(exposure)), \n    family = poisson, data = df)\n\nCoefficients:\n                Estimate Std. Error  z value Pr(&gt;|z|)    \n(Intercept)    -15.15590    0.06378 -237.625  &lt; 2e-16 ***\ncigarette_user   0.26910    0.02757    9.762  &lt; 2e-16 ***\nage45-59         0.55342    0.07999    6.919 4.56e-12 ***\nage50-54         0.98480    0.07682   12.820  &lt; 2e-16 ***\nage55-59         1.37640    0.06526   21.092  &lt; 2e-16 ***\nage60-64         1.64629    0.06256   26.317  &lt; 2e-16 ***\nage65-69         1.99023    0.06277   31.708  &lt; 2e-16 ***\nage70-74         2.26143    0.06432   35.161  &lt; 2e-16 ***\nage75-79         2.54560    0.06766   37.626  &lt; 2e-16 ***\nage80+           2.82907    0.07215   39.211  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for poisson family taken to be 1)\n\n    Null deviance: 4055.984  on 35  degrees of freedom\nResidual deviance:   92.237  on 26  degrees of freedom\nAIC: 352.26\n\nNumber of Fisher Scoring iterations: 4\n\n\nAnalysis of Deviance Table\n\nModel: poisson, link: log\n\nResponse: deaths\n\nTerms added sequentially (first to last)\n\n               Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    \nNULL                              35     4056.0              \ncigarette_user  1     58.3        34     3997.6 2.195e-14 ***\nage             8   3905.4        26       92.2 &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "td1/td1.html#comptes-attendus-tableau-observé-vs-attendu",
+    "href": "td1/td1.html#comptes-attendus-tableau-observé-vs-attendu",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "7.1 Comptes attendus & tableau Observé vs Attendu",
+    "text": "7.1 Comptes attendus & tableau Observé vs Attendu\n\n\n\n\n\n\n\n\nage\nsmoking_status\nexposure\ny_obs\nmu_hat\n\n\n\n\n40-44\ncigarPipeOnly\n14,500,000.00\n2.00\n3.84\n\n\n40-44\ncigarretteOnly\n341,000,000.00\n124.00\n130.50\n\n\n40-44\ncigarrettePlus\n453,100,000.00\n149.00\n142.11\n\n\n40-44\nno\n65,600,000.00\n18.00\n16.55\n\n\n45-59\ncigarPipeOnly\n10,400,000.00\n4.00\n4.79\n\n\n45-59\ncigarretteOnly\n223,900,000.00\n140.00\n149.10\n\n\n45-59\ncigarrettePlus\n303,000,000.00\n169.00\n165.36\n\n\n45-59\nno\n35,900,000.00\n22.00\n15.76\n\n\n50-54\ncigarPipeOnly\n9,800,000.00\n3.00\n6.91\n\n\n50-54\ncigarretteOnly\n185,100,000.00\n187.00\n188.82\n\n\n50-54\ncigarrettePlus\n226,700,000.00\n193.00\n189.53\n\n\n50-54\nno\n24,900,000.00\n19.00\n16.74\n\n\n55-59\ncigarPipeOnly\n37,200,000.00\n38.00\n39.10\n\n\n55-59\ncigarretteOnly\n327,000,000.00\n514.00\n497.17\n\n\n55-59\ncigarrettePlus\n468,200,000.00\n576.00\n583.40\n\n\n55-59\nno\n63,200,000.00\n55.00\n63.33\n\n\n60-64\ncigarPipeOnly\n84,600,000.00\n113.00\n117.04\n\n\n60-64\ncigarretteOnly\n379,100,000.00\n778.00\n758.66\n\n\n60-64\ncigarrettePlus\n605,200,000.00\n1,001.00\n992.58\n\n\n60-64\nno\n106,700,000.00\n117.00\n140.73\n\n\n65-69\ncigarPipeOnly\n94,900,000.00\n173.00\n185.19\n\n\n65-69\ncigarretteOnly\n242,100,000.00\n689.00\n683.37\n\n\n65-69\ncigarrettePlus\n388,000,000.00\n901.00\n897.57\n\n\n65-69\nno\n89,700,000.00\n170.00\n166.87\n\n\n70-74\ncigarPipeOnly\n82,400,000.00\n212.00\n211.32\n\n\n70-74\ncigarretteOnly\n119,500,000.00\n432.00\n443.30\n\n\n70-74\ncigarrettePlus\n203,300,000.00\n613.00\n618.07\n\n\n70-74\nno\n66,800,000.00\n179.00\n163.31\n\n\n75-79\ncigarPipeOnly\n66,700,000.00\n243.00\n227.95\n\n\n75-79\ncigarretteOnly\n43,600,000.00\n214.00\n215.54\n\n\n75-79\ncigarrettePlus\n87,100,000.00\n337.00\n352.89\n\n\n75-79\nno\n36,100,000.00\n120.00\n117.62\n\n\n80+\ncigarPipeOnly\n53,700,000.00\n253.00\n244.86\n\n\n80+\ncigarretteOnly\n11,300,000.00\n63.00\n74.53\n\n\n80+\ncigarrettePlus\n34,500,000.00\n189.00\n186.49\n\n\n80+\nno\n27,400,000.00\n120.00\n119.11"
+  },
+  {
+    "objectID": "td1/td1.html#vérification-déventuelle-sur-dispersion",
+    "href": "td1/td1.html#vérification-déventuelle-sur-dispersion",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "7.2 Vérification d’éventuelle sur-dispersion",
+    "text": "7.2 Vérification d’éventuelle sur-dispersion\n\nLe GLM Poisson suppose Var(Y) = E[Y]. Si Var(Y) &gt;&gt; E[Y], la sur-dispersion peut invalider les tests usuels (SE sous-estimés).\n\n\n\n# Overdispersion test\n\n       dispersion ratio =  0.859\n  Pearson's Chi-Squared = 20.619\n                p-value =  0.661\n\n\n\nEn cas de sur-dispersion marquée, envisagez Quasi-Poisson (family = quasipoisson) ou Négative Binomiale (MASS::glm.nb) et comparez l’ajustement."
+  },
+  {
+    "objectID": "td1/td1.html#graphiques-facultatifs",
+    "href": "td1/td1.html#graphiques-facultatifs",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "7.3 Graphiques (facultatifs)",
+    "text": "7.3 Graphiques (facultatifs)"
+  },
+  {
+    "objectID": "td1/td1.html#bilan",
+    "href": "td1/td1.html#bilan",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "7.4 Bilan",
+    "text": "7.4 Bilan\n\nLe modèle de Poisson permet d’estimer des taux de décès en fonction du tabagisme et de l’âge.\nLes tests d’ajustement (déviance, Pearson) valident le modèle si p-value élevée.\nLe tabagisme a un impact significatif sur la mortalité par cancer du poumon.\nLes IRR offrent une interprétation intuitive : par rapport à la catégorie de référence, combien de fois le taux de décès est-il multiplié.\n\n\nConseil pratique : en recherche appliquée, vérifiez toujours la sur-dispersion et documentez les hypothèses de variance (Poisson vs quasi-Poisson vs binomiale négative)."
+  },
+  {
+    "objectID": "td1/énoncé-td1.html",
+    "href": "td1/énoncé-td1.html",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "",
+    "text": "On étudie d’anciennes données reliant tabagisme et décès par cancer du poumon.\nVariables : age (classes), smoking status (4 classes), population (centaines de milliers), deaths (décès annuels)."
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#objectifs-de-ce-td",
+    "href": "td1/énoncé-td1.html#objectifs-de-ce-td",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "2.1 Objectifs de ce TD",
+    "text": "2.1 Objectifs de ce TD\n\nImporter et préparer un tableau « comptages + exposition » (population à risque).\nAjuster un GLM Poisson avec offset (log-exposition).\nÉvaluer l’ajustement : déviance (vs modèle saturé) & Pearson.\nComparer des modèles via tests de rapport de vraisemblance (LR).\nInterpréter en ratios de taux d’incidence (IRR) et produire des comptes attendus."
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#modèle-de-base",
+    "href": "td1/énoncé-td1.html#modèle-de-base",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.1 Modèle de base",
+    "text": "4.1 Modèle de base\n\nAjuster un modèle Poisson log-linéaire avec effets de smoking_status et age et offset log(exposure).\n\nQ1 : Pourquoi utiliser des variables indicatrices plutôt que des codes numériques continus ?\n\nCalculer la déviance du modèle ajusté.\n\nQ2 : Interpréter la déviance et le p-value (DEV1).\n\nInterpréter l’effet de l’âge sur la probabilité de décès.\n\nQ3 : Que disent les coefficients d’âge en termes d’IRR ?"
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#ajustement-du-modèle",
+    "href": "td1/énoncé-td1.html#ajustement-du-modèle",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.2 Ajustement du modèle",
+    "text": "4.2 Ajustement du modèle\n\nRéaliser les deux tests d’ajustement : déviance GOF et Pearson GOF.\n\nQ4 : Justifier les degrés de liberté.\nQ5 : Discuter les conditions d’application du test du χ²."
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#comparaison-de-modèles",
+    "href": "td1/énoncé-td1.html#comparaison-de-modèles",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.3 Comparaison de modèles",
+    "text": "4.3 Comparaison de modèles\n\nAjuster un modèle sans la variable tabac et effectuer un test LR entre les deux modèles.\n\nQ6 : Conclure sur l’impact de l’usage du tabac sur la probabilité de décès."
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#variable-binaire-cigarette",
+    "href": "td1/énoncé-td1.html#variable-binaire-cigarette",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.4 Variable binaire « cigarette »",
+    "text": "4.4 Variable binaire « cigarette »\n\nCréer une variable binaire cigarette_user (=1 si l’individu fume des cigarettes, 0 sinon).\nAjuster un modèle avec age + cigarette_user.\nComparer ce modèle avec le modèle initial par un test LR.\n\nQ7 : Le type de produit fumé influence-t-il différemment le taux de décès ?"
+  },
+  {
+    "objectID": "td1/énoncé-td1.html#extensions-facultatif",
+    "href": "td1/énoncé-td1.html#extensions-facultatif",
+    "title": "TD 1 — Modèle de Poisson (R)",
+    "section": "4.5 Extensions (facultatif)",
+    "text": "4.5 Extensions (facultatif)\n\nCalculer et présenter les IRR avec IC à 95 %.\nPrésenter les comptes observés vs attendus et commenter.\nVérifier la présence éventuelle de sur-dispersion et proposer, si nécessaire, un modèle adapté (Quasi-Poisson ou Négative Binomiale)."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "section": "",
+    "text": "Ce site rassemble les trois TDs du module de modélisation statistique (M2).\nChaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications Stata.\n\n\n\n\n\n\nConseils généraux\n\n\n\n\nConservez une trace reproductible de vos commandes (do-file ou Quarto).\nComparez systématiquement les modèles via tests d’ajustement (GOF, LR) et critères d’information (AIC/BIC).\n\n\n\n\n\n\n\n\n\n\n\nRégression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3\n\n\n\n\n\n\n\n\n\n\nSupport et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés.\n\n\n\n\n\n\n\nTD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
+  },
+  {
+    "objectID": "index.html#accès-rapide-aux-tds",
+    "href": "index.html#accès-rapide-aux-tds",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "section": "",
+    "text": "Régression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3"
+  },
+  {
+    "objectID": "index.html#organisation-20252026",
+    "href": "index.html#organisation-20252026",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "section": "",
+    "text": "Support et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés."
+  },
+  {
+    "objectID": "index.html#données-et-rappel-des-contenus",
+    "href": "index.html#données-et-rappel-des-contenus",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "section": "",
+    "text": "TD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
+  }
+]

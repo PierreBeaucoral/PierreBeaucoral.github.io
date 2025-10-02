@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Pierre Beaucoral">
-<meta name="description" content="Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.">
 
-<title>Modélisation statistique — Travaux Dirigés (M2) – modelisation statistique</title>
+<title>Présentation globale – modelisation statistique</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3821,17 +3819,17 @@ vertical-align: -.125em;
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "Pas de résultats",
-    "search-matching-documents-text": "documents trouvés",
-    "search-copy-link-title": "Copier le lien vers la recherche",
-    "search-hide-matches-text": "Cacher les correspondances additionnelles",
-    "search-more-match-text": "correspondance de plus dans ce document",
-    "search-more-matches-text": "correspondances de plus dans ce document",
-    "search-clear-button-title": "Effacer",
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Annuler",
-    "search-submit-button-title": "Envoyer",
-    "search-label": "Recherche"
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -3849,14 +3847,14 @@ vertical-align: -.125em;
     <span class="navbar-title">modelisation statistique</span>
     </a>
   </div>
-            <div id="quarto-search" class title="Recherche"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Basculer la navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./site.html" aria-current="page"> 
+    <a class="nav-link" href="./site.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -3890,47 +3888,37 @@ vertical-align: -.125em;
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Sur cette page</h2>
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bienvenue" id="toc-bienvenue" class="nav-link active" data-scroll-target="#bienvenue"><span class="header-section-number">1</span> Bienvenue</a>
+  <li><a href="#plan-du-cours" id="toc-plan-du-cours" class="nav-link active" data-scroll-target="#plan-du-cours"><span class="header-section-number">1</span> Plan du cours</a>
   <ul class="collapse">
-  <li><a href="#accès-rapide-aux-tds" id="toc-accès-rapide-aux-tds" class="nav-link" data-scroll-target="#accès-rapide-aux-tds"><span class="header-section-number">1.1</span> Accès rapide aux TDs</a></li>
-  <li><a href="#organisation-20252026" id="toc-organisation-20252026" class="nav-link" data-scroll-target="#organisation-20252026"><span class="header-section-number">1.2</span> Organisation (2025–2026)</a></li>
-  <li><a href="#données-et-rappel-des-contenus" id="toc-données-et-rappel-des-contenus" class="nav-link" data-scroll-target="#données-et-rappel-des-contenus"><span class="header-section-number">1.3</span> Données et rappel des contenus</a></li>
+  <li><a href="#td-1" id="toc-td-1" class="nav-link" data-scroll-target="#td-1"><span class="header-section-number">1.1</span> TD 1</a></li>
+  <li><a href="#td-2" id="toc-td-2" class="nav-link" data-scroll-target="#td-2"><span class="header-section-number">1.2</span> TD 2</a></li>
+  <li><a href="#td-3" id="toc-td-3" class="nav-link" data-scroll-target="#td-3"><span class="header-section-number">1.3</span> TD 3</a></li>
+  <li><a href="#td-4" id="toc-td-4" class="nav-link" data-scroll-target="#td-4"><span class="header-section-number">1.4</span> TD 4</a></li>
+  <li><a href="#astuce-projection" id="toc-astuce-projection" class="nav-link" data-scroll-target="#astuce-projection"><span class="header-section-number">1.5</span> Astuce projection</a></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Autres formats</h2><ul><li><a href="site.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Modélisation statistique — Travaux Dirigés (M2)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable</p>
-</div>
-
-<div>
-  <div class="description">
-    Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.
-  </div>
+<div class="quarto-title-block"><div><h1 class="title">Présentation globale</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
-<div class="quarto-title-meta column-page-left">
 
-    <div>
-    <div class="quarto-title-meta-heading">Auteur·rice</div>
-    <div class="quarto-title-meta-contents">
-             <p>Pierre Beaucoral </p>
-          </div>
-  </div>
+<div class="quarto-title-meta">
+
     
   
     
@@ -3941,98 +3929,49 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="bienvenue" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Bienvenue</h1>
-<p>Ce site rassemble les <strong>trois TDs</strong> du module de <em>modélisation statistique</em> (M2).<br>
-Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications Stata.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Conseils généraux
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<section id="plan-du-cours" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Plan du cours</h1>
 <ul>
-<li>Conservez une <strong>trace reproductible</strong> de vos commandes (do-file ou Quarto).</li>
-<li><strong>Comparez</strong> systématiquement les modèles via tests d’ajustement (GOF, LR) et critères d’information (AIC/BIC).</li>
-</ul>
-</div>
-</div>
-<section id="accès-rapide-aux-tds" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="accès-rapide-aux-tds"><span class="header-section-number">1.1</span> Accès rapide aux TDs</h2>
-<div class="container-fluid">
-<div class="row row-cols-1 row-cols-md-3 g-3">
-<div class="col">
-<div class="card h-100">
-<section id="td-1-modèle-de-poisson" class="level4 card-body" data-number="1.1.0.1">
-<h4 data-number="1.1.0.1" class="anchored" data-anchor-id="td-1-modèle-de-poisson"><span class="header-section-number">1.1.0.1</span> TD 1 — Modèle de Poisson</h4>
-<p>Régression log-linéaire sur <strong>mortalité par cancer du poumon</strong>, ajustement (deviance, Pearson), comparaison de modèles et interprétation via <code>IRR</code>.</p>
-<p><a href="td1/enonce-td1.html" class="btn btn-primary">Ouvrir l’énoncé TD 1</a></p>
-</section>
-</div>
-</div>
-<div class="col">
-<div class="card h-100">
-<section id="td-2-régression-logistique" class="level4 card-body" data-number="1.1.0.2">
-<h4 data-number="1.1.0.2" class="anchored" data-anchor-id="td-2-régression-logistique"><span class="header-section-number">1.1.0.2</span> TD 2 — Régression Logistique</h4>
-<p>Modélisation du <strong>risque de défaut</strong>, GOF, Logit/Probit, ROC/AUC et seuils.</p>
-<p><a href="td2/enonce-td2.html" class="btn btn-primary">Ouvrir l’énoncé TD 2</a></p>
-</section>
-</div>
-</div>
-<div class="col">
-<div class="card h-100">
-<section id="td-3-multinomial-ordinal" class="level4 card-body" data-number="1.1.0.3">
-<h4 data-number="1.1.0.3" class="anchored" data-anchor-id="td-3-multinomial-ordinal"><span class="header-section-number">1.1.0.3</span> TD 3 — Multinomial &amp; Ordinal</h4>
-<p>Modèles <strong>multinomial</strong> et <strong>ordinal</strong>, interactions, tests et sélection (AIC).</p>
-<p><a href="td3/enonce-td3.html" class="btn btn-primary">Ouvrir l’énoncé TD 3</a></p>
-</section>
-</div>
-</div>
-</div>
-</div>
-<hr>
-</section>
-<section id="organisation-20252026" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="organisation-20252026"><span class="header-section-number">1.2</span> Organisation (2025–2026)</h2>
-<ul>
-<li><strong>Support et consignes</strong> : chaque page de TD précise les données, commandes clés et livrables attendus.<br>
-</li>
-<li><strong>Logiciels</strong> : R, si besoin ce référer à <a href="https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html">ce tutoriel</a> pour utiliser R.<br>
-</li>
-<li><strong>Évaluation</strong> : clarté des commentaires, qualité des comparaisons de modèles, et interprétations <strong>économétriques</strong>.</li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Ressources utiles</strong></p>
-<ul>
-<li><p>Révisions probabilité/GLM : notes de cours &amp; fiches méthodes.</p></li>
-<li><p>Bonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés.</p></li>
-</ul>
-</div>
-</div>
-</section>
-<section id="données-et-rappel-des-contenus" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="données-et-rappel-des-contenus"><span class="header-section-number">1.3</span> Données et rappel des contenus</h2>
-<ul>
-<li><strong>TD 1 — Poisson (tabac &amp; cancer du poumon)</strong> : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en <strong>ratios d’incidence</strong>.<br>
-</li>
-<li><strong>TD 2 — Logit (crédit)</strong> : recodage binaire de la variable dépendante, GOF groupé, <strong>lrtest</strong> entre modèles imbriqués, <strong>ROC/AUC</strong>, comparaison <strong>Logit/Probit</strong>, seuil optimal.<br>
-</li>
-<li><strong>TD 3 — Multinomial/Ordinal (endomètre)</strong> : <strong>mlogit</strong> sur sous-types, prédictions et matrice de classification, <strong>ologit</strong> sur le grade, tests d’interactions, sélection par <strong>AIC</strong>.</li>
+<li>TD1 : Regressions de poisson</li>
+<li>TD2: Regressions Logit</li>
+<li>TD3 : Regressions multinom</li>
+<li>TD4 : Analyse de survie</li>
 </ul>
 <hr>
+<section id="td-1" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="td-1"><span class="header-section-number">1.1</span> TD 1</h2>
+<ul>
+<li><strong>TD1 →</strong> {{&lt; revealjs file=&quot;/td1/td1-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</li>
+</ul>
+<hr>
+</section>
+<section id="td-2" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="td-2"><span class="header-section-number">1.2</span> TD 2</h2>
+<ul>
+<li><strong>TD2 →</strong> {{&lt; revealjs file=&quot;/td2/td2-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</li>
+</ul>
+<hr>
+</section>
+<section id="td-3" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="td-3"><span class="header-section-number">1.3</span> TD 3</h2>
+<ul>
+<li><strong>TD3 →</strong> {{&lt; revealjs file=&quot;/td3/td3-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</li>
+</ul>
+<hr>
+</section>
+<section id="td-4" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="td-4"><span class="header-section-number">1.4</span> TD 4</h2>
+<ul>
+<li><strong>TD4 →</strong> {{&lt; revealjs file=&quot;/td4/td4-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</li>
+</ul>
+<hr>
+</section>
+<section id="astuce-projection" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="astuce-projection"><span class="header-section-number">1.5</span> Astuce projection</h2>
+<p>Raccourcis Reveal.js :<br>
+- <strong>F</strong> : plein écran<br>
+- <strong>S</strong> : notes orateur<br>
+- <strong>Esc</strong> : vue mosaïque</p>
 
 
 <!-- -->
@@ -4066,12 +4005,12 @@ Note
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Copié");
+      button.setAttribute("title", "Copied!");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Copié");
+        button.setAttribute("data-bs-title", "Copied!");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
@@ -4490,132 +4429,67 @@ Note
       }
     }
   });
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Code source</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Modélisation statistique — Travaux Dirigés (M2)&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable&quot;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.&quot;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> fr</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> assets/cover-stats.png</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Pierre Beaucoral&quot;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: theme-light-edu</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-number: true</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    progress: true</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    hash: true</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">    center: false</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    transition: slide</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">    smaller: true</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true </span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: full</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf: default</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> </span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">  markdown: </span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: 72</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Présentation globale&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: solarized</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>knit_hooks<span class="sc">$</span><span class="fu">set</span>(<span class="at">optipng =</span> hook_optipng)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu"># Plan du cours</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>TD1 : Regressions de poisson</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>TD2: Regressions Logit</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>TD3 : Regressions multinom</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>TD4 : Analyse de survie</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu"># Bienvenue</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Ce site rassemble les **trois TDs** du module de *modélisation</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>statistique* (M2).\</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>indications Stata.</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Conseils généraux</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## TD 1</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD1 →** {{&lt; revealjs file=&quot;/td1/td1-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## TD 2</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Conservez une **trace reproductible** de vos commandes (do-file ou</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    Quarto).</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Comparez** systématiquement les modèles via tests d’ajustement</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    (GOF, LR) et critères d’information (AIC/BIC).</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD2 →** {{&lt; revealjs file=&quot;/td2/td2-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## TD 3</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Accès rapide aux TDs</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD3 →** {{&lt; revealjs file=&quot;/td3/td3-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>::::::::::::: container-fluid</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>:::::::::::: {.row .row-cols-1 .row-cols-md-3 .g-3}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>::::: col</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>:::: {.card .h-100}</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>::: card-body</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">#### TD 1 — Modèle de Poisson</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Régression log-linéaire sur **mortalité par cancer du poumon**,</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>ajustement (deviance, Pearson), comparaison de modèles et interprétation</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>via <span class="in">`IRR`</span>.</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Ouvrir l’énoncé TD 1</span><span class="co">](td1/enonce-td1.html)</span>{.btn .btn-primary}</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>::::</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>:::::</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>::::: col</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>:::: {.card .h-100}</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>::: card-body</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="fu">#### TD 2 — Régression Logistique</span></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>Modélisation du **risque de défaut**, GOF, Logit/Probit, ROC/AUC et</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>seuils.</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Ouvrir l’énoncé TD 2</span><span class="co">](td2/enonce-td2.html)</span>{.btn .btn-primary}</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>::::</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>:::::</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>::::: col</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>:::: {.card .h-100}</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>::: card-body</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="fu">#### TD 3 — Multinomial &amp; Ordinal</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>Modèles **multinomial** et **ordinal**, interactions, tests et sélection</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>(AIC).</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Ouvrir l’énoncé TD 3</span><span class="co">](td3/enonce-td3.html)</span>{.btn .btn-primary}</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>::::</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>:::::</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>::::::::::::</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>:::::::::::::</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organisation (2025–2026)</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Support et consignes** : chaque page de TD précise les données,</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    commandes clés et livrables attendus.\</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Logiciels** : R, si besoin ce référer à [ce</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    tutoriel](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    pour utiliser R.\</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Évaluation** : clarté des commentaires, qualité des comparaisons</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    de modèles, et interprétations **économétriques**.</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>**Ressources utiles**</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Révisions probabilité/GLM : notes de cours &amp; fiches méthodes.</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Bonnes pratiques : do-files commentés, tableaux lisibles, graphes</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    annotés.</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## Données et rappel des contenus</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 1 — Poisson (tabac &amp; cancer du poumon)** : encodage des</span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests,</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>    interprétation en **ratios d’incidence**.\</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 2 — Logit (crédit)** : recodage binaire de la variable</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>    dépendante, GOF groupé, **lrtest** entre modèles imbriqués,</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    **ROC/AUC**, comparaison **Logit/Probit**, seuil optimal.\</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 3 — Multinomial/Ordinal (endomètre)** : **mlogit** sur</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>    sous-types, prédictions et matrice de classification, **ologit** sur</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    le grade, tests d’interactions, sélection par **AIC**.</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span></code><button title="Copier vers le presse-papier" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## TD 4</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD4 →** {{&lt; revealjs file=&quot;/td4/td4-slides.html&quot; height=&quot;500px&quot; class=&quot;ratio ratio-16x9&quot; &gt;}}</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Astuce projection</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>Raccourcis Reveal.js :\</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**F** : plein écran\</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**S** : notes orateur\</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Esc** : vue mosaïque</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

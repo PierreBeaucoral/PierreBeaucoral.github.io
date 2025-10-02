@@ -95,7 +95,7 @@
     "href": "td1/td1.html#packages",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "1.2 Packages",
-    "text": "1.2 Packages\n\n\nCode\n# installer si nécessaire : install.packages(c(\"readxl\",\"dplyr\",\"tidyr\",\"janitor\",\"ggplot2\",\"broom\",\"gt\",\"performance\",\"DescTools\"))\nlibrary(readxl)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(janitor)\nlibrary(ggplot2)\nlibrary(broom)\nlibrary(gt)\nlibrary(performance)   # check_overdispersion\nlibrary(DescTools)     # PChisq for GOF (si besoin)"
+    "text": "1.2 Packages\n\n\nCode\n# installer si nécessaire : install.packages(c(\"readxl\",\"dplyr\",\"tidyr\",\"janitor\",\"ggplot2\",\"broom\",\"gt\",\"performance\",\"DescTools\"))\nlibrary(readxl)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(janitor)\nlibrary(ggplot2)\nlibrary(broom)\nlibrary(gt)\nlibrary(performance)   # check_overdispersion\nlibrary(DescTools)     # PChisq for GOF (si besoin)\n\n\n\n\n\n\n\n\nRappel de cours — Régression de Poisson\n\n\n\nLa régression de Poisson est un modèle linéaire généralisé (GLM) adapté aux données de comptage (ex. nombre de décès, d’accidents, de visites).\nFormulation :\n\nVariable dépendante : un comptage \\(Y_i \\in \\{0,1,2,\\dots\\}\\). - Loi supposée : \\(Y_i \\sim \\text{Poisson}(\\mu_i)\\) avec \\(\\mathbb{E}[Y_i] = \\mu_i\\).\nLien log : \\[\n\\log(\\mu_i) = \\beta_0 + \\beta_1 X_{1i} + \\dots + \\beta_p X_{pi} + \\log(\\text{exposition}_i)\n\\] où l’offset \\(\\log(\\text{exposition}_i)\\) tient compte de la taille de la population ou du temps d’observation.\n\nPourquoi utiliser ce modèle ?\n\nLes données sont des comptages positifs (non négatifs).\nLa variance est proportionnelle à la moyenne (\\(\\text{Var}(Y)=\\mu\\)).\nOn cherche à modéliser des taux d’incidence (décès/population, accidents/temps).\n\nInterprétation des coefficients :\n\nLes \\(\\beta_j\\) s’interprètent via l’Incidence Rate Ratio (IRR) :\n\\[\n  IRR_j = e^{\\beta_j}\n  \\] → \\(IRR_j &gt; 1\\) : le taux est plus élevé que la référence.\n→ \\(IRR_j &lt; 1\\) : le taux est plus faible.\n\nDiagnostics courants :\n\nTests de qualité d’ajustement (déviance, Pearson).\nVérification de la sur-dispersion (si \\(\\text{Var}(Y) &gt; \\mu\\), préférer quasi-Poisson ou binomiale négative).\n\nExtensions :\n\nModèle de Poisson avec offset (exposition).\nQuasi-Poisson pour corriger la variance.\nBinomiale négative pour sur-dispersion forte."
   },
   {
     "objectID": "td1/td1.html#importer-les-données-smoking_dat.xlsx",
@@ -109,7 +109,7 @@
     "href": "td1/td1.html#coder-les-deux-variables-enregistrées-en-texte-avec-des-chiffres",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "2.2 Coder les deux variables enregistrées en texte avec des chiffres",
-    "text": "2.2 Coder les deux variables enregistrées en texte avec des chiffres\n\nEn Stata on ferait encode + i.variable.\n\nEn R, il suffit de déclarer les variables comme factor.\n\n\n\nCode\ndf &lt;- df |&gt;\n  mutate(\n    age = factor(age, ordered = FALSE),\n    smoking_status = factor(smoking_status, ordered = FALSE)\n  )\n\n# Vérification des niveaux\nlevels(df$age); levels(df$smoking_status)\n\n\n[1] \"40-44\" \"45-59\" \"50-54\" \"55-59\" \"60-64\" \"65-69\" \"70-74\" \"75-79\" \"80+\"  \n\n\n[1] \"cigarPipeOnly\"  \"cigarretteOnly\" \"cigarrettePlus\" \"no\"            \n\n\n\n\n\n\n\n\nNote\n\n\n\nRappel : Les facteurs indiquent à R qu’il s’agit de variables qualitatives. Chaque modalité sera transformée en variable indicatrice (dummy) dans la régression.\n\n\n\n2.2.1 Unité d’exposition\nL’énoncé précise que population est en centaines de milliers. Pour une interprétation plus intuitive, on peut ramener l’exposition à l’unité personne (facultatif) :\n\n\nCode\n# Ici, on transforme 'population' en nombre de personnes si besoin.\n# Exemple: si population = 2.3 signifie 2.3 * 100 000 personnes :\nexpo_personnes &lt;- TRUE\nscale_factor &lt;- 1e5\n\ndf &lt;- df |&gt;\n  mutate(\n    exposure = if (expo_personnes) population * scale_factor else population\n  )\nsummary(df$exposure)\n\n\n     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. \n  9800000  36925000  85850000 155894444 230550000 605200000"
+    "text": "2.2 Coder les deux variables enregistrées en texte avec des chiffres\n\nEn Stata on ferait encode + i.variable.\nEn R, il suffit de déclarer les variables comme factor.\n\n\n\nCode\ndf &lt;- df |&gt;\n  mutate(\n    age = factor(age, ordered = FALSE),\n    smoking_status = factor(smoking_status, ordered = FALSE)\n  )\n\n# Vérification des niveaux\nlevels(df$age); levels(df$smoking_status)\n\n\n[1] \"40-44\" \"45-59\" \"50-54\" \"55-59\" \"60-64\" \"65-69\" \"70-74\" \"75-79\" \"80+\"  \n\n\n[1] \"cigarPipeOnly\"  \"cigarretteOnly\" \"cigarrettePlus\" \"no\"            \n\n\n\n\n\n\n\n\nNote\n\n\n\nRappel : Les facteurs indiquent à R qu’il s’agit de variables qualitatives. Chaque modalité sera transformée en variable indicatrice (dummy) dans la régression.\n\n\n\n2.2.1 Unité d’exposition\nL’énoncé précise que population est en centaines de milliers. Pour une interprétation plus intuitive, on peut ramener l’exposition à l’unité personne (facultatif) :\n\n\nCode\n# Ici, on transforme 'population' en nombre de personnes si besoin.\n# Exemple: si population = 2.3 signifie 2.3 * 100 000 personnes :\nexpo_personnes &lt;- TRUE\nscale_factor &lt;- 1e5\n\ndf &lt;- df |&gt;\n  mutate(\n    exposure = if (expo_personnes) population * scale_factor else population\n  )\nsummary(df$exposure)\n\n\n     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. \n  9800000  36925000  85850000 155894444 230550000 605200000"
   },
   {
     "objectID": "td1/td1.html#appliquer-un-premier-modèle-de-régression-log-linéaire",
@@ -201,6 +201,62 @@
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "7.4 Bilan",
     "text": "7.4 Bilan\n\nLe modèle de Poisson permet d’estimer des taux de décès en fonction du tabagisme et de l’âge.\nLes tests d’ajustement (déviance, Pearson) valident le modèle si p-value élevée.\nLe tabagisme a un impact significatif sur la mortalité par cancer du poumon.\nLes IRR offrent une interprétation intuitive : par rapport à la catégorie de référence, combien de fois le taux de décès est-il multiplié.\n\n\nConseil pratique : en recherche appliquée, vérifiez toujours la sur-dispersion et documentez les hypothèses de variance (Poisson vs quasi-Poisson vs binomiale négative)."
+  },
+  {
+    "objectID": "global-slides.html",
+    "href": "global-slides.html",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD1 : Regressions de poisson\nTD2: Regressions Logit\nTD3 : Regressions multinom\nTD4 : Analyse de survie\n\n\n\n\n\nTD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\nRaccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
+  },
+  {
+    "objectID": "global-slides.html#td-1",
+    "href": "global-slides.html#td-1",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-2",
+    "href": "global-slides.html#td-2",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-3",
+    "href": "global-slides.html#td-3",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-4",
+    "href": "global-slides.html#td-4",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#astuce-projection",
+    "href": "global-slides.html#astuce-projection",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "Raccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
+  },
+  {
+    "objectID": "td1/td1-slides.html#modèle-mod2",
+    "href": "td1/td1-slides.html#modèle-mod2",
+    "title": "TD 1 — Régression de Poisson (R)",
+    "section": "Modèle (mod2)",
+    "text": "Modèle (mod2)\n\n\nCode\nmod2 &lt;- glm(deaths ~ cigarette_user + age + offset(log(exposure)),\n            family = poisson, data = df)\n\nsummary(mod2)\n\n\n\nCall:\nglm(formula = deaths ~ cigarette_user + age + offset(log(exposure)), \n    family = poisson, data = df)\n\nCoefficients: (1 not defined because of singularities)\n                Estimate Std. Error  z value Pr(&gt;|z|)    \n(Intercept)    -14.90865    0.05842 -255.195  &lt; 2e-16 ***\ncigarette_user        NA         NA       NA       NA    \nage45-59         0.55603    0.07999    6.951 3.62e-12 ***\nage50-54         0.98815    0.07681   12.864  &lt; 2e-16 ***\nage55-59         1.37145    0.06526   21.017  &lt; 2e-16 ***\nage60-64         1.62900    0.06254   26.049  &lt; 2e-16 ***\nage65-69         1.95715    0.06269   31.218  &lt; 2e-16 ***\nage70-74         2.20577    0.06410   34.409  &lt; 2e-16 ***\nage75-79         2.45779    0.06713   36.610  &lt; 2e-16 ***\nage80+           2.68749    0.07080   37.958  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for poisson family taken to be 1)\n\n    Null deviance: 4055.98  on 35  degrees of freedom\nResidual deviance:  191.72  on 27  degrees of freedom\nAIC: 449.75\n\nNumber of Fisher Scoring iterations: 4"
+  },
+  {
+    "objectID": "td1/td1-slides.html#anova",
+    "href": "td1/td1-slides.html#anova",
+    "title": "TD 1 — Régression de Poisson (R)",
+    "section": "Anova",
+    "text": "Anova\n\n\nCode\nanova(mod2, test = \"Chisq\")\n\n\nAnalysis of Deviance Table\n\nModel: poisson, link: log\n\nResponse: deaths\n\nTerms added sequentially (first to last)\n\n               Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    \nNULL                              35     4056.0              \ncigarette_user  0      0.0        35     4056.0              \nage             8   3864.3        27      191.7 &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\nInterprétation générale\n\nDans ce modèle, l’effet de l’âge est massif et hautement significatif : les taux de décès augmentent très fortement avec l’âge.\nEn revanche, la variable binaire cigarette_user n’apporte aucune information supplémentaire par rapport au modèle nul (elle ne réduit pas la déviance)\n\n⚠️ Cela peut surprendre :\n\nC’est probablement parce que age capte déjà la quasi-totalité de la structure de mortalité (gradient très fort), et que l’effet du tabac n’est visible que lorsqu’on distingue plus finement le type de tabac (cf. smoking_status à 4 classes dans mod1)."
   },
   {
     "objectID": "td1/énoncé-td1.html",

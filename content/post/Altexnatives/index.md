@@ -46,6 +46,8 @@ For researchers who prefer to work locally for **speed**, **privacy**, and **rep
 - Great for theses or structured documents where you want to focus on content rather than code.  
 - Works offline and can sync via shared drives or Git for collaboration.
 
+<img width="777" height="741" alt="main_window" src="https://github.com/user-attachments/assets/41849305-b067-45fd-816e-1a6b67a8905e" />
+
 ---
 
 ### 📄 R Markdown (.Rmd) and Quarto (.qmd)
@@ -71,6 +73,9 @@ This is written in Markdown but compiled through LaTeX.
 
 ✅ *Ideal for academics who already use R or Python and want reproducible documents.*
 
+<img width="720" height="437" alt="interactive-1-htmlwidget" src="https://github.com/user-attachments/assets/4b013148-43b3-4a49-98b7-580dd2bf7c79" />
+
+
 ---
 
 ### ✨ Typst — A modern, fast alternative to LaTeX
@@ -88,6 +93,9 @@ Hello *world*! Here's a math equation: $E = mc^2$.
 ```
 
 ⚡ **Key advantage:** Typst documents typically compile in milliseconds, even for large projects.
+
+<img width="1523" height="883" alt="1-writing-app" src="https://github.com/user-attachments/assets/51de07e9-0b9d-470c-8d9f-c3e0cbf750ff" />
+
 
 ---
 
@@ -129,6 +137,37 @@ For teams using Quarto (`.qmd`), putting your project in a GitHub or GitLab repo
 - CI pipelines to generate the final PDF/HTML output.
 - Easy versioning, code review, and reproducibility.
 
+```yaml
+---
+title: "ggplot2 demo"
+author: "Norah Jones"
+date: "5/22/2021"
+format: 
+  html:
+    fig-width: 8
+    fig-height: 4
+    code-fold: true
+---
+```
+
+#### Air Quality
+
+@fig-airquality further explores the impact of temperature on ozone level.
+
+```{r}
+#| label: fig-airquality
+#| fig-cap: "Temperature and ozone level."
+#| warning: false
+
+library(ggplot2)
+ggplot(airquality, aes(Temp, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+<img width="1182" height="1416" alt="image" src="https://github.com/user-attachments/assets/dc6f4d8f-0ebf-4322-a7f1-4d401c7a2549" />
+
+
 ---
 
 ### ⚡ Typst + Git + CI
@@ -149,6 +188,7 @@ jobs:
         run: typst compile main.typ main.pdf
 ```
 
+
 ---
 
 ## 🌐 Online platforms — *Cloud collaboration à la Overleaf*
@@ -162,12 +202,16 @@ If your collaborators prefer a **browser-based, real-time editor**, these platfo
   - Git integration for backups.
 - Ideal for small to medium projects or quick collaborations.
 
+<img width="1507" height="784" alt="Capture d’écran 2025-10-16 à 14 08 26" src="https://github.com/user-attachments/assets/0aaede44-ec90-4275-95ad-b6c34817ae2d" />
+
 ---
 
 ### 📝 Authorea
 - [Authorea](https://www.authorea.com/) blends LaTeX, Markdown, and a web-based interface designed for scholarly writing.
 - Supports citations, commenting, version history, and publishing workflows.
 - Less LaTeX-intensive than Overleaf but works well for interdisciplinary teams.
+
+<img width="1507" height="784" alt="Capture d’écran 2025-10-16 à 14 09 15" src="https://github.com/user-attachments/assets/9890d2f7-255b-4c9b-b22d-d7e64749ffda" />
 
 ---
 
@@ -180,6 +224,8 @@ If your collaborators prefer a **browser-based, real-time editor**, these platfo
   - Fast, responsive interface.
 
 💡 *Crixet is still growing, but it already performs well for medium to large projects.*
+
+<img width="1600" height="1000" alt="image" src="https://github.com/user-attachments/assets/7664b406-874d-4d16-b960-db2922a158b7" />
 
 ---
 
@@ -206,6 +252,9 @@ If your collaborators prefer a **browser-based, real-time editor**, these platfo
 - Not a collaborative editor, but good for individuals who want a minimal writing environment with citation support.
 
 Zettlr is especially powerful when combined with Pandoc or Quarto pipelines, making it a flexible alternative for those who prefer **lightweight Markdown workflows** over full LaTeX environments.
+
+<img width="1867" height="1227" alt="image" src="https://github.com/user-attachments/assets/585f1e2b-a442-4cb6-80bf-a1ffba6eab04" />
+
 
 ---
 

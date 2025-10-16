@@ -25,7 +25,7 @@ This post reviews and categorizes some of the best alternatives in 2025, grouped
 
 ---
 
-## 🧰 1) Local solutions — *Full control, no limits*
+## 🧰 Local solutions — *Full control, no limits*
 
 For researchers who prefer to work locally for **speed**, **privacy**, and **reproducibility**, these tools give you complete control over your typesetting environment.
 
@@ -89,7 +89,7 @@ Hello *world*! Here's a math equation: $E = mc^2$.
 
 ---
 
-## 🔁 2) Local + repository (hybrid) — *Collaborative and reproducible*
+## 🔁 Local + repository (hybrid) — *Collaborative and reproducible*
 
 These workflows keep writing **local**, but use **version control (GitHub/GitLab)** for collaboration, history, CI builds, and archived artifacts.
 
@@ -149,7 +149,7 @@ jobs:
 
 ---
 
-## 🌐 3) Online platforms — *Cloud collaboration à la Overleaf*
+## 🌐 Online platforms — *Cloud collaboration à la Overleaf*
 
 If your collaborators prefer a **browser-based, real-time editor**, these platforms mimic (or surpass) Overleaf’s interface without the same free-tier compilation limitation.
 

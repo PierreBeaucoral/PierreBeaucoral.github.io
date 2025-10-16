@@ -154,7 +154,7 @@ format:
 
 @fig-airquality further explores the impact of temperature on ozone level.
 
-```{r}
+```r
 #| label: fig-airquality
 #| fig-cap: "Temperature and ozone level."
 #| warning: false

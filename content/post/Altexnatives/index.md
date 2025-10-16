@@ -37,6 +37,8 @@ For researchers who prefer to work locally for **speed**, **privacy**, and **rep
   - Excellent integration with Git and BibTeX.
 - **Ideal for:** solo researchers, or as a base for hybrid workflows with Git.
 
+![preview](https://github.com/user-attachments/assets/3f3cfbd0-f02d-4953-a32a-755fc88dea48)
+
 ---
 
 ### ✍️ LyX

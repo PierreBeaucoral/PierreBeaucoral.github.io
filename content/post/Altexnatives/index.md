@@ -196,6 +196,17 @@ If your collaborators prefer a **browser-based, real-time editor**, these platfo
 
 ---
 
+## 🧰 Other Tools & Honorable Mentions
+
+### 🧰 **Zettlr** ([zettlr.com](https://www.zettlr.com/))
+- A Markdown-based editor popular among academics for note-taking and writing.
+- Integrates with Pandoc, Zotero, and LaTeX.
+- Not a collaborative editor, but good for individuals who want a minimal writing environment with citation support.
+
+Zettlr is especially powerful when combined with Pandoc or Quarto pipelines, making it a flexible alternative for those who prefer **lightweight Markdown workflows** over full LaTeX environments.
+
+---
+
 ## 🧭 Final thoughts
 
 Overleaf transformed academic writing, but stricter compilation limits make it less viable for complex projects on free plans. Luckily, the ecosystem of LaTeX and scientific writing tools has **matured dramatically**:

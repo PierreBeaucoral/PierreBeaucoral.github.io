@@ -1,6 +1,6 @@
 ---
 title: Are there any AlTEXnatives?
-date: '2025-16-10'
+date: '2025-10-16'
 summary: Modern Alternatives for LaTeX Writing and Collaboration
 ---
 

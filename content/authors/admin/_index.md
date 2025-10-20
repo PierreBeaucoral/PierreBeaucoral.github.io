@@ -36,7 +36,7 @@ interests:
 # Education to show in About widget
 education:
   courses:
-    - course: PhD in Climate finance
+    - course: PhD Candidate in Development Economics
       institution: Clermont Auvergne University
       year: 2023
     - course: Master degree in development economics, with honours

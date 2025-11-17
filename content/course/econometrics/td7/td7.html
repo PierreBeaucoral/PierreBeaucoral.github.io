@@ -4031,22 +4031,25 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#contexte-endogénéité-et-variables-instrumentales" id="toc-contexte-endogénéité-et-variables-instrumentales" class="nav-link active" data-scroll-target="#contexte-endogénéité-et-variables-instrumentales"><span class="header-section-number">0.1</span> 1. Contexte : endogénéité et variables instrumentales</a></li>
-  <li><a href="#notation-matricielle-et-identification" id="toc-notation-matricielle-et-identification" class="nav-link" data-scroll-target="#notation-matricielle-et-identification"><span class="header-section-number">0.2</span> 2. Notation matricielle et identification</a></li>
-  <li><a href="#exact-identification-vs-sur-identification" id="toc-exact-identification-vs-sur-identification" class="nav-link" data-scroll-target="#exact-identification-vs-sur-identification"><span class="header-section-number">0.3</span> 3. Exact-identification vs sur-identification</a></li>
-  <li><a href="#intuition-du-test-de-sur-identification" id="toc-intuition-du-test-de-sur-identification" class="nav-link" data-scroll-target="#intuition-du-test-de-sur-identification"><span class="header-section-number">0.4</span> 4. Intuition du test de sur-identification</a></li>
-  <li><a href="#construction-de-la-statistique-de-sargan-cas-homoscédastique" id="toc-construction-de-la-statistique-de-sargan-cas-homoscédastique" class="nav-link" data-scroll-target="#construction-de-la-statistique-de-sargan-cas-homoscédastique"><span class="header-section-number">0.5</span> 5. Construction de la statistique de Sargan (cas homoscédastique)</a>
+  <li><a href="#rappel-de-cours" id="toc-rappel-de-cours" class="nav-link active" data-scroll-target="#rappel-de-cours"><span class="header-section-number">1</span> Rappel de cours</a>
   <ul class="collapse">
-  <li><a href="#étape-1-estimation-vi" id="toc-étape-1-estimation-vi" class="nav-link" data-scroll-target="#étape-1-estimation-vi"><span class="header-section-number">0.5.1</span> 5.1. Étape 1 : estimation VI</a></li>
-  <li><a href="#étape-2-régression-auxiliaire" id="toc-étape-2-régression-auxiliaire" class="nav-link" data-scroll-target="#étape-2-régression-auxiliaire"><span class="header-section-number">0.5.2</span> 5.2. Étape 2 : régression auxiliaire</a></li>
-  <li><a href="#statistique-de-sargan" id="toc-statistique-de-sargan" class="nav-link" data-scroll-target="#statistique-de-sargan"><span class="header-section-number">0.5.3</span> 5.3. Statistique de Sargan</a></li>
+  <li><a href="#contexte-endogénéité-et-variables-instrumentales" id="toc-contexte-endogénéité-et-variables-instrumentales" class="nav-link" data-scroll-target="#contexte-endogénéité-et-variables-instrumentales"><span class="header-section-number">1.1</span> Contexte : endogénéité et variables instrumentales</a></li>
+  <li><a href="#notation-matricielle-et-identification" id="toc-notation-matricielle-et-identification" class="nav-link" data-scroll-target="#notation-matricielle-et-identification"><span class="header-section-number">1.2</span> Notation matricielle et identification</a></li>
+  <li><a href="#exact-identification-vs-sur-identification" id="toc-exact-identification-vs-sur-identification" class="nav-link" data-scroll-target="#exact-identification-vs-sur-identification"><span class="header-section-number">1.3</span> Exact-identification vs sur-identification</a></li>
+  <li><a href="#intuition-du-test-de-sur-identification" id="toc-intuition-du-test-de-sur-identification" class="nav-link" data-scroll-target="#intuition-du-test-de-sur-identification"><span class="header-section-number">1.4</span> Intuition du test de sur-identification</a></li>
+  <li><a href="#construction-de-la-statistique-de-sargan-cas-homoscédastique" id="toc-construction-de-la-statistique-de-sargan-cas-homoscédastique" class="nav-link" data-scroll-target="#construction-de-la-statistique-de-sargan-cas-homoscédastique"><span class="header-section-number">1.5</span> Construction de la statistique de Sargan (cas homoscédastique)</a>
+  <ul class="collapse">
+  <li><a href="#étape-1-estimation-vi" id="toc-étape-1-estimation-vi" class="nav-link" data-scroll-target="#étape-1-estimation-vi"><span class="header-section-number">1.5.1</span> Étape 1 : estimation VI</a></li>
+  <li><a href="#étape-2-régression-auxiliaire" id="toc-étape-2-régression-auxiliaire" class="nav-link" data-scroll-target="#étape-2-régression-auxiliaire"><span class="header-section-number">1.5.2</span> Étape 2 : régression auxiliaire</a></li>
+  <li><a href="#statistique-de-sargan" id="toc-statistique-de-sargan" class="nav-link" data-scroll-target="#statistique-de-sargan"><span class="header-section-number">1.5.3</span> Statistique de Sargan</a></li>
   </ul></li>
-  <li><a href="#loi-asymptotique-et-hypothèses" id="toc-loi-asymptotique-et-hypothèses" class="nav-link" data-scroll-target="#loi-asymptotique-et-hypothèses"><span class="header-section-number">0.6</span> 6. Loi asymptotique et hypothèses</a></li>
-  <li><a href="#formulation-du-test" id="toc-formulation-du-test" class="nav-link" data-scroll-target="#formulation-du-test"><span class="header-section-number">0.7</span> 7. Formulation du test</a></li>
-  <li><a href="#interprétation-pratique" id="toc-interprétation-pratique" class="nav-link" data-scroll-target="#interprétation-pratique"><span class="header-section-number">0.8</span> 8. Interprétation pratique</a></li>
-  <li><a href="#sargan-vs-hansen-j-test-robuste" id="toc-sargan-vs-hansen-j-test-robuste" class="nav-link" data-scroll-target="#sargan-vs-hansen-j-test-robuste"><span class="header-section-number">0.9</span> 9. Sargan vs Hansen (J-test robuste)</a></li>
-  <li><a href="#exemple-stylisé-1-endogène-2-instruments" id="toc-exemple-stylisé-1-endogène-2-instruments" class="nav-link" data-scroll-target="#exemple-stylisé-1-endogène-2-instruments"><span class="header-section-number">0.10</span> 10. Exemple stylisé : 1 endogène, 2 instruments</a></li>
-  <li><a href="#questions-tds" id="toc-questions-tds" class="nav-link" data-scroll-target="#questions-tds"><span class="header-section-number">1</span> Questions TDs</a></li>
+  <li><a href="#loi-asymptotique-et-hypothèses" id="toc-loi-asymptotique-et-hypothèses" class="nav-link" data-scroll-target="#loi-asymptotique-et-hypothèses"><span class="header-section-number">1.6</span> Loi asymptotique et hypothèses</a></li>
+  <li><a href="#formulation-du-test" id="toc-formulation-du-test" class="nav-link" data-scroll-target="#formulation-du-test"><span class="header-section-number">1.7</span> Formulation du test</a></li>
+  <li><a href="#interprétation-pratique" id="toc-interprétation-pratique" class="nav-link" data-scroll-target="#interprétation-pratique"><span class="header-section-number">1.8</span> Interprétation pratique</a></li>
+  <li><a href="#sargan-vs-hansen-j-test-robuste" id="toc-sargan-vs-hansen-j-test-robuste" class="nav-link" data-scroll-target="#sargan-vs-hansen-j-test-robuste"><span class="header-section-number">1.9</span> Sargan vs Hansen (J-test robuste)</a></li>
+  <li><a href="#exemple-stylisé-1-endogène-2-instruments" id="toc-exemple-stylisé-1-endogène-2-instruments" class="nav-link" data-scroll-target="#exemple-stylisé-1-endogène-2-instruments"><span class="header-section-number">1.10</span> Exemple stylisé : 1 endogène, 2 instruments</a></li>
+  </ul></li>
+  <li><a href="#questions-tds" id="toc-questions-tds" class="nav-link" data-scroll-target="#questions-tds"><span class="header-section-number">2</span> Questions TDs</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="td7.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -4079,8 +4082,10 @@ window.Quarto = {
 </header>
 
 
-<section id="contexte-endogénéité-et-variables-instrumentales" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="contexte-endogénéité-et-variables-instrumentales"><span class="header-section-number">0.1</span> 1. Contexte : endogénéité et variables instrumentales</h2>
+<section id="rappel-de-cours" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Rappel de cours</h1>
+<section id="contexte-endogénéité-et-variables-instrumentales" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="contexte-endogénéité-et-variables-instrumentales"><span class="header-section-number">1.1</span> Contexte : endogénéité et variables instrumentales</h2>
 <p>On part d’un modèle linéaire simple :</p>
 <p><span class="math display">\[
 y_i = \beta x_i + \gamma&#39; w_i + u_i
@@ -4102,8 +4107,8 @@ alors l’estimateur MCO de <span class="math inline">\(\beta\)</span> est <stro
 <p>Ces instruments permettent d’identifier <span class="math inline">\(\beta\)</span> même si <span class="math inline">\(x_i\)</span> est endogène.</p>
 <hr>
 </section>
-<section id="notation-matricielle-et-identification" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="notation-matricielle-et-identification"><span class="header-section-number">0.2</span> 2. Notation matricielle et identification</h2>
+<section id="notation-matricielle-et-identification" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="notation-matricielle-et-identification"><span class="header-section-number">1.2</span> Notation matricielle et identification</h2>
 <p>On empile les données :</p>
 <ul>
 <li><span class="math inline">\(y\)</span> : vecteur <span class="math inline">\((n \times 1)\)</span></li>
@@ -4123,8 +4128,8 @@ E[Z&#39;u] = 0
 <p>où <span class="math inline">\(K\)</span> est le nombre de variables <strong>endogènes à instrumenter</strong>.</p>
 <hr>
 </section>
-<section id="exact-identification-vs-sur-identification" class="level2" data-number="0.3">
-<h2 data-number="0.3" class="anchored" data-anchor-id="exact-identification-vs-sur-identification"><span class="header-section-number">0.3</span> 3. Exact-identification vs sur-identification</h2>
+<section id="exact-identification-vs-sur-identification" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="exact-identification-vs-sur-identification"><span class="header-section-number">1.3</span> Exact-identification vs sur-identification</h2>
 <p>On note :</p>
 <ul>
 <li><span class="math inline">\(K\)</span> : nombre de variables endogènes instrumentées</li>
@@ -4142,8 +4147,8 @@ E[Z&#39;u] = 0
 <p>Dans le cas <strong>sur-identifié</strong>, on a <strong>plus de conditions d’exogénéité</strong> <span class="math inline">\(E[Z&#39;u]=0\)</span> que nécessaire pour identifier les paramètres. Ces conditions supplémentaires peuvent être <strong>testées</strong> empiriquement : c’est le rôle du <strong>test de sur-identification de Sargan</strong>.</p>
 <hr>
 </section>
-<section id="intuition-du-test-de-sur-identification" class="level2" data-number="0.4">
-<h2 data-number="0.4" class="anchored" data-anchor-id="intuition-du-test-de-sur-identification"><span class="header-section-number">0.4</span> 4. Intuition du test de sur-identification</h2>
+<section id="intuition-du-test-de-sur-identification" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="intuition-du-test-de-sur-identification"><span class="header-section-number">1.4</span> Intuition du test de sur-identification</h2>
 <p>Idée simple :</p>
 <ol type="1">
 <li><p>On estime le modèle par VI (typiquement 2SLS) et on obtient les <strong>résidus</strong> :<span class="math display">\[
@@ -4158,10 +4163,10 @@ E[z_{ji} \hat{u}_i] \approx 0 \quad \forall j
 <p>Le test de Sargan mesure précisément la “force” de cette éventuelle corrélation entre <span class="math inline">\(\hat{u}_i\)</span> et <span class="math inline">\(Z\)</span>.</p>
 <hr>
 </section>
-<section id="construction-de-la-statistique-de-sargan-cas-homoscédastique" class="level2" data-number="0.5">
-<h2 data-number="0.5" class="anchored" data-anchor-id="construction-de-la-statistique-de-sargan-cas-homoscédastique"><span class="header-section-number">0.5</span> 5. Construction de la statistique de Sargan (cas homoscédastique)</h2>
-<section id="étape-1-estimation-vi" class="level3" data-number="0.5.1">
-<h3 data-number="0.5.1" class="anchored" data-anchor-id="étape-1-estimation-vi"><span class="header-section-number">0.5.1</span> 5.1. Étape 1 : estimation VI</h3>
+<section id="construction-de-la-statistique-de-sargan-cas-homoscédastique" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="construction-de-la-statistique-de-sargan-cas-homoscédastique"><span class="header-section-number">1.5</span> Construction de la statistique de Sargan (cas homoscédastique)</h2>
+<section id="étape-1-estimation-vi" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="étape-1-estimation-vi"><span class="header-section-number">1.5.1</span> Étape 1 : estimation VI</h3>
 <p>On estime le modèle :</p>
 <p><span class="math display">\[
 y = X\beta + u
@@ -4171,16 +4176,16 @@ y = X\beta + u
 \hat{u} = y - X\hat{\beta}_{2SLS}
 \]</span></p>
 </section>
-<section id="étape-2-régression-auxiliaire" class="level3" data-number="0.5.2">
-<h3 data-number="0.5.2" class="anchored" data-anchor-id="étape-2-régression-auxiliaire"><span class="header-section-number">0.5.2</span> 5.2. Étape 2 : régression auxiliaire</h3>
+<section id="étape-2-régression-auxiliaire" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="étape-2-régression-auxiliaire"><span class="header-section-number">1.5.2</span> Étape 2 : régression auxiliaire</h3>
 <p>On régresse ensuite les résidus <span class="math inline">\(\hat{u}\)</span> sur l’ensemble des instruments <span class="math inline">\(Z\)</span> (et, en pratique, les exogènes inclus dans <span class="math inline">\(X\)</span>) :</p>
 <p><span class="math display">\[
 \hat{u}_i = \delta_0 + Z_i&#39; \delta + v_i
 \]</span></p>
 <p>On note <span class="math inline">\(R^2_{\hat{u}\sim Z}\)</span> le coefficient de détermination de cette régression.</p>
 </section>
-<section id="statistique-de-sargan" class="level3" data-number="0.5.3">
-<h3 data-number="0.5.3" class="anchored" data-anchor-id="statistique-de-sargan"><span class="header-section-number">0.5.3</span> 5.3. Statistique de Sargan</h3>
+<section id="statistique-de-sargan" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="statistique-de-sargan"><span class="header-section-number">1.5.3</span> Statistique de Sargan</h3>
 <p>La statistique de Sargan est définie par :</p>
 <p><span class="math display">\[
 J = n \times R^2_{\hat{u}\sim Z}
@@ -4190,8 +4195,8 @@ J = n \times R^2_{\hat{u}\sim Z}
 <hr>
 </section>
 </section>
-<section id="loi-asymptotique-et-hypothèses" class="level2" data-number="0.6">
-<h2 data-number="0.6" class="anchored" data-anchor-id="loi-asymptotique-et-hypothèses"><span class="header-section-number">0.6</span> 6. Loi asymptotique et hypothèses</h2>
+<section id="loi-asymptotique-et-hypothèses" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="loi-asymptotique-et-hypothèses"><span class="header-section-number">1.6</span> Loi asymptotique et hypothèses</h2>
 <p>Sous les hypothèses suivantes :</p>
 <ul>
 <li>instruments valides : <span class="math inline">\(E[Z&#39;u] = 0\)</span></li>
@@ -4216,8 +4221,8 @@ J \overset{a}{\sim} \chi^2_{L-K}
 <p>On peut donc calculer une <strong>p-value</strong> à partir de cette loi <span class="math inline">\(\chi^2_{L-K}\)</span>.</p>
 <hr>
 </section>
-<section id="formulation-du-test" class="level2" data-number="0.7">
-<h2 data-number="0.7" class="anchored" data-anchor-id="formulation-du-test"><span class="header-section-number">0.7</span> 7. Formulation du test</h2>
+<section id="formulation-du-test" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="formulation-du-test"><span class="header-section-number">1.7</span> Formulation du test</h2>
 <ul>
 <li><p><strong>Hypothèse nulle</strong> <span class="math inline">\(H_0\)</span> : <em>Tous les instruments sont valides (exogènes)</em><br>
 <span class="math inline">\(E[Z&#39;u] = 0\)</span></p></li>
@@ -4226,8 +4231,8 @@ J \overset{a}{\sim} \chi^2_{L-K}
 </ul>
 <hr>
 </section>
-<section id="interprétation-pratique" class="level2" data-number="0.8">
-<h2 data-number="0.8" class="anchored" data-anchor-id="interprétation-pratique"><span class="header-section-number">0.8</span> 8. Interprétation pratique</h2>
+<section id="interprétation-pratique" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="interprétation-pratique"><span class="header-section-number">1.8</span> Interprétation pratique</h2>
 <p>On calcule la p-value associée à <span class="math inline">\(J\)</span> sous la loi <span class="math inline">\(\chi^2_{L-K}\)</span> :</p>
 <ul>
 <li><strong>Si la p-value est élevée</strong> (par ex. &gt; 5 %) :
@@ -4246,8 +4251,8 @@ J \overset{a}{\sim} \chi^2_{L-K}
 <p>Important : le test ne dit pas <strong>quel</strong> instrument est problématique. Il teste seulement la <strong>validité conjointe</strong> de tous les instruments.</p>
 <hr>
 </section>
-<section id="sargan-vs-hansen-j-test-robuste" class="level2" data-number="0.9">
-<h2 data-number="0.9" class="anchored" data-anchor-id="sargan-vs-hansen-j-test-robuste"><span class="header-section-number">0.9</span> 9. Sargan vs Hansen (J-test robuste)</h2>
+<section id="sargan-vs-hansen-j-test-robuste" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="sargan-vs-hansen-j-test-robuste"><span class="header-section-number">1.9</span> Sargan vs Hansen (J-test robuste)</h2>
 <p>Le test de Sargan repose sur l’hypothèse d’<strong>homoscédasticité</strong>.<br>
 En présence d’<strong>hétéroscédasticité</strong>, la loi de <span class="math inline">\(J = nR^2\)</span> n’est plus une bonne approximation.</p>
 <p>Dans le cadre plus général du <strong>GMM (Generalized Method of Moments)</strong>, on peut construire un test de sur-identification <strong>robuste à l’hétéroscédasticité</strong> :</p>
@@ -4266,8 +4271,8 @@ En présence d’<strong>hétéroscédasticité</strong>, la loi de <span class=
 </ul>
 <hr>
 </section>
-<section id="exemple-stylisé-1-endogène-2-instruments" class="level2" data-number="0.10">
-<h2 data-number="0.10" class="anchored" data-anchor-id="exemple-stylisé-1-endogène-2-instruments"><span class="header-section-number">0.10</span> 10. Exemple stylisé : 1 endogène, 2 instruments</h2>
+<section id="exemple-stylisé-1-endogène-2-instruments" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="exemple-stylisé-1-endogène-2-instruments"><span class="header-section-number">1.10</span> Exemple stylisé : 1 endogène, 2 instruments</h2>
 <p>Considérons le modèle :</p>
 <p><span class="math display">\[
 y_i = \beta x_i + \gamma&#39; w_i + u_i
@@ -4292,8 +4297,9 @@ y_i = \beta x_i + \gamma&#39; w_i + u_i
 </ol>
 <hr>
 </section>
-<section id="questions-tds" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Questions TDs</h1>
+</section>
+<section id="questions-tds" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Questions TDs</h1>
 <p><strong>1-</strong> Appliquez le test d’exogénéité de <strong><em>Nakamura et Nakamura</em></strong> en utilisant trois ensembles d’instruments :</p>
 <p>i)-        <strong><em>motheduc</em></strong>  (éducation de la mère)</p>
 <p>ii)-       <strong><em>motheduc</em></strong> et <strong><em>fatheduc</em></strong>  (éducation du père)</p>

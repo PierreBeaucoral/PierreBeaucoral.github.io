@@ -1068,11 +1068,31 @@ Pierre Beaucoral
 <h2 id="toc-title">Table of contents</h2>
 <ul>
 
-<li><a href="#/test-de-sur-identification" id="/toc-test-de-sur-identification"><span class="header-section-number">1</span> Test de sur-identification</a>
+<li><a href="#/plan-de-la-séance" id="/toc-plan-de-la-séance"><span class="header-section-number">1</span> Plan de la séance</a>
 <ul>
 
 </ul></li>
-<li><a href="#/questions-tds" id="/toc-questions-tds"><span class="header-section-number">2</span> Questions TDs</a>
+<li><a href="#/rappel-endogénéité-et-variables-instrumentales" id="/toc-rappel-endogénéité-et-variables-instrumentales"><span class="header-section-number">2</span> Rappel : endogénéité et variables instrumentales</a>
+<ul>
+<li><a href="#/notation-vi-forme-matricielle" id="/toc-notation-vi-forme-matricielle"><span class="header-section-number">2.1</span> Notation VI (forme matricielle)</a></li>
+<li><a href="#/identification-exactement-vs-sur-identifié" id="/toc-identification-exactement-vs-sur-identifié"><span class="header-section-number">2.2</span> Identification : exactement vs sur-identifié</a></li>
+<li><a href="#/idée-de-la-sur-identification" id="/toc-idée-de-la-sur-identification"><span class="header-section-number">2.3</span> Idée de la sur-identification</a></li>
+<li><a href="#/idée-informelle-du-test-de-sargan" id="/toc-idée-informelle-du-test-de-sargan"><span class="header-section-number">2.4</span> Idée informelle du test de Sargan</a></li>
+<li><a href="#/construction-de-la-statistique-de-sargan-cas-homoscédastique" id="/toc-construction-de-la-statistique-de-sargan-cas-homoscédastique"><span class="header-section-number">2.5</span> Construction de la statistique de Sargan (cas homoscédastique)</a></li>
+<li><a href="#/loi-asymptotique-de-la-statistique" id="/toc-loi-asymptotique-de-la-statistique"><span class="header-section-number">2.6</span> Loi asymptotique de la statistique</a></li>
+<li><a href="#/hypothèses-du-test-de-sargan" id="/toc-hypothèses-du-test-de-sargan"><span class="header-section-number">2.7</span> Hypothèses du test de Sargan</a></li>
+<li><a href="#/interprétation-du-test" id="/toc-interprétation-du-test"><span class="header-section-number">2.8</span> Interprétation du test</a></li>
+<li><a href="#/sargan-vs-hansen-j-test-robuste" id="/toc-sargan-vs-hansen-j-test-robuste"><span class="header-section-number">2.9</span> Sargan vs Hansen (J-test robuste)</a></li>
+
+</ul></li>
+<li><a href="#/exemple-stylisé-1-variable-endogène-2-instruments" id="/toc-exemple-stylisé-1-variable-endogène-2-instruments"><span class="header-section-number">3</span> Exemple stylisé : 1 variable endogène, 2 instruments</a>
+<ul>
+<li><a href="#/exemple-de-sortie-interprétation-en-mots" id="/toc-exemple-de-sortie-interprétation-en-mots"><span class="header-section-number">3.1</span> Exemple de sortie (interprétation en mots)</a></li>
+<li><a href="#/limites-et-mises-en-garde" id="/toc-limites-et-mises-en-garde"><span class="header-section-number">3.2</span> Limites et mises en garde</a></li>
+<li><a href="#/lien-avec-les-conditions-dorthogonalité" id="/toc-lien-avec-les-conditions-dorthogonalité"><span class="header-section-number">3.3</span> Lien avec les conditions d’orthogonalité</a></li>
+
+</ul></li>
+<li><a href="#/questions-tds" id="/toc-questions-tds"><span class="header-section-number">4</span> Questions TDs</a>
 <ul>
 
 
@@ -1092,16 +1112,290 @@ Pierre Beaucoral
 </div>
 </section>
 <section>
-<section id="test-de-sur-identification" class="title-slide slide level1 center" data-number="1">
-<h1><span class="header-section-number">1</span> Test de sur-identification</h1>
-
+<section id="plan-de-la-séance" class="title-slide slide level1 center" data-number="1">
+<h1><span class="header-section-number">1</span> Plan de la séance</h1>
+<ul>
+<li>Rappel : endogénéité et VI</li>
+<li>Identification : exact vs sur-identification</li>
+<li>Idée du test de sur-identification</li>
+<li>Statistique de Sargan (cas homoscédastique)</li>
+<li>Interprétation et limites</li>
+</ul>
 </section>
 <section class="slide level2">
 
 </section></section>
 <section>
-<section id="questions-tds" class="title-slide slide level1 center" data-number="2">
-<h1><span class="header-section-number">2</span> Questions TDs</h1>
+<section id="rappel-endogénéité-et-variables-instrumentales" class="title-slide slide level1 center" data-number="2">
+<h1><span class="header-section-number">2</span> Rappel : endogénéité et variables instrumentales</h1>
+<ul>
+<li><p>Modèle structurel simple :</p>
+<p><span class="math display">\[
+y_i = \beta x_i + \gamma&#39;w_i + u_i
+\]</span></p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> : variable expliquée</li>
+<li><span class="math inline">\(x_i\)</span> : régresseur <strong>endogène</strong> (corrélé à <span class="math inline">\(u_i\)</span>)</li>
+<li><span class="math inline">\(w_i\)</span> : contrôles exogènes</li>
+<li><span class="math inline">\(u_i\)</span> : terme d’erreur</li>
+</ul></li>
+<li><p>Problème : <span class="math inline">\(\operatorname{Cov}(x_i, u_i) \neq 0\)</span><br>
+⟶ estimateur MCO biaisé et non convergent</p></li>
+<li><p>Idée VI : trouver des instruments <span class="math inline">\(z_i\)</span> tels que :</p>
+<ul>
+<li><strong>Pertinence</strong> : <span class="math inline">\(\operatorname{Cov}(z_i, x_i)\neq 0\)</span></li>
+<li><strong>Validité / exogénéité</strong> : <span class="math inline">\(\operatorname{Cov}(z_i, u_i)=0\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="notation-vi-forme-matricielle" class="slide level2" data-number="2.1">
+<h2><span class="header-section-number">2.1</span> Notation VI (forme matricielle)</h2>
+<ul>
+<li><p>On empile les données :</p>
+<ul>
+<li><span class="math inline">\(y\)</span> : vecteur <span class="math inline">\((n\times 1)\)</span></li>
+<li><span class="math inline">\(X\)</span> : matrice <span class="math inline">\((n\times K)\)</span> des régresseurs (dont certains endogènes)</li>
+<li><span class="math inline">\(W\)</span> : régresseurs exogènes (optionnels)</li>
+<li><span class="math inline">\(Z\)</span> : matrice <span class="math inline">\((n\times L)\)</span> des instruments (et exogènes)</li>
+</ul></li>
+<li><p>Conditions clés :</p>
+<p><span class="math display">\[
+E[Z&#39;u] = 0 \quad\text{(validité des instruments)}
+\]</span></p>
+<p><span class="math display">\[
+\operatorname{rang}(E[Z&#39;X]) = K \quad\text{(pertinence + identification)}
+\]</span></p></li>
+</ul>
+</section>
+<section id="identification-exactement-vs-sur-identifié" class="slide level2" data-number="2.2">
+<h2><span class="header-section-number">2.2</span> Identification : exactement vs sur-identifié</h2>
+<ul>
+<li><span class="math inline">\(K\)</span> : nombre de variables <strong>endogènes</strong> à instrumenter</li>
+<li><span class="math inline">\(L\)</span> : nombre d’instruments (exogènes distincts)</li>
+</ul>
+<p>Cas possibles :</p>
+<ul>
+<li><p><strong>Sous-identifié</strong> : <span class="math inline">\(L &lt; K\)</span><br>
+⟶ pas assez d’instruments, le modèle n’est pas identifié</p></li>
+<li><p><strong>Exactement identifié</strong> : <span class="math inline">\(L = K\)</span><br>
+⟶ autant d’instruments que de variables endogènes</p></li>
+<li><p><strong>Sur-identifié</strong> : <span class="math inline">\(L &gt; K\)</span><br>
+⟶ plus d’instruments que nécessaire<br>
+⟶ on dispose <strong>d’information supplémentaire</strong> sur les conditions d’orthogonalité <span class="math inline">\(E[Z&#39;u]=0\)</span></p></li>
+</ul>
+</section>
+<section id="idée-de-la-sur-identification" class="slide level2" data-number="2.3">
+<h2><span class="header-section-number">2.3</span> Idée de la sur-identification</h2>
+<ul>
+<li><p>Quand <span class="math inline">\(L &gt; K\)</span>, plusieurs “combinaisons” d’instruments pourraient identifier <span class="math inline">\(\beta\)</span>.</p></li>
+<li><p>Si <strong>tous les instruments sont valides</strong>, toutes ces manières d’identifier <span class="math inline">\(\beta\)</span> devraient donner <strong>la même vraie valeur</strong>.</p></li>
+<li><p>Intuition :</p>
+<blockquote>
+<p><em>Les conditions d’exogénéité imposées par les instruments supplémentaires sont des <strong>restrictions</strong> supplémentaires sur le modèle.</em></p>
+</blockquote></li>
+<li><p>On peut alors <strong>tester</strong> si ces restrictions supplémentaires sont compatibles avec les données.</p></li>
+</ul>
+<p>⟶ C’est l’objet du <strong>test de sur-identification de Sargan</strong>.</p>
+</section>
+<section id="idée-informelle-du-test-de-sargan" class="slide level2" data-number="2.4">
+<h2><span class="header-section-number">2.4</span> Idée informelle du test de Sargan</h2>
+<ul>
+<li><p>On estime le modèle par VI (2SLS) et on obtient les résidus :</p>
+<p><span class="math display">\[
+\hat{u}_i = y_i - \hat{y}_i
+\]</span></p></li>
+<li><p>Si les instruments sont vraiment exogènes, on doit avoir :</p>
+<p><span class="math display">\[
+E[z_{ji} \hat{u}_i] = 0 \quad \text{pour tous les instruments } j
+\]</span></p></li>
+<li><p>Le test de Sargan vérifie donc <strong>dans les données</strong> si les résidus <span class="math inline">\(\hat{u}_i\)</span> sont “orthogonaux” aux instruments <span class="math inline">\(Z\)</span>.</p></li>
+<li><p>Idée pratique : si on peut <strong>expliquer</strong> les résidus par les instruments, alors ces derniers sont probablement <strong>corrélés aux erreurs</strong>, donc <strong>invalides</strong>.</p></li>
+</ul>
+</section>
+<section id="construction-de-la-statistique-de-sargan-cas-homoscédastique" class="slide level2" data-number="2.5">
+<h2><span class="header-section-number">2.5</span> Construction de la statistique de Sargan (cas homoscédastique)</h2>
+<p>Supposons que l’on a estimé le modèle par 2SLS :</p>
+<p><span class="math display">\[
+y = X\hat{\beta}_{2SLS} + \hat{u}
+\]</span></p>
+<p>Étapes :</p>
+<ol type="1">
+<li><p><strong>Étape 1</strong> : estimer le modèle VI (2SLS) et récupérer les résidus <span class="math inline">\(\hat{u}\)</span>.</p></li>
+<li><p><strong>Étape 2</strong> : régresser <span class="math inline">\(\hat{u}\)</span> sur <strong>tous les instruments</strong> <span class="math inline">\(Z\)</span> (et en pratique aussi les exogènes inclus dans <span class="math inline">\(X\)</span>) :</p>
+<p><span class="math display">\[
+\hat{u}_i = \delta_0 + Z_i&#39;\delta + v_i
+\]</span></p></li>
+<li><p><strong>Étape 3</strong> : récupérer le <span class="math inline">\(R^2\)</span> de cette régression, noter <span class="math inline">\(R^2_{\hat{u}\sim Z}\)</span>.</p></li>
+<li><p><strong>Statistique de Sargan</strong> :</p>
+<p><span class="math display">\[
+J = n \times R^2_{\hat{u}\sim Z}
+\]</span></p>
+<p>où <span class="math inline">\(n\)</span> est la taille de l’échantillon.</p></li>
+</ol>
+</section>
+<section id="loi-asymptotique-de-la-statistique" class="slide level2" data-number="2.6">
+<h2><span class="header-section-number">2.6</span> Loi asymptotique de la statistique</h2>
+<p>Sous les hypothèses suivantes :</p>
+<ul>
+<li>instruments valides : <span class="math inline">\(E[Z&#39;u]=0\)</span></li>
+<li>homoscédasticité des erreurs</li>
+<li>spécification correcte</li>
+</ul>
+<p>alors, sous <span class="math inline">\(H_0\)</span> (tous les instruments sont valides) :</p>
+<p><span class="math display">\[
+J \overset{a}{\sim} \chi^2_{L-K}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(L-K\)</span> : nombre de <strong>restrictions sur-identifiantes</strong>
+<ul>
+<li><span class="math inline">\(L\)</span> : nb d’instruments</li>
+<li><span class="math inline">\(K\)</span> : nb de variables endogènes instrumentées</li>
+</ul></li>
+<li>On peut alors calculer une <strong>p-value</strong> à partir de la loi <span class="math inline">\(\chi^2_{L-K}\)</span>.</li>
+</ul>
+</section>
+<section id="hypothèses-du-test-de-sargan" class="slide level2" data-number="2.7">
+<h2><span class="header-section-number">2.7</span> Hypothèses du test de Sargan</h2>
+<ul>
+<li><p><strong>Hypothèse nulle</strong> <span class="math inline">\(H_0\)</span> : tous les instruments sont <strong>exogènes</strong><br>
+<span class="math inline">\(\Rightarrow E[Z&#39;u] = 0\)</span></p></li>
+<li><p><strong>Hypothèse alternative</strong> <span class="math inline">\(H_1\)</span> : au moins un instrument est <strong>invalidé</strong><br>
+(corrélé aux erreurs, mauvaise spécification, etc.)</p></li>
+<li><p>Attention : le test repose sur plusieurs hypothèses :</p>
+<ul>
+<li>homoscédasticité des erreurs <span class="math inline">\(u_i\)</span></li>
+<li>forme fonctionnelle correcte du modèle</li>
+<li>aucune erreur de mesure “catastrophique” dans les variables, etc.</li>
+</ul></li>
+</ul>
+</section>
+<section id="interprétation-du-test" class="slide level2" data-number="2.8">
+<h2><span class="header-section-number">2.8</span> Interprétation du test</h2>
+<ul>
+<li><p>On calcule <span class="math inline">\(J = nR^2\)</span> et la p-value associée à <span class="math inline">\(\chi^2_{L-K}\)</span>.</p></li>
+<li><p><strong>p-value élevée (par ex. &gt; 5%)</strong> :</p>
+<ul>
+<li>On <strong>ne rejette pas</strong> <span class="math inline">\(H_0\)</span>.</li>
+<li>On ne trouve pas de preuve contre la validité globale des instruments.</li>
+<li>⟶ “Les instruments sont <strong>globalement compatibles</strong> avec les hypothèses d’exogénéité.”</li>
+</ul></li>
+<li><p><strong>p-value faible (par ex. &lt; 5%)</strong> :</p>
+<ul>
+<li>On <strong>rejette</strong> <span class="math inline">\(H_0\)</span>.</li>
+<li>Au moins un des instruments est probablement corrélé à <span class="math inline">\(u_i\)</span>.</li>
+<li>⟶ “Les instruments <strong>ne sont pas tous valides</strong>.”</li>
+</ul></li>
+</ul>
+<p>⚠️ Le test ne dit pas <strong>quel</strong> instrument est invalide, uniquement s’il y a un problème global.</p>
+</section>
+<section id="sargan-vs-hansen-j-test-robuste" class="slide level2" data-number="2.9">
+<h2><span class="header-section-number">2.9</span> Sargan vs Hansen (J-test robuste)</h2>
+<ul>
+<li><p>La statistique de <strong>Sargan</strong> est valable <strong>uniquement</strong> sous <strong>homoscédasticité</strong>.</p></li>
+<li><p>En présence d’hétéroscédasticité (très fréquente en données micro ou panel), on utilise la version <strong>robuste</strong> :</p>
+<ul>
+<li>Test de <strong>Hansen J</strong> (ou Sargan-Hansen), issu du cadre <strong>GMM</strong>.</li>
+<li>Même logique : test de sur-identification avec loi <span class="math inline">\(\chi^2_{L-K}\)</span>.</li>
+<li>Mais construit avec une matrice de pondération robuste à l’hétéroscédasticité.</li>
+</ul></li>
+</ul>
+<p>En pratique :</p>
+<ul>
+<li><strong>Sargan</strong> : 2SLS classique + hypothèse d’homoscédasticité.</li>
+<li><strong>Hansen J</strong> : IV-GMM (ou 2SLS “robuste”) + hétéroscédasticité possible.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="exemple-stylisé-1-variable-endogène-2-instruments" class="title-slide slide level1 center" data-number="3">
+<h1><span class="header-section-number">3</span> Exemple stylisé : 1 variable endogène, 2 instruments</h1>
+<p>Modèle :</p>
+<p><span class="math display">\[
+y_i = \beta x_i + \gamma&#39;w_i + u_i
+\]</span></p>
+<ul>
+<li><span class="math inline">\(x_i\)</span> endogène</li>
+<li>instruments : <span class="math inline">\(z_{1i}, z_{2i}\)</span> (et <span class="math inline">\(w_i\)</span> inclus dans les instruments)</li>
+</ul>
+<p>On a :</p>
+<ul>
+<li><span class="math inline">\(K = 1\)</span> (une seule variable endogène),</li>
+<li><span class="math inline">\(L = 2\)</span> (deux instruments),<br>
+⟶ Sur-identification : <span class="math inline">\(L-K = 1\)</span> restriction testable.</li>
+</ul>
+<p>Statistique de Sargan :</p>
+<ul>
+<li>Estimer <span class="math inline">\(y_i\)</span> sur <span class="math inline">\(x_i\)</span> (instrumenté par <span class="math inline">\(z_{1i}, z_{2i}\)</span>) et <span class="math inline">\(w_i\)</span> par 2SLS.</li>
+<li>Récupérer les résidus <span class="math inline">\(\hat{u}_i\)</span>.</li>
+<li>Régresser <span class="math inline">\(\hat{u}_i\)</span> sur <span class="math inline">\(z_{1i}, z_{2i}\)</span> et <span class="math inline">\(w_i\)</span>, récupérer <span class="math inline">\(R^2\)</span>.</li>
+<li>Calculer <span class="math inline">\(J = n R^2\)</span> et comparer à <span class="math inline">\(\chi^2(1)\)</span>.</li>
+</ul>
+</section>
+<section id="exemple-de-sortie-interprétation-en-mots" class="slide level2" data-number="3.1">
+<h2><span class="header-section-number">3.1</span> Exemple de sortie (interprétation en mots)</h2>
+<p>Imaginons que l’on obtienne :</p>
+<ul>
+<li><span class="math inline">\(J = 3{,}2\)</span></li>
+<li>ddl = <span class="math inline">\(L-K = 1\)</span></li>
+<li>Valeur de la table à 5% = <span class="math inline">\(3,841\)</span></li>
+</ul>
+<p>Interprétation :</p>
+<ul>
+<li>A 5% : <span class="math inline">\(3,841&gt;J\)</span> ⟶ on <strong>ne rejette pas</strong> <span class="math inline">\(H_0\)</span>.</li>
+<li>On ne trouve pas de preuve que les instruments sont globalement invalides.</li>
+</ul>
+<p>Si au contraire :</p>
+<ul>
+<li><span class="math inline">\(J = 7{,}9\)</span>, ddl = 1, <span class="math inline">\(J&gt;3,841\)</span></li>
+</ul>
+<p>alors :</p>
+<ul>
+<li>⟶ on <strong>rejette</strong> <span class="math inline">\(H_0\)</span>.</li>
+<li>Probablement un problème d’exogénéité d’un (ou plusieurs) instrument(s).</li>
+</ul>
+</section>
+<section id="limites-et-mises-en-garde" class="slide level2" data-number="3.2">
+<h2><span class="header-section-number">3.2</span> Limites et mises en garde</h2>
+<ul>
+<li><p>Le test de Sargan <strong>ne teste pas</strong> :</p>
+<ul>
+<li>la <strong>pertinence</strong> des instruments (corrélation avec <span class="math inline">\(x\)</span>)</li>
+<li>la <strong>spécification complète</strong> du modèle structurel</li>
+</ul></li>
+<li><p>Il peut rejeter <span class="math inline">\(H_0\)</span> non pas parce qu’un instrument est “mauvais”, mais parce que :</p>
+<ul>
+<li>le modèle est mal spécifié (omission d’une variable importante, non-linéarité, etc.)</li>
+<li>l’homoscédasticité est violée (dans ce cas, préférer Hansen J)</li>
+</ul></li>
+<li><p>Ne pas interpréter “non rejet de <span class="math inline">\(H_0\)</span>” comme une <strong>preuve</strong> que les instruments sont parfaits : c’est seulement “on ne détecte pas d’invalidité”.</p></li>
+</ul>
+</section>
+<section id="lien-avec-les-conditions-dorthogonalité" class="slide level2" data-number="3.3">
+<h2><span class="header-section-number">3.3</span> Lien avec les conditions d’orthogonalité</h2>
+<p>Rappel :</p>
+<ul>
+<li>Conditions d’exogénéité VI : <span class="math inline">\(E[Z&#39;u]=0\)</span></li>
+<li>Dans un modèle sur-identifié, on a plus de conditions que nécessaire pour identifier <span class="math inline">\(\beta\)</span>.</li>
+</ul>
+<p>Le test de Sargan :</p>
+<ul>
+<li>teste si ces conditions supplémentaires sont <strong>consistantes entre elles</strong>,</li>
+<li>en utilisant les résidus <span class="math inline">\(\hat{u}\)</span> comme approximation de <span class="math inline">\(u\)</span>.</li>
+</ul>
+<p>Interprétation en termes de moments :</p>
+<ul>
+<li>On veut que les “moments résiduels” <span class="math inline">\(\frac{1}{n}Z&#39;\hat{u}\)</span> soient “proches de 0”.</li>
+<li>Sargan combine ces moments en une statistique quadratique (type GMM) qui suit approximativement une loi <span class="math inline">\(\chi^2\)</span> sous <span class="math inline">\(H_0\)</span>.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="questions-tds" class="title-slide slide level1 center" data-number="4">
+<h1><span class="header-section-number">4</span> Questions TDs</h1>
 <p><strong>1-</strong> Appliquez le test d’exogénéité de <strong><em>Nakamura et Nakamura</em></strong> en utilisant trois ensembles d’instruments :</p>
 <p>i)-        <strong><em>motheduc</em></strong>  (éducation de la mère)</p>
 <p>ii)-       <strong><em>motheduc</em></strong> et <strong><em>fatheduc</em></strong>  (éducation du père)</p>
@@ -1110,19 +1404,38 @@ Pierre Beaucoral
 <summary>
 <strong>Afficher la réponse</strong>
 </summary>
+<p>Comme le TD, d’abord appliquer le 2SLS dans Eviews, puis réaliser le test nakamura nakamura dans les IV tests. Dans quels cas le test est intéressant?</p>
 </details>
 </section>
 <section class="slide level2">
 
 <p><strong>2-</strong> Si cela vous semble pertinent, appliquez les <strong><em>doubles moindres carrés</em></strong> (<strong><em>DMC</em></strong>) en utilisant les trois ensembles d’instruments.</p>
+<details>
+<summary>
+<strong>Afficher la réponse</strong>
+</summary>
+<p>Se baser sur le test de nakamura!!!</p>
+</details>
 </section>
 <section class="slide level2">
 
 <p><strong>3-</strong> Appliquez, lorsque cela est possible, le test de <strong><em>sur-identification de Sargan</em></strong>.</p>
+<details>
+<summary>
+<strong>Afficher la réponse</strong>
+</summary>
+<p>Si le test de Nakamura a révélé un DMC dans lequel il y avait plus de un instrument, appliquer le test de suridentification.</p>
+</details>
 </section>
 <section class="slide level2">
 
 <p><strong>4-</strong> Réalisez un test de <strong><em>White</em></strong> sur les estimations <strong><em>DMC</em></strong> et appliquez, si besoin est, la procédure de correction de <strong><em>White</em></strong>. Qu’en concluez- vous ?</p>
+<details>
+<summary>
+<strong>Afficher la réponse</strong>
+</summary>
+<p>Vous savez faire les tests, pour la correction, allez fouiller dans les options des estimations AVANT de lancer l’estimation.</p>
+</details>
 
 
 </section></section>

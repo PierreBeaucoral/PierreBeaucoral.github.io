@@ -4022,10 +4022,10 @@ window.Quarto = {
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-td-2-–-modélisation-poisson" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">TD 2 – Modélisation Poisson</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-td-2-–-régression-logistique" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">TD 2 – Régression logistique</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-td-2-–-modélisation-poisson">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-td-2-–-régression-logistique">    
         <li>
     <a class="dropdown-item" href="../td2/enonce-td2.html">
  <span class="dropdown-text">Énoncé (questions seulement)</span></a>
@@ -4036,6 +4036,25 @@ window.Quarto = {
   </li>  
         <li>
     <a class="dropdown-item" href="../td2/td2-slides.html">
+ <span class="dropdown-text">Slide</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-td-3-–-modèles-de-régression-multinomiale" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">TD 3 – Modèles de régression multinomiale</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-td-3-–-modèles-de-régression-multinomiale">    
+        <li>
+    <a class="dropdown-item" href="../td3/enonce-td3.html">
+ <span class="dropdown-text">Énoncé (questions seulement)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../td3/td3.html">
+ <span class="dropdown-text">Énoncé et réponses</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../td3/td3-slides.html">
  <span class="dropdown-text">Slide</span></a>
   </li>  
     </ul>
@@ -5537,250 +5556,251 @@ Predicted         0         1
 <span id="cb57-190"><a href="#cb57-190" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Usages typiques <span class="pp">|</span> Santé, sociologie <span class="pp">|</span> Économie, finance <span class="pp">|</span></span>
 <span id="cb57-191"><a href="#cb57-191" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Résultats empiriques <span class="pp">|</span> Quasi identiques (β_logit ≈ 1.6 β_probit) <span class="pp">|</span>  <span class="pp">|</span></span>
 <span id="cb57-192"><a href="#cb57-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-193"><a href="#cb57-193" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **À retenir :**</span></span>
-<span id="cb57-194"><a href="#cb57-194" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Logit et Probit sont deux manières voisines de modéliser une</span></span>
-<span id="cb57-195"><a href="#cb57-195" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; probabilité binaire.</span></span>
-<span id="cb57-196"><a href="#cb57-196" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Le choix entre les deux est souvent une question de convention</span></span>
-<span id="cb57-197"><a href="#cb57-197" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; disciplinaire ou d’interprétabilité des coefficients.</span></span>
-<span id="cb57-198"><a href="#cb57-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-199"><a href="#cb57-199" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb57-200"><a href="#cb57-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-201"><a href="#cb57-201" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions TD</span></span>
-<span id="cb57-202"><a href="#cb57-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-203"><a href="#cb57-203" aria-hidden="true" tabindex="-1"></a><span class="fu">## Télécharger le fichier bankloanT.xls depuis l&#39;ENT, puis importer les données dans R</span></span>
-<span id="cb57-204"><a href="#cb57-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-207"><a href="#cb57-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-208"><a href="#cb57-208" aria-hidden="true" tabindex="-1"></a>df0 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;./data/bankloanT.xls&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>()</span>
-<span id="cb57-209"><a href="#cb57-209" aria-hidden="true" tabindex="-1"></a>df0 <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span>
-<span id="cb57-210"><a href="#cb57-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-211"><a href="#cb57-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-212"><a href="#cb57-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etudier la distribution de la variable ed. Créer une variable catégorielle, puis une variable ne contenant que 4 classes. </span></span>
-<span id="cb57-213"><a href="#cb57-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-216"><a href="#cb57-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-217"><a href="#cb57-217" aria-hidden="true" tabindex="-1"></a>df0 <span class="sc">|&gt;</span> <span class="fu">count</span>(ed) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
-<span id="cb57-218"><a href="#cb57-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-219"><a href="#cb57-219" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df0 <span class="sc">|&gt;</span></span>
-<span id="cb57-220"><a href="#cb57-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb57-221"><a href="#cb57-221" aria-hidden="true" tabindex="-1"></a>    <span class="at">ed5 =</span> <span class="fu">factor</span>(ed,</span>
-<span id="cb57-222"><a href="#cb57-222" aria-hidden="true" tabindex="-1"></a>                 <span class="at">levels =</span> <span class="fu">c</span>(</span>
-<span id="cb57-223"><a href="#cb57-223" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;Did not complete high school&quot;</span>,</span>
-<span id="cb57-224"><a href="#cb57-224" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;High school degree&quot;</span>,</span>
-<span id="cb57-225"><a href="#cb57-225" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;Some college&quot;</span>,</span>
-<span id="cb57-226"><a href="#cb57-226" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;College degree&quot;</span>,</span>
-<span id="cb57-227"><a href="#cb57-227" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;Post-undergraduate degree&quot;</span>   </span>
-<span id="cb57-228"><a href="#cb57-228" aria-hidden="true" tabindex="-1"></a>                 ),</span>
-<span id="cb57-229"><a href="#cb57-229" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb57-230"><a href="#cb57-230" aria-hidden="true" tabindex="-1"></a>    <span class="at">ed4 =</span> <span class="fu">fct_collapse</span>(ed5,</span>
-<span id="cb57-231"><a href="#cb57-231" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;College or above&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;College degree&quot;</span>, <span class="st">&quot;Post-undergraduate degree&quot;</span>))</span>
-<span id="cb57-232"><a href="#cb57-232" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb57-233"><a href="#cb57-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-234"><a href="#cb57-234" aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">|&gt;</span> <span class="fu">count</span>(ed4)</span>
-<span id="cb57-235"><a href="#cb57-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-236"><a href="#cb57-236" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> ed4)) <span class="sc">+</span></span>
-<span id="cb57-237"><a href="#cb57-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb57-238"><a href="#cb57-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Niveau d&#39;éducation (4 classes)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Effectif&quot;</span>,</span>
-<span id="cb57-239"><a href="#cb57-239" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Distribution de l&#39;éducation dans l&#39;échantillon&quot;</span>) <span class="sc">+</span></span>
-<span id="cb57-240"><a href="#cb57-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb57-241"><a href="#cb57-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-242"><a href="#cb57-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-243"><a href="#cb57-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-244"><a href="#cb57-244" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etudier la matrice des corrélations entre les 7 variables quantitatives présentes. </span></span>
-<span id="cb57-245"><a href="#cb57-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-248"><a href="#cb57-248" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-249"><a href="#cb57-249" aria-hidden="true" tabindex="-1"></a>num_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;age&quot;</span>,<span class="st">&quot;employ&quot;</span>,<span class="st">&quot;address&quot;</span>,<span class="st">&quot;income&quot;</span>,<span class="st">&quot;debtinc&quot;</span>,<span class="st">&quot;creddebt&quot;</span>,<span class="st">&quot;othdebt&quot;</span>)</span>
-<span id="cb57-250"><a href="#cb57-250" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb57-251"><a href="#cb57-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb57-252"><a href="#cb57-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">debtinc  =</span> <span class="fu">as.numeric</span>(debtinc),</span>
-<span id="cb57-253"><a href="#cb57-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">creddebt =</span> <span class="fu">as.numeric</span>(creddebt),</span>
-<span id="cb57-254"><a href="#cb57-254" aria-hidden="true" tabindex="-1"></a>    <span class="at">othdebt  =</span> <span class="fu">as.numeric</span>(othdebt)</span>
-<span id="cb57-255"><a href="#cb57-255" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb57-256"><a href="#cb57-256" aria-hidden="true" tabindex="-1"></a>cor_mat <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb57-257"><a href="#cb57-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(num_vars)) <span class="sc">|&gt;</span></span>
-<span id="cb57-258"><a href="#cb57-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
-<span id="cb57-259"><a href="#cb57-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span>
-<span id="cb57-260"><a href="#cb57-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-261"><a href="#cb57-261" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
-<span id="cb57-262"><a href="#cb57-262" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(</span>
-<span id="cb57-263"><a href="#cb57-263" aria-hidden="true" tabindex="-1"></a>  cor_mat,</span>
-<span id="cb57-264"><a href="#cb57-264" aria-hidden="true" tabindex="-1"></a>  <span class="at">hc.order =</span> <span class="cn">TRUE</span>,           <span class="co"># ordonne les variables par similarité</span></span>
-<span id="cb57-265"><a href="#cb57-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">lab =</span> <span class="cn">TRUE</span>,                <span class="co"># affiche les coefficients</span></span>
-<span id="cb57-266"><a href="#cb57-266" aria-hidden="true" tabindex="-1"></a>  <span class="at">lab_size =</span> <span class="dv">3</span>,</span>
-<span id="cb57-267"><a href="#cb57-267" aria-hidden="true" tabindex="-1"></a>  <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;tomato2&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;seagreen3&quot;</span>),</span>
-<span id="cb57-268"><a href="#cb57-268" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;Corrélogramme des variables quantitatives&quot;</span>,</span>
-<span id="cb57-269"><a href="#cb57-269" aria-hidden="true" tabindex="-1"></a>  <span class="at">ggtheme =</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb57-270"><a href="#cb57-270" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb57-271"><a href="#cb57-271" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-272"><a href="#cb57-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-273"><a href="#cb57-273" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recoder la variable à expliquer (default) en variable quantitative puis réaliser une première régression logistique incluant toutes les variables explicatives quantitatives. </span></span>
-<span id="cb57-274"><a href="#cb57-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-277"><a href="#cb57-277" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-278"><a href="#cb57-278" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
-<span id="cb57-279"><a href="#cb57-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb57-280"><a href="#cb57-280" aria-hidden="true" tabindex="-1"></a>    <span class="at">default_num =</span> <span class="fu">case_when</span>(</span>
-<span id="cb57-281"><a href="#cb57-281" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="st">&quot;Yes&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb57-282"><a href="#cb57-282" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="st">&quot;No&quot;</span>  <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb57-283"><a href="#cb57-283" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>   <span class="co"># conserve les NA existants</span></span>
-<span id="cb57-284"><a href="#cb57-284" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb57-285"><a href="#cb57-285" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb57-286"><a href="#cb57-286" aria-hidden="true" tabindex="-1"></a>form1 <span class="ot">&lt;-</span> default_num <span class="sc">~</span> age <span class="sc">+</span> employ <span class="sc">+</span> address <span class="sc">+</span> income <span class="sc">+</span> debtinc <span class="sc">+</span> creddebt <span class="sc">+</span> othdebt</span>
-<span id="cb57-287"><a href="#cb57-287" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form1, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb57-288"><a href="#cb57-288" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span>
-<span id="cb57-289"><a href="#cb57-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-290"><a href="#cb57-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-291"><a href="#cb57-291" aria-hidden="true" tabindex="-1"></a><span class="fu">## Réaliser une deuxième régression logistique incluant aussi la variable educ en classe. Enregistrer aussi les résultats de ce modèle, qui est le modèle le plus complexe que nous appliquerons à ces données. </span></span>
-<span id="cb57-292"><a href="#cb57-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-295"><a href="#cb57-295" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-296"><a href="#cb57-296" aria-hidden="true" tabindex="-1"></a>form2 <span class="ot">&lt;-</span> <span class="fu">update</span>(form1, . <span class="sc">~</span> . <span class="sc">+</span> ed4)</span>
-<span id="cb57-297"><a href="#cb57-297" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form2, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb57-298"><a href="#cb57-298" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span>
-<span id="cb57-299"><a href="#cb57-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-300"><a href="#cb57-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-301"><a href="#cb57-301" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tester l&#39;ajustement de ce modèle complet, grâce à la commande hoslem.test, où g est le nombre de groupes de niveaux différents de fonction prédictive utilisé pour le test. Varier les valeurs de g pour vérifier la robustesse du résultat. </span></span>
-<span id="cb57-302"><a href="#cb57-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-305"><a href="#cb57-305" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-306"><a href="#cb57-306" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">4</span>)</span>
-<span id="cb57-307"><a href="#cb57-307" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">5</span>)</span>
-<span id="cb57-308"><a href="#cb57-308" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">6</span>)</span>
-<span id="cb57-309"><a href="#cb57-309" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">7</span>)</span>
-<span id="cb57-310"><a href="#cb57-310" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">8</span>)</span>
-<span id="cb57-311"><a href="#cb57-311" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">9</span>)</span>
-<span id="cb57-312"><a href="#cb57-312" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">10</span>)</span>
-<span id="cb57-313"><a href="#cb57-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-314"><a href="#cb57-314" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-315"><a href="#cb57-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-316"><a href="#cb57-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grâce à la commande anova, réaliser un test de rapport de vraisemblance entre les deux modèles ajustés, et conclure sur la significativité de la variable educ. </span></span>
-<span id="cb57-317"><a href="#cb57-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-320"><a href="#cb57-320" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-321"><a href="#cb57-321" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod1, mod2, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
-<span id="cb57-322"><a href="#cb57-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-323"><a href="#cb57-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-324"><a href="#cb57-324" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La p-value = **0.54** → on **ne rejette pas** $H_0$​.</span>
-<span id="cb57-325"><a href="#cb57-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-326"><a href="#cb57-326" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Autrement dit :</span>
-<span id="cb57-327"><a href="#cb57-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-328"><a href="#cb57-328" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **l’ajout de la variable d’éducation </span><span class="in">`ed4`</span><span class="at"> n’améliore pas</span></span>
-<span id="cb57-329"><a href="#cb57-329" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; significativement la qualité du modèle**.</span></span>
-<span id="cb57-330"><a href="#cb57-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-331"><a href="#cb57-331" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ôter la variable la moins significative du modèle retenu. Vérifier que la P-value du test</span></span>
-<span id="cb57-332"><a href="#cb57-332" aria-hidden="true" tabindex="-1"></a>de rapport de vraisemblance entre les modèles avec et sans cette variable est égale ou</span>
-<span id="cb57-333"><a href="#cb57-333" aria-hidden="true" tabindex="-1"></a>très proche de la P-value du test bilatéral de nullité du coefficient associé à la variable.</span>
-<span id="cb57-334"><a href="#cb57-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-337"><a href="#cb57-337" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-338"><a href="#cb57-338" aria-hidden="true" tabindex="-1"></a>form3 <span class="ot">&lt;-</span> <span class="fu">update</span>(form1, . <span class="sc">~</span> . <span class="sc">-</span> othdebt)</span>
-<span id="cb57-339"><a href="#cb57-339" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form3, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb57-340"><a href="#cb57-340" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span>
-<span id="cb57-341"><a href="#cb57-341" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, mod3, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
-<span id="cb57-342"><a href="#cb57-342" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-343"><a href="#cb57-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-344"><a href="#cb57-344" aria-hidden="true" tabindex="-1"></a><span class="fu">## Une variable est à nouveau très peu significative. Ajuster un nouveau modèle sans cette variable. Sauvegarder les valeurs prédites par ce modèle.</span></span>
-<span id="cb57-345"><a href="#cb57-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-348"><a href="#cb57-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-349"><a href="#cb57-349" aria-hidden="true" tabindex="-1"></a>form4 <span class="ot">&lt;-</span> <span class="fu">update</span>(form3, . <span class="sc">~</span> . <span class="sc">-</span> income)</span>
-<span id="cb57-350"><a href="#cb57-350" aria-hidden="true" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form4, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
-<span id="cb57-351"><a href="#cb57-351" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4)</span>
-<span id="cb57-352"><a href="#cb57-352" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod3, mod4, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
-<span id="cb57-353"><a href="#cb57-353" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-354"><a href="#cb57-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-355"><a href="#cb57-355" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir le tableau de contingence des individus bien ou mal classés avec une règle de coupure à 0,5</span></span>
-<span id="cb57-356"><a href="#cb57-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-359"><a href="#cb57-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-360"><a href="#cb57-360" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilités prédites</span></span>
-<span id="cb57-361"><a href="#cb57-361" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2 <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(age, employ, address, income, debtinc, creddebt, othdebt, default_num, ed4)</span>
-<span id="cb57-362"><a href="#cb57-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-363"><a href="#cb57-363" aria-hidden="true" tabindex="-1"></a>p_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod4, <span class="at">newdata =</span> df2_nona, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb57-364"><a href="#cb57-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-365"><a href="#cb57-365" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2_nona <span class="sc">|&gt;</span></span>
-<span id="cb57-366"><a href="#cb57-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb57-367"><a href="#cb57-367" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_hat =</span> p_hat,</span>
-<span id="cb57-368"><a href="#cb57-368" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_class =</span> <span class="fu">if_else</span>(p_hat <span class="sc">&gt;=</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb57-369"><a href="#cb57-369" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb57-370"><a href="#cb57-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-193"><a href="#cb57-193" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **À retenir :** Logit et Probit sont deux manières voisines de</span></span>
+<span id="cb57-194"><a href="#cb57-194" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; modéliser une probabilité binaire. Le choix entre les deux est souvent</span></span>
+<span id="cb57-195"><a href="#cb57-195" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; une question de convention disciplinaire ou d’interprétabilité des</span></span>
+<span id="cb57-196"><a href="#cb57-196" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; coefficients.</span></span>
+<span id="cb57-197"><a href="#cb57-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-198"><a href="#cb57-198" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb57-199"><a href="#cb57-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-200"><a href="#cb57-200" aria-hidden="true" tabindex="-1"></a><span class="fu"># Questions TD</span></span>
+<span id="cb57-201"><a href="#cb57-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-202"><a href="#cb57-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Télécharger le fichier bankloanT.xls depuis l&#39;ENT, puis importer les données dans R</span></span>
+<span id="cb57-203"><a href="#cb57-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-206"><a href="#cb57-206" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-207"><a href="#cb57-207" aria-hidden="true" tabindex="-1"></a>df0 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;./data/bankloanT.xls&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">clean_names</span>()</span>
+<span id="cb57-208"><a href="#cb57-208" aria-hidden="true" tabindex="-1"></a>df0 <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span>
+<span id="cb57-209"><a href="#cb57-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-210"><a href="#cb57-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-211"><a href="#cb57-211" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etudier la distribution de la variable ed. Créer une variable catégorielle, puis une variable ne contenant que 4 classes.</span></span>
+<span id="cb57-212"><a href="#cb57-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-215"><a href="#cb57-215" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-216"><a href="#cb57-216" aria-hidden="true" tabindex="-1"></a>df0 <span class="sc">|&gt;</span> <span class="fu">count</span>(ed) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb57-217"><a href="#cb57-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-218"><a href="#cb57-218" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df0 <span class="sc">|&gt;</span></span>
+<span id="cb57-219"><a href="#cb57-219" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb57-220"><a href="#cb57-220" aria-hidden="true" tabindex="-1"></a>    <span class="at">ed5 =</span> <span class="fu">factor</span>(ed,</span>
+<span id="cb57-221"><a href="#cb57-221" aria-hidden="true" tabindex="-1"></a>                 <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb57-222"><a href="#cb57-222" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;Did not complete high school&quot;</span>,</span>
+<span id="cb57-223"><a href="#cb57-223" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;High school degree&quot;</span>,</span>
+<span id="cb57-224"><a href="#cb57-224" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;Some college&quot;</span>,</span>
+<span id="cb57-225"><a href="#cb57-225" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;College degree&quot;</span>,</span>
+<span id="cb57-226"><a href="#cb57-226" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;Post-undergraduate degree&quot;</span>   </span>
+<span id="cb57-227"><a href="#cb57-227" aria-hidden="true" tabindex="-1"></a>                 ),</span>
+<span id="cb57-228"><a href="#cb57-228" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ordered =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb57-229"><a href="#cb57-229" aria-hidden="true" tabindex="-1"></a>    <span class="at">ed4 =</span> <span class="fu">fct_collapse</span>(ed5,</span>
+<span id="cb57-230"><a href="#cb57-230" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;College or above&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;College degree&quot;</span>, <span class="st">&quot;Post-undergraduate degree&quot;</span>))</span>
+<span id="cb57-231"><a href="#cb57-231" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-232"><a href="#cb57-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-233"><a href="#cb57-233" aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">|&gt;</span> <span class="fu">count</span>(ed4)</span>
+<span id="cb57-234"><a href="#cb57-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-235"><a href="#cb57-235" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> ed4)) <span class="sc">+</span></span>
+<span id="cb57-236"><a href="#cb57-236" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-237"><a href="#cb57-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Niveau d&#39;éducation (4 classes)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Effectif&quot;</span>,</span>
+<span id="cb57-238"><a href="#cb57-238" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Distribution de l&#39;éducation dans l&#39;échantillon&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-239"><a href="#cb57-239" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb57-240"><a href="#cb57-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-241"><a href="#cb57-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-242"><a href="#cb57-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-243"><a href="#cb57-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etudier la matrice des corrélations entre les 7 variables quantitatives présentes.</span></span>
+<span id="cb57-244"><a href="#cb57-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-247"><a href="#cb57-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-248"><a href="#cb57-248" aria-hidden="true" tabindex="-1"></a>num_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;age&quot;</span>,<span class="st">&quot;employ&quot;</span>,<span class="st">&quot;address&quot;</span>,<span class="st">&quot;income&quot;</span>,<span class="st">&quot;debtinc&quot;</span>,<span class="st">&quot;creddebt&quot;</span>,<span class="st">&quot;othdebt&quot;</span>)</span>
+<span id="cb57-249"><a href="#cb57-249" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
+<span id="cb57-250"><a href="#cb57-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb57-251"><a href="#cb57-251" aria-hidden="true" tabindex="-1"></a>    <span class="at">debtinc  =</span> <span class="fu">as.numeric</span>(debtinc),</span>
+<span id="cb57-252"><a href="#cb57-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">creddebt =</span> <span class="fu">as.numeric</span>(creddebt),</span>
+<span id="cb57-253"><a href="#cb57-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">othdebt  =</span> <span class="fu">as.numeric</span>(othdebt)</span>
+<span id="cb57-254"><a href="#cb57-254" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-255"><a href="#cb57-255" aria-hidden="true" tabindex="-1"></a>cor_mat <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
+<span id="cb57-256"><a href="#cb57-256" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(num_vars)) <span class="sc">|&gt;</span></span>
+<span id="cb57-257"><a href="#cb57-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-258"><a href="#cb57-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>()</span>
+<span id="cb57-259"><a href="#cb57-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-260"><a href="#cb57-260" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
+<span id="cb57-261"><a href="#cb57-261" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(</span>
+<span id="cb57-262"><a href="#cb57-262" aria-hidden="true" tabindex="-1"></a>  cor_mat,</span>
+<span id="cb57-263"><a href="#cb57-263" aria-hidden="true" tabindex="-1"></a>  <span class="at">hc.order =</span> <span class="cn">TRUE</span>,           <span class="co"># ordonne les variables par similarité</span></span>
+<span id="cb57-264"><a href="#cb57-264" aria-hidden="true" tabindex="-1"></a>  <span class="at">lab =</span> <span class="cn">TRUE</span>,                <span class="co"># affiche les coefficients</span></span>
+<span id="cb57-265"><a href="#cb57-265" aria-hidden="true" tabindex="-1"></a>  <span class="at">lab_size =</span> <span class="dv">3</span>,</span>
+<span id="cb57-266"><a href="#cb57-266" aria-hidden="true" tabindex="-1"></a>  <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;tomato2&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;seagreen3&quot;</span>),</span>
+<span id="cb57-267"><a href="#cb57-267" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">&quot;Corrélogramme des variables quantitatives&quot;</span>,</span>
+<span id="cb57-268"><a href="#cb57-268" aria-hidden="true" tabindex="-1"></a>  <span class="at">ggtheme =</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb57-269"><a href="#cb57-269" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb57-270"><a href="#cb57-270" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-271"><a href="#cb57-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-272"><a href="#cb57-272" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recoder la variable à expliquer (default) en variable quantitative puis réaliser une première régression logistique incluant toutes les variables explicatives quantitatives.</span></span>
+<span id="cb57-273"><a href="#cb57-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-276"><a href="#cb57-276" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-277"><a href="#cb57-277" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df1 <span class="sc">|&gt;</span></span>
+<span id="cb57-278"><a href="#cb57-278" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb57-279"><a href="#cb57-279" aria-hidden="true" tabindex="-1"></a>    <span class="at">default_num =</span> <span class="fu">case_when</span>(</span>
+<span id="cb57-280"><a href="#cb57-280" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="st">&quot;Yes&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb57-281"><a href="#cb57-281" aria-hidden="true" tabindex="-1"></a>      default <span class="sc">==</span> <span class="st">&quot;No&quot;</span>  <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb57-282"><a href="#cb57-282" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>   <span class="co"># conserve les NA existants</span></span>
+<span id="cb57-283"><a href="#cb57-283" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb57-284"><a href="#cb57-284" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-285"><a href="#cb57-285" aria-hidden="true" tabindex="-1"></a>form1 <span class="ot">&lt;-</span> default_num <span class="sc">~</span> age <span class="sc">+</span> employ <span class="sc">+</span> address <span class="sc">+</span> income <span class="sc">+</span> debtinc <span class="sc">+</span> creddebt <span class="sc">+</span> othdebt</span>
+<span id="cb57-286"><a href="#cb57-286" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form1, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb57-287"><a href="#cb57-287" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span>
+<span id="cb57-288"><a href="#cb57-288" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-289"><a href="#cb57-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-290"><a href="#cb57-290" aria-hidden="true" tabindex="-1"></a><span class="fu">## Réaliser une deuxième régression logistique incluant aussi la variable educ en classe. Enregistrer aussi les résultats de ce modèle, qui est le modèle le plus complexe que nous appliquerons à ces données.</span></span>
+<span id="cb57-291"><a href="#cb57-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-294"><a href="#cb57-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-295"><a href="#cb57-295" aria-hidden="true" tabindex="-1"></a>form2 <span class="ot">&lt;-</span> <span class="fu">update</span>(form1, . <span class="sc">~</span> . <span class="sc">+</span> ed4)</span>
+<span id="cb57-296"><a href="#cb57-296" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form2, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb57-297"><a href="#cb57-297" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span>
+<span id="cb57-298"><a href="#cb57-298" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-299"><a href="#cb57-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-300"><a href="#cb57-300" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tester l&#39;ajustement de ce modèle complet, grâce à la commande hoslem.test, où g est le nombre de groupes de niveaux différents de fonction prédictive utilisé pour le test. Varier les valeurs de g pour vérifier la robustesse du résultat.</span></span>
+<span id="cb57-301"><a href="#cb57-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-304"><a href="#cb57-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-305"><a href="#cb57-305" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">4</span>)</span>
+<span id="cb57-306"><a href="#cb57-306" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">5</span>)</span>
+<span id="cb57-307"><a href="#cb57-307" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">6</span>)</span>
+<span id="cb57-308"><a href="#cb57-308" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">7</span>)</span>
+<span id="cb57-309"><a href="#cb57-309" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">8</span>)</span>
+<span id="cb57-310"><a href="#cb57-310" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">9</span>)</span>
+<span id="cb57-311"><a href="#cb57-311" aria-hidden="true" tabindex="-1"></a><span class="fu">hoslem.test</span>(mod2<span class="sc">$</span>y, <span class="fu">fitted</span>(mod2), <span class="at">g=</span><span class="dv">10</span>)</span>
+<span id="cb57-312"><a href="#cb57-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-313"><a href="#cb57-313" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-314"><a href="#cb57-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-315"><a href="#cb57-315" aria-hidden="true" tabindex="-1"></a><span class="fu">## Grâce à la commande anova, réaliser un test de rapport de vraisemblance entre les deux modèles ajustés, et conclure sur la significativité de la variable educ.</span></span>
+<span id="cb57-316"><a href="#cb57-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-319"><a href="#cb57-319" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-320"><a href="#cb57-320" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod1, mod2, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb57-321"><a href="#cb57-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-322"><a href="#cb57-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-323"><a href="#cb57-323" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La p-value = **0.54** → on **ne rejette pas** $H_0$​.</span>
+<span id="cb57-324"><a href="#cb57-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-325"><a href="#cb57-325" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Autrement dit :</span>
+<span id="cb57-326"><a href="#cb57-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-327"><a href="#cb57-327" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **l’ajout de la variable d’éducation </span><span class="in">`ed4`</span><span class="at"> n’améliore pas</span></span>
+<span id="cb57-328"><a href="#cb57-328" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; significativement la qualité du modèle**.</span></span>
+<span id="cb57-329"><a href="#cb57-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-330"><a href="#cb57-330" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ôter la variable la moins significative du modèle retenu. Vérifier que la P-value du test</span></span>
+<span id="cb57-331"><a href="#cb57-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-332"><a href="#cb57-332" aria-hidden="true" tabindex="-1"></a>de rapport de vraisemblance entre les modèles avec et sans cette</span>
+<span id="cb57-333"><a href="#cb57-333" aria-hidden="true" tabindex="-1"></a>variable est égale ou très proche de la P-value du test bilatéral de</span>
+<span id="cb57-334"><a href="#cb57-334" aria-hidden="true" tabindex="-1"></a>nullité du coefficient associé à la variable.</span>
+<span id="cb57-335"><a href="#cb57-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-338"><a href="#cb57-338" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-339"><a href="#cb57-339" aria-hidden="true" tabindex="-1"></a>form3 <span class="ot">&lt;-</span> <span class="fu">update</span>(form1, . <span class="sc">~</span> . <span class="sc">-</span> othdebt)</span>
+<span id="cb57-340"><a href="#cb57-340" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form3, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb57-341"><a href="#cb57-341" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span>
+<span id="cb57-342"><a href="#cb57-342" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2, mod3, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb57-343"><a href="#cb57-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-344"><a href="#cb57-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-345"><a href="#cb57-345" aria-hidden="true" tabindex="-1"></a><span class="fu">## Une variable est à nouveau très peu significative. Ajuster un nouveau modèle sans cette variable. Sauvegarder les valeurs prédites par ce modèle.</span></span>
+<span id="cb57-346"><a href="#cb57-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-349"><a href="#cb57-349" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-350"><a href="#cb57-350" aria-hidden="true" tabindex="-1"></a>form4 <span class="ot">&lt;-</span> <span class="fu">update</span>(form3, . <span class="sc">~</span> . <span class="sc">-</span> income)</span>
+<span id="cb57-351"><a href="#cb57-351" aria-hidden="true" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(form4, <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;logit&quot;</span>))</span>
+<span id="cb57-352"><a href="#cb57-352" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod4)</span>
+<span id="cb57-353"><a href="#cb57-353" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod3, mod4, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span>
+<span id="cb57-354"><a href="#cb57-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-355"><a href="#cb57-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-356"><a href="#cb57-356" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir le tableau de contingence des individus bien ou mal classés avec une règle de coupure à 0,5</span></span>
+<span id="cb57-357"><a href="#cb57-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-360"><a href="#cb57-360" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-361"><a href="#cb57-361" aria-hidden="true" tabindex="-1"></a><span class="co"># Probabilités prédites</span></span>
+<span id="cb57-362"><a href="#cb57-362" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2 <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(age, employ, address, income, debtinc, creddebt, othdebt, default_num, ed4)</span>
+<span id="cb57-363"><a href="#cb57-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-364"><a href="#cb57-364" aria-hidden="true" tabindex="-1"></a>p_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod4, <span class="at">newdata =</span> df2_nona, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb57-365"><a href="#cb57-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-366"><a href="#cb57-366" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2_nona <span class="sc">|&gt;</span></span>
+<span id="cb57-367"><a href="#cb57-367" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb57-368"><a href="#cb57-368" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_hat =</span> p_hat,</span>
+<span id="cb57-369"><a href="#cb57-369" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred_class =</span> <span class="fu">if_else</span>(p_hat <span class="sc">&gt;=</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb57-370"><a href="#cb57-370" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb57-371"><a href="#cb57-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-372"><a href="#cb57-372" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>pred_class, <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
-<span id="cb57-373"><a href="#cb57-373" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df2_nona<span class="sc">$</span>pred_class <span class="sc">==</span> df2_nona<span class="sc">$</span>default_num, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-374"><a href="#cb57-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-372"><a href="#cb57-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-373"><a href="#cb57-373" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>pred_class, <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
+<span id="cb57-374"><a href="#cb57-374" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df2_nona<span class="sc">$</span>pred_class <span class="sc">==</span> df2_nona<span class="sc">$</span>default_num, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb57-375"><a href="#cb57-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-376"><a href="#cb57-376" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-377"><a href="#cb57-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-378"><a href="#cb57-378" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir la courbe ROC pour le « meilleur » modèle, puis calculer les &quot;probabilités prédites&quot; et étudier leur distribution</span></span>
-<span id="cb57-379"><a href="#cb57-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-382"><a href="#cb57-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-383"><a href="#cb57-383" aria-hidden="true" tabindex="-1"></a>roc_obj <span class="ot">&lt;-</span> <span class="fu">roc</span>(df2_nona<span class="sc">$</span>default_num, df2_nona<span class="sc">$</span>p_hat)</span>
-<span id="cb57-384"><a href="#cb57-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-385"><a href="#cb57-385" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc_obj, <span class="at">main=</span><span class="st">&quot;Courbe ROC — Modèle logit 2025&quot;</span>)</span>
-<span id="cb57-386"><a href="#cb57-386" aria-hidden="true" tabindex="-1"></a><span class="fu">auc</span>(roc_obj)</span>
-<span id="cb57-387"><a href="#cb57-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-388"><a href="#cb57-388" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df2_nona, <span class="fu">aes</span>(<span class="at">x =</span> p_hat, <span class="at">fill =</span> <span class="fu">factor</span>(default_num))) <span class="sc">+</span></span>
-<span id="cb57-389"><a href="#cb57-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
-<span id="cb57-390"><a href="#cb57-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution des probabilités prédites par classe réelle&quot;</span>,</span>
-<span id="cb57-391"><a href="#cb57-391" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;p̂(default = 1)&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Défaut observé&quot;</span>) <span class="sc">+</span></span>
-<span id="cb57-392"><a href="#cb57-392" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb57-393"><a href="#cb57-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-394"><a href="#cb57-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-395"><a href="#cb57-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-396"><a href="#cb57-396" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interprétation du graphe</span></span>
-<span id="cb57-397"><a href="#cb57-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-398"><a href="#cb57-398" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>L’axe des abscisses montre les **probabilités prédites de défaut**</span>
-<span id="cb57-399"><a href="#cb57-399" aria-hidden="true" tabindex="-1"></a>    $\hat{p} = P(\text{default}=1|X)$ .</span>
-<span id="cb57-400"><a href="#cb57-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-401"><a href="#cb57-401" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>L’axe des ordonnées montre le **nombre d’individus** dans chaque</span>
-<span id="cb57-402"><a href="#cb57-402" aria-hidden="true" tabindex="-1"></a>    intervalle de probabilité.</span>
-<span id="cb57-403"><a href="#cb57-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-404"><a href="#cb57-404" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La couleur rouge (0) représente les **emprunteurs qui n’ont pas fait</span>
-<span id="cb57-405"><a href="#cb57-405" aria-hidden="true" tabindex="-1"></a>    défaut**.</span>
-<span id="cb57-406"><a href="#cb57-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-407"><a href="#cb57-407" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La couleur bleue (1) représente les **emprunteurs qui ont fait</span>
-<span id="cb57-408"><a href="#cb57-408" aria-hidden="true" tabindex="-1"></a>    défaut**.</span>
-<span id="cb57-409"><a href="#cb57-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-410"><a href="#cb57-410" aria-hidden="true" tabindex="-1"></a><span class="fu">## Refaire la même modélisation avec un modèle Probit et observer les différences et ressemblances avec la modélisation Logit.</span></span>
-<span id="cb57-411"><a href="#cb57-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-414"><a href="#cb57-414" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-415"><a href="#cb57-415" aria-hidden="true" tabindex="-1"></a>mod_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">formula</span>(mod4), <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;probit&quot;</span>))</span>
-<span id="cb57-416"><a href="#cb57-416" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_probit)</span>
-<span id="cb57-417"><a href="#cb57-417" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-418"><a href="#cb57-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-419"><a href="#cb57-419" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pour aller plus loin…</span></span>
-<span id="cb57-420"><a href="#cb57-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-421"><a href="#cb57-421" aria-hidden="true" tabindex="-1"></a>Supposant qu&#39;un individu ne remboursant pas son emprunt coûte en moyenne</span>
-<span id="cb57-422"><a href="#cb57-422" aria-hidden="true" tabindex="-1"></a>100000\$, et qu&#39;un individu payant son emprunt rapporte en moyenne</span>
-<span id="cb57-423"><a href="#cb57-423" aria-hidden="true" tabindex="-1"></a>40000\$, on peut calculer (…) qu&#39;il est optimal de n&#39;accorder un prêt</span>
-<span id="cb57-424"><a href="#cb57-424" aria-hidden="true" tabindex="-1"></a>qu&#39;aux individus ayant une probabilité de rembourser estimée à 0,7 ou</span>
-<span id="cb57-425"><a href="#cb57-425" aria-hidden="true" tabindex="-1"></a>plus.</span>
-<span id="cb57-426"><a href="#cb57-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-427"><a href="#cb57-427" aria-hidden="true" tabindex="-1"></a><span class="fu">## Règle de décision (probabilité de remboursement \&gt;= 0.7)</span></span>
-<span id="cb57-428"><a href="#cb57-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-431"><a href="#cb57-431" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-432"><a href="#cb57-432" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2_nona <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">p_repay =</span> <span class="dv">1</span> <span class="sc">-</span> p_hat, <span class="at">grant =</span> <span class="fu">as.numeric</span>(p_repay <span class="sc">&gt;=</span> <span class="fl">0.7</span>))</span>
-<span id="cb57-433"><a href="#cb57-433" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df2_nona<span class="sc">$</span>grant, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb57-434"><a href="#cb57-434" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-435"><a href="#cb57-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-436"><a href="#cb57-436" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir le tableau de contingence des individus bien ou mal classés en considérant comme défaillants potentiels tous les individus ayant moins de 70% de chances de rembourser. Commenter ce tableau. </span></span>
-<span id="cb57-437"><a href="#cb57-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-440"><a href="#cb57-440" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb57-441"><a href="#cb57-441" aria-hidden="true" tabindex="-1"></a>thr_default <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
-<span id="cb57-442"><a href="#cb57-442" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> thr_default, <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
-<span id="cb57-443"><a href="#cb57-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-444"><a href="#cb57-444" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> thr_default,</span>
-<span id="cb57-445"><a href="#cb57-445" aria-hidden="true" tabindex="-1"></a>             <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
-<span id="cb57-446"><a href="#cb57-446" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(tab)) <span class="sc">/</span> <span class="fu">sum</span>(tab)</span>
-<span id="cb57-447"><a href="#cb57-447" aria-hidden="true" tabindex="-1"></a>accuracy</span>
-<span id="cb57-448"><a href="#cb57-448" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)   <span class="co"># pourcentage par classe observée</span></span>
-<span id="cb57-449"><a href="#cb57-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-450"><a href="#cb57-450" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb57-451"><a href="#cb57-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-452"><a href="#cb57-452" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; En fixant le seuil à 0,3 (c’est-à-dire en considérant comme «</span></span>
-<span id="cb57-453"><a href="#cb57-453" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; défaillant potentiel » tout individu ayant moins de 70 % de chances de</span></span>
-<span id="cb57-454"><a href="#cb57-454" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; rembourser), le modèle devient **plus prudent** : il classe davantage</span></span>
-<span id="cb57-455"><a href="#cb57-455" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; d’individus comme risqués. Le nombre de vrais positifs (défaillants</span></span>
-<span id="cb57-456"><a href="#cb57-456" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; correctement détectés) augmente, mais au prix d’une hausse des faux</span></span>
-<span id="cb57-457"><a href="#cb57-457" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; positifs (bons payeurs injustement rejetés).</span></span>
-<span id="cb57-458"><a href="#cb57-458" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
-<span id="cb57-459"><a href="#cb57-459" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Autrement dit, la règle minimise les pertes dues aux impayés, mais</span></span>
-<span id="cb57-460"><a href="#cb57-460" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; réduit le volume de prêts accordés. C’est un **compromis classique</span></span>
-<span id="cb57-461"><a href="#cb57-461" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; entre risque de crédit et rentabilité** :\</span></span>
-<span id="cb57-462"><a href="#cb57-462" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
-<span id="cb57-463"><a href="#cb57-463" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Plus le seuil est bas, plus la banque protège son portefeuille, mais</span></span>
-<span id="cb57-464"><a href="#cb57-464" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; plus elle refuse de bons clients.</span></span>
+<span id="cb57-376"><a href="#cb57-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-377"><a href="#cb57-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-378"><a href="#cb57-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-379"><a href="#cb57-379" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir la courbe ROC pour le « meilleur » modèle, puis calculer les &quot;probabilités prédites&quot; et étudier leur distribution</span></span>
+<span id="cb57-380"><a href="#cb57-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-383"><a href="#cb57-383" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-384"><a href="#cb57-384" aria-hidden="true" tabindex="-1"></a>roc_obj <span class="ot">&lt;-</span> <span class="fu">roc</span>(df2_nona<span class="sc">$</span>default_num, df2_nona<span class="sc">$</span>p_hat)</span>
+<span id="cb57-385"><a href="#cb57-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-386"><a href="#cb57-386" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc_obj, <span class="at">main=</span><span class="st">&quot;Courbe ROC — Modèle logit 2025&quot;</span>)</span>
+<span id="cb57-387"><a href="#cb57-387" aria-hidden="true" tabindex="-1"></a><span class="fu">auc</span>(roc_obj)</span>
+<span id="cb57-388"><a href="#cb57-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-389"><a href="#cb57-389" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df2_nona, <span class="fu">aes</span>(<span class="at">x =</span> p_hat, <span class="at">fill =</span> <span class="fu">factor</span>(default_num))) <span class="sc">+</span></span>
+<span id="cb57-390"><a href="#cb57-390" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb57-391"><a href="#cb57-391" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution des probabilités prédites par classe réelle&quot;</span>,</span>
+<span id="cb57-392"><a href="#cb57-392" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;p̂(default = 1)&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;Défaut observé&quot;</span>) <span class="sc">+</span></span>
+<span id="cb57-393"><a href="#cb57-393" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb57-394"><a href="#cb57-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-395"><a href="#cb57-395" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-396"><a href="#cb57-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-397"><a href="#cb57-397" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interprétation du graphe</span></span>
+<span id="cb57-398"><a href="#cb57-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-399"><a href="#cb57-399" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>L’axe des abscisses montre les **probabilités prédites de défaut**</span>
+<span id="cb57-400"><a href="#cb57-400" aria-hidden="true" tabindex="-1"></a>    $\hat{p} = P(\text{default}=1|X)$ .</span>
+<span id="cb57-401"><a href="#cb57-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-402"><a href="#cb57-402" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>L’axe des ordonnées montre le **nombre d’individus** dans chaque</span>
+<span id="cb57-403"><a href="#cb57-403" aria-hidden="true" tabindex="-1"></a>    intervalle de probabilité.</span>
+<span id="cb57-404"><a href="#cb57-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-405"><a href="#cb57-405" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La couleur rouge (0) représente les **emprunteurs qui n’ont pas fait</span>
+<span id="cb57-406"><a href="#cb57-406" aria-hidden="true" tabindex="-1"></a>    défaut**.</span>
+<span id="cb57-407"><a href="#cb57-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-408"><a href="#cb57-408" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>La couleur bleue (1) représente les **emprunteurs qui ont fait</span>
+<span id="cb57-409"><a href="#cb57-409" aria-hidden="true" tabindex="-1"></a>    défaut**.</span>
+<span id="cb57-410"><a href="#cb57-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-411"><a href="#cb57-411" aria-hidden="true" tabindex="-1"></a><span class="fu">## Refaire la même modélisation avec un modèle Probit et observer les différences et ressemblances avec la modélisation Logit.</span></span>
+<span id="cb57-412"><a href="#cb57-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-415"><a href="#cb57-415" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-416"><a href="#cb57-416" aria-hidden="true" tabindex="-1"></a>mod_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">formula</span>(mod4), <span class="at">data=</span>df2, <span class="at">family=</span><span class="fu">binomial</span>(<span class="st">&quot;probit&quot;</span>))</span>
+<span id="cb57-417"><a href="#cb57-417" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_probit)</span>
+<span id="cb57-418"><a href="#cb57-418" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-419"><a href="#cb57-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-420"><a href="#cb57-420" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pour aller plus loin…</span></span>
+<span id="cb57-421"><a href="#cb57-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-422"><a href="#cb57-422" aria-hidden="true" tabindex="-1"></a>Supposant qu&#39;un individu ne remboursant pas son emprunt coûte en moyenne</span>
+<span id="cb57-423"><a href="#cb57-423" aria-hidden="true" tabindex="-1"></a>100000\$, et qu&#39;un individu payant son emprunt rapporte en moyenne</span>
+<span id="cb57-424"><a href="#cb57-424" aria-hidden="true" tabindex="-1"></a>40000\$, on peut calculer (…) qu&#39;il est optimal de n&#39;accorder un prêt</span>
+<span id="cb57-425"><a href="#cb57-425" aria-hidden="true" tabindex="-1"></a>qu&#39;aux individus ayant une probabilité de rembourser estimée à 0,7 ou</span>
+<span id="cb57-426"><a href="#cb57-426" aria-hidden="true" tabindex="-1"></a>plus.</span>
+<span id="cb57-427"><a href="#cb57-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-428"><a href="#cb57-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Règle de décision (probabilité de remboursement \&gt;= 0.7)</span></span>
+<span id="cb57-429"><a href="#cb57-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-432"><a href="#cb57-432" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-433"><a href="#cb57-433" aria-hidden="true" tabindex="-1"></a>df2_nona <span class="ot">&lt;-</span> df2_nona <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">p_repay =</span> <span class="dv">1</span> <span class="sc">-</span> p_hat, <span class="at">grant =</span> <span class="fu">as.numeric</span>(p_repay <span class="sc">&gt;=</span> <span class="fl">0.7</span>))</span>
+<span id="cb57-434"><a href="#cb57-434" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df2_nona<span class="sc">$</span>grant, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-435"><a href="#cb57-435" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-436"><a href="#cb57-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-437"><a href="#cb57-437" aria-hidden="true" tabindex="-1"></a><span class="fu">## Etablir le tableau de contingence des individus bien ou mal classés en considérant comme défaillants potentiels tous les individus ayant moins de 70% de chances de rembourser. Commenter ce tableau.</span></span>
+<span id="cb57-438"><a href="#cb57-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-441"><a href="#cb57-441" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb57-442"><a href="#cb57-442" aria-hidden="true" tabindex="-1"></a>thr_default <span class="ot">&lt;-</span> <span class="fl">0.3</span></span>
+<span id="cb57-443"><a href="#cb57-443" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> thr_default, <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
+<span id="cb57-444"><a href="#cb57-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-445"><a href="#cb57-445" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Predicted =</span> df2_nona<span class="sc">$</span>p_hat <span class="sc">&gt;=</span> thr_default,</span>
+<span id="cb57-446"><a href="#cb57-446" aria-hidden="true" tabindex="-1"></a>             <span class="at">Observed =</span> df2_nona<span class="sc">$</span>default_num)</span>
+<span id="cb57-447"><a href="#cb57-447" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(tab)) <span class="sc">/</span> <span class="fu">sum</span>(tab)</span>
+<span id="cb57-448"><a href="#cb57-448" aria-hidden="true" tabindex="-1"></a>accuracy</span>
+<span id="cb57-449"><a href="#cb57-449" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(tab, <span class="dv">2</span>)   <span class="co"># pourcentage par classe observée</span></span>
+<span id="cb57-450"><a href="#cb57-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-451"><a href="#cb57-451" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb57-452"><a href="#cb57-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-453"><a href="#cb57-453" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; En fixant le seuil à 0,3 (c’est-à-dire en considérant comme «</span></span>
+<span id="cb57-454"><a href="#cb57-454" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; défaillant potentiel » tout individu ayant moins de 70 % de chances de</span></span>
+<span id="cb57-455"><a href="#cb57-455" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; rembourser), le modèle devient **plus prudent** : il classe davantage</span></span>
+<span id="cb57-456"><a href="#cb57-456" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; d’individus comme risqués. Le nombre de vrais positifs (défaillants</span></span>
+<span id="cb57-457"><a href="#cb57-457" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; correctement détectés) augmente, mais au prix d’une hausse des faux</span></span>
+<span id="cb57-458"><a href="#cb57-458" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; positifs (bons payeurs injustement rejetés).</span></span>
+<span id="cb57-459"><a href="#cb57-459" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb57-460"><a href="#cb57-460" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Autrement dit, la règle minimise les pertes dues aux impayés, mais</span></span>
+<span id="cb57-461"><a href="#cb57-461" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; réduit le volume de prêts accordés. C’est un **compromis classique</span></span>
+<span id="cb57-462"><a href="#cb57-462" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; entre risque de crédit et rentabilité** :\</span></span>
+<span id="cb57-463"><a href="#cb57-463" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb57-464"><a href="#cb57-464" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Plus le seuil est bas, plus la banque protège son portefeuille, mais</span></span>
+<span id="cb57-465"><a href="#cb57-465" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; plus elle refuse de bons clients.</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

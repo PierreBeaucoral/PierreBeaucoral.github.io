@@ -168,151 +168,347 @@
     "text": "2.15 Etablir le tableau de contingence des individus bien ou mal classés en considérant comme défaillants potentiels tous les individus ayant moins de 70% de chances de rembourser. Commenter ce tableau.\n\n\nCode\nthr_default &lt;- 0.3\ntable(Predicted = df2_nona$p_hat &gt;= thr_default, Observed = df2_nona$default_num)\n\n\n         Observed\nPredicted   0   1\n    FALSE 405  43\n    TRUE  112 140\n\n\nCode\ntab &lt;- table(Predicted = df2_nona$p_hat &gt;= thr_default,\n             Observed = df2_nona$default_num)\naccuracy &lt;- sum(diag(tab)) / sum(tab)\naccuracy\n\n\n[1] 0.7785714\n\n\nCode\nprop.table(tab, 2)   # pourcentage par classe observée\n\n\n         Observed\nPredicted         0         1\n    FALSE 0.7833656 0.2349727\n    TRUE  0.2166344 0.7650273\n\n\n\nEn fixant le seuil à 0,3 (c’est-à-dire en considérant comme « défaillant potentiel » tout individu ayant moins de 70 % de chances de rembourser), le modèle devient plus prudent : il classe davantage d’individus comme risqués. Le nombre de vrais positifs (défaillants correctement détectés) augmente, mais au prix d’une hausse des faux positifs (bons payeurs injustement rejetés).\nAutrement dit, la règle minimise les pertes dues aux impayés, mais réduit le volume de prêts accordés. C’est un compromis classique entre risque de crédit et rentabilité :\n\nPlus le seuil est bas, plus la banque protège son portefeuille, mais plus elle refuse de bons clients."
   },
   {
-    "objectID": "td3/td3.html",
-    "href": "td3/td3.html",
-    "title": "TD 3 — Régression multinomiale (R)",
+    "objectID": "td4/td4.html",
+    "href": "td4/td4.html",
+    "title": "Modèles de survie en R – Correction",
     "section": "",
-    "text": "Manipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
+    "text": "On s’intéresse à une durée aléatoire (T) (positive) :\n\ndurée d’une grève\ndurée d’un épisode de chômage\ndurée de séjour à l’hôpital\ndurée jusqu’à un défaut de paiement, etc.\n\nPour chaque unité (grève, individu, contrat) \\(i = 1,\\dots,n\\) :\n\n\\(T_i\\) : durée vraie (inobservable en général)\non observe seulement :\n\n\\(t_i\\) : durée observée\n\\(\\delta_i\\) : indicatrice d’événement\n\n\navec :\n\n\\(\\delta_i = 1\\) si l’événement est observé (fin de grève pendant l’observation)\n\\(\\delta_i = 0\\) si la durée est censurée (on sait juste que la grève dure au moins jusqu’à \\(t_i\\))\n\n\n\n\n\nEn R, on encode le couple ((t_i, _i)) avec la fonction Surv() du package survival.\n\n\nCode\n# Exemple jouet : 5 durées, 2 censures\nt  &lt;- c(3, 5, 8, 10, 4)         # durées observées\nd  &lt;- c(1, 0, 1, 0, 1)          # 1 = événement, 0 = censuré\n\nS_ex &lt;- Surv(time = t, event = d)\nS_ex\n\n\n[1]  3   5+  8  10+  4 \n\n\n\nLes + indiquent les durées censurées.\nLa classe Surv est le format standard utilisé par toutes les fonctions d’analyse de survie (survfit, coxph, survreg, etc.)."
   },
   {
-    "objectID": "td3/td3.html#objectifs-du-td",
-    "href": "td3/td3.html#objectifs-du-td",
-    "title": "TD 3 — Régression multinomiale (R)",
+    "objectID": "td4/td4.html#données-de-durée-de-vie",
+    "href": "td4/td4.html#données-de-durée-de-vie",
+    "title": "Modèles de survie en R – Correction",
     "section": "",
-    "text": "Manipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
+    "text": "On s’intéresse à une durée aléatoire (T) (positive) :\n\ndurée d’une grève\ndurée d’un épisode de chômage\ndurée de séjour à l’hôpital\ndurée jusqu’à un défaut de paiement, etc.\n\nPour chaque unité (grève, individu, contrat) \\(i = 1,\\dots,n\\) :\n\n\\(T_i\\) : durée vraie (inobservable en général)\non observe seulement :\n\n\\(t_i\\) : durée observée\n\\(\\delta_i\\) : indicatrice d’événement\n\n\navec :\n\n\\(\\delta_i = 1\\) si l’événement est observé (fin de grève pendant l’observation)\n\\(\\delta_i = 0\\) si la durée est censurée (on sait juste que la grève dure au moins jusqu’à \\(t_i\\))"
   },
   {
-    "objectID": "td3/td3.html#introduction",
-    "href": "td3/td3.html#introduction",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "2 Introduction",
-    "text": "2 Introduction\nUn modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n2.1 Cas d’une variable expliquée nominale\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n2.2 Cas d’une variable expliquée ordinale\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
-  },
-  {
-    "objectID": "td3/td3.html#présentation-de-létude-et-des-données",
-    "href": "td3/td3.html#présentation-de-létude-et-des-données",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "3 Présentation de l’étude et des données",
-    "text": "3 Présentation de l’étude et des données\nLes données étudiées proviennent de Hill et al. (1995) et sont utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.\n\n288 femmes avec un cancer de l’endomètre participent à l’étude.\n\n\n3.1 Dictionnaire des variables\n\nID : identifiant individuel.\nGRADE : variable ordinale indiquant le stade de la tumeur\n\n0 : bien différenciée\n1 : modérément différenciée\n2 : peu différenciée\n\nRACE : variable indicatrice à deux modalités\n\n1 : peau noire\n0 : peau blanche\n\nESTROGEN : variable indicatrice à deux modalités\n\n1 : la femme a déjà pris des œstrogènes\n0 : sinon\n\nSUBTYPE : variable qualitative à trois modalités codant le sous-type de tissu cancéreux\n\n0 : Adénocarcinome\n1 : Adenosquamous\n2 : Autre\n\nAGE : âge recodé en deux classes\n\n0 : 50–64 ans\n1 : 65–79 ans\n\nSMK : variable binaire indiquant le statut tabagique au moment de l’étude\n\n1 : fumeuse\n0 : non-fumeuse\n\n\n\n\n3.2 Références\n\nHill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J., Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and Harlan, L.C., Racial differences in tumor grade among women with endometrial cancer, Gynecol. Oncol. 56: 154–163, 1995.\nDavid G. Kleinbaum, Mitchel Klein, Logistic Regression – A Self‐Learning Text, Third Edition, Springer, 2010."
-  },
-  {
-    "objectID": "td3/td3.html#packages-utilisés",
-    "href": "td3/td3.html#packages-utilisés",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "4 Packages utilisés",
-    "text": "4 Packages utilisés\n\n\nCode\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(haven)\nlibrary(broom)\nlibrary(dplyr)\nlibrary(gt)\nlibrary(nnet)            # multinom (logit multinomial nominal)\nlibrary(generalhoslem)   # logitgof : test de Hosmer–Lemeshow multinomial\nlibrary(MASS)            # polr : logit ordinal\n\ntheme_set(theme_minimal())"
-  },
-  {
-    "objectID": "td3/td3.html#import-des-données-et-préparation",
-    "href": "td3/td3.html#import-des-données-et-préparation",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "5 Import des données et préparation",
-    "text": "5 Import des données et préparation\nOn suppose que le fichier cancer.dta se trouve dans le dossier ./data/.\n\n\nCode\ncancer_raw &lt;- read_dta(\"./data/cancer.dta\") |&gt;\n  clean_names()\n\nglimpse(cancer_raw)\n\n\nRows: 288\nColumns: 7\n$ id       &lt;dbl&gt; 10009, 10025, 10038, 10042, 10049, 10113, 10131, 10160, 10164…\n$ grade    &lt;dbl+lbl&gt; 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 2, 1, 2, 2, …\n$ race     &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n$ estrogen &lt;dbl+lbl&gt; 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, …\n$ subtype  &lt;dbl+lbl&gt; 1, 2, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, …\n$ age      &lt;dbl+lbl&gt; 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, …\n$ smoking  &lt;dbl+lbl&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n\n\nOn dispose notamment des variables :\n\ngrade (3 modalités ordonnées),\nrace,\nestrogen,\nsubtype,\nage,\nsmoking."
-  },
-  {
-    "objectID": "td3/td3.html#recodage-des-variables",
-    "href": "td3/td3.html#recodage-des-variables",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "6 Recodage des variables",
-    "text": "6 Recodage des variables\nOn crée des facteurs explicites pour la régression, en choisissant des références cohérentes avec l’énoncé :\n\n\nCode\ncancer &lt;- cancer_raw |&gt;\n  mutate(\n    # convertir les labels Stata en facteurs R\n    grade_f    = as_factor(grade),\n    subtype_f  = as_factor(subtype),\n    race_f     = as_factor(race),\n    estrogen_f = as_factor(estrogen),\n    age_f      = as_factor(age),\n    smk_f      = as_factor(smoking),\n    \n    # forcer l'ordre pour l'ordinal (adapter les noms à ce que tu vois)\n    grade_ord = fct_relevel(\n      grade_f,\n      \"bien différencié\",\n      \"moyennement différencié\",\n      \"peu différencié\"\n    )\n  )\n\ncancer |&gt;\n  dplyr::select(grade, grade_ord, subtype, subtype_f,\n         race_f, estrogen_f, age_f, smk_f) |&gt;\n  head()\n\n\n# A tibble: 6 × 8\n  grade                grade_ord subtype subtype_f race_f estrogen_f age_f smk_f\n  &lt;dbl+lbl&gt;            &lt;fct&gt;     &lt;dbl+l&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;\n1 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 50-64 yes  \n2 0 [bien différencié] bien dif… 2 [oth… other     blanc… took oest… 50-64 no   \n3 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 65-79 no   \n4 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… never too… 65-79 no   \n5 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 50-64 no   \n6 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 65-79 no"
-  },
-  {
-    "objectID": "td3/td3.html#modèle-multinomial-pour-expliquer-subtype",
-    "href": "td3/td3.html#modèle-multinomial-pour-expliquer-subtype",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "7 Modèle multinomial pour expliquer SUBTYPE",
-    "text": "7 Modèle multinomial pour expliquer SUBTYPE\nVariables explicatives : RACE, ESTROGEN, SMK, AGE.\n\n\n7.1 Estimation du premier modèle (logit multinomial nominal)\n\n\nCode\nmod_sub_full &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f + age_f,\n  data = cancer\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\nCode\nres_sub_ful &lt;- tidy(mod_sub_full,\n                exponentiate = TRUE,  # passe en OR\n                conf.int = TRUE)      # ajoute IC 95%\n\nres_sub_ful\n\n\n# A tibble: 10 × 8\n   y.level       term    estimate std.error statistic p.value conf.low conf.high\n   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n 1 adenosquamous (Inter…    0.169     0.447    -3.97  7.18e-5   0.0705     0.407\n 2 adenosquamous race_f…    0.806     0.413    -0.521 6.02e-1   0.359      1.81 \n 3 adenosquamous estrog…    0.483     0.378    -1.93  5.39e-2   0.230      1.01 \n 4 adenosquamous smk_fy…    2.43      0.526     1.69  9.06e-2   0.869      6.82 \n 5 adenosquamous age_f6…    2.66      0.412     2.38  1.75e-2   1.19       5.96 \n 6 other         (Inter…    0.282     0.378    -3.35  8.07e-4   0.134      0.591\n 7 other         race_f…    1.13      0.376     0.319 7.49e-1   0.539      2.36 \n 8 other         estrog…    0.943     0.343    -0.171 8.64e-1   0.482      1.85 \n 9 other         smk_fy…    0.166     1.05     -1.71  8.67e-2   0.0214     1.29 \n10 other         age_f6…    1.33      0.329     0.872 3.83e-1   0.699      2.54 \n\n\n\n\n\nCode\nsummary(mod_sub_full)\n\n\nCall:\nmultinom(formula = subtype_f ~ race_f + estrogen_f + smk_f + \n    age_f, data = cancer)\n\nCoefficients:\n              (Intercept) race_fnoire estrogen_ftook oestrogen treatment\nadenosquamous   -1.775326  -0.2151038                        -0.72813726\nother           -1.266281   0.1201888                        -0.05867755\n               smk_fyes age_f65-79\nadenosquamous  0.889793  0.9780758\nother         -1.793171  0.2865677\n\nStd. Errors:\n              (Intercept) race_fnoire estrogen_ftook oestrogen treatment\nadenosquamous   0.4471631   0.4127306                          0.3777940\nother           0.3779403   0.3762200                          0.3425219\n               smk_fyes age_f65-79\nadenosquamous 0.5257988  0.4117731\nother         1.0467384  0.3285697\n\nResidual Deviance: 493.9304 \nAIC: 513.9304 \n\n\nOn obtient, pour chaque modalité \\(g\\) \\(\\neq\\) référence, une équation :\n\\(\\log \\frac{P(\\text{SUBTYPE}=g)}{P(\\text{SUBTYPE}=\\text{adenocarcinomous})} = \\beta{g0} + \\beta{g,\\text{race}} + \\dots\\)\n\nÀ caractéristiques identiques (race, oestrogènes, âge), les fumeuses ont environ 2,4 fois plus de chances (odds) d’avoir un cancer adenosquamous plutôt que le sous-type de référence, comparées aux non fumeuses.\n\n\n\n\n7.2 Résumé et odds-ratios\n\n\nCode\nres_sub_full &lt;- tidy(mod_sub_full, exponentiate = TRUE, conf.int = TRUE)\nres_sub_full\n\n\n# A tibble: 10 × 8\n   y.level       term    estimate std.error statistic p.value conf.low conf.high\n   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n 1 adenosquamous (Inter…    0.169     0.447    -3.97  7.18e-5   0.0705     0.407\n 2 adenosquamous race_f…    0.806     0.413    -0.521 6.02e-1   0.359      1.81 \n 3 adenosquamous estrog…    0.483     0.378    -1.93  5.39e-2   0.230      1.01 \n 4 adenosquamous smk_fy…    2.43      0.526     1.69  9.06e-2   0.869      6.82 \n 5 adenosquamous age_f6…    2.66      0.412     2.38  1.75e-2   1.19       5.96 \n 6 other         (Inter…    0.282     0.378    -3.35  8.07e-4   0.134      0.591\n 7 other         race_f…    1.13      0.376     0.319 7.49e-1   0.539      2.36 \n 8 other         estrog…    0.943     0.343    -0.171 8.64e-1   0.482      1.85 \n 9 other         smk_fy…    0.166     1.05     -1.71  8.67e-2   0.0214     1.29 \n10 other         age_f6…    1.33      0.329     0.872 3.83e-1   0.699      2.54 \n\n\nIci, estimate = odds-ratio, conf.low / conf.high = IC 95 %.\n\n\n\n7.3 Probabilités prédites\nOn génère les probabilités prédites pour chaque modalité de SUBTYPE :\n\n\nCode\nphat_sub &lt;- predict(mod_sub_full, type = \"probs\")\nhead(phat_sub)\n\n\n  adenocarcinomous adenosquamous      other\n1        0.6852096     0.2826449 0.03214548\n2        0.7420517     0.0607007 0.19724761\n3        0.5476498     0.2467524 0.20559787\n4        0.5476498     0.2467524 0.20559787\n5        0.7420517     0.0607007 0.19724761\n6        0.6363103     0.1384208 0.22526893\n\n\nCode\ncolMeans(phat_sub)  # moyennes des proba par modalité\n\n\nadenocarcinomous    adenosquamous            other \n       0.6433555        0.1573435        0.1993010 \n\n\n\nOn recolle ces probabilités aux données :\n\n\nCode\n# 1) Sous-échantillon sans NA sur les variables du modèle\ncancer_complete &lt;- cancer |&gt;\n  drop_na(subtype_f, race_f, estrogen_f, smk_f, age_f)\n\n\n# 2) Modèle multinomial sur cancer_complete\nmod_sub_full &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f + age_f,\n  data = cancer_complete\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\n\n\n\nCode\n# 3) Probabilités prédites (286 x 3)\nphat_sub &lt;- predict(mod_sub_full, type = \"probs\")\ncolMeans(phat_sub)\n\n\nadenocarcinomous    adenosquamous            other \n       0.6433555        0.1573435        0.1993010 \n\n\n\n\nCode\n# 4) On transforme en tibble et on renomme\nphat_sub_tbl &lt;- as_tibble(phat_sub)\nnames(phat_sub_tbl) &lt;- paste0(\"p_\", levels(cancer_complete$subtype_f))\n# ex : \"p_adenocarcinomous\" \"p_adenosquamous\" \"p_other\"\n\n# 5) On colle aux données *complètes* (286 lignes)\ncancer_sub &lt;- bind_cols(cancer_complete, phat_sub_tbl)\n\ncancer_sub |&gt;\n  dplyr::select(subtype_f, starts_with(\"p_\")) |&gt;\n  slice(1:5)\n\n\n# A tibble: 5 × 4\n  subtype_f        p_adenocarcinomous p_adenosquamous p_other\n  &lt;fct&gt;                         &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;\n1 adenosquamous                 0.685          0.283   0.0321\n2 other                         0.742          0.0607  0.197 \n3 adenosquamous                 0.548          0.247   0.206 \n4 adenocarcinomous              0.548          0.247   0.206 \n5 adenocarcinomous              0.742          0.0607  0.197 \n\n\n\n\n\n7.4 Test d’ajustement (Hosmer–Lemeshow multinomial)\nOn utilise logitgof() du package generalhoslem.\n\nobs : modalités de SUBTYPE sous forme numérique (1, 2, 3).\nexp : matrice de probabilités prédites.\ng : nombre de groupes (à ajuster si nécessaire).\n\n\n\nCode\ny_num   &lt;- as.numeric(cancer_sub$subtype_f)\nexp_mat &lt;- as.matrix(phat_sub)\n\n# Exemple avec 10 groupes\ngof_10 &lt;- logitgof(obs = y_num, exp = exp_mat, g = 10)\ngof_10\n\n\n\n    Hosmer and Lemeshow test (multinomial model)\n\ndata:  y_num, exp_mat\nX-squared = 4.0727, df = 10, p-value = 0.944\n\n\n\nLe test de Hosmer–Lemeshow (généralisé au multinomial et implémenté par logitgof() dans generalhoslem) compare, dans des groupes de probabilités prédites similaires, les effectifs observés de chaque catégorie de la variable dépendante aux effectifs attendus selon le modèle. La statistique de test est de type χ². Une grande p-value indique que l’on ne détecte pas de mauvais ajustement global du modèle aux données ; une petite p-value suggère un manque d’adéquation (modèle mal calibré).\n\n\nSi le test ne passe pas (classes attendues trop petites), on réduit le nombre de groupes :\n\n\nCode\nlibrary(purrr)\n\nmap_df(4:10, ~{\n  out &lt;- try(logitgof(y_num, exp_mat, g = .x), silent = TRUE)\n  tibble(\n    g       = .x,\n    stat    = if (inherits(out, \"try-error\")) NA_real_ else out$statistic,\n    p_value = if (inherits(out, \"try-error\")) NA_real_ else out$p.value\n  )\n})\n\n\n# A tibble: 7 × 3\n      g  stat p_value\n  &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1     4  1.69  0.792 \n2     5  2.01  0.735 \n3     6 15.7   0.0474\n4     7  2.63  0.955 \n5     8  2.63  0.955 \n6     9 16.5   0.170 \n7    10  4.07  0.944 \n\n\n\nLecture :\n\np-value grande → pas d’évidence de mauvais ajustement.\np-value petite → modèle mal ajusté (au moins pour certains groupes).\n\n\nEn diminuant le nombre de groupes, le test Hosmer–Lemeshow devient applicable. Les p-values varient avec g, ce qui montre que le test est assez instable dans ce petit échantillon multinomial. Néanmoins, pour la plupart des partitions (g = 4, 5, 7, 8, 9, 10), on ne rejette pas l’hypothèse d’un bon ajustement (p-value &gt; 5 %). On peut donc conclure qu’il n’y a pas de signe clair de mauvais ajustement du modèle aux données, tout en rappelant que ce test doit être interprété avec prudence.\n\n\n\n\n7.5 Simplification du modèle (tests LR)\nOn cherche un modèle plus parcimonieux en retirant les variables non significatives.\nExemple : on teste si on peut retirer smk_f puis age_f\n\n\nCode\n# Modèle sans SMK\nmod_sub_nosmk &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + age_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 251.550761\nfinal  value 251.468001 \nconverged\n\n\nCode\n# Test LR : mod_sub_nosmk vs mod_sub_full\nanova(mod_sub_nosmk, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1         race_f + estrogen_f + age_f       564   502.9360             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n  LR stat.    Pr(Chi)\n1                    \n2 9.005622 0.01107781\n\n\nTest 1 : peut-on retirer smk_f ?\n\nModèles comparés :\n\nModèle réduit : subtype_f ~ race_f + estrogen_f + age_f\nModèle complet : subtype_f ~ race_f + estrogen_f + smk_f + age_f\n\nRésultat du test LR :\n\nÀ 5 %, on rejette H₀ “on peut enlever smk_f” : le tabagisme (smk_f) apporte une information significative pour expliquer le sous-type de cancer → on garde smk_f.\n\n\n\n\nCode\n# Modèle sans AGE (à partir du modèle sans SMK par exemple)\nmod_sub_noage &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 250.492692\nfinal  value 250.192192 \nconverged\n\n\nCode\nanova(mod_sub_noage, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1         race_f + estrogen_f + smk_f       564   500.3844             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n  LR stat.    Pr(Chi)\n1                    \n2 6.454004 0.03967628\n\n\n\nInterprétation :\n\nSi la p-value du test LR est &gt; 5 %, on ne rejette pas \\(H_0\\) : le modèle réduit n’est pas significativement pire → on peut retirer la variable.\nOn garde donc smk_f mais pas age\n\n\nLes degrés de liberté du test de rapport de vraisemblance sont égaux au nombre de paramètres supprimés entre le modèle complet et le modèle réduit.\nDans un modèle multinomial, retirer une variable facteur à \\(L\\) modalités enlève \\((J-1)(L-1)\\) coefficients, donc \\((J-1)(L-1)\\) degrés de liberté. \\(J\\) catégories et \\(L\\) modalités.\n\n\n\n\n7.6 Test meilleur modèle\nOn teste sur les deux variables restantes\n\n\nCode\n# Modèle sans RACE (à partir du modèle sans SMK par exemple)\nmod_sub_norace &lt;- multinom(\n  subtype_f ~ age_f + estrogen_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 247.380882\nfinal  value 247.202541 \nconverged\n\n\nCode\nanova(mod_sub_norace, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1          age_f + estrogen_f + smk_f       564   494.4051             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n   LR stat.   Pr(Chi)\n1                    \n2 0.4747033 0.7887139\n\n\n\nOn retire la variable estrogen pour expliquer SUBTYPE :\n\n\nCode\n# 1) Construire un sous-échantillon complet pour toutes les variables en jeu\ncancer_lr &lt;- cancer |&gt;\n  filter(\n    !is.na(subtype_f),\n    !is.na(age_f),\n    !is.na(race_f),\n    !is.na(smk_f),\n    !is.na(estrogen_f)   # même si tu ne l'utilises pas dans tous les modèles\n  )\n\n# 2) Re-estimer les modèles sur CE MÊME jeu de données\nmod_sub_full &lt;- multinom(\n  subtype_f ~ age_f + race_f + smk_f + estrogen_f,\n  data = cancer_lr\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\nCode\nmod_sub_noestro &lt;- multinom(\n  subtype_f ~ age_f + race_f + smk_f,\n  data = cancer_lr\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 249.150731\nfinal  value 248.865000 \nconverged\n\n\nCode\n# 3) Maintenant, le test LR fonctionne\nanova(mod_sub_noestro, mod_sub_full, test = \"Chisq\")\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1              age_f + race_f + smk_f       564   497.7300             \n2 age_f + race_f + smk_f + estrogen_f       562   493.9304 1 vs 2     2\n  LR stat.   Pr(Chi)\n1                   \n2 3.799621 0.1495969\n\n\n\nLa fonction se base uniquement sur les résultats passés (modèles déjà estimés)\net sélectionne celui qui minimise l’AIC (ou le BIC).\n\n\n\n\n7.7 Interprétation économique du modèle final\n\n\nCode\nmod_sub_final &lt;- multinom(\n  subtype_f ~ age_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  12 (6 variable)\ninitial  value 316.400339 \niter  10 value 250.030104\nfinal  value 250.024195 \nconverged\n\n\nCode\nres_sub &lt;- tidy(mod_sub_final,\n                exponentiate = TRUE,  # passe en OR\n                conf.int = TRUE)      # ajoute IC 95%\n\nres_sub\n\n\n# A tibble: 6 × 8\n  y.level       term     estimate std.error statistic p.value conf.low conf.high\n  &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 adenosquamous (Interc…    0.111     0.374    -5.88  4.16e-9   0.0535     0.231\n2 adenosquamous age_f65…    2.67      0.409     2.40  1.63e-2   1.20       5.95 \n3 adenosquamous smk_fyes    2.36      0.520     1.65  9.83e-2   0.853      6.54 \n4 other         (Interc…    0.283     0.271    -4.66  3.10e-6   0.166      0.481\n5 other         age_f65…    1.30      0.328     0.812 4.17e-1   0.686      2.48 \n6 other         smk_fyes    0.167     1.05     -1.71  8.69e-2   0.0214     1.30 \n\n\nPrincipe d’interprétation :\n\nUn odds-ratio &gt; 1 pour une modalité donnée signifie que la variable augmente les cotes d’appartenir à ce type de cancer par rapport à la référence (adenocarcinomous), toutes choses égales par ailleurs.\nUn odds-ratio &lt; 1 signifie au contraire une diminution des cotes.\n\n\n\n\n7.8 Tableau de contingence des individus bien / mal classés\n\n7.8.1 (a) Effectifs par type de tumeur observée\n\n\nCode\ncancer_sub |&gt;\n  count(subtype_f)\n\n\n# A tibble: 3 × 2\n  subtype_f            n\n  &lt;fct&gt;            &lt;int&gt;\n1 adenocarcinomous   184\n2 adenosquamous       45\n3 other               57\n\n\n\n\n\n7.8.2 (b) Classe prédite par « probabilité max » (règle du 1er choix)\nOn attribue à chaque individu la classe prédite correspondant à la probabilité la plus élevée :\n\n\nCode\nphat_sub &lt;- predict(mod_sub_final, type = \"probs\")\ncolMeans(phat_sub)\n\n\nadenocarcinomous    adenosquamous            other \n       0.6458337        0.1562522        0.1979141 \n\n\nCode\nphat_sub_tbl &lt;- as_tibble(phat_sub)\nnames(phat_sub_tbl) &lt;- paste0(\"p_\", levels(cancer_complete$subtype_f))\n# ex : \"p_adenocarcinomous\" \"p_adenosquamous\" \"p_other\"\n\ncancer &lt;- bind_cols(cancer, phat_sub_tbl)\n\n# vecteur des probas sous forme de matrice\nprobs_mat &lt;- as.matrix(\n  cancer[, c(\"p_adenocarcinomous\", \"p_adenosquamous\", \"p_other\")]\n)\n\n# indices de la proba max par individu (1, 2 ou 3)\nidx_max &lt;- max.col(probs_mat)\n\n# noms des modalités dans le bon ordre\nlev &lt;- c(\"adenocarcinomous\", \"adenosquamous\", \"other\")\n\ncancer &lt;- cancer |&gt;\n  mutate(\n    pred_subtype = factor(lev[idx_max],\n                          levels = levels(subtype_f))\n  )\n\ncancer |&gt;\n  dplyr::select(subtype_f, pred_subtype, starts_with(\"p_\")) |&gt;\n  slice(1:5)\n\n\n# A tibble: 5 × 5\n  subtype_f        pred_subtype     p_adenocarcinomous p_adenosquamous p_other\n  &lt;fct&gt;            &lt;fct&gt;                         &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;\n1 adenosquamous    adenocarcinomous              0.763          0.201   0.0360\n2 other            adenocarcinomous              0.717          0.0798  0.203 \n3 adenosquamous    adenocarcinomous              0.600          0.178   0.221 \n4 adenocarcinomous adenocarcinomous              0.600          0.178   0.221 \n5 adenocarcinomous adenocarcinomous              0.717          0.0798  0.203 \n\n\n\n\n\nCode\ntab_sub &lt;- table(\n  Observed  = cancer$subtype_f,\n  Predicted = cancer$pred_subtype\n)\n\ntab_sub\n\n\n                  Predicted\nObserved           adenocarcinomous adenosquamous other\n  adenocarcinomous              186             0     0\n  adenosquamous                  45             0     0\n  other                          57             0     0\n\n\nCode\nprop_ok &lt;- sum(diag(tab_sub)) / sum(tab_sub)\n1-prop_ok\n\n\n[1] 0.3541667"
-  },
-  {
-    "objectID": "td3/td3.html#b.-modèle-ordinal-pour-expliquer-grade",
-    "href": "td3/td3.html#b.-modèle-ordinal-pour-expliquer-grade",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "8 B. Modèle ordinal pour expliquer GRADE",
-    "text": "8 B. Modèle ordinal pour expliquer GRADE\nOn modélise le stade de la tumeur (bien / moyennement / peu différenciée) en fonction de :\n\nRACE, ESTROGEN, SUBTYPE, AGE, SMK.\n\n\n\n8.1 Modèle de base (logit ordinal)\nOn utilise polr() (MASS) avec grade_ord comme variable ordinale.\n\n\nCode\nmod_grade_base &lt;- polr(\n  grade_ord ~ race_f + estrogen_f + subtype_f + age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nsummary(mod_grade_base)\n\n\nCall:\npolr(formula = grade_ord ~ race_f + estrogen_f + subtype_f + \n    age_f + smk_f, data = cancer, Hess = TRUE)\n\nCoefficients:\n                                      Value Std. Error  t value\nrace_fnoire                         0.59764     0.2790  2.14222\nestrogen_ftook oestrogen treatment -0.61411     0.2549 -2.40904\nsubtype_fadenosquamous              1.78110     0.3252  5.47653\nsubtype_fother                      0.07823     0.2991  0.26153\nage_f65-79                          0.13110     0.2486  0.52742\nsmk_fyes                            0.01358     0.3992  0.03401\n\nIntercepts:\n                                         Value   Std. Error t value\nbien différencié|moyennement différencié -0.0205  0.2890    -0.0708\nmoyennement différencié|peu différencié   1.9682  0.3196     6.1589\n\nResidual Deviance: 540.4501 \nAIC: 556.4501 \n(2 observations deleted due to missingness)\n\n\nLes sorties donnent :\n\nLes coefficients \\(\\beta\\) (effets sur le score latent),\nLes seuils (cutpoints) séparant les catégories de GRADE.\n\n\n\n\n8.2 Test d’ajustement via interactions (LR tests)\n\n8.2.1 Interaction ESTROGEN × SUBTYPE\nOn ajoute l’interaction estrogen_f * subtype_f :\n\n\nCode\nmod_grade_es &lt;- polr(\n  grade_ord ~ race_f + estrogen_f * subtype_f + age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_es)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f * subtype_f + age_f + smk_f       276   537.5181 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     2 2.932012 0.2308457\n\n\n\nanova() réalise un test LR entre modèle sans interaction (mod_grade_base) et modèle avec interaction (mod_grade_es).\nOn lit la p-value :\n\nsi petite → l’interaction améliore le modèle ;\nsi grande → on peut s’en passer.\n\n\n\n\n\n8.2.2 Autres interactions possibles\nOn peut tester d’autres interactions pertinentes, par exemple :\n\nESTROGEN × AGE :\n\n\n\nCode\nmod_grade_eage &lt;- polr(\n  grade_ord ~ race_f + estrogen_f * age_f + subtype_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_eage)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f * age_f + subtype_f + smk_f       277   539.2085 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     1 1.241621 0.2651588\n\n\n\n\nSUBTYPE × AGE :\n\n\n\nCode\nmod_grade_sage &lt;- polr(\n  grade_ord ~ race_f + estrogen_f + subtype_f * age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_sage)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f + subtype_f * age_f + smk_f       276   538.9157 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     2 1.534397 0.4643119\n\n\nPour chaque interaction :\n\nSi la p-value LR est faible → interaction importante → à garder ;\nSinon → pas de gain significatif → on privilégie le modèle sans interaction.\n\n\n\n\n\n8.3 Sélection de modèle\n\n\nCode\nsummary(mod_grade_base)\n\n\nCall:\npolr(formula = grade_ord ~ race_f + estrogen_f + subtype_f + \n    age_f + smk_f, data = cancer, Hess = TRUE)\n\nCoefficients:\n                                      Value Std. Error  t value\nrace_fnoire                         0.59764     0.2790  2.14222\nestrogen_ftook oestrogen treatment -0.61411     0.2549 -2.40904\nsubtype_fadenosquamous              1.78110     0.3252  5.47653\nsubtype_fother                      0.07823     0.2991  0.26153\nage_f65-79                          0.13110     0.2486  0.52742\nsmk_fyes                            0.01358     0.3992  0.03401\n\nIntercepts:\n                                         Value   Std. Error t value\nbien différencié|moyennement différencié -0.0205  0.2890    -0.0708\nmoyennement différencié|peu différencié   1.9682  0.3196     6.1589\n\nResidual Deviance: 540.4501 \nAIC: 556.4501 \n(2 observations deleted due to missingness)\n\n\n\n\n\n8.4 Interprétation du modèle ordinal final\n\nRace (noire vs non noire)\n\nCoefficient = 0,60 (t ≈ 2,14) → significatif.\nLes femmes noires ont des cotes ≈ 1,8 fois plus élevées d’avoir un grade plus mauvais (passer vers “moyennement/peu différencié”), toutes choses égales par ailleurs.\n\nTraitement aux œstrogènes (oui vs non)\n\nCoefficient = −0,61 (t ≈ −2,41) → significatif.\nLes femmes ayant reçu un traitement œstrogénique ont des cotes ≈ divisées par 2 d’avoir un grade plus mauvais. → Le traitement est associé à des grades un peu meilleurs.\n\nSous-type tumoral (réf. = adenocarcinomous)\n\nadenosquamous : coef = 1,78 (t ≈ 5,48) → très significatif.\n→ Cotes ≈ 6 fois plus élevées d’avoir un grade plus défavorable que l’adenocarcinome.\nother : effet faible et non significatif.\n\nÂge (65–79 ans) et tabagisme (smk_fyes)\n\nCoefficients proches de 0, t très faibles → pas d’association significative avec le grade, une fois contrôlé pour race, sous-type et œstrogènes."
-  },
-  {
-    "objectID": "td3/td3.html#conclusion-td3",
-    "href": "td3/td3.html#conclusion-td3",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "9 Conclusion TD3",
-    "text": "9 Conclusion TD3\n\nOn a estimé :\n\nun logit multinomial nominal pour SUBTYPE ;\nun logit ordinal pour GRADE.\n\nOn a :\n\ntesté l’ajustement du modèle nominal via un Hosmer–Lemeshow multinomial ;\nutilisé des tests de rapport de vraisemblance pour :\n\nsimplifier les modèles (variables non significatives),\ntester l’intérêt d’interactions dans le modèle ordinal ;\n\nChoisi les spécifications finales.\n\n\nÀ retenir :\n\nPour les variables nominales, on compare chaque modalité à une référence via des odds-ratios.\nPour les variables ordinales, le modèle logit/probit ordonné repose sur une variable latente et des seuils, avec une interprétation en termes de tendance vers des catégories plus élevées ou plus basses."
-  },
-  {
-    "objectID": "site.html",
-    "href": "site.html",
-    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "objectID": "td4/td4.html#encodage-en-r",
+    "href": "td4/td4.html#encodage-en-r",
+    "title": "Modèles de survie en R – Correction",
     "section": "",
-    "text": "Ce site rassemble les trois TDs du module de modélisation statistique (M2).\nChaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications Stata.\n\n\n\n\n\n\nConseils généraux\n\n\n\n\nConservez une trace reproductible de vos commandes (do-file ou Quarto).\nComparez systématiquement les modèles via tests d’ajustement (GOF, LR) et critères d’information (AIC/BIC).\n\n\n\n\n\n\n\n\n\n\n\nRégression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3\n\n\n\n\n\n\n\n\n\n\nSupport et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés.\n\n\n\n\n\n\n\nTD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
+    "text": "En R, on encode le couple ((t_i, _i)) avec la fonction Surv() du package survival.\n\n\nCode\n# Exemple jouet : 5 durées, 2 censures\nt  &lt;- c(3, 5, 8, 10, 4)         # durées observées\nd  &lt;- c(1, 0, 1, 0, 1)          # 1 = événement, 0 = censuré\n\nS_ex &lt;- Surv(time = t, event = d)\nS_ex\n\n\n[1]  3   5+  8  10+  4 \n\n\n\nLes + indiquent les durées censurées.\nLa classe Surv est le format standard utilisé par toutes les fonctions d’analyse de survie (survfit, coxph, survreg, etc.)."
   },
   {
-    "objectID": "site.html#accès-rapide-aux-tds",
-    "href": "site.html#accès-rapide-aux-tds",
-    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "objectID": "td4/td4.html#fonction-de-survie",
+    "href": "td4/td4.html#fonction-de-survie",
+    "title": "Modèles de survie en R – Correction",
+    "section": "2.1 Fonction de survie",
+    "text": "2.1 Fonction de survie\nLa fonction de survie (S(t)) est définie par :\n\\(S(t) = \\Pr(T &gt; t),\\)\nc’est-à-dire :\n\nla probabilité que la durée dépasse \\(t\\),\nexemple : probabilité que la grève soit encore en cours au jour \\(t\\),\nc’est une fonction décroissante de \\(t\\),\n\\(S(0) = 1\\), et \\(\\lim_{t \\to \\infty} S(t) = 0\\) (souvent)."
+  },
+  {
+    "objectID": "td4/td4.html#fonction-de-répartition",
+    "href": "td4/td4.html#fonction-de-répartition",
+    "title": "Modèles de survie en R – Correction",
+    "section": "2.2 Fonction de répartition",
+    "text": "2.2 Fonction de répartition\nLa fonction de répartition (CDF) est :\n\\(F(t) = \\Pr(T \\le t) = 1 - S(t).\\)\n\n\\(F(t)\\) augmente de 0 (au temps 0) vers 1 (quand \\(t \\to \\infty\\)).\n\\(F(t)\\) = probabilité que l’événement soit arrivé avant ou à la date \\(t\\)."
+  },
+  {
+    "objectID": "td4/td4.html#densité-cas-continu",
+    "href": "td4/td4.html#densité-cas-continu",
+    "title": "Modèles de survie en R – Correction",
+    "section": "2.3 Densité (cas continu)",
+    "text": "2.3 Densité (cas continu)\nSi (T) est une variable continue admettant une densité (f(t)) :\n\\(f(t) = \\frac{d}{dt} F(t).\\)\nLien entre (f) et (S) :\n\\(f(t) = - \\frac{d}{dt} S(t) \\quad \\Longleftrightarrow \\quad S(t) = 1 - \\int_0^t f(u),du.\\)\nIntuition :\n\n(f(t)) décrit la répartition de la masse de probabilité dans le temps ;\n(S(t)) cumule ce qui n’est pas encore arrivé."
+  },
+  {
+    "objectID": "td4/td4.html#définition",
+    "href": "td4/td4.html#définition",
+    "title": "Modèles de survie en R – Correction",
+    "section": "3.1 Définition",
+    "text": "3.1 Définition\nLa fonction de risque (hazard) (h(t)) est définie par :\n\\(h(t) = \\lim_{\\Delta t \\to 0} \\frac{\\Pr(t \\le T &lt; t + \\Delta t \\mid T \\ge t)}{\\Delta t}.\\)\nInterprétation :\n\nprobabilité instantanée que l’événement se produise juste après (t),\nconditionnellement à ce que l’événement ne soit pas encore arrivé à (t).\n\nPour la durée d’une grève :\n\n\\(h(t)\\) mesure, au temps (t), le risque que la grève se termine immédiatement, sachant qu’elle est toujours en cours à \\(t\\)."
+  },
+  {
+    "objectID": "td4/td4.html#lien-entre-ht-ft-et-st",
+    "href": "td4/td4.html#lien-entre-ht-ft-et-st",
+    "title": "Modèles de survie en R – Correction",
+    "section": "3.2 Lien entre \\(h(t)\\), \\(f(t)\\) et \\(S(t)\\)",
+    "text": "3.2 Lien entre \\(h(t)\\), \\(f(t)\\) et \\(S(t)\\)\nOn peut montrer que :\n\\(h(t) = \\frac{f(t)}{S(t)}.\\)\nIntuition :\n\n\\(f(t)\\) = densité où l’événement arrive à (t),\n\\(S(t)\\) = probabilité que l’événement ne soit pas encore arrivé avant \\(t\\),\ndonc \\(h(t)\\) = probabilité de finir maintenant sachant qu’on est encore en vie à \\(t\\).\n\nOn définit aussi la cumulative hazard :\n\\(\\Lambda(t) = \\int_0^t h(u),du.\\)\nOn a alors le lien fondamental :\n\\(S(t) = \\exp\\big(-\\Lambda(t)\\big) = \\exp\\left(-\\int_0^t h(u),du\\right).\\)"
+  },
+  {
+    "objectID": "td4/td4.html#exemple-1-risque-constant-loi-exponentielle",
+    "href": "td4/td4.html#exemple-1-risque-constant-loi-exponentielle",
+    "title": "Modèles de survie en R – Correction",
+    "section": "4.1 Exemple 1 – Risque constant : loi exponentielle",
+    "text": "4.1 Exemple 1 – Risque constant : loi exponentielle\nSupposons un risque constant \\(h(t) = \\lambda &gt; 0\\).\nAlors :\n\n\\(\\Lambda(t) = \\int_0^t \\lambda,du = \\lambda t\\)\n\\(S(t) = \\exp(-\\lambda t).\\)\n\nC’est la loi exponentielle :\n\nla probabilité de survie décroît de façon exponentielle.\n\nInterprétation :\n\nLe « risque de fin de grève » est le même quel que soit \\(t\\).\nC’est souvent trop simple mais utile comme cas de base."
+  },
+  {
+    "objectID": "td4/td4.html#exemple-2-loi-de-weibull",
+    "href": "td4/td4.html#exemple-2-loi-de-weibull",
+    "title": "Modèles de survie en R – Correction",
+    "section": "4.2 Exemple 2 – Loi de Weibull",
+    "text": "4.2 Exemple 2 – Loi de Weibull\nLa loi de Weibull est très utilisée en analyse de survie.\nRisque :\n\\(h(t) = \\lambda p t^{p-1},\\)\n\nsi (p = 1) : on retrouve le cas exponentiel (risque constant),\nsi (p &gt; 1) : risque croissant (plus le temps passe, plus la fin est probable),\nsi (p &lt; 1) : risque décroissant (l’événement est surtout probable au début).\n\nC’est un modèle paramétrique flexible pour décrire des durées où le risque évolue dans le temps."
+  },
+  {
+    "objectID": "td4/td4.html#pourquoi-de-la-censure",
+    "href": "td4/td4.html#pourquoi-de-la-censure",
+    "title": "Modèles de survie en R – Correction",
+    "section": "5.1 Pourquoi de la censure ?",
+    "text": "5.1 Pourquoi de la censure ?\nEn pratique, on ne connaît pas toujours la date exacte de l’événement :\n\nla période d’observation se termine alors que la grève continue,\nl’individu est perdu de vue (perte de suivi),\nles données sont tronquées (ex. base administrative clôturée à une date donnée).\n\nOn introduit une durée de censure (C_i) :\n\ntemps jusqu’à la fin d’observation pour l’unité (i).\n\nOn observe alors :\n\\(t_i = \\min(T_i, C_i), \\qquad \\delta_i = \\mathbb{1}(T_i \\le C_i).\\)"
+  },
+  {
+    "objectID": "td4/td4.html#hypothèse-clé-censure-non-informative",
+    "href": "td4/td4.html#hypothèse-clé-censure-non-informative",
+    "title": "Modèles de survie en R – Correction",
+    "section": "5.2 Hypothèse clé : censure non informative",
+    "text": "5.2 Hypothèse clé : censure non informative\nOn suppose généralement que la censure est non informative :\n\nLe mécanisme de censure ne dépend pas de la durée vraie, conditionnellement aux covariables.\n\nAutrement dit :\n\nêtre censuré ou non ne doit pas apporter d’information supplémentaire sur la durée résiduelle, au-delà de ce qu’on connaît déjà (covariables).\n\nExemple :\n\non suit des grèves jusqu’au 31 décembre,\ncelles qui dépassent cette date sont censurées,\nmais la date du 31/12 est fixée indépendamment des caractéristiques des grèves.\n\nSi la censure est informative (ex. on arrête d’observer quand l’entreprise fait faillite), les méthodes classiques (KM, Cox) peuvent être biaisées."
+  },
+  {
+    "objectID": "td4/td4.html#exemple-simple-en-r",
+    "href": "td4/td4.html#exemple-simple-en-r",
+    "title": "Modèles de survie en R – Correction",
+    "section": "5.3 Exemple simple en R",
+    "text": "5.3 Exemple simple en R\nSimuler des durées exponentielles censurées :\n\n\nCode\nset.seed(123)\n\nn      &lt;- 200\nT_true &lt;- rexp(n, rate = 0.1)   # durées vraies (exponentielle)\nC      &lt;- runif(n, min = 5, max = 20)  # temps de censure\n\ntime   &lt;- pmin(T_true, C)\nstatus &lt;- as.integer(T_true &lt;= C)\n\nS_sim  &lt;- Surv(time = time, event = status)\nhead(S_sim)\n\n\n[1]  8.4345726  5.7661027 13.2905487  0.3157736  0.5621098  3.1650122\n\n\nTracer un Kaplan–Meier :\n\n\nCode\nkm_sim &lt;- survfit(S_sim ~ 1)\nplot(km_sim, xlab = \"Temps\", ylab = \"Probabilité de survie\")\n\n\n\n\n\n\n\n\n\n\nla courbe tient compte à la fois des événements observés et des observations censurées."
+  },
+  {
+    "objectID": "td4/td4.html#surv-en-pratique",
+    "href": "td4/td4.html#surv-en-pratique",
+    "title": "Modèles de survie en R – Correction",
+    "section": "6.1 Surv() en pratique",
+    "text": "6.1 Surv() en pratique\nPour des données de grève, on construirait :\n\n\nCode\n# Exemple conceptuel (ici, on simule juste pour illustrer)\ntime   &lt;- c(7, 9, 13, 14, 26, 29)\nstatus &lt;- c(1, 1, 1, 1, 1, 0)\n\nS_strikes_ex &lt;- Surv(time = time, event = status)\nS_strikes_ex\n\n\n[1]  7   9  13  14  26  29+\n\n\n\nChaque ligne est soit durée (événement) soit durée+ (censure).\nCet objet est ensuite utilisé par toutes les fonctions de survie."
+  },
+  {
+    "objectID": "td4/td4.html#kaplanmeier-dans-r",
+    "href": "td4/td4.html#kaplanmeier-dans-r",
+    "title": "Modèles de survie en R – Correction",
+    "section": "6.2 Kaplan–Meier dans R",
+    "text": "6.2 Kaplan–Meier dans R\nPour estimer la fonction de survie :\n\n\nCode\nkm_fit &lt;- survfit(S_strikes_ex ~ 1)\nkm_fit\n\n\nCall: survfit(formula = S_strikes_ex ~ 1)\n\n     n events median 0.95LCL 0.95UCL\n[1,] 6      5   13.5       9      NA\n\n\nCode\nplot(km_fit, xlab = \"Durée\", ylab = \"Probabilité de survie\")\n\n\n\n\n\n\n\n\n\n\nLes « marches » de la courbe correspondent aux événements observés.\nLes observations censurées contribuent au dénominateur (nombre à risque), mais pas au numérateur (nombre d’événements)."
+  },
+  {
+    "objectID": "td4/td4.html#à-retenir",
+    "href": "td4/td4.html#à-retenir",
+    "title": "Modèles de survie en R – Correction",
+    "section": "7.1 À retenir",
+    "text": "7.1 À retenir\n\nDurée (T) et censure :\n\non observe ( \\(t_i, \\delta_i\\) ), pas toujours la durée vraie.\n\nFonction de survie \\(S(t) = \\Pr(T &gt; t)\\) :\n\nprobabilité d’être encore « en vie » au temps (t).\n\nRisque (hazard) \\(h(t))\\) :\n\nprobabilité instantanée de l’événement, sachant qu’il n’est pas encore arrivé.\n\nLiens fondamentaux :\n\n\\(F(t) = 1 - S(t)\\),\n\\(h(t) = f(t) / S(t)\\),\n\\(S(t) = \\exp\\left(-\\int_0^t h(u),du\\right)\\).\n\nCensure à droite :\n\non observe \\(\\min(T_i, C_i)) et (\\mathbb{1}(T_i \\le C_i)\\),\nhypothèse clé : censure non informative."
+  },
+  {
+    "objectID": "td4/td4.html#pour-la-suite-du-cours",
+    "href": "td4/td4.html#pour-la-suite-du-cours",
+    "title": "Modèles de survie en R – Correction",
+    "section": "7.2 Pour la suite du cours",
+    "text": "7.2 Pour la suite du cours\n\nEstimation de \\(S(t)\\) par l’estimateur de Kaplan–Meier.\nComparaison de courbes de survie entre groupes (test du log-rank).\nModèles à covariables :\n\nmodèle de Cox (risques proportionnels),\nmodèles paramétriques (exponentiel, Weibull, …)."
+  },
+  {
+    "objectID": "td4/td4.html#présentation-des-données-et-analyse-descriptive",
+    "href": "td4/td4.html#présentation-des-données-et-analyse-descriptive",
+    "title": "Modèles de survie en R – Correction",
+    "section": "8.1 Présentation des données et analyse descriptive",
+    "text": "8.1 Présentation des données et analyse descriptive\nOn s’intéresse à la durée de grèves dans l’industrie manufacturière américaine.\nLes données proviennent de :\n\nKennan, J. (1985), The Duration of Contract Strikes in U.S. Manufacturing, Journal of Econometrics.\n\nNous utiliserons la base StrikeDuration du package AER dans R, qui contient :\n\nduration : durée de la grève (en jours)\nuoutput : choc d’activité non anticipé (mesure de conjoncture macroéconomique)\n\n\n8.1.1 Q1 – Correspondance entre codages du cycle\nOn considère les 62 grèves de la base StrikeDuration.\nOn a construit :\n\nuoutput_sign : 3 modalités (cycle défavorable, neutre, favorable)\nuoutput_q : 3 modalités (choc faible, moyen, fort, par terciles)\n\n\n\nCode\nwith(strikes, table(uoutput_sign, uoutput_q))\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable          25          0         0\n  Cycle favorable             0         17        20\n\n\nCode\nprop.table(with(strikes, table(uoutput_sign, uoutput_q)), 1)\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable   1.0000000  0.0000000 0.0000000\n  Cycle favorable     0.0000000  0.4594595 0.5405405\n\n\nCommentaires :\n\nTous les épisodes en cycle défavorable sont classés en Choc faible.\nLes épisodes en cycle favorable se répartissent entre Choc moyen et Choc fort.\nLa matrice est quasi diagonale : les deux codages racontent la même histoire (choc défavorable vs favorable), l’un en version “signe”, l’autre en version “force du choc”.\nOn peut donc considérer que les deux échelles sont cohérentes.\n\n\n\n\n8.1.2 Q2 – Corrélations entre variables explicatives\nVariables explicatives potentielles :\n\nuoutput (continu)\nuoutput_q_num : version numérique de uoutput_q (1 = faible, 2 = moyen, 3 = fort)\n\n\n\nCode\nstrikes &lt;- strikes |&gt;\n  mutate(uoutput_q_num = as.numeric(uoutput_q))\n\ncor(dplyr::select(strikes, uoutput, uoutput_q_num), use = \"complete.obs\")\n\n\n                uoutput uoutput_q_num\nuoutput       1.0000000     0.9245881\nuoutput_q_num 0.9245881     1.0000000\n\n\nCommentaires :\n\nOn obtient une corrélation positive forte entre uoutput et uoutput_q_num (la variable en terciles est une discrétisation monotone de uoutput).\n\nLa version catégorielle n’apporte donc pas d’information entièrement nouvelle, mais elle permet :\n\nde capturer plus facilement des effets non linéaires du choc,\nde produire des comparaisons simples (Choc faible vs Choc fort) en termes de hazard ratios.\n\n\n\n\n\n8.1.3 Q3 – Courbes de survie brutes (Kaplan–Meier)\n\n\nCode\nkm_cycle &lt;- survfit(S_strikes ~ uoutput_q, data = strikes)\nplot(km_cycle, xlab = \"Durée de grève (jours)\", ylab = \"Probabilité de grève en cours\")\nlegend(\"topright\", legend = levels(strikes$uoutput_q), lty = 1, bty = \"n\")\n\n\n\n\n\n\n\n\n\nCommentaires :\n\nPour les chocs forts (conjoncture très favorable), la courbe de survie décroît plus vite : les grèves ont tendance à être plus courtes.\nPour les chocs faibles (conjoncture défavorable), la courbe décroît plus lentement : les grèves restent plus longtemps en cours.\nLes courbes sont bien séparées, ce qui suggère un effet du contexte macroéconomique sur la durée des grèves.\n\n\n\n\n8.1.4 Q4 – Test du log-rank\n\n\nCode\nsurvdiff(S_strikes ~ uoutput_q, data = strikes)\n\n\nCall:\nsurvdiff(formula = S_strikes ~ uoutput_q, data = strikes)\n\n                       N Observed Expected (O-E)^2/E (O-E)^2/V\nuoutput_q=Choc faible 25       24     32.4  2.198928  5.143950\nuoutput_q=Choc moyen  17       17     16.9  0.000153  0.000219\nuoutput_q=Choc fort   20       20     11.6  6.074740  8.183882\n\n Chisq= 9.2  on 2 degrees of freedom, p= 0.01 \n\n\nCommentaires :\n\nHypothèses du test du log-rank :\n\n\\(H_0\\) : les fonctions de survie sont identiques dans les 3 groupes de choc (Choc faible, Choc moyen, Choc fort).\n\\(H_1\\) : au moins une fonction de survie diffère.\n\nOn obtient une statistique \\(\\chi^2\\) d’environ 9,2 avec 2 ddl et une p-valeur ≈ 0,01.\nAu seuil de 5 %, on rejette \\(H_0\\) : la durée des grèves dépend significativement du niveau de choc d’activité.\nEn regardant les contributions :\n\nChoc faible : moins de fins de grève observées que prévu → grèves plus longues.\nChoc fort : plus de fins de grève observées que prévu → grèves plus courtes.\n\n\n\n\n\n8.1.5 Q5 – Vérification graphique des risques proportionnels\n\n\nCode\nif (requireNamespace(\"survminer\", quietly = TRUE)) {\n  ggsurvplot(\n    survfit(S_strikes ~ uoutput_q, data = strikes),\n    fun = \"cloglog\",\n    xlab = \"log(temps)\",\n    ylab = \"log(-log(Survie))\"\n  )\n}\n\n\n\n\n\n\n\n\n\nCommentaires :\n\nLes courbes log(-log(S(t))) par niveau de uoutput_q sont grossièrement quasi parallèles (sans croisements extrêmes).\nL’hypothèse de risques proportionnels pour uoutput_q est donc raisonnablement plausible dans ce jeu de données.\nOn peut donc utiliser un modèle de Cox avec cette variable, tout en gardant en tête que l’échantillon est petit."
+  },
+  {
+    "objectID": "td4/td4.html#modèle-de-cox-correction",
+    "href": "td4/td4.html#modèle-de-cox-correction",
+    "title": "Modèles de survie en R – Correction",
+    "section": "8.2 Modèle de Cox – Correction",
+    "text": "8.2 Modèle de Cox – Correction\n\n8.2.1 Q6 – Modèle de Cox continu\nModèle ajusté :\n\n\nCode\ncox_full &lt;- coxph(S_strikes ~ uoutput + uoutput_q_num, data = strikes)\nsummary(cox_full)\n\n\nCall:\ncoxph(formula = S_strikes ~ uoutput + uoutput_q_num, data = strikes)\n\n  n= 62, number of events= 61 \n\n                  coef exp(coef) se(coef)     z Pr(&gt;|z|)\nuoutput         5.5249  250.8571  10.3206 0.535    0.592\nuoutput_q_num   0.2007    1.2223   0.5385 0.373    0.709\n\n              exp(coef) exp(-coef) lower .95 upper .95\nuoutput         250.857   0.003986 4.117e-07 1.529e+11\nuoutput_q_num     1.222   0.818155 4.254e-01 3.512e+00\n\nConcordance= 0.608  (se = 0.041 )\nLikelihood ratio test= 8.57  on 2 df,   p=0.01\nWald test            = 8.5  on 2 df,   p=0.01\nScore (logrank) test = 8.83  on 2 df,   p=0.01\n\n\nCode\nAIC(cox_full)\n\n\n[1] 389.1666\n\n\nÉquation du modèle :\n\\(h_i(t) = h_0(t),\\exp\\big( \\beta_1 uoutput_i + \\beta_2 uoutput_{q,i} \\big)\\)\nInterprétation du coefficient de uoutput :\n\nLe terme \\(\\exp(\\eta_1)\\) est le hazard ratio associé à une augmentation d’une unité de uoutput.\nComme uoutput est un choc macro petit en amplitude, on interprète plutôt de petites variations (par ex. aller d’un quantile faible à un quantile élevé).\nSi \\(\\exp(\\eta_1) &gt; 1\\), un choc plus favorable est associé à une fin plus rapide de la grève (durées plus courtes).\n\nAIC :\n\nOn retient la valeur d’AIC affichée et on la comparera aux autres spécifications (M1, M3).\nUn AIC plus faible signale un meilleur compromis ajustement / complexité.\n\n\n\n\n8.2.2 Q7 – Version purement catégorielle du cycle\n\n\nCode\ncox_cat &lt;- coxph(S_strikes ~ uoutput_q, data = strikes)\nsummary(cox_cat)\n\n\nCall:\ncoxph(formula = S_strikes ~ uoutput_q, data = strikes)\n\n  n= 62, number of events= 61 \n\n                      coef exp(coef) se(coef)     z Pr(&gt;|z|)   \nuoutput_qChoc moyen 0.3556    1.4271   0.3253 1.093  0.27435   \nuoutput_qChoc fort  0.9643    2.6229   0.3265 2.954  0.00314 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n                    exp(coef) exp(-coef) lower .95 upper .95\nuoutput_qChoc moyen     1.427     0.7007    0.7543     2.700\nuoutput_qChoc fort      2.623     0.3813    1.3832     4.974\n\nConcordance= 0.604  (se = 0.039 )\nLikelihood ratio test= 8.47  on 2 df,   p=0.01\nWald test            = 8.81  on 2 df,   p=0.01\nScore (logrank) test = 9.3  on 2 df,   p=0.01\n\n\nÉquation du modèle :\n\\(h_i(t) = h_0(t)\\,\\exp\\big(  \\eta_{2}\\,\\mathbb{1}\\{uoutput_q = \\text{\"Choc moyen\"}\\}+ \\eta_{3}\\,\\mathbb{1}\\{uoutput_q = \\text{\"Choc fort\"}\\}\\big).\\)\navec Choc faible comme catégorie de référence.\nInterprétation :\n\n\\(\\exp(\\eta_2)\\) :hazard ratio “Choc moyen” vs “Choc faible”.\n\\(\\exp(\\eta_3)\\) : hazard ratio “Choc fort” vs “Choc faible”.\nSi au moins un coefficient est significatif, on conclut à une différence de durée entre au moins deux niveaux de choc.\nEn pratique, avec ce petit échantillon, les intervalles de confiance sont larges → significativité parfois fragile, mais la direction va vers des grèves plus rapides en cas de choc plus fort.\n\nComparaison des déviances :\n\nOn lit les log-vraisemblances de cox_full et cox_cat dans les sorties et l’on compare :\n\nune déviance plus faible \\((-2\\log L)\\) indique un meilleur ajustement (à nombre de paramètres donné).\n\n\n\n\n\n8.2.3 Q8 – Nombre de paramètres\nModèles :\n\nM1 : S ~ uoutput\n\n1 paramètre de pente ( \\(\\eta_1\\) ).\n\nM2 : S ~ uoutput + uoutput_q_num\n\n2 paramètres de pente (( \\(\\eta_1, \\eta_2\\) ).\n\nM3 : S ~ uoutput_q (facteur 3 modalités)\n\n2 paramètres de pente (deux dummies vs référence : Choc moyen, Choc fort).\n\n\nEmboîtement :\n\nM1 est inclus dans M2 si l’on impose \\(eta_2 = 0\\).\nM3 n’est pas emboîté dans M1/M2 (spécification complètement catégorielle vs continue).\n\n\n\n\n8.2.4 Q9 – Choix de la meilleure mesure du cycle\n\n\nCode\ncox_M1 &lt;- coxph(S_strikes ~ uoutput, data = strikes)\ncox_M2 &lt;- coxph(S_strikes ~ uoutput + uoutput_q_num, data = strikes)\ncox_M3 &lt;- coxph(S_strikes ~ uoutput_q, data = strikes)\n\nanova(cox_M1, cox_M2, test = \"LRT\")\n\n\nAnalysis of Deviance Table\n Cox model: response is  S_strikes\n Model 1: ~ uoutput\n Model 2: ~ uoutput + uoutput_q_num\n   loglik  Chisq Df Pr(&gt;|Chi|)\n1 -192.65                     \n2 -192.58 0.1389  1     0.7094\n\n\nCode\nanova(cox_M1, cox_M3, test = \"LRT\")\n\n\nAnalysis of Deviance Table\n Cox model: response is  S_strikes\n Model 1: ~ uoutput\n Model 2: ~ uoutput_q\n   loglik  Chisq Df Pr(&gt;|Chi|)\n1 -192.65                     \n2 -192.63 0.0382  1      0.845\n\n\nCommentaires :\n\nLR(M1 vs M2) : si la p-valeur est élevée → l’ajout de uoutput_q_num ne permet pas une amélioration significative → on peut préférer le modèle plus simple M1.\nLR(M1 vs M3) : si la p-valeur est faible → la version catégorielle du choc (M3) capture un effet non linéaire utile.\nOn combine ces tests avec les AIC pour choisir :\n\nsoit une spécification continue simple (M1),\nsoit une spécification catégorielle (M3) si les effets par classe sont plus lisibles et mieux ajustés."
+  },
+  {
+    "objectID": "td4/td4.html#modèles-paramétriques-correction",
+    "href": "td4/td4.html#modèles-paramétriques-correction",
+    "title": "Modèles de survie en R – Correction",
+    "section": "8.3 3. Modèles paramétriques – Correction",
+    "text": "8.3 3. Modèles paramétriques – Correction\n\n8.3.1 Q10 – Modèle de Weibull\n\n\nCode\nweib_best &lt;- survreg(S_strikes ~ uoutput, data = strikes, dist = \"weibull\")\nsummary(weib_best)\n\n\n\nCall:\nsurvreg(formula = S_strikes ~ uoutput, data = strikes, dist = \"weibull\")\n               Value Std. Error     z      p\n(Intercept)  3.79012    0.13944 27.18 &lt;2e-16\nuoutput     -9.67700    3.00825 -3.22 0.0013\nLog(scale)   0.00631    0.10180  0.06 0.9506\n\nScale= 1.01 \n\nWeibull distribution\nLoglik(model)= -285.4   Loglik(intercept only)= -290.2\n    Chisq= 9.6 on 1 degrees of freedom, p= 0.002 \nNumber of Newton-Raphson Iterations: 6 \nn= 62 \n\n\nNombre de paramètres estimés :\n\nIntercept ( \\(\\alpha\\) )\nCoefficient de uoutput ( \\(\\eta_1\\) )\nParamètre de scale (lié au paramètre de forme du Weibull)\n\n→ Au total, 3 paramètres dans ce modèle.\nComparaison AIC :\n\nOn calcule l’AIC du Weibull et on le compare à l’AIC du Cox retenu :\n\nAIC(Weibull) plus faible → modèle paramétrique préféré.\nAIC(Cox) similaire ou plus faible → on peut rester en Cox, plus souple (baseline non paramétrique).\n\n\n\n\n\n8.3.2 Q11 – Courbes de survie pour différents scénarios\nOn utilise ici le modèle de Cox simple cox_uoutput pour illustrer les différences de survie selon le choc :\n\n\nCode\nnewdata &lt;- data.frame(\n  uoutput = quantile(strikes$uoutput, probs = c(.2, .5, .8))\n)\n\nsurv_cox &lt;- survfit(cox_uoutput, newdata = newdata)\n\nplot(\n  surv_cox,\n  xlab = \"Durée de grève (jours)\",\n  ylab = \"Probabilité de grève en cours\"\n)\n\nlegend(\n  \"topright\",\n  legend = paste0(\"uoutput = \", round(newdata$uoutput, 3)),\n  lty = 1,\n  bty = \"n\"\n)\n\n\n\n\n\n\n\n\n\nCommentaires :\n\nPour les valeurs de uoutput élevées (choc favorable), la courbe de survie est en dessous des autres : les grèves ont une probabilité plus faible de “survivre” longtemps → elles se terminent plus vite.\nPour les valeurs faibles / négatives (choc défavorable), la courbe de survie est au-dessus : les grèves ont une probabilité plus forte de durer.\nLa forme du risque implicite (hazard) augmente avec le temps au début, puis peut se stabiliser, ce qui est cohérent avec un modèle de type Weibull.\n\n\n\n\n8.3.3 Q12 – Interprétation économique\nEn combinant :\n\nles hazard ratios des modèles de Cox,\nles courbes de survie (Kaplan–Meier et prédictions de modèles),\n\non peut conclure :\n\nEn période de conjoncture favorable (choc d’activité positif / fort), les grèves ont plus de chances de se terminer rapidement → hazard plus élevé, survie plus faible.\nEn période de conjoncture défavorable, les grèves ont tendance à durer plus longtemps → hazard plus faible, survie plus élevée.\n\nEn termes de négociation :\n\nQuand l’activité est bonne, les employeurs ont davantage de marges (les pertes liées à la grève sont plus coûteuses à court terme), ce qui peut favoriser des accords plus rapides.\nQuand la conjoncture est mauvaise, les coûts d’opportunité sont plus faibles et les rapports de force différents, ce qui peut conduire à des grèves plus longues."
+  },
+  {
+    "objectID": "td3/enonce-td3.html",
+    "href": "td3/enonce-td3.html",
+    "title": "TD3 – Modèles de régression multinomiale",
     "section": "",
-    "text": "Régression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3"
+    "text": "Un modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\n\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\n\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
   },
   {
-    "objectID": "site.html#organisation-20252026",
-    "href": "site.html#organisation-20252026",
-    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "objectID": "td3/enonce-td3.html#introduction",
+    "href": "td3/enonce-td3.html#introduction",
+    "title": "TD3 – Modèles de régression multinomiale",
     "section": "",
-    "text": "Support et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés."
+    "text": "Un modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\n\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\n\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
   },
   {
-    "objectID": "site.html#données-et-rappel-des-contenus",
-    "href": "site.html#données-et-rappel-des-contenus",
-    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "objectID": "td3/enonce-td3.html#présentation-de-létude-et-des-données",
+    "href": "td3/enonce-td3.html#présentation-de-létude-et-des-données",
+    "title": "TD3 – Modèles de régression multinomiale",
+    "section": "2 Présentation de l’étude et des données",
+    "text": "2 Présentation de l’étude et des données\nLes données étudiées proviennent de Hill et al. (1995) et sont utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.\n\n288 femmes avec un cancer de l’endomètre participent à l’étude.\n\n\n2.1 Dictionnaire des variables\n\nID : identifiant individuel.\nGRADE : variable ordinale indiquant le stade de la tumeur\n\n0 : bien différenciée\n1 : modérément différenciée\n2 : peu différenciée\n\nRACE : variable indicatrice à deux modalités\n\n1 : peau noire\n0 : peau blanche\n\nESTROGEN : variable indicatrice à deux modalités\n\n1 : la femme a déjà pris des œstrogènes\n0 : sinon\n\nSUBTYPE : variable qualitative à trois modalités codant le sous-type de tissu cancéreux\n\n0 : Adénocarcinome\n1 : Adenosquamous\n2 : Autre\n\nAGE : âge recodé en deux classes\n\n0 : 50–64 ans\n1 : 65–79 ans\n\nSMK : variable binaire indiquant le statut tabagique au moment de l’étude\n\n1 : fumeuse\n0 : non-fumeuse\n\n\n\n\n2.2 Références\n\nHill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J., Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and Harlan, L.C., Racial differences in tumor grade among women with endometrial cancer, Gynecol. Oncol. 56: 154–163, 1995.\nDavid G. Kleinbaum, Mitchel Klein, Logistic Regression – A Self‐Learning Text, Third Edition, Springer, 2010."
+  },
+  {
+    "objectID": "td3/enonce-td3.html#import-des-données",
+    "href": "td3/enonce-td3.html#import-des-données",
+    "title": "TD3 – Modèles de régression multinomiale",
+    "section": "3 Import des données",
+    "text": "3 Import des données\nOuvrir R et importer les données (cancer.dta utiliser le package haven)."
+  },
+  {
+    "objectID": "td3/enonce-td3.html#modèle-multinomial-pour-expliquer-la-variable-subtype",
+    "href": "td3/enonce-td3.html#modèle-multinomial-pour-expliquer-la-variable-subtype",
+    "title": "TD3 – Modèles de régression multinomiale",
+    "section": "4 Modèle multinomial pour expliquer la variable SUBTYPE",
+    "text": "4 Modèle multinomial pour expliquer la variable SUBTYPE\nLes variables explicatives sont : RACE, ESTROGEN, SMK et AGE.\n\nEstimation du premier modèle\nAppliquer un premier modèle de régression logit multinomiale prenant en compte les effets des quatre variables explicatives (commande R : nnet).\nSauvegarde des résultats\nSauvegarder les résultats du modèle ajusté.\nValeurs prédites et distribution\nGénérer les valeurs prédites.\nObserver et expliquer la répartition de ces données (commande R : predict).\nTest d’ajustement du modèle\nTester l’ajustement de ce modèle aux données (commande R : generalhoslem), en réduisant le nombre de groupes jusqu’à ce que le test soit applicable.\n\nExpliquer ce qui se passe.\nLe modèle est-il ajusté aux données ?\n\nSimplification du modèle\nEssayer de simplifier ce modèle, en se basant sur des tests de rapport de vraisemblance entre modèles emboîtés.\n\nCombien de degrés de liberté sont appliqués à chaque test ?\nQuel modèle est finalement choisi ?\n\nInterprétation\nInterpréter les résultats du modèle final.\nTableau de contingence des individus bien et mal classés\n\nTabuler la variable SUBTYPE pour constater qu’il y a :\n\n186 adénocarcinomes\n45 adenosquames\n57 autres cas\n\nTabuler les valeurs prédites dans cancer_sub et construire une nouvelle variable pred_subtype prenant la valeur 0 pour les 186 (environ) individus avec les plus grandes valeurs de cancer_sub.\nÉtablir le tableau de contingence des variables subtype_f et pred_subtype, et calculer la proportion de cas mal prédits."
+  },
+  {
+    "objectID": "td3/enonce-td3.html#b.-modèle-multinomial-ordonné-pour-expliquer-la-variable-grade",
+    "href": "td3/enonce-td3.html#b.-modèle-multinomial-ordonné-pour-expliquer-la-variable-grade",
+    "title": "TD3 – Modèles de régression multinomiale",
+    "section": "5 B. Modèle multinomial ordonné pour expliquer la variable GRADE",
+    "text": "5 B. Modèle multinomial ordonné pour expliquer la variable GRADE\nLe stade de la tumeur dépend des variables précédentes mais aussi du type de cancer.\n\nModèle ordonné de base\nAjuster un modèle de régression multinomiale ordonnée, avec comme variables explicatives RACE, ESTROGEN, SUBTYPE, AGE et SMK (commande R : polr() (MASS) ).\n\nAttention : il faut bien utiliser la variable grade_ord.\n\nTest d’ajustement via interactions (en R)\nR, comme Stata, ne fournit pas de test d’ajustement global « clé en main » pour les modèles logit/probit ordonnés.\nOn va donc tester l’apport de certaines interactions en comparant des modèles emboîtés au moyen de tests de rapport de vraisemblance (Likelihood Ratio, LR).\nOn utilise pour cela la fonction polr() du package MASS, qui permet d’estimer un modèle logit ordinal.\n\nModèle de base (rappel de la question 8)\n\nAjuster dans R un premier modèle de régression multinomiale ordonnée avec GRADE comme variable expliquée et les variables explicatives : RACE, ESTROGEN, SUBTYPE, AGE et SMK.\nOn utilisera la fonction polr() du package MASS (modèle noté par exemple mod_base).\n\nAjout de l’interaction ESTROGEN × SUBTYPE\n\nAjuster un deuxième modèle ordinal contenant tous les effets simples et, en plus, l’effet de l’interaction entre ESTROGEN et SUBTYPE.\nEn R, on peut écrire cette interaction sous la forme ESTROGEN * SUBTYPE, qui inclut automatiquement les effets simples et le terme d’interaction.\nNoter ce modèle, par exemple, mod_int_ES.\n\nTest de rapport de vraisemblance entre les deux modèles\n\nComparer mod_base et mod_int_ES à l’aide d’un test de rapport de vraisemblance (LR test) via la fonction anova(mod_base, mod_int_ES) dans R.\n\nInterpréter :\n\nla statistique de test (χ²),\nle nombre de degrés de liberté (lié au nombre de paramètres supplémentaires dans le modèle avec interaction),\nla p-value.\n\nConclure : l’interaction ESTROGEN × SUBTYPE améliore-t-elle significativement le modèle ? Faut-il la conserver dans le modèle final ?\n\nAutres interactions possibles\n\nRépéter la même démarche avec une ou deux autres interactions en effets simples, par exemple :\n\nESTROGEN × AGE ;\nSUBTYPE × AGE ;\nou toute autre interaction jugée pertinente.\n\n\nPour chaque nouvelle interaction :\n\nAjuster le modèle étendu (par exemple mod_int_EAGE, mod_int_SAGE, etc.) ;\nComparer ce modèle au modèle de base mod_base au moyen d’un test LR via anova() ;\nDiscuter de l’intérêt de conserver ou non l’interaction dans le modèle au vu de la p-value et, éventuellement, du critère AIC.\n\n\nDiscussion\n\nÀ partir de ces tests, proposer un modèle ordinal « raisonnable » :\n\nsuffisamment souple pour capter les effets importants ;\n\nmais pas trop complexe (principe de parcimonie).\n\n\nDiscuter brièvement des limites de ce type de « test d’ajustement via interactions » pour juger de la qualité globale du modèle.\n\n\nSélection de modèle par AIC\nEn utilisant le critère AIC, rechercher un modèle plus simple permettant de prédire le stade de la tumeur selon son type.\nModèle final et interprétation\n\nQuel modèle final choisit-on ?\nInterpréter les résultats de ce modèle."
+  },
+  {
+    "objectID": "td3/td3-slides.html#objectifs-du-td",
+    "href": "td3/td3-slides.html#objectifs-du-td",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "1 Objectifs du TD",
+    "text": "1 Objectifs du TD\n\nManipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
+  },
+  {
+    "objectID": "td3/td3-slides.html#packages-utilisés",
+    "href": "td3/td3-slides.html#packages-utilisés",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "2 Packages utilisés",
+    "text": "2 Packages utilisés\n\n\nCode\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(haven)\nlibrary(broom)\nlibrary(dplyr)\nlibrary(gt)\nlibrary(nnet)            # multinom (logit multinomial nominal)\nlibrary(generalhoslem)   # logitgof : test de Hosmer–Lemeshow multinomial\nlibrary(MASS)            # polr : logit ordinal\n\ntheme_set(theme_minimal())"
+  },
+  {
+    "objectID": "td3/td3-slides.html#import-des-données-et-préparation",
+    "href": "td3/td3-slides.html#import-des-données-et-préparation",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "3 Import des données et préparation",
+    "text": "3 Import des données et préparation\nOn suppose que le fichier cancer.dta se trouve dans le dossier ./data/.\n\n\nCode\ncancer_raw &lt;- read_dta(\"./data/cancer.dta\") |&gt;\n  clean_names()\n\nglimpse(cancer_raw)\n\n\nRows: 288\nColumns: 7\n$ id       &lt;dbl&gt; 10009, 10025, 10038, 10042, 10049, 10113, 10131, 10160, 10164…\n$ grade    &lt;dbl+lbl&gt; 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 2, 1, 2, 2, …\n$ race     &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n$ estrogen &lt;dbl+lbl&gt; 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, …\n$ subtype  &lt;dbl+lbl&gt; 1, 2, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, …\n$ age      &lt;dbl+lbl&gt; 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, …\n$ smoking  &lt;dbl+lbl&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n\n\nOn dispose notamment des variables :\n\ngrade (3 modalités ordonnées),\nrace,\nestrogen,\nsubtype,\nage,\nsmoking."
+  },
+  {
+    "objectID": "td3/td3-slides.html#recodage-des-variables",
+    "href": "td3/td3-slides.html#recodage-des-variables",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "4 Recodage des variables",
+    "text": "4 Recodage des variables\nOn crée des facteurs explicites pour la régression, en choisissant des références cohérentes avec l’énoncé :\n\n\nCode\ncancer &lt;- cancer_raw |&gt;\n  mutate(\n    # convertir les labels Stata en facteurs R\n    grade_f    = as_factor(grade),\n    subtype_f  = as_factor(subtype),\n    race_f     = as_factor(race),\n    estrogen_f = as_factor(estrogen),\n    age_f      = as_factor(age),\n    smk_f      = as_factor(smoking),\n    \n    # forcer l'ordre pour l'ordinal (adapter les noms à ce que tu vois)\n    grade_ord = fct_relevel(\n      grade_f,\n      \"bien différencié\",\n      \"moyennement différencié\",\n      \"peu différencié\"\n    )\n  )\n\ncancer |&gt;\n  dplyr::select(grade, grade_ord, subtype, subtype_f,\n         race_f, estrogen_f, age_f, smk_f) |&gt;\n  head()\n\n\n# A tibble: 6 × 8\n  grade                grade_ord subtype subtype_f race_f estrogen_f age_f smk_f\n  &lt;dbl+lbl&gt;            &lt;fct&gt;     &lt;dbl+l&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;\n1 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 50-64 yes  \n2 0 [bien différencié] bien dif… 2 [oth… other     blanc… took oest… 50-64 no   \n3 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 65-79 no   \n4 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… never too… 65-79 no   \n5 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 50-64 no   \n6 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 65-79 no"
+  },
+  {
+    "objectID": "td3/td3-slides.html#modèle-multinomial-pour-expliquer-subtype",
+    "href": "td3/td3-slides.html#modèle-multinomial-pour-expliquer-subtype",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "5 Modèle multinomial pour expliquer SUBTYPE",
+    "text": "5 Modèle multinomial pour expliquer SUBTYPE\nVariables explicatives : RACE, ESTROGEN, SMK, AGE."
+  },
+  {
+    "objectID": "td3/td3-slides.html#b.-modèle-ordinal-pour-expliquer-grade",
+    "href": "td3/td3-slides.html#b.-modèle-ordinal-pour-expliquer-grade",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "6 B. Modèle ordinal pour expliquer GRADE",
+    "text": "6 B. Modèle ordinal pour expliquer GRADE\nOn modélise le stade de la tumeur (bien / moyennement / peu différenciée) en fonction de :\n\nRACE, ESTROGEN, SUBTYPE, AGE, SMK."
+  },
+  {
+    "objectID": "td3/td3-slides.html#conclusion-td3",
+    "href": "td3/td3-slides.html#conclusion-td3",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "7 Conclusion TD3",
+    "text": "7 Conclusion TD3\n\nOn a estimé :\n\nun logit multinomial nominal pour SUBTYPE ;\nun logit ordinal pour GRADE.\n\nOn a :\n\ntesté l’ajustement du modèle nominal via un Hosmer–Lemeshow multinomial ;\nutilisé des tests de rapport de vraisemblance pour :\n\nsimplifier les modèles (variables non significatives),\ntester l’intérêt d’interactions dans le modèle ordinal ;\n\nChoisi les spécifications finales.\n\n\nÀ retenir :\n\nPour les variables nominales, on compare chaque modalité à une référence via des odds-ratios.\nPour les variables ordinales, le modèle logit/probit ordonné repose sur une variable latente et des seuils, avec une interprétation en termes de tendance vers des catégories plus élevées ou plus basses."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "TD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
+    "text": "About this site\n\n\nCode\n1 + 1\n\n\n[1] 2"
   },
   {
-    "objectID": "td1/enonce-td1.html",
-    "href": "td1/enonce-td1.html",
+    "objectID": "td1/énoncé-td1.html",
+    "href": "td1/énoncé-td1.html",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "",
     "text": "On étudie d’anciennes données reliant tabagisme et décès par cancer du poumon.\nVariables : age (classes), smoking status (4 classes), population (centaines de milliers), deaths (décès annuels)."
   },
   {
-    "objectID": "td1/enonce-td1.html#objectifs-de-ce-td",
-    "href": "td1/enonce-td1.html#objectifs-de-ce-td",
+    "objectID": "td1/énoncé-td1.html#objectifs-de-ce-td",
+    "href": "td1/énoncé-td1.html#objectifs-de-ce-td",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "2.1 Objectifs de ce TD",
     "text": "2.1 Objectifs de ce TD\n\nImporter et préparer un tableau « comptages + exposition » (population à risque).\nAjuster un GLM Poisson avec offset (log-exposition).\nÉvaluer l’ajustement : déviance (vs modèle saturé) & Pearson.\nComparer des modèles via tests de rapport de vraisemblance (LR).\nInterpréter en ratios de taux d’incidence (IRR) et produire des comptes attendus."
   },
   {
-    "objectID": "td1/enonce-td1.html#modèle-de-base",
-    "href": "td1/enonce-td1.html#modèle-de-base",
+    "objectID": "td1/énoncé-td1.html#modèle-de-base",
+    "href": "td1/énoncé-td1.html#modèle-de-base",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.1 Modèle de base",
     "text": "4.1 Modèle de base\n\nAjuster un modèle Poisson log-linéaire avec effets de smoking_status et age et offset log(exposure).\n\nQ1 : Pourquoi utiliser des variables indicatrices plutôt que des codes numériques continus ?\n\nCalculer la déviance du modèle ajusté.\n\nQ2 : Interpréter la déviance et le p-value (DEV1).\n\nInterpréter l’effet de l’âge sur la probabilité de décès.\n\nQ3 : Que disent les coefficients d’âge en termes d’IRR ?"
   },
   {
-    "objectID": "td1/enonce-td1.html#ajustement-du-modèle",
-    "href": "td1/enonce-td1.html#ajustement-du-modèle",
+    "objectID": "td1/énoncé-td1.html#ajustement-du-modèle",
+    "href": "td1/énoncé-td1.html#ajustement-du-modèle",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.2 Ajustement du modèle",
     "text": "4.2 Ajustement du modèle\n\nRéaliser les deux tests d’ajustement : déviance GOF et Pearson GOF.\n\nQ4 : Justifier les degrés de liberté.\nQ5 : Discuter les conditions d’application du test du χ²."
   },
   {
-    "objectID": "td1/enonce-td1.html#comparaison-de-modèles",
-    "href": "td1/enonce-td1.html#comparaison-de-modèles",
+    "objectID": "td1/énoncé-td1.html#comparaison-de-modèles",
+    "href": "td1/énoncé-td1.html#comparaison-de-modèles",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.3 Comparaison de modèles",
     "text": "4.3 Comparaison de modèles\n\nAjuster un modèle sans la variable tabac et effectuer un test LR entre les deux modèles.\n\nQ6 : Conclure sur l’impact de l’usage du tabac sur la probabilité de décès."
   },
   {
-    "objectID": "td1/enonce-td1.html#variable-binaire-cigarette",
-    "href": "td1/enonce-td1.html#variable-binaire-cigarette",
+    "objectID": "td1/énoncé-td1.html#variable-binaire-cigarette",
+    "href": "td1/énoncé-td1.html#variable-binaire-cigarette",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.4 Variable binaire « cigarette »",
     "text": "4.4 Variable binaire « cigarette »\n\nCréer une variable binaire cigarette_user (=1 si l’individu fume des cigarettes, 0 sinon).\nAjuster un modèle avec age + cigarette_user.\nComparer ce modèle avec le modèle initial par un test LR.\n\nQ7 : Le type de produit fumé influence-t-il différemment le taux de décès ?"
   },
   {
-    "objectID": "td1/enonce-td1.html#extensions-facultatif",
-    "href": "td1/enonce-td1.html#extensions-facultatif",
+    "objectID": "td1/énoncé-td1.html#extensions-facultatif",
+    "href": "td1/énoncé-td1.html#extensions-facultatif",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.5 Extensions (facultatif)",
     "text": "4.5 Extensions (facultatif)\n\nCalculer et présenter les IRR avec IC à 95 %.\nPrésenter les comptes observés vs attendus et commenter.\nVérifier la présence éventuelle de sur-dispersion et proposer, si nécessaire, un modèle adapté (Quasi-Poisson ou Négative Binomiale)."
+  },
+  {
+    "objectID": "td1/td1-slides.html#modèle-mod2",
+    "href": "td1/td1-slides.html#modèle-mod2",
+    "title": "TD 1 — Régression de Poisson (R)",
+    "section": "10.1 Modèle (mod2)",
+    "text": "10.1 Modèle (mod2)\n\n\nCode\nmod2 &lt;- glm(deaths ~ cigarette_user + age + offset(log(exposure)),\n            family = poisson, data = df)\n\nsummary(mod2)\n\n\n\nCall:\nglm(formula = deaths ~ cigarette_user + age + offset(log(exposure)), \n    family = poisson, data = df)\n\nCoefficients:\n                Estimate Std. Error  z value Pr(&gt;|z|)    \n(Intercept)    -15.15590    0.06378 -237.625  &lt; 2e-16 ***\ncigarette_user   0.26910    0.02757    9.762  &lt; 2e-16 ***\nage45-59         0.55342    0.07999    6.919 4.56e-12 ***\nage50-54         0.98480    0.07682   12.820  &lt; 2e-16 ***\nage55-59         1.37640    0.06526   21.092  &lt; 2e-16 ***\nage60-64         1.64629    0.06256   26.317  &lt; 2e-16 ***\nage65-69         1.99023    0.06277   31.708  &lt; 2e-16 ***\nage70-74         2.26143    0.06432   35.161  &lt; 2e-16 ***\nage75-79         2.54560    0.06766   37.626  &lt; 2e-16 ***\nage80+           2.82907    0.07215   39.211  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for poisson family taken to be 1)\n\n    Null deviance: 4055.984  on 35  degrees of freedom\nResidual deviance:   92.237  on 26  degrees of freedom\nAIC: 352.26\n\nNumber of Fisher Scoring iterations: 4"
+  },
+  {
+    "objectID": "td1/td1-slides.html#anova",
+    "href": "td1/td1-slides.html#anova",
+    "title": "TD 1 — Régression de Poisson (R)",
+    "section": "10.2 Anova",
+    "text": "10.2 Anova\n\n\nCode\nanova(mod2, test = \"Chisq\")\n\n\nAnalysis of Deviance Table\n\nModel: poisson, link: log\n\nResponse: deaths\n\nTerms added sequentially (first to last)\n\n               Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    \nNULL                              35     4056.0              \ncigarette_user  1     58.3        34     3997.6 2.195e-14 ***\nage             8   3905.4        26       92.2 &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "global-slides.html",
+    "href": "global-slides.html",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD1 : Regressions de poisson\nTD2: Regressions Logit\nTD3 : Regressions multinom\nTD4 : Analyse de survie\n\n\n\n\n\nTD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\nRaccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
+  },
+  {
+    "objectID": "global-slides.html#td-1",
+    "href": "global-slides.html#td-1",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-2",
+    "href": "global-slides.html#td-2",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-3",
+    "href": "global-slides.html#td-3",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#td-4",
+    "href": "global-slides.html#td-4",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "TD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
+  },
+  {
+    "objectID": "global-slides.html#astuce-projection",
+    "href": "global-slides.html#astuce-projection",
+    "title": "Présentation globale",
+    "section": "",
+    "text": "Raccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
   },
   {
     "objectID": "td1/td1.html",
@@ -441,207 +637,417 @@
     "text": "7.4 Bilan\n\nLe modèle de Poisson permet d’estimer des taux de décès en fonction du tabagisme et de l’âge.\nLes tests d’ajustement (déviance, Pearson) valident le modèle si p-value élevée.\nLe tabagisme a un impact significatif sur la mortalité par cancer du poumon.\nLes IRR offrent une interprétation intuitive : par rapport à la catégorie de référence, combien de fois le taux de décès est-il multiplié.\n\n\nConseil pratique : en recherche appliquée, vérifiez toujours la sur-dispersion et documentez les hypothèses de variance (Poisson vs quasi-Poisson vs binomiale négative)."
   },
   {
-    "objectID": "global-slides.html",
-    "href": "global-slides.html",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "TD1 : Regressions de poisson\nTD2: Regressions Logit\nTD3 : Regressions multinom\nTD4 : Analyse de survie\n\n\n\n\n\nTD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\n\nTD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}\n\n\n\n\n\nRaccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
-  },
-  {
-    "objectID": "global-slides.html#td-1",
-    "href": "global-slides.html#td-1",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "TD1 → {{&lt; revealjs file=\"/td1/td1-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
-  },
-  {
-    "objectID": "global-slides.html#td-2",
-    "href": "global-slides.html#td-2",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "TD2 → {{&lt; revealjs file=\"/td2/td2-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
-  },
-  {
-    "objectID": "global-slides.html#td-3",
-    "href": "global-slides.html#td-3",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "TD3 → {{&lt; revealjs file=\"/td3/td3-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
-  },
-  {
-    "objectID": "global-slides.html#td-4",
-    "href": "global-slides.html#td-4",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "TD4 → {{&lt; revealjs file=\"/td4/td4-slides.html\" height=\"500px\" class=\"ratio ratio-16x9\" &gt;}}"
-  },
-  {
-    "objectID": "global-slides.html#astuce-projection",
-    "href": "global-slides.html#astuce-projection",
-    "title": "Présentation globale",
-    "section": "",
-    "text": "Raccourcis Reveal.js :\n- F : plein écran\n- S : notes orateur\n- Esc : vue mosaïque"
-  },
-  {
-    "objectID": "td1/td1-slides.html#modèle-mod2",
-    "href": "td1/td1-slides.html#modèle-mod2",
-    "title": "TD 1 — Régression de Poisson (R)",
-    "section": "10.1 Modèle (mod2)",
-    "text": "10.1 Modèle (mod2)\n\n\nCode\nmod2 &lt;- glm(deaths ~ cigarette_user + age + offset(log(exposure)),\n            family = poisson, data = df)\n\nsummary(mod2)\n\n\n\nCall:\nglm(formula = deaths ~ cigarette_user + age + offset(log(exposure)), \n    family = poisson, data = df)\n\nCoefficients:\n                Estimate Std. Error  z value Pr(&gt;|z|)    \n(Intercept)    -15.15590    0.06378 -237.625  &lt; 2e-16 ***\ncigarette_user   0.26910    0.02757    9.762  &lt; 2e-16 ***\nage45-59         0.55342    0.07999    6.919 4.56e-12 ***\nage50-54         0.98480    0.07682   12.820  &lt; 2e-16 ***\nage55-59         1.37640    0.06526   21.092  &lt; 2e-16 ***\nage60-64         1.64629    0.06256   26.317  &lt; 2e-16 ***\nage65-69         1.99023    0.06277   31.708  &lt; 2e-16 ***\nage70-74         2.26143    0.06432   35.161  &lt; 2e-16 ***\nage75-79         2.54560    0.06766   37.626  &lt; 2e-16 ***\nage80+           2.82907    0.07215   39.211  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for poisson family taken to be 1)\n\n    Null deviance: 4055.984  on 35  degrees of freedom\nResidual deviance:   92.237  on 26  degrees of freedom\nAIC: 352.26\n\nNumber of Fisher Scoring iterations: 4"
-  },
-  {
-    "objectID": "td1/td1-slides.html#anova",
-    "href": "td1/td1-slides.html#anova",
-    "title": "TD 1 — Régression de Poisson (R)",
-    "section": "10.2 Anova",
-    "text": "10.2 Anova\n\n\nCode\nanova(mod2, test = \"Chisq\")\n\n\nAnalysis of Deviance Table\n\nModel: poisson, link: log\n\nResponse: deaths\n\nTerms added sequentially (first to last)\n\n               Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    \nNULL                              35     4056.0              \ncigarette_user  1     58.3        34     3997.6 2.195e-14 ***\nage             8   3905.4        26       92.2 &lt; 2.2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
-  },
-  {
-    "objectID": "td1/énoncé-td1.html",
-    "href": "td1/énoncé-td1.html",
+    "objectID": "td1/enonce-td1.html",
+    "href": "td1/enonce-td1.html",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "",
     "text": "On étudie d’anciennes données reliant tabagisme et décès par cancer du poumon.\nVariables : age (classes), smoking status (4 classes), population (centaines de milliers), deaths (décès annuels)."
   },
   {
-    "objectID": "td1/énoncé-td1.html#objectifs-de-ce-td",
-    "href": "td1/énoncé-td1.html#objectifs-de-ce-td",
+    "objectID": "td1/enonce-td1.html#objectifs-de-ce-td",
+    "href": "td1/enonce-td1.html#objectifs-de-ce-td",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "2.1 Objectifs de ce TD",
     "text": "2.1 Objectifs de ce TD\n\nImporter et préparer un tableau « comptages + exposition » (population à risque).\nAjuster un GLM Poisson avec offset (log-exposition).\nÉvaluer l’ajustement : déviance (vs modèle saturé) & Pearson.\nComparer des modèles via tests de rapport de vraisemblance (LR).\nInterpréter en ratios de taux d’incidence (IRR) et produire des comptes attendus."
   },
   {
-    "objectID": "td1/énoncé-td1.html#modèle-de-base",
-    "href": "td1/énoncé-td1.html#modèle-de-base",
+    "objectID": "td1/enonce-td1.html#modèle-de-base",
+    "href": "td1/enonce-td1.html#modèle-de-base",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.1 Modèle de base",
     "text": "4.1 Modèle de base\n\nAjuster un modèle Poisson log-linéaire avec effets de smoking_status et age et offset log(exposure).\n\nQ1 : Pourquoi utiliser des variables indicatrices plutôt que des codes numériques continus ?\n\nCalculer la déviance du modèle ajusté.\n\nQ2 : Interpréter la déviance et le p-value (DEV1).\n\nInterpréter l’effet de l’âge sur la probabilité de décès.\n\nQ3 : Que disent les coefficients d’âge en termes d’IRR ?"
   },
   {
-    "objectID": "td1/énoncé-td1.html#ajustement-du-modèle",
-    "href": "td1/énoncé-td1.html#ajustement-du-modèle",
+    "objectID": "td1/enonce-td1.html#ajustement-du-modèle",
+    "href": "td1/enonce-td1.html#ajustement-du-modèle",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.2 Ajustement du modèle",
     "text": "4.2 Ajustement du modèle\n\nRéaliser les deux tests d’ajustement : déviance GOF et Pearson GOF.\n\nQ4 : Justifier les degrés de liberté.\nQ5 : Discuter les conditions d’application du test du χ²."
   },
   {
-    "objectID": "td1/énoncé-td1.html#comparaison-de-modèles",
-    "href": "td1/énoncé-td1.html#comparaison-de-modèles",
+    "objectID": "td1/enonce-td1.html#comparaison-de-modèles",
+    "href": "td1/enonce-td1.html#comparaison-de-modèles",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.3 Comparaison de modèles",
     "text": "4.3 Comparaison de modèles\n\nAjuster un modèle sans la variable tabac et effectuer un test LR entre les deux modèles.\n\nQ6 : Conclure sur l’impact de l’usage du tabac sur la probabilité de décès."
   },
   {
-    "objectID": "td1/énoncé-td1.html#variable-binaire-cigarette",
-    "href": "td1/énoncé-td1.html#variable-binaire-cigarette",
+    "objectID": "td1/enonce-td1.html#variable-binaire-cigarette",
+    "href": "td1/enonce-td1.html#variable-binaire-cigarette",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.4 Variable binaire « cigarette »",
     "text": "4.4 Variable binaire « cigarette »\n\nCréer une variable binaire cigarette_user (=1 si l’individu fume des cigarettes, 0 sinon).\nAjuster un modèle avec age + cigarette_user.\nComparer ce modèle avec le modèle initial par un test LR.\n\nQ7 : Le type de produit fumé influence-t-il différemment le taux de décès ?"
   },
   {
-    "objectID": "td1/énoncé-td1.html#extensions-facultatif",
-    "href": "td1/énoncé-td1.html#extensions-facultatif",
+    "objectID": "td1/enonce-td1.html#extensions-facultatif",
+    "href": "td1/enonce-td1.html#extensions-facultatif",
     "title": "TD 1 — Modèle de Poisson (R)",
     "section": "4.5 Extensions (facultatif)",
     "text": "4.5 Extensions (facultatif)\n\nCalculer et présenter les IRR avec IC à 95 %.\nPrésenter les comptes observés vs attendus et commenter.\nVérifier la présence éventuelle de sur-dispersion et proposer, si nécessaire, un modèle adapté (Quasi-Poisson ou Négative Binomiale)."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "site.html",
+    "href": "site.html",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
     "section": "",
-    "text": "About this site\n\n\nCode\n1 + 1\n\n\n[1] 2"
+    "text": "Ce site rassemble les trois TDs du module de modélisation statistique (M2).\nChaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications Stata.\n\n\n\n\n\n\nConseils généraux\n\n\n\n\nConservez une trace reproductible de vos commandes (do-file ou Quarto).\nComparez systématiquement les modèles via tests d’ajustement (GOF, LR) et critères d’information (AIC/BIC).\n\n\n\n\n\n\n\n\n\n\n\nRégression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3\n\n\n\n\n\n\n\n\n\n\nSupport et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés.\n\n\n\n\n\n\n\nTD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
   },
   {
-    "objectID": "td3/td3-slides.html#objectifs-du-td",
-    "href": "td3/td3-slides.html#objectifs-du-td",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "1 Objectifs du TD",
-    "text": "1 Objectifs du TD\n\nManipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
-  },
-  {
-    "objectID": "td3/td3-slides.html#packages-utilisés",
-    "href": "td3/td3-slides.html#packages-utilisés",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "2 Packages utilisés",
-    "text": "2 Packages utilisés\n\n\nCode\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(haven)\nlibrary(broom)\nlibrary(dplyr)\nlibrary(gt)\nlibrary(nnet)            # multinom (logit multinomial nominal)\nlibrary(generalhoslem)   # logitgof : test de Hosmer–Lemeshow multinomial\nlibrary(MASS)            # polr : logit ordinal\n\ntheme_set(theme_minimal())"
-  },
-  {
-    "objectID": "td3/td3-slides.html#import-des-données-et-préparation",
-    "href": "td3/td3-slides.html#import-des-données-et-préparation",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "3 Import des données et préparation",
-    "text": "3 Import des données et préparation\nOn suppose que le fichier cancer.dta se trouve dans le dossier ./data/.\n\n\nCode\ncancer_raw &lt;- read_dta(\"./data/cancer.dta\") |&gt;\n  clean_names()\n\nglimpse(cancer_raw)\n\n\nRows: 288\nColumns: 7\n$ id       &lt;dbl&gt; 10009, 10025, 10038, 10042, 10049, 10113, 10131, 10160, 10164…\n$ grade    &lt;dbl+lbl&gt; 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 2, 1, 2, 2, …\n$ race     &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n$ estrogen &lt;dbl+lbl&gt; 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, …\n$ subtype  &lt;dbl+lbl&gt; 1, 2, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, …\n$ age      &lt;dbl+lbl&gt; 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, …\n$ smoking  &lt;dbl+lbl&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n\n\nOn dispose notamment des variables :\n\ngrade (3 modalités ordonnées),\nrace,\nestrogen,\nsubtype,\nage,\nsmoking."
-  },
-  {
-    "objectID": "td3/td3-slides.html#recodage-des-variables",
-    "href": "td3/td3-slides.html#recodage-des-variables",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "4 Recodage des variables",
-    "text": "4 Recodage des variables\nOn crée des facteurs explicites pour la régression, en choisissant des références cohérentes avec l’énoncé :\n\n\nCode\ncancer &lt;- cancer_raw |&gt;\n  mutate(\n    # convertir les labels Stata en facteurs R\n    grade_f    = as_factor(grade),\n    subtype_f  = as_factor(subtype),\n    race_f     = as_factor(race),\n    estrogen_f = as_factor(estrogen),\n    age_f      = as_factor(age),\n    smk_f      = as_factor(smoking),\n    \n    # forcer l'ordre pour l'ordinal (adapter les noms à ce que tu vois)\n    grade_ord = fct_relevel(\n      grade_f,\n      \"bien différencié\",\n      \"moyennement différencié\",\n      \"peu différencié\"\n    )\n  )\n\ncancer |&gt;\n  dplyr::select(grade, grade_ord, subtype, subtype_f,\n         race_f, estrogen_f, age_f, smk_f) |&gt;\n  head()\n\n\n# A tibble: 6 × 8\n  grade                grade_ord subtype subtype_f race_f estrogen_f age_f smk_f\n  &lt;dbl+lbl&gt;            &lt;fct&gt;     &lt;dbl+l&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;\n1 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 50-64 yes  \n2 0 [bien différencié] bien dif… 2 [oth… other     blanc… took oest… 50-64 no   \n3 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 65-79 no   \n4 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… never too… 65-79 no   \n5 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 50-64 no   \n6 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 65-79 no"
-  },
-  {
-    "objectID": "td3/td3-slides.html#modèle-multinomial-pour-expliquer-subtype",
-    "href": "td3/td3-slides.html#modèle-multinomial-pour-expliquer-subtype",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "5 Modèle multinomial pour expliquer SUBTYPE",
-    "text": "5 Modèle multinomial pour expliquer SUBTYPE\nVariables explicatives : RACE, ESTROGEN, SMK, AGE."
-  },
-  {
-    "objectID": "td3/td3-slides.html#b.-modèle-ordinal-pour-expliquer-grade",
-    "href": "td3/td3-slides.html#b.-modèle-ordinal-pour-expliquer-grade",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "6 B. Modèle ordinal pour expliquer GRADE",
-    "text": "6 B. Modèle ordinal pour expliquer GRADE\nOn modélise le stade de la tumeur (bien / moyennement / peu différenciée) en fonction de :\n\nRACE, ESTROGEN, SUBTYPE, AGE, SMK."
-  },
-  {
-    "objectID": "td3/td3-slides.html#conclusion-td3",
-    "href": "td3/td3-slides.html#conclusion-td3",
-    "title": "TD 3 — Régression multinomiale (R)",
-    "section": "7 Conclusion TD3",
-    "text": "7 Conclusion TD3\n\nOn a estimé :\n\nun logit multinomial nominal pour SUBTYPE ;\nun logit ordinal pour GRADE.\n\nOn a :\n\ntesté l’ajustement du modèle nominal via un Hosmer–Lemeshow multinomial ;\nutilisé des tests de rapport de vraisemblance pour :\n\nsimplifier les modèles (variables non significatives),\ntester l’intérêt d’interactions dans le modèle ordinal ;\n\nChoisi les spécifications finales.\n\n\nÀ retenir :\n\nPour les variables nominales, on compare chaque modalité à une référence via des odds-ratios.\nPour les variables ordinales, le modèle logit/probit ordonné repose sur une variable latente et des seuils, avec une interprétation en termes de tendance vers des catégories plus élevées ou plus basses."
-  },
-  {
-    "objectID": "td3/enonce-td3.html",
-    "href": "td3/enonce-td3.html",
-    "title": "TD3 – Modèles de régression multinomiale",
+    "objectID": "site.html#accès-rapide-aux-tds",
+    "href": "site.html#accès-rapide-aux-tds",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
     "section": "",
-    "text": "Un modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\n\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\n\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
+    "text": "Régression log-linéaire sur mortalité par cancer du poumon, ajustement (deviance, Pearson), comparaison de modèles et interprétation via IRR.\nOuvrir l’énoncé TD 1\n\n\n\n\n\n\n\nModélisation du risque de défaut, GOF, Logit/Probit, ROC/AUC et seuils.\nOuvrir l’énoncé TD 2\n\n\n\n\n\n\n\nModèles multinomial et ordinal, interactions, tests et sélection (AIC).\nOuvrir l’énoncé TD 3"
   },
   {
-    "objectID": "td3/enonce-td3.html#introduction",
-    "href": "td3/enonce-td3.html#introduction",
-    "title": "TD3 – Modèles de régression multinomiale",
+    "objectID": "site.html#organisation-20252026",
+    "href": "site.html#organisation-20252026",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
     "section": "",
-    "text": "Un modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\n\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\n\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
+    "text": "Support et consignes : chaque page de TD précise les données, commandes clés et livrables attendus.\n\nLogiciels : R, si besoin ce référer à ce tutoriel pour utiliser R.\n\nÉvaluation : clarté des commentaires, qualité des comparaisons de modèles, et interprétations économétriques.\n\n\n\n\n\n\n\nNote\n\n\n\nRessources utiles\n\nRévisions probabilité/GLM : notes de cours & fiches méthodes.\nBonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés."
   },
   {
-    "objectID": "td3/enonce-td3.html#présentation-de-létude-et-des-données",
-    "href": "td3/enonce-td3.html#présentation-de-létude-et-des-données",
-    "title": "TD3 – Modèles de régression multinomiale",
-    "section": "2 Présentation de l’étude et des données",
-    "text": "2 Présentation de l’étude et des données\nLes données étudiées proviennent de Hill et al. (1995) et sont utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.\n\n288 femmes avec un cancer de l’endomètre participent à l’étude.\n\n\n2.1 Dictionnaire des variables\n\nID : identifiant individuel.\nGRADE : variable ordinale indiquant le stade de la tumeur\n\n0 : bien différenciée\n1 : modérément différenciée\n2 : peu différenciée\n\nRACE : variable indicatrice à deux modalités\n\n1 : peau noire\n0 : peau blanche\n\nESTROGEN : variable indicatrice à deux modalités\n\n1 : la femme a déjà pris des œstrogènes\n0 : sinon\n\nSUBTYPE : variable qualitative à trois modalités codant le sous-type de tissu cancéreux\n\n0 : Adénocarcinome\n1 : Adenosquamous\n2 : Autre\n\nAGE : âge recodé en deux classes\n\n0 : 50–64 ans\n1 : 65–79 ans\n\nSMK : variable binaire indiquant le statut tabagique au moment de l’étude\n\n1 : fumeuse\n0 : non-fumeuse\n\n\n\n\n2.2 Références\n\nHill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J., Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and Harlan, L.C., Racial differences in tumor grade among women with endometrial cancer, Gynecol. Oncol. 56: 154–163, 1995.\nDavid G. Kleinbaum, Mitchel Klein, Logistic Regression – A Self‐Learning Text, Third Edition, Springer, 2010."
+    "objectID": "site.html#données-et-rappel-des-contenus",
+    "href": "site.html#données-et-rappel-des-contenus",
+    "title": "Modélisation statistique — Travaux Dirigés (M2)",
+    "section": "",
+    "text": "TD 1 — Poisson (tabac & cancer du poumon) : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en ratios d’incidence.\n\nTD 2 — Logit (crédit) : recodage binaire de la variable dépendante, GOF groupé, lrtest entre modèles imbriqués, ROC/AUC, comparaison Logit/Probit, seuil optimal.\n\nTD 3 — Multinomial/Ordinal (endomètre) : mlogit sur sous-types, prédictions et matrice de classification, ologit sur le grade, tests d’interactions, sélection par AIC."
   },
   {
-    "objectID": "td3/enonce-td3.html#import-des-données",
-    "href": "td3/enonce-td3.html#import-des-données",
-    "title": "TD3 – Modèles de régression multinomiale",
-    "section": "3 Import des données",
-    "text": "3 Import des données\nOuvrir R et importer les données (cancer.dta utiliser le package haven)."
+    "objectID": "td3/td3.html",
+    "href": "td3/td3.html",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "",
+    "text": "Manipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
   },
   {
-    "objectID": "td3/enonce-td3.html#modèle-multinomial-pour-expliquer-la-variable-subtype",
-    "href": "td3/enonce-td3.html#modèle-multinomial-pour-expliquer-la-variable-subtype",
-    "title": "TD3 – Modèles de régression multinomiale",
-    "section": "4 Modèle multinomial pour expliquer la variable SUBTYPE",
-    "text": "4 Modèle multinomial pour expliquer la variable SUBTYPE\nLes variables explicatives sont : RACE, ESTROGEN, SMK et AGE.\n\nEstimation du premier modèle\nAppliquer un premier modèle de régression logit multinomiale prenant en compte les effets des quatre variables explicatives (commande R : nnet).\nSauvegarde des résultats\nSauvegarder les résultats du modèle ajusté.\nValeurs prédites et distribution\nGénérer les valeurs prédites.\nObserver et expliquer la répartition de ces données (commande R : predict).\nTest d’ajustement du modèle\nTester l’ajustement de ce modèle aux données (commande R : generalhoslem), en réduisant le nombre de groupes jusqu’à ce que le test soit applicable.\n\nExpliquer ce qui se passe.\nLe modèle est-il ajusté aux données ?\n\nSimplification du modèle\nEssayer de simplifier ce modèle, en se basant sur des tests de rapport de vraisemblance entre modèles emboîtés.\n\nCombien de degrés de liberté sont appliqués à chaque test ?\nQuel modèle est finalement choisi ?\n\nInterprétation\nInterpréter les résultats du modèle final.\nTableau de contingence des individus bien et mal classés\n\nTabuler la variable SUBTYPE pour constater qu’il y a :\n\n186 adénocarcinomes\n45 adenosquames\n57 autres cas\n\nTabuler les valeurs prédites dans cancer_sub et construire une nouvelle variable pred_subtype prenant la valeur 0 pour les 186 (environ) individus avec les plus grandes valeurs de cancer_sub.\nÉtablir le tableau de contingence des variables subtype_f et pred_subtype, et calculer la proportion de cas mal prédits."
+    "objectID": "td3/td3.html#objectifs-du-td",
+    "href": "td3/td3.html#objectifs-du-td",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "",
+    "text": "Manipuler un modèle logit multinomial nominal (SUBTYPE).\nManipuler un modèle logit ordinal (GRADE).\nSavoir :\n\npréparer les données (codage en facteurs / variables ordinales) ;\nestimer, simplifier et interpréter un modèle ;\ntester :\n\nl’ajustement (Hosmer–Lemeshow multinomial) ;\ndes interactions via test de rapport de vraisemblance (LR).\n\n\n\nDonnées : cancer.dta (288 femmes avec cancer de l’endomètre)."
   },
   {
-    "objectID": "td3/enonce-td3.html#b.-modèle-multinomial-ordonné-pour-expliquer-la-variable-grade",
-    "href": "td3/enonce-td3.html#b.-modèle-multinomial-ordonné-pour-expliquer-la-variable-grade",
-    "title": "TD3 – Modèles de régression multinomiale",
-    "section": "5 B. Modèle multinomial ordonné pour expliquer la variable GRADE",
-    "text": "5 B. Modèle multinomial ordonné pour expliquer la variable GRADE\nLe stade de la tumeur dépend des variables précédentes mais aussi du type de cancer.\n\nModèle ordonné de base\nAjuster un modèle de régression multinomiale ordonnée, avec comme variables explicatives RACE, ESTROGEN, SUBTYPE, AGE et SMK (commande R : polr() (MASS) ).\n\nAttention : il faut bien utiliser la variable grade_ord.\n\nTest d’ajustement via interactions (en R)\nR, comme Stata, ne fournit pas de test d’ajustement global « clé en main » pour les modèles logit/probit ordonnés.\nOn va donc tester l’apport de certaines interactions en comparant des modèles emboîtés au moyen de tests de rapport de vraisemblance (Likelihood Ratio, LR).\nOn utilise pour cela la fonction polr() du package MASS, qui permet d’estimer un modèle logit ordinal.\n\nModèle de base (rappel de la question 8)\n\nAjuster dans R un premier modèle de régression multinomiale ordonnée avec GRADE comme variable expliquée et les variables explicatives : RACE, ESTROGEN, SUBTYPE, AGE et SMK.\nOn utilisera la fonction polr() du package MASS (modèle noté par exemple mod_base).\n\nAjout de l’interaction ESTROGEN × SUBTYPE\n\nAjuster un deuxième modèle ordinal contenant tous les effets simples et, en plus, l’effet de l’interaction entre ESTROGEN et SUBTYPE.\nEn R, on peut écrire cette interaction sous la forme ESTROGEN * SUBTYPE, qui inclut automatiquement les effets simples et le terme d’interaction.\nNoter ce modèle, par exemple, mod_int_ES.\n\nTest de rapport de vraisemblance entre les deux modèles\n\nComparer mod_base et mod_int_ES à l’aide d’un test de rapport de vraisemblance (LR test) via la fonction anova(mod_base, mod_int_ES) dans R.\n\nInterpréter :\n\nla statistique de test (χ²),\nle nombre de degrés de liberté (lié au nombre de paramètres supplémentaires dans le modèle avec interaction),\nla p-value.\n\nConclure : l’interaction ESTROGEN × SUBTYPE améliore-t-elle significativement le modèle ? Faut-il la conserver dans le modèle final ?\n\nAutres interactions possibles\n\nRépéter la même démarche avec une ou deux autres interactions en effets simples, par exemple :\n\nESTROGEN × AGE ;\nSUBTYPE × AGE ;\nou toute autre interaction jugée pertinente.\n\n\nPour chaque nouvelle interaction :\n\nAjuster le modèle étendu (par exemple mod_int_EAGE, mod_int_SAGE, etc.) ;\nComparer ce modèle au modèle de base mod_base au moyen d’un test LR via anova() ;\nDiscuter de l’intérêt de conserver ou non l’interaction dans le modèle au vu de la p-value et, éventuellement, du critère AIC.\n\n\nDiscussion\n\nÀ partir de ces tests, proposer un modèle ordinal « raisonnable » :\n\nsuffisamment souple pour capter les effets importants ;\n\nmais pas trop complexe (principe de parcimonie).\n\n\nDiscuter brièvement des limites de ce type de « test d’ajustement via interactions » pour juger de la qualité globale du modèle.\n\n\nSélection de modèle par AIC\nEn utilisant le critère AIC, rechercher un modèle plus simple permettant de prédire le stade de la tumeur selon son type.\nModèle final et interprétation\n\nQuel modèle final choisit-on ?\nInterpréter les résultats de ce modèle."
+    "objectID": "td3/td3.html#introduction",
+    "href": "td3/td3.html#introduction",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "2 Introduction",
+    "text": "2 Introduction\nUn modèle de régression multinomiale est un modèle Logit ou Probit dans lequel la variable à expliquer \\(Y\\) est une variable qualitative à \\(k &gt; 2\\) modalités. Cette variable peut être qualitative nominale ou ordinale.\n\n2.1 Cas d’une variable expliquée nominale\nDans le cas d’une variable expliquée nominale, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des pseudo-côtes, c’est-à-dire :\n\n\\(\\displaystyle \\frac{\\Pr(Y = 1)}{\\Pr(Y = 0)}\\)\n\\(\\displaystyle \\frac{\\Pr(Y = 2)}{\\Pr(Y = 0)}\\)\netc.\n\nPar exemple, dans le cas \\(k = 3\\) modalités de \\(Y\\), on a :\n\\(\\Pr(Y = 0) + \\Pr(Y = 1) + \\Pr(Y = 2) = 1\\)\nMAIS \\(\\Pr(Y = 0) + \\Pr(Y = 1) &lt; 1\\) et \\(\\Pr(Y = 0) + \\Pr(Y = 2) &lt; 1\\)\nOn estime alors les paramètres \\(\\beta_g\\) tels que :\n\\[\n\\ln \\left(\\frac{\\Pr(Y = g)}{\\Pr(Y = 0)}\\right)\n= \\beta_{g0} + \\sum_{j=1}^{p} \\beta_{gj} X_j\n\\]\navec \\(g = 1, \\dots, k-1\\).\nOn estime donc :\n\n\\((k - 1)\\) paramètres pour chaque variable explicative quantitative ;\n\\((k - 1)(q - 1)\\) paramètres pour une variable explicative qualitative à \\(q\\) modalités.\n\n\n\n2.2 Cas d’une variable expliquée ordinale\nDans le cas d’une variable expliquée ordinale, \\(Y = 0\\) ou \\(1\\) ou \\(2\\), etc. représente une réponse graduée.\nLa résolution suppose l’existence d’une variable continue sous-jacente \\(Y^*\\), et de \\((k - 1)\\) bornes \\(c_j\\) telles que :\n\nsi \\(y_i^* &lt; c_1\\) alors \\(y_i = 1\\)\nsi \\(c_{j-1} &lt; y_i^* &lt; c_j\\) alors \\(y_i = j\\)\nsi \\(y_i^* &gt; c_{k-1}\\) alors \\(y_i = k\\)\n\nOn a :\n\\[\ny_i^* = X_i B + \\varepsilon_i\n\\]\net on estime conjointement :\n\nles paramètres \\(\\beta_j\\) correspondant à chaque variable explicative ;\nles seuils \\(c_g\\) (\\(g = 1, \\dots, k - 1\\)).\n\nOn prédit alors l’appartenance de chaque individu à chaque classe par les formules :\n\\[\\Pr(Y_i = 0) = \\Phi(c_1 - X_i B)\\]\n\\[\\Pr(Y_i = g) = \\Phi(c_g - X_i B) - \\Phi(c_{g-1} - X_i B)\\]\noù \\(\\Phi\\) est :\n\nla fonction de répartition d’une loi gaussienne centrée réduite dans le cas du modèle Probit multivarié ;\nl’inverse de la fonction Logit dans le cas du Logit multivarié."
+  },
+  {
+    "objectID": "td3/td3.html#présentation-de-létude-et-des-données",
+    "href": "td3/td3.html#présentation-de-létude-et-des-données",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "3 Présentation de l’étude et des données",
+    "text": "3 Présentation de l’étude et des données\nLes données étudiées proviennent de Hill et al. (1995) et sont utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.\n\n288 femmes avec un cancer de l’endomètre participent à l’étude.\n\n\n3.1 Dictionnaire des variables\n\nID : identifiant individuel.\nGRADE : variable ordinale indiquant le stade de la tumeur\n\n0 : bien différenciée\n1 : modérément différenciée\n2 : peu différenciée\n\nRACE : variable indicatrice à deux modalités\n\n1 : peau noire\n0 : peau blanche\n\nESTROGEN : variable indicatrice à deux modalités\n\n1 : la femme a déjà pris des œstrogènes\n0 : sinon\n\nSUBTYPE : variable qualitative à trois modalités codant le sous-type de tissu cancéreux\n\n0 : Adénocarcinome\n1 : Adenosquamous\n2 : Autre\n\nAGE : âge recodé en deux classes\n\n0 : 50–64 ans\n1 : 65–79 ans\n\nSMK : variable binaire indiquant le statut tabagique au moment de l’étude\n\n1 : fumeuse\n0 : non-fumeuse\n\n\n\n\n3.2 Références\n\nHill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J., Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and Harlan, L.C., Racial differences in tumor grade among women with endometrial cancer, Gynecol. Oncol. 56: 154–163, 1995.\nDavid G. Kleinbaum, Mitchel Klein, Logistic Regression – A Self‐Learning Text, Third Edition, Springer, 2010."
+  },
+  {
+    "objectID": "td3/td3.html#packages-utilisés",
+    "href": "td3/td3.html#packages-utilisés",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "4 Packages utilisés",
+    "text": "4 Packages utilisés\n\n\nCode\nlibrary(tidyverse)\nlibrary(janitor)\nlibrary(haven)\nlibrary(broom)\nlibrary(dplyr)\nlibrary(gt)\nlibrary(nnet)            # multinom (logit multinomial nominal)\nlibrary(generalhoslem)   # logitgof : test de Hosmer–Lemeshow multinomial\nlibrary(MASS)            # polr : logit ordinal\n\ntheme_set(theme_minimal())"
+  },
+  {
+    "objectID": "td3/td3.html#import-des-données-et-préparation",
+    "href": "td3/td3.html#import-des-données-et-préparation",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "5 Import des données et préparation",
+    "text": "5 Import des données et préparation\nOn suppose que le fichier cancer.dta se trouve dans le dossier ./data/.\n\n\nCode\ncancer_raw &lt;- read_dta(\"./data/cancer.dta\") |&gt;\n  clean_names()\n\nglimpse(cancer_raw)\n\n\nRows: 288\nColumns: 7\n$ id       &lt;dbl&gt; 10009, 10025, 10038, 10042, 10049, 10113, 10131, 10160, 10164…\n$ grade    &lt;dbl+lbl&gt; 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 2, 1, 2, 2, …\n$ race     &lt;dbl+lbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n$ estrogen &lt;dbl+lbl&gt; 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, …\n$ subtype  &lt;dbl+lbl&gt; 1, 2, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, …\n$ age      &lt;dbl+lbl&gt; 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, …\n$ smoking  &lt;dbl+lbl&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …\n\n\nOn dispose notamment des variables :\n\ngrade (3 modalités ordonnées),\nrace,\nestrogen,\nsubtype,\nage,\nsmoking."
+  },
+  {
+    "objectID": "td3/td3.html#recodage-des-variables",
+    "href": "td3/td3.html#recodage-des-variables",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "6 Recodage des variables",
+    "text": "6 Recodage des variables\nOn crée des facteurs explicites pour la régression, en choisissant des références cohérentes avec l’énoncé :\n\n\nCode\ncancer &lt;- cancer_raw |&gt;\n  mutate(\n    # convertir les labels Stata en facteurs R\n    grade_f    = as_factor(grade),\n    subtype_f  = as_factor(subtype),\n    race_f     = as_factor(race),\n    estrogen_f = as_factor(estrogen),\n    age_f      = as_factor(age),\n    smk_f      = as_factor(smoking),\n    \n    # forcer l'ordre pour l'ordinal (adapter les noms à ce que tu vois)\n    grade_ord = fct_relevel(\n      grade_f,\n      \"bien différencié\",\n      \"moyennement différencié\",\n      \"peu différencié\"\n    )\n  )\n\ncancer |&gt;\n  dplyr::select(grade, grade_ord, subtype, subtype_f,\n         race_f, estrogen_f, age_f, smk_f) |&gt;\n  head()\n\n\n# A tibble: 6 × 8\n  grade                grade_ord subtype subtype_f race_f estrogen_f age_f smk_f\n  &lt;dbl+lbl&gt;            &lt;fct&gt;     &lt;dbl+l&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;\n1 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 50-64 yes  \n2 0 [bien différencié] bien dif… 2 [oth… other     blanc… took oest… 50-64 no   \n3 1 [moyennement diff… moyennem… 1 [ade… adenosqu… blanc… never too… 65-79 no   \n4 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… never too… 65-79 no   \n5 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 50-64 no   \n6 0 [bien différencié] bien dif… 0 [ade… adenocar… blanc… took oest… 65-79 no"
+  },
+  {
+    "objectID": "td3/td3.html#modèle-multinomial-pour-expliquer-subtype",
+    "href": "td3/td3.html#modèle-multinomial-pour-expliquer-subtype",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "7 Modèle multinomial pour expliquer SUBTYPE",
+    "text": "7 Modèle multinomial pour expliquer SUBTYPE\nVariables explicatives : RACE, ESTROGEN, SMK, AGE.\n\n\n7.1 Estimation du premier modèle (logit multinomial nominal)\n\n\nCode\nmod_sub_full &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f + age_f,\n  data = cancer\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\nCode\nres_sub_ful &lt;- tidy(mod_sub_full,\n                exponentiate = TRUE,  # passe en OR\n                conf.int = TRUE)      # ajoute IC 95%\n\nres_sub_ful\n\n\n# A tibble: 10 × 8\n   y.level       term    estimate std.error statistic p.value conf.low conf.high\n   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n 1 adenosquamous (Inter…    0.169     0.447    -3.97  7.18e-5   0.0705     0.407\n 2 adenosquamous race_f…    0.806     0.413    -0.521 6.02e-1   0.359      1.81 \n 3 adenosquamous estrog…    0.483     0.378    -1.93  5.39e-2   0.230      1.01 \n 4 adenosquamous smk_fy…    2.43      0.526     1.69  9.06e-2   0.869      6.82 \n 5 adenosquamous age_f6…    2.66      0.412     2.38  1.75e-2   1.19       5.96 \n 6 other         (Inter…    0.282     0.378    -3.35  8.07e-4   0.134      0.591\n 7 other         race_f…    1.13      0.376     0.319 7.49e-1   0.539      2.36 \n 8 other         estrog…    0.943     0.343    -0.171 8.64e-1   0.482      1.85 \n 9 other         smk_fy…    0.166     1.05     -1.71  8.67e-2   0.0214     1.29 \n10 other         age_f6…    1.33      0.329     0.872 3.83e-1   0.699      2.54 \n\n\n\n\n\nCode\nsummary(mod_sub_full)\n\n\nCall:\nmultinom(formula = subtype_f ~ race_f + estrogen_f + smk_f + \n    age_f, data = cancer)\n\nCoefficients:\n              (Intercept) race_fnoire estrogen_ftook oestrogen treatment\nadenosquamous   -1.775326  -0.2151038                        -0.72813726\nother           -1.266281   0.1201888                        -0.05867755\n               smk_fyes age_f65-79\nadenosquamous  0.889793  0.9780758\nother         -1.793171  0.2865677\n\nStd. Errors:\n              (Intercept) race_fnoire estrogen_ftook oestrogen treatment\nadenosquamous   0.4471631   0.4127306                          0.3777940\nother           0.3779403   0.3762200                          0.3425219\n               smk_fyes age_f65-79\nadenosquamous 0.5257988  0.4117731\nother         1.0467384  0.3285697\n\nResidual Deviance: 493.9304 \nAIC: 513.9304 \n\n\nOn obtient, pour chaque modalité \\(g\\) \\(\\neq\\) référence, une équation :\n\\(\\log \\frac{P(\\text{SUBTYPE}=g)}{P(\\text{SUBTYPE}=\\text{adenocarcinomous})} = \\beta{g0} + \\beta{g,\\text{race}} + \\dots\\)\n\nÀ caractéristiques identiques (race, oestrogènes, âge), les fumeuses ont environ 2,4 fois plus de chances (odds) d’avoir un cancer adenosquamous plutôt que le sous-type de référence, comparées aux non fumeuses.\n\n\n\n\n7.2 Résumé et odds-ratios\n\n\nCode\nres_sub_full &lt;- tidy(mod_sub_full, exponentiate = TRUE, conf.int = TRUE)\nres_sub_full\n\n\n# A tibble: 10 × 8\n   y.level       term    estimate std.error statistic p.value conf.low conf.high\n   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n 1 adenosquamous (Inter…    0.169     0.447    -3.97  7.18e-5   0.0705     0.407\n 2 adenosquamous race_f…    0.806     0.413    -0.521 6.02e-1   0.359      1.81 \n 3 adenosquamous estrog…    0.483     0.378    -1.93  5.39e-2   0.230      1.01 \n 4 adenosquamous smk_fy…    2.43      0.526     1.69  9.06e-2   0.869      6.82 \n 5 adenosquamous age_f6…    2.66      0.412     2.38  1.75e-2   1.19       5.96 \n 6 other         (Inter…    0.282     0.378    -3.35  8.07e-4   0.134      0.591\n 7 other         race_f…    1.13      0.376     0.319 7.49e-1   0.539      2.36 \n 8 other         estrog…    0.943     0.343    -0.171 8.64e-1   0.482      1.85 \n 9 other         smk_fy…    0.166     1.05     -1.71  8.67e-2   0.0214     1.29 \n10 other         age_f6…    1.33      0.329     0.872 3.83e-1   0.699      2.54 \n\n\nIci, estimate = odds-ratio, conf.low / conf.high = IC 95 %.\n\n\n\n7.3 Probabilités prédites\nOn génère les probabilités prédites pour chaque modalité de SUBTYPE :\n\n\nCode\nphat_sub &lt;- predict(mod_sub_full, type = \"probs\")\nhead(phat_sub)\n\n\n  adenocarcinomous adenosquamous      other\n1        0.6852096     0.2826449 0.03214548\n2        0.7420517     0.0607007 0.19724761\n3        0.5476498     0.2467524 0.20559787\n4        0.5476498     0.2467524 0.20559787\n5        0.7420517     0.0607007 0.19724761\n6        0.6363103     0.1384208 0.22526893\n\n\nCode\ncolMeans(phat_sub)  # moyennes des proba par modalité\n\n\nadenocarcinomous    adenosquamous            other \n       0.6433555        0.1573435        0.1993010 \n\n\n\nOn recolle ces probabilités aux données :\n\n\nCode\n# 1) Sous-échantillon sans NA sur les variables du modèle\ncancer_complete &lt;- cancer |&gt;\n  drop_na(subtype_f, race_f, estrogen_f, smk_f, age_f)\n\n\n# 2) Modèle multinomial sur cancer_complete\nmod_sub_full &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f + age_f,\n  data = cancer_complete\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\n\n\n\nCode\n# 3) Probabilités prédites (286 x 3)\nphat_sub &lt;- predict(mod_sub_full, type = \"probs\")\ncolMeans(phat_sub)\n\n\nadenocarcinomous    adenosquamous            other \n       0.6433555        0.1573435        0.1993010 \n\n\n\n\nCode\n# 4) On transforme en tibble et on renomme\nphat_sub_tbl &lt;- as_tibble(phat_sub)\nnames(phat_sub_tbl) &lt;- paste0(\"p_\", levels(cancer_complete$subtype_f))\n# ex : \"p_adenocarcinomous\" \"p_adenosquamous\" \"p_other\"\n\n# 5) On colle aux données *complètes* (286 lignes)\ncancer_sub &lt;- bind_cols(cancer_complete, phat_sub_tbl)\n\ncancer_sub |&gt;\n  dplyr::select(subtype_f, starts_with(\"p_\")) |&gt;\n  slice(1:5)\n\n\n# A tibble: 5 × 4\n  subtype_f        p_adenocarcinomous p_adenosquamous p_other\n  &lt;fct&gt;                         &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;\n1 adenosquamous                 0.685          0.283   0.0321\n2 other                         0.742          0.0607  0.197 \n3 adenosquamous                 0.548          0.247   0.206 \n4 adenocarcinomous              0.548          0.247   0.206 \n5 adenocarcinomous              0.742          0.0607  0.197 \n\n\n\n\n\n7.4 Test d’ajustement (Hosmer–Lemeshow multinomial)\nOn utilise logitgof() du package generalhoslem.\n\nobs : modalités de SUBTYPE sous forme numérique (1, 2, 3).\nexp : matrice de probabilités prédites.\ng : nombre de groupes (à ajuster si nécessaire).\n\n\n\nCode\ny_num   &lt;- as.numeric(cancer_sub$subtype_f)\nexp_mat &lt;- as.matrix(phat_sub)\n\n# Exemple avec 10 groupes\ngof_10 &lt;- logitgof(obs = y_num, exp = exp_mat, g = 10)\ngof_10\n\n\n\n    Hosmer and Lemeshow test (multinomial model)\n\ndata:  y_num, exp_mat\nX-squared = 4.0727, df = 10, p-value = 0.944\n\n\n\nLe test de Hosmer–Lemeshow (généralisé au multinomial et implémenté par logitgof() dans generalhoslem) compare, dans des groupes de probabilités prédites similaires, les effectifs observés de chaque catégorie de la variable dépendante aux effectifs attendus selon le modèle. La statistique de test est de type χ². Une grande p-value indique que l’on ne détecte pas de mauvais ajustement global du modèle aux données ; une petite p-value suggère un manque d’adéquation (modèle mal calibré).\n\n\nSi le test ne passe pas (classes attendues trop petites), on réduit le nombre de groupes :\n\n\nCode\nlibrary(purrr)\n\nmap_df(4:10, ~{\n  out &lt;- try(logitgof(y_num, exp_mat, g = .x), silent = TRUE)\n  tibble(\n    g       = .x,\n    stat    = if (inherits(out, \"try-error\")) NA_real_ else out$statistic,\n    p_value = if (inherits(out, \"try-error\")) NA_real_ else out$p.value\n  )\n})\n\n\n# A tibble: 7 × 3\n      g  stat p_value\n  &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;\n1     4  1.69  0.792 \n2     5  2.01  0.735 \n3     6 15.7   0.0474\n4     7  2.63  0.955 \n5     8  2.63  0.955 \n6     9 16.5   0.170 \n7    10  4.07  0.944 \n\n\n\nLecture :\n\np-value grande → pas d’évidence de mauvais ajustement.\np-value petite → modèle mal ajusté (au moins pour certains groupes).\n\n\nEn diminuant le nombre de groupes, le test Hosmer–Lemeshow devient applicable. Les p-values varient avec g, ce qui montre que le test est assez instable dans ce petit échantillon multinomial. Néanmoins, pour la plupart des partitions (g = 4, 5, 7, 8, 9, 10), on ne rejette pas l’hypothèse d’un bon ajustement (p-value &gt; 5 %). On peut donc conclure qu’il n’y a pas de signe clair de mauvais ajustement du modèle aux données, tout en rappelant que ce test doit être interprété avec prudence.\n\n\n\n\n7.5 Simplification du modèle (tests LR)\nOn cherche un modèle plus parcimonieux en retirant les variables non significatives.\nExemple : on teste si on peut retirer smk_f puis age_f\n\n\nCode\n# Modèle sans SMK\nmod_sub_nosmk &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + age_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 251.550761\nfinal  value 251.468001 \nconverged\n\n\nCode\n# Test LR : mod_sub_nosmk vs mod_sub_full\nanova(mod_sub_nosmk, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1         race_f + estrogen_f + age_f       564   502.9360             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n  LR stat.    Pr(Chi)\n1                    \n2 9.005622 0.01107781\n\n\nTest 1 : peut-on retirer smk_f ?\n\nModèles comparés :\n\nModèle réduit : subtype_f ~ race_f + estrogen_f + age_f\nModèle complet : subtype_f ~ race_f + estrogen_f + smk_f + age_f\n\nRésultat du test LR :\n\nÀ 5 %, on rejette H₀ “on peut enlever smk_f” : le tabagisme (smk_f) apporte une information significative pour expliquer le sous-type de cancer → on garde smk_f.\n\n\n\n\nCode\n# Modèle sans AGE (à partir du modèle sans SMK par exemple)\nmod_sub_noage &lt;- multinom(\n  subtype_f ~ race_f + estrogen_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 250.492692\nfinal  value 250.192192 \nconverged\n\n\nCode\nanova(mod_sub_noage, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1         race_f + estrogen_f + smk_f       564   500.3844             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n  LR stat.    Pr(Chi)\n1                    \n2 6.454004 0.03967628\n\n\n\nInterprétation :\n\nSi la p-value du test LR est &gt; 5 %, on ne rejette pas \\(H_0\\) : le modèle réduit n’est pas significativement pire → on peut retirer la variable.\nOn garde donc smk_f mais pas age\n\n\nLes degrés de liberté du test de rapport de vraisemblance sont égaux au nombre de paramètres supprimés entre le modèle complet et le modèle réduit.\nDans un modèle multinomial, retirer une variable facteur à \\(L\\) modalités enlève \\((J-1)(L-1)\\) coefficients, donc \\((J-1)(L-1)\\) degrés de liberté. \\(J\\) catégories et \\(L\\) modalités.\n\n\n\n\n7.6 Test meilleur modèle\nOn teste sur les deux variables restantes\n\n\nCode\n# Modèle sans RACE (à partir du modèle sans SMK par exemple)\nmod_sub_norace &lt;- multinom(\n  subtype_f ~ age_f + estrogen_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 247.380882\nfinal  value 247.202541 \nconverged\n\n\nCode\nanova(mod_sub_norace, mod_sub_full)\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1          age_f + estrogen_f + smk_f       564   494.4051             \n2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2\n   LR stat.   Pr(Chi)\n1                    \n2 0.4747033 0.7887139\n\n\n\nOn retire la variable estrogen pour expliquer SUBTYPE :\n\n\nCode\n# 1) Construire un sous-échantillon complet pour toutes les variables en jeu\ncancer_lr &lt;- cancer |&gt;\n  filter(\n    !is.na(subtype_f),\n    !is.na(age_f),\n    !is.na(race_f),\n    !is.na(smk_f),\n    !is.na(estrogen_f)   # même si tu ne l'utilises pas dans tous les modèles\n  )\n\n# 2) Re-estimer les modèles sur CE MÊME jeu de données\nmod_sub_full &lt;- multinom(\n  subtype_f ~ age_f + race_f + smk_f + estrogen_f,\n  data = cancer_lr\n)\n\n\n# weights:  18 (10 variable)\ninitial  value 314.203115 \niter  10 value 247.216796\nfinal  value 246.965190 \nconverged\n\n\nCode\nmod_sub_noestro &lt;- multinom(\n  subtype_f ~ age_f + race_f + smk_f,\n  data = cancer_lr\n)\n\n\n# weights:  15 (8 variable)\ninitial  value 314.203115 \niter  10 value 249.150731\nfinal  value 248.865000 \nconverged\n\n\nCode\n# 3) Maintenant, le test LR fonctionne\nanova(mod_sub_noestro, mod_sub_full, test = \"Chisq\")\n\n\nLikelihood ratio tests of Multinomial Models\n\nResponse: subtype_f\n                                Model Resid. df Resid. Dev   Test    Df\n1              age_f + race_f + smk_f       564   497.7300             \n2 age_f + race_f + smk_f + estrogen_f       562   493.9304 1 vs 2     2\n  LR stat.   Pr(Chi)\n1                   \n2 3.799621 0.1495969\n\n\n\nLa fonction se base uniquement sur les résultats passés (modèles déjà estimés)\net sélectionne celui qui minimise l’AIC (ou le BIC).\n\n\n\n\n7.7 Interprétation économique du modèle final\n\n\nCode\nmod_sub_final &lt;- multinom(\n  subtype_f ~ age_f + smk_f,\n  data = cancer\n)\n\n\n# weights:  12 (6 variable)\ninitial  value 316.400339 \niter  10 value 250.030104\nfinal  value 250.024195 \nconverged\n\n\nCode\nres_sub &lt;- tidy(mod_sub_final,\n                exponentiate = TRUE,  # passe en OR\n                conf.int = TRUE)      # ajoute IC 95%\n\nres_sub\n\n\n# A tibble: 6 × 8\n  y.level       term     estimate std.error statistic p.value conf.low conf.high\n  &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;\n1 adenosquamous (Interc…    0.111     0.374    -5.88  4.16e-9   0.0535     0.231\n2 adenosquamous age_f65…    2.67      0.409     2.40  1.63e-2   1.20       5.95 \n3 adenosquamous smk_fyes    2.36      0.520     1.65  9.83e-2   0.853      6.54 \n4 other         (Interc…    0.283     0.271    -4.66  3.10e-6   0.166      0.481\n5 other         age_f65…    1.30      0.328     0.812 4.17e-1   0.686      2.48 \n6 other         smk_fyes    0.167     1.05     -1.71  8.69e-2   0.0214     1.30 \n\n\nPrincipe d’interprétation :\n\nUn odds-ratio &gt; 1 pour une modalité donnée signifie que la variable augmente les cotes d’appartenir à ce type de cancer par rapport à la référence (adenocarcinomous), toutes choses égales par ailleurs.\nUn odds-ratio &lt; 1 signifie au contraire une diminution des cotes.\n\n\n\n\n7.8 Tableau de contingence des individus bien / mal classés\n\n7.8.1 (a) Effectifs par type de tumeur observée\n\n\nCode\ncancer_sub |&gt;\n  count(subtype_f)\n\n\n# A tibble: 3 × 2\n  subtype_f            n\n  &lt;fct&gt;            &lt;int&gt;\n1 adenocarcinomous   184\n2 adenosquamous       45\n3 other               57\n\n\n\n\n\n7.8.2 (b) Classe prédite par « probabilité max » (règle du 1er choix)\nOn attribue à chaque individu la classe prédite correspondant à la probabilité la plus élevée :\n\n\nCode\nphat_sub &lt;- predict(mod_sub_final, type = \"probs\")\ncolMeans(phat_sub)\n\n\nadenocarcinomous    adenosquamous            other \n       0.6458337        0.1562522        0.1979141 \n\n\nCode\nphat_sub_tbl &lt;- as_tibble(phat_sub)\nnames(phat_sub_tbl) &lt;- paste0(\"p_\", levels(cancer_complete$subtype_f))\n# ex : \"p_adenocarcinomous\" \"p_adenosquamous\" \"p_other\"\n\ncancer &lt;- bind_cols(cancer, phat_sub_tbl)\n\n# vecteur des probas sous forme de matrice\nprobs_mat &lt;- as.matrix(\n  cancer[, c(\"p_adenocarcinomous\", \"p_adenosquamous\", \"p_other\")]\n)\n\n# indices de la proba max par individu (1, 2 ou 3)\nidx_max &lt;- max.col(probs_mat)\n\n# noms des modalités dans le bon ordre\nlev &lt;- c(\"adenocarcinomous\", \"adenosquamous\", \"other\")\n\ncancer &lt;- cancer |&gt;\n  mutate(\n    pred_subtype = factor(lev[idx_max],\n                          levels = levels(subtype_f))\n  )\n\ncancer |&gt;\n  dplyr::select(subtype_f, pred_subtype, starts_with(\"p_\")) |&gt;\n  slice(1:5)\n\n\n# A tibble: 5 × 5\n  subtype_f        pred_subtype     p_adenocarcinomous p_adenosquamous p_other\n  &lt;fct&gt;            &lt;fct&gt;                         &lt;dbl&gt;           &lt;dbl&gt;   &lt;dbl&gt;\n1 adenosquamous    adenocarcinomous              0.763          0.201   0.0360\n2 other            adenocarcinomous              0.717          0.0798  0.203 \n3 adenosquamous    adenocarcinomous              0.600          0.178   0.221 \n4 adenocarcinomous adenocarcinomous              0.600          0.178   0.221 \n5 adenocarcinomous adenocarcinomous              0.717          0.0798  0.203 \n\n\n\n\n\nCode\ntab_sub &lt;- table(\n  Observed  = cancer$subtype_f,\n  Predicted = cancer$pred_subtype\n)\n\ntab_sub\n\n\n                  Predicted\nObserved           adenocarcinomous adenosquamous other\n  adenocarcinomous              186             0     0\n  adenosquamous                  45             0     0\n  other                          57             0     0\n\n\nCode\nprop_ok &lt;- sum(diag(tab_sub)) / sum(tab_sub)\n1-prop_ok\n\n\n[1] 0.3541667"
+  },
+  {
+    "objectID": "td3/td3.html#b.-modèle-ordinal-pour-expliquer-grade",
+    "href": "td3/td3.html#b.-modèle-ordinal-pour-expliquer-grade",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "8 B. Modèle ordinal pour expliquer GRADE",
+    "text": "8 B. Modèle ordinal pour expliquer GRADE\nOn modélise le stade de la tumeur (bien / moyennement / peu différenciée) en fonction de :\n\nRACE, ESTROGEN, SUBTYPE, AGE, SMK.\n\n\n\n8.1 Modèle de base (logit ordinal)\nOn utilise polr() (MASS) avec grade_ord comme variable ordinale.\n\n\nCode\nmod_grade_base &lt;- polr(\n  grade_ord ~ race_f + estrogen_f + subtype_f + age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nsummary(mod_grade_base)\n\n\nCall:\npolr(formula = grade_ord ~ race_f + estrogen_f + subtype_f + \n    age_f + smk_f, data = cancer, Hess = TRUE)\n\nCoefficients:\n                                      Value Std. Error  t value\nrace_fnoire                         0.59764     0.2790  2.14222\nestrogen_ftook oestrogen treatment -0.61411     0.2549 -2.40904\nsubtype_fadenosquamous              1.78110     0.3252  5.47653\nsubtype_fother                      0.07823     0.2991  0.26153\nage_f65-79                          0.13110     0.2486  0.52742\nsmk_fyes                            0.01358     0.3992  0.03401\n\nIntercepts:\n                                         Value   Std. Error t value\nbien différencié|moyennement différencié -0.0205  0.2890    -0.0708\nmoyennement différencié|peu différencié   1.9682  0.3196     6.1589\n\nResidual Deviance: 540.4501 \nAIC: 556.4501 \n(2 observations deleted due to missingness)\n\n\nLes sorties donnent :\n\nLes coefficients \\(\\beta\\) (effets sur le score latent),\nLes seuils (cutpoints) séparant les catégories de GRADE.\n\n\n\n\n8.2 Test d’ajustement via interactions (LR tests)\n\n8.2.1 Interaction ESTROGEN × SUBTYPE\nOn ajoute l’interaction estrogen_f * subtype_f :\n\n\nCode\nmod_grade_es &lt;- polr(\n  grade_ord ~ race_f + estrogen_f * subtype_f + age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_es)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f * subtype_f + age_f + smk_f       276   537.5181 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     2 2.932012 0.2308457\n\n\n\nanova() réalise un test LR entre modèle sans interaction (mod_grade_base) et modèle avec interaction (mod_grade_es).\nOn lit la p-value :\n\nsi petite → l’interaction améliore le modèle ;\nsi grande → on peut s’en passer.\n\n\n\n\n\n8.2.2 Autres interactions possibles\nOn peut tester d’autres interactions pertinentes, par exemple :\n\nESTROGEN × AGE :\n\n\n\nCode\nmod_grade_eage &lt;- polr(\n  grade_ord ~ race_f + estrogen_f * age_f + subtype_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_eage)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f * age_f + subtype_f + smk_f       277   539.2085 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     1 1.241621 0.2651588\n\n\n\n\nSUBTYPE × AGE :\n\n\n\nCode\nmod_grade_sage &lt;- polr(\n  grade_ord ~ race_f + estrogen_f + subtype_f * age_f + smk_f,\n  data = cancer,\n  Hess = TRUE\n)\n\nanova(mod_grade_base, mod_grade_sage)\n\n\nLikelihood ratio tests of ordinal regression models\n\nResponse: grade_ord\n                                            Model Resid. df Resid. Dev   Test\n1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       \n2 race_f + estrogen_f + subtype_f * age_f + smk_f       276   538.9157 1 vs 2\n     Df LR stat.   Pr(Chi)\n1                         \n2     2 1.534397 0.4643119\n\n\nPour chaque interaction :\n\nSi la p-value LR est faible → interaction importante → à garder ;\nSinon → pas de gain significatif → on privilégie le modèle sans interaction.\n\n\n\n\n\n8.3 Sélection de modèle\n\n\nCode\nsummary(mod_grade_base)\n\n\nCall:\npolr(formula = grade_ord ~ race_f + estrogen_f + subtype_f + \n    age_f + smk_f, data = cancer, Hess = TRUE)\n\nCoefficients:\n                                      Value Std. Error  t value\nrace_fnoire                         0.59764     0.2790  2.14222\nestrogen_ftook oestrogen treatment -0.61411     0.2549 -2.40904\nsubtype_fadenosquamous              1.78110     0.3252  5.47653\nsubtype_fother                      0.07823     0.2991  0.26153\nage_f65-79                          0.13110     0.2486  0.52742\nsmk_fyes                            0.01358     0.3992  0.03401\n\nIntercepts:\n                                         Value   Std. Error t value\nbien différencié|moyennement différencié -0.0205  0.2890    -0.0708\nmoyennement différencié|peu différencié   1.9682  0.3196     6.1589\n\nResidual Deviance: 540.4501 \nAIC: 556.4501 \n(2 observations deleted due to missingness)\n\n\n\n\n\n8.4 Interprétation du modèle ordinal final\n\nRace (noire vs non noire)\n\nCoefficient = 0,60 (t ≈ 2,14) → significatif.\nLes femmes noires ont des cotes ≈ 1,8 fois plus élevées d’avoir un grade plus mauvais (passer vers “moyennement/peu différencié”), toutes choses égales par ailleurs.\n\nTraitement aux œstrogènes (oui vs non)\n\nCoefficient = −0,61 (t ≈ −2,41) → significatif.\nLes femmes ayant reçu un traitement œstrogénique ont des cotes ≈ divisées par 2 d’avoir un grade plus mauvais. → Le traitement est associé à des grades un peu meilleurs.\n\nSous-type tumoral (réf. = adenocarcinomous)\n\nadenosquamous : coef = 1,78 (t ≈ 5,48) → très significatif.\n→ Cotes ≈ 6 fois plus élevées d’avoir un grade plus défavorable que l’adenocarcinome.\nother : effet faible et non significatif.\n\nÂge (65–79 ans) et tabagisme (smk_fyes)\n\nCoefficients proches de 0, t très faibles → pas d’association significative avec le grade, une fois contrôlé pour race, sous-type et œstrogènes."
+  },
+  {
+    "objectID": "td3/td3.html#conclusion-td3",
+    "href": "td3/td3.html#conclusion-td3",
+    "title": "TD 3 — Régression multinomiale (R)",
+    "section": "9 Conclusion TD3",
+    "text": "9 Conclusion TD3\n\nOn a estimé :\n\nun logit multinomial nominal pour SUBTYPE ;\nun logit ordinal pour GRADE.\n\nOn a :\n\ntesté l’ajustement du modèle nominal via un Hosmer–Lemeshow multinomial ;\nutilisé des tests de rapport de vraisemblance pour :\n\nsimplifier les modèles (variables non significatives),\ntester l’intérêt d’interactions dans le modèle ordinal ;\n\nChoisi les spécifications finales.\n\n\nÀ retenir :\n\nPour les variables nominales, on compare chaque modalité à une référence via des odds-ratios.\nPour les variables ordinales, le modèle logit/probit ordonné repose sur une variable latente et des seuils, avec une interprétation en termes de tendance vers des catégories plus élevées ou plus basses."
+  },
+  {
+    "objectID": "td4/td4-slides.html#données-de-durée-de-vie",
+    "href": "td4/td4-slides.html#données-de-durée-de-vie",
+    "title": "Modèles de survie en R",
+    "section": "1.1 Données de durée de vie",
+    "text": "1.1 Données de durée de vie\n\nOn s’intéresse à une durée \\(T\\) (positive) :\n\ndurée d’une grève\ndurée de chômage\ndurée de séjour à l’hôpital, etc.\n\nPour chaque unité (grève) \\(i = 1,\\dots,n\\) :\n\n\\(t_i\\) : durée observée\n\\(\\delta_i\\) : indicatrice d’événement\n\n\\(\\delta_i = 1\\) si l’événement est observé (fin de grève avant la date limite)\n\\(\\delta_i = 0\\) si la durée est censurée (on sait juste que la grève dure au moins jusqu’à \\(t_i\\))\n\n\n\nEn R, on encode \\((t_i, \\delta_i)\\) avec Surv()."
+  },
+  {
+    "objectID": "td4/td4-slides.html#fonctions-de-survie-de-risque",
+    "href": "td4/td4-slides.html#fonctions-de-survie-de-risque",
+    "title": "Modèles de survie en R",
+    "section": "1.2 Fonctions de survie & de risque",
+    "text": "1.2 Fonctions de survie & de risque\n\nFonction de survie : \\[S(t) = \\Pr(T &gt; t)\\]\nProbabilité que la grève soit encore en cours à la date \\(t\\).\nFonction de répartition : \\[F(t) = \\Pr(T \\le t) = 1 - S(t)\\]\nFonction de risque (hazard) : \\[h(t) = \\lim_{\\Delta t \\to 0}\n  \\frac{\\Pr(t \\le T &lt; t + \\Delta t \\mid T \\ge t)}{\\Delta t}\\]\n→ “probabilité instantanée” que la grève se termine juste après \\(t\\), sachant qu’elle durait encore à \\(t\\)."
+  },
+  {
+    "objectID": "td4/td4-slides.html#lien-st-ht",
+    "href": "td4/td4-slides.html#lien-st-ht",
+    "title": "Modèles de survie en R",
+    "section": "1.3 Lien \\(S(t)\\) – \\(h(t)\\)",
+    "text": "1.3 Lien \\(S(t)\\) – \\(h(t)\\)\n\nEn continu, on a : \\[S(t) = \\exp\\left(-\\int_0^t h(u)\\,du\\right)\\]\nCas simple : risque constant \\(h(t) = \\lambda\\)\n→ \\(S(t) = \\exp(-\\lambda t)\\) (modèle exponentiel)"
+  },
+  {
+    "objectID": "td4/td4-slides.html#censure-à-droite",
+    "href": "td4/td4-slides.html#censure-à-droite",
+    "title": "Modèles de survie en R",
+    "section": "1.4 Censure à droite",
+    "text": "1.4 Censure à droite\n\nOn ne connaît pas toujours la date exacte de fin :\n\nfin de la période d’observation alors que la grève continue\ndonnées administratives tronquées\n\nOn observe alors :\n\n\\(t_i = \\min(T_i, C_i)\\)\n\\(\\delta_i = \\mathbb{1}(T_i \\le C_i)\\)\n\nHypothèse clé : censure non informative\n→ le mécanisme de censure est indépendant de la durée sous-jacente, conditionnellement aux covariables."
+  },
+  {
+    "objectID": "td4/td4-slides.html#censure-à-droite-rappel-r",
+    "href": "td4/td4-slides.html#censure-à-droite-rappel-r",
+    "title": "Modèles de survie en R",
+    "section": "1.5 Censure à droite – Rappel R",
+    "text": "1.5 Censure à droite – Rappel R\n\n\nCode\n# Objet de survie pour les grèves (avec censure artificielle à 200 jours)\nS_strikes &lt;- Surv(time = strikes$time, event = strikes$status)\nhead(S_strikes)\n\n\n[1]  7  9 13 14 26 29"
+  },
+  {
+    "objectID": "td4/td4-slides.html#estimateur-kaplanmeier",
+    "href": "td4/td4-slides.html#estimateur-kaplanmeier",
+    "title": "Modèles de survie en R",
+    "section": "2.1 Estimateur Kaplan–Meier",
+    "text": "2.1 Estimateur Kaplan–Meier\n\nBut : estimer \\(S(t)\\) sans paramètre (non paramétrique)\nOn empile les durées ordonnées où surviennent des événements :\n\nà chaque temps \\(t_j\\), on observe \\(d_j\\) événements parmi \\(n_j\\) grèves encore en cours.\n\nEstimateur : \\[\\hat S(t) = \\prod_{t_j \\le t} \\left(1 - \\frac{d_j}{n_j}\\right)\\]"
+  },
+  {
+    "objectID": "td4/td4-slides.html#kaplanmeier-en-r",
+    "href": "td4/td4-slides.html#kaplanmeier-en-r",
+    "title": "Modèles de survie en R",
+    "section": "2.2 Kaplan–Meier en R",
+    "text": "2.2 Kaplan–Meier en R\n\n\nCode\nkm_all &lt;- survfit(S_strikes ~ 1, data = strikes)\nkm_all\n\n\nCall: survfit(formula = S_strikes ~ 1, data = strikes)\n\n      n events median 0.95LCL 0.95UCL\n[1,] 62     61     27      21      41\n\n\n\n\nCode\nplot(km_all, xlab = \"Durée de grève (jours)\", ylab = \"Probabilité de grève encore en cours\",\n     main = \"Courbe de survie Kaplan–Meier\\nToutes les grèves\")"
+  },
+  {
+    "objectID": "td4/td4-slides.html#kaplanmeier-par-groupes",
+    "href": "td4/td4-slides.html#kaplanmeier-par-groupes",
+    "title": "Modèles de survie en R",
+    "section": "2.3 Kaplan–Meier par groupes",
+    "text": "2.3 Kaplan–Meier par groupes\nOn veut comparer la durée des grèves selon le choc d’activité :\n\n\nCode\nkm_cycle &lt;- survfit(S_strikes ~ uoutput_q, data = strikes)\nsummary(km_cycle)\n\n\nCall: survfit(formula = S_strikes ~ uoutput_q, data = strikes)\n\n                uoutput_q=Choc faible \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    2     25       1     0.96  0.0392      0.88618        1.000\n    3     24       1     0.92  0.0543      0.81957        1.000\n    5     23       1     0.88  0.0650      0.76141        1.000\n   12     22       2     0.80  0.0800      0.65761        0.973\n   15     20       1     0.76  0.0854      0.60974        0.947\n   17     19       1     0.72  0.0898      0.56386        0.919\n   19     18       1     0.68  0.0933      0.51967        0.890\n   21     17       2     0.60  0.0980      0.43566        0.826\n   27     15       1     0.56  0.0993      0.39563        0.793\n   28     14       1     0.52  0.0999      0.35681        0.758\n   38     13       1     0.48  0.0999      0.31919        0.722\n   42     12       1     0.44  0.0993      0.28275        0.685\n   49     11       1     0.40  0.0980      0.24749        0.646\n   61     10       1     0.36  0.0960      0.21346        0.607\n   72      9       1     0.32  0.0933      0.18071        0.567\n   98      8       1     0.28  0.0898      0.14934        0.525\n   99      7       1     0.24  0.0854      0.11947        0.482\n  104      6       1     0.20  0.0800      0.09132        0.438\n  114      5       1     0.16  0.0733      0.06517        0.393\n  117      4       1     0.12  0.0650      0.04151        0.347\n  152      3       1     0.08  0.0543      0.02117        0.302\n  153      2       1     0.04  0.0392      0.00586        0.273\n\n                uoutput_q=Choc moyen \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    2     17       1   0.9412  0.0571      0.83572        1.000\n    7     16       1   0.8824  0.0781      0.74175        1.000\n    9     15       2   0.7647  0.1029      0.58746        0.995\n   13     13       1   0.7059  0.1105      0.51936        0.959\n   14     12       1   0.6471  0.1159      0.45548        0.919\n   25     11       1   0.5882  0.1194      0.39521        0.876\n   26     10       1   0.5294  0.1211      0.33818        0.829\n   29      9       1   0.4706  0.1211      0.28423        0.779\n   37      8       1   0.4118  0.1194      0.23329        0.727\n   41      7       1   0.3529  0.1159      0.18543        0.672\n   49      6       1   0.2941  0.1105      0.14083        0.614\n   52      5       2   0.1765  0.0925      0.06320        0.493\n   85      3       1   0.1176  0.0781      0.03200        0.432\n  119      2       1   0.0588  0.0571      0.00879        0.394\n  130      1       1   0.0000     NaN           NA           NA\n\n                uoutput_q=Choc fort \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     20       1     0.95  0.0487       0.8591        1.000\n    2     19       1     0.90  0.0671       0.7777        1.000\n    3     18       4     0.70  0.1025       0.5254        0.933\n    4     14       1     0.65  0.1067       0.4712        0.897\n    8     13       1     0.60  0.1095       0.4195        0.858\n   10     12       1     0.55  0.1112       0.3700        0.818\n   11     11       1     0.50  0.1118       0.3226        0.775\n   22     10       1     0.45  0.1112       0.2772        0.731\n   23      9       1     0.40  0.1095       0.2339        0.684\n   27      8       1     0.35  0.1067       0.1926        0.636\n   32      7       1     0.30  0.1025       0.1536        0.586\n   33      6       1     0.25  0.0968       0.1170        0.534\n   35      5       1     0.20  0.0894       0.0832        0.481\n   43      4       2     0.10  0.0671       0.0269        0.372\n   44      2       1     0.05  0.0487       0.0074        0.338\n  100      1       1     0.00     NaN           NA           NA"
+  },
+  {
+    "objectID": "td4/td4-slides.html#test-du-log-rank",
+    "href": "td4/td4-slides.html#test-du-log-rank",
+    "title": "Modèles de survie en R",
+    "section": "2.4 Test du log-rank",
+    "text": "2.4 Test du log-rank\n\nHypothèse nulle \\(H_0\\) : même fonction de survie dans tous les groupes\nStatistique de test \\(\\chi^2\\) :\n\ncompare, à chaque temps \\(t_j\\), les événements observés vs attendus dans chaque groupe.\n\n\nEn R :\n\n\nCode\nsurvdiff(S_strikes ~ uoutput_q, data = strikes)\n\n\nCall:\nsurvdiff(formula = S_strikes ~ uoutput_q, data = strikes)\n\n                       N Observed Expected (O-E)^2/E (O-E)^2/V\nuoutput_q=Choc faible 25       24     32.4  2.198928  5.143950\nuoutput_q=Choc moyen  17       17     16.9  0.000153  0.000219\nuoutput_q=Choc fort   20       20     11.6  6.074740  8.183882\n\n Chisq= 9.2  on 2 degrees of freedom, p= 0.01 \n\n\n\nLe test du log-rank compare les courbes de survie des trois groupes de choc (Choc faible, Choc moyen, Choc fort) sous\n\n\\(H_0\\)​ : même fonction de survie pour les trois groupes.\nLa statistique de test \\(\\chi^2 = 9{,}2\\) avec 2 ddl donne une p-valeur de 0,01. → Au seuil de 5 %, on rejette \\(H_0\\)​ : la durée des grèves dépend significativement du niveau de choc d’activité."
+  },
+  {
+    "objectID": "td4/td4-slides.html#modèle-de-cox-rappel",
+    "href": "td4/td4-slides.html#modèle-de-cox-rappel",
+    "title": "Modèles de survie en R",
+    "section": "3.1 Modèle de Cox – rappel",
+    "text": "3.1 Modèle de Cox – rappel\n\nModèle des risques proportionnels : \\[h_i(t) = h_0(t)\\,\\exp(\\beta_1 x_{i1} + \\dots + \\beta_p x_{ip})\\]\n\\(h_0(t)\\) : baseline hazard (fonction de risque de référence, non paramétrique)\nInterprétation des coefficients :\n\n\\(\\exp(\\beta_k)\\) = hazard ratio pour un accroissement d’une unité de \\(x_k\\)\n\n1 : grèves plus “rapides” à se terminer (durée plus courte)\n\n&lt; 1 : grèves plus longues"
+  },
+  {
+    "objectID": "td4/td4-slides.html#cox-en-r-un-seul-prédicteur",
+    "href": "td4/td4-slides.html#cox-en-r-un-seul-prédicteur",
+    "title": "Modèles de survie en R",
+    "section": "3.2 Cox en R – un seul prédicteur",
+    "text": "3.2 Cox en R – un seul prédicteur\n\n\nCode\ncox_uoutput &lt;- coxph(S_strikes ~ uoutput, data = strikes)\nsummary(cox_uoutput)\n\n\nCall:\ncoxph(formula = S_strikes ~ uoutput, data = strikes)\n\n  n= 62, number of events= 61 \n\n             coef exp(coef)  se(coef)     z Pr(&gt;|z|)   \nuoutput     9.216 10060.629     3.229 2.855  0.00431 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n        exp(coef) exp(-coef) lower .95 upper .95\nuoutput     10061   9.94e-05     17.96   5634413\n\nConcordance= 0.608  (se = 0.041 )\nLikelihood ratio test= 8.43  on 1 df,   p=0.004\nWald test            = 8.15  on 1 df,   p=0.004\nScore (logrank) test = 8.31  on 1 df,   p=0.004\n\n\n\ncoef : estimateur de \\(\\beta\\)\nexp(coef) : hazard ratio\ncoxph estime \\(\\beta\\) par maximisation de la vraisemblance partielle."
+  },
+  {
+    "objectID": "td4/td4-slides.html#cox-en-r-plusieurs-prédicteurs",
+    "href": "td4/td4-slides.html#cox-en-r-plusieurs-prédicteurs",
+    "title": "Modèles de survie en R",
+    "section": "3.3 Cox en R – plusieurs prédicteurs",
+    "text": "3.3 Cox en R – plusieurs prédicteurs\nOn peut enrichir avec une version catégorielle du choc :\n\n\nCode\ncox_multi &lt;- coxph(S_strikes ~ uoutput + uoutput_q, data = strikes)\nsummary(cox_multi)\n\n\nCall:\ncoxph(formula = S_strikes ~ uoutput + uoutput_q, data = strikes)\n\n  n= 62, number of events= 61 \n\n                        coef exp(coef) se(coef)     z Pr(&gt;|z|)\nuoutput               5.7304  308.0941  10.2171 0.561    0.575\nuoutput_qChoc moyen   0.0587    1.0604   0.6119 0.096    0.924\nuoutput_qChoc fort    0.3886    1.4750   1.0638 0.365    0.715\n\n                    exp(coef) exp(-coef) lower .95 upper .95\nuoutput               308.094   0.003246 6.192e-07 1.533e+11\nuoutput_qChoc moyen     1.060   0.942994 3.196e-01 3.518e+00\nuoutput_qChoc fort      1.475   0.677978 1.833e-01 1.187e+01\n\nConcordance= 0.608  (se = 0.041 )\nLikelihood ratio test= 8.79  on 3 df,   p=0.03\nWald test            = 9.01  on 3 df,   p=0.03\nScore (logrank) test = 9.52  on 3 df,   p=0.02\n\n\nOn comparera les modèles (quanti vs quali) plus tard, dans les exercices, via AIC et tests de rapport de vraisemblance."
+  },
+  {
+    "objectID": "td4/td4-slides.html#vérifier-lhypothèse-de-risques-proportionnels",
+    "href": "td4/td4-slides.html#vérifier-lhypothèse-de-risques-proportionnels",
+    "title": "Modèles de survie en R",
+    "section": "3.4 Vérifier l’hypothèse de risques proportionnels",
+    "text": "3.4 Vérifier l’hypothèse de risques proportionnels\nTest “graphique” : courbes de log(-log(S(t))) par groupe.\nSi les risques sont proportionnels, les courbes devraient être à peu près parallèles.\n\n\nCode\nif (requireNamespace(\"survminer\", quietly = TRUE)) {\n  ggsurvplot(\n    survfit(S_strikes ~ uoutput_q, data = strikes),\n    fun = \"cloglog\",    # log(-log(S))\n    xlab = \"log(temps)\",\n    ylab = \"log(-log(Survie))\",\n    legend.title = \"Choc d'activité\"\n  )\n}"
+  },
+  {
+    "objectID": "td4/td4-slides.html#test-de-schoenfeld",
+    "href": "td4/td4-slides.html#test-de-schoenfeld",
+    "title": "Modèles de survie en R",
+    "section": "3.5 Test de Schoenfeld",
+    "text": "3.5 Test de Schoenfeld\nEn pratique, on utilise souvent les résidus de Schoenfeld :\n\n\nCode\ncox_zph &lt;- cox.zph(cox_uoutput)\ncox_zph\n\n\n          chisq df    p\nuoutput 0.00662  1 0.94\nGLOBAL  0.00662  1 0.94\n\n\nCode\nplot(cox_zph)\n\n\n\n\np-valeur petite → violation possible de l’hypothèse de PH pour le prédicteur concerné."
+  },
+  {
+    "objectID": "td4/td4-slides.html#weibull-en-risques-proportionnels",
+    "href": "td4/td4-slides.html#weibull-en-risques-proportionnels",
+    "title": "Modèles de survie en R",
+    "section": "4.1 Weibull en risques proportionnels",
+    "text": "4.1 Weibull en risques proportionnels\n\nCas où : \\[h(t) = \\lambda p t^{p-1}\\]\nSi \\(p=1\\) → modèle exponentiel\nDans un cadre PH avec covariables : \\[h_i(t) = \\lambda p t^{p-1} \\exp(\\beta^\\top x_i)\\]"
+  },
+  {
+    "objectID": "td4/td4-slides.html#modèles-aft-accelerated-failure-time",
+    "href": "td4/td4-slides.html#modèles-aft-accelerated-failure-time",
+    "title": "Modèles de survie en R",
+    "section": "4.2 Modèles AFT (Accelerated Failure Time)",
+    "text": "4.2 Modèles AFT (Accelerated Failure Time)\n\nOn suppose : \\[\\log T_i = \\alpha + \\beta^\\top x_i + \\varepsilon_i\\]\nSelon la loi de \\(\\varepsilon_i\\), on obtient différents modèles :\n\nnormal → log-normal\nlogistique → log-logistique\nGumbel → Weibull (vu comme AFT)"
+  },
+  {
+    "objectID": "td4/td4-slides.html#jeu-de-données-strikeduration",
+    "href": "td4/td4-slides.html#jeu-de-données-strikeduration",
+    "title": "Modèles de survie en R",
+    "section": "5.1 Jeu de données StrikeDuration",
+    "text": "5.1 Jeu de données StrikeDuration\n\nDonnées issues de Kennan (1985), “The Duration of Contract Strikes in U.S. Manufacturing”, Journal of Econometrics.\n62 grèves dans l’industrie manufacturière US (1968–1976).\nVariables :\n\nduration : durée de la grève (jours)\nuoutput : choc d’activité non anticipé (mesure macro, liée à la conjoncture)\n\n\n\n\nCode\nsummary(strikes_raw)\n\n\n    duration         uoutput        \n Min.   :  1.00   Min.   :-0.10443  \n 1st Qu.: 10.25   1st Qu.:-0.03143  \n Median : 27.00   Median : 0.01138  \n Mean   : 42.68   Mean   : 0.01102  \n 3rd Qu.: 51.25   3rd Qu.: 0.06450  \n Max.   :216.00   Max.   : 0.07427"
+  },
+  {
+    "objectID": "td4/td4-slides.html#construction-des-variables-de-td",
+    "href": "td4/td4-slides.html#construction-des-variables-de-td",
+    "title": "Modèles de survie en R",
+    "section": "5.2 Construction des variables de TD",
+    "text": "5.2 Construction des variables de TD\n\nOn introduit :\n\nune censure artificielle à 200 jours ;\n\n\n\nCode\nsummary(strikes)\n\n\n    duration         uoutput              time            status      \n Min.   :  1.00   Min.   :-0.10443   Min.   :  1.00   Min.   :0.0000  \n 1st Qu.: 10.25   1st Qu.:-0.03143   1st Qu.: 10.25   1st Qu.:1.0000  \n Median : 27.00   Median : 0.01138   Median : 27.00   Median :1.0000  \n Mean   : 42.68   Mean   : 0.01102   Mean   : 42.42   Mean   :0.9839  \n 3rd Qu.: 51.25   3rd Qu.: 0.06450   3rd Qu.: 51.25   3rd Qu.:1.0000  \n Max.   :216.00   Max.   : 0.07427   Max.   :200.00   Max.   :1.0000  \n uoutput_sign             uoutput_q \n Length:62          Choc faible:25  \n Class :character   Choc moyen :17  \n Mode  :character   Choc fort  :20"
+  },
+  {
+    "objectID": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive",
+    "href": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive",
+    "title": "Modèles de survie en R",
+    "section": "6.1 1. Présentation des données et analyse descriptive",
+    "text": "6.1 1. Présentation des données et analyse descriptive\nOn considère les 62 grèves de la base StrikeDuration.\n\n(Correspondance entre codages du cycle)\nOn construit :\n\nuoutput_sign : 3 modalités (cycle défavorable, neutre, favorable)\nuoutput_q : 3 modalités (choc faible, moyen, fort, par terciles)\n\n\nDonner la table de contingence entre ces deux codages et la commenter (cohérence des deux “échelles” du cycle).\n\n\n\nCode\nwith(strikes, table(uoutput_sign, uoutput_q))\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable          25          0         0\n  Cycle favorable             0         17        20\n\n\nCode\nprop.table(with(strikes, table(uoutput_sign, uoutput_q)), 1)\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable   1.0000000  0.0000000 0.0000000\n  Cycle favorable     0.0000000  0.4594595 0.5405405"
+  },
+  {
+    "objectID": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-2",
+    "href": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-2",
+    "title": "Modèles de survie en R",
+    "section": "6.2 1. Présentation des données et analyse descriptive (2)",
+    "text": "6.2 1. Présentation des données et analyse descriptive (2)\n\n(Corrélations entre variables explicatives)\nOn considère comme variables explicatives potentielles :\n\nuoutput (continu)\nune version numérique de uoutput_q (par ex. 1 = faible, 2 = moyen, 3 = fort)\n\n\nConstruire une matrice de corrélations entre ces deux variables.\nCommenter : y a-t-il une information nouvelle dans la version catégorielle ?\n\n\n\nCode\nstrikes &lt;- strikes |&gt;\n  mutate(uoutput_q_num = as.numeric(uoutput_q))\n\ncor(dplyr::select(strikes, uoutput, uoutput_q_num), use = \"complete.obs\")\n\n\n                uoutput uoutput_q_num\nuoutput       1.0000000     0.9245881\nuoutput_q_num 0.9245881     1.0000000"
+  },
+  {
+    "objectID": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-3",
+    "href": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-3",
+    "title": "Modèles de survie en R",
+    "section": "6.3 1. Présentation des données et analyse descriptive (3)",
+    "text": "6.3 1. Présentation des données et analyse descriptive (3)\n\n(Courbes de survie brutes)\nOn trace les courbes de survie Kaplan–Meier de la durée de grève selon uoutput_q.\n\nQue constate-t-on sur les différences de durée de grève selon le choc d’activité ?\n\n\n\nCode\nkm_cycle &lt;- survfit(S_strikes ~ uoutput_q, data = strikes)\nplot(km_cycle)\n\n\n\n\n\n\n\n\n\n(Test du log-rank)\nOn utilise un test du log-rank pour tester l’effet global de uoutput_q.\n\nÉcrire les hypothèses \\(H_0\\) / \\(H_1\\).\n\nInterpréter la statistique de test et la p-valeur.\n\n\n\nCode\nsurvdiff(S_strikes ~ uoutput_q, data = strikes)\n\n\nCall:\nsurvdiff(formula = S_strikes ~ uoutput_q, data = strikes)\n\n                       N Observed Expected (O-E)^2/E (O-E)^2/V\nuoutput_q=Choc faible 25       24     32.4  2.198928  5.143950\nuoutput_q=Choc moyen  17       17     16.9  0.000153  0.000219\nuoutput_q=Choc fort   20       20     11.6  6.074740  8.183882\n\n Chisq= 9.2  on 2 degrees of freedom, p= 0.01"
+  },
+  {
+    "objectID": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-4",
+    "href": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-4",
+    "title": "Modèles de survie en R",
+    "section": "6.4 1. Présentation des données et analyse descriptive (4)",
+    "text": "6.4 1. Présentation des données et analyse descriptive (4)\n\n(Vérification graphique des risques proportionnels)\nOn trace les courbes de log(-log(S(t))) par niveau de uoutput_q.\n\nLes courbes semblent-elles approximativement parallèles ?\nConclure sur la plausibilité du modèle de Cox avec cette variable.\n\n\n\nCode\nif (requireNamespace(\"survminer\", quietly = TRUE)) {\n  ggsurvplot(\n    survfit(S_strikes ~ uoutput_q, data = strikes),\n    fun = \"cloglog\"\n  )\n}"
+  },
+  {
+    "objectID": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-1",
+    "href": "td4/td4-slides.html#présentation-des-données-et-analyse-descriptive-1",
+    "title": "Modèles de survie en R",
+    "section": "7.1 Présentation des données et analyse descriptive",
+    "text": "7.1 Présentation des données et analyse descriptive\n7.1.1 Q1 – Correspondance entre codages du cycle\nOn considère les 62 grèves de la base StrikeDuration.\nOn a construit :\n\nuoutput_sign : 2 modalités (cycle défavorable, favorable)\nuoutput_q : 3 modalités (choc faible, moyen, fort, par terciles)\n\n\n\nCode\nwith(strikes, table(uoutput_sign, uoutput_q))\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable          25          0         0\n  Cycle favorable             0         17        20\n\n\nCode\nprop.table(with(strikes, table(uoutput_sign, uoutput_q)), 1)\n\n\n                   uoutput_q\nuoutput_sign        Choc faible Choc moyen Choc fort\n  Cycle défavorable   1.0000000  0.0000000 0.0000000\n  Cycle favorable     0.0000000  0.4594595 0.5405405\n\n\nCommentaires :\n\nTous les épisodes en cycle défavorable sont classés en Choc faible.\nLes épisodes en cycle favorable se répartissent entre Choc moyen et Choc fort.\nLa matrice est quasi diagonale : les deux codages racontent la même histoire (choc défavorable vs favorable), l’un en version “signe”, l’autre en version “force du choc”.\nOn peut donc considérer que les deux échelles sont cohérentes."
+  },
+  {
+    "objectID": "td4/td4-slides.html#modèle-de-cox-correction",
+    "href": "td4/td4-slides.html#modèle-de-cox-correction",
+    "title": "Modèles de survie en R",
+    "section": "7.2 2. Modèle de Cox – Correction",
+    "text": "7.2 2. Modèle de Cox – Correction\n7.2.1 Q6 – Modèle de Cox continu\nModèle ajusté :\n\n\nCode\ncox_full &lt;- coxph(S_strikes ~ uoutput + uoutput_q_num, data = strikes)\nsummary(cox_full)\n\n\nCall:\ncoxph(formula = S_strikes ~ uoutput + uoutput_q_num, data = strikes)\n\n  n= 62, number of events= 61 \n\n                  coef exp(coef) se(coef)     z Pr(&gt;|z|)\nuoutput         5.5249  250.8571  10.3206 0.535    0.592\nuoutput_q_num   0.2007    1.2223   0.5385 0.373    0.709\n\n              exp(coef) exp(-coef) lower .95 upper .95\nuoutput         250.857   0.003986 4.117e-07 1.529e+11\nuoutput_q_num     1.222   0.818155 4.254e-01 3.512e+00\n\nConcordance= 0.608  (se = 0.041 )\nLikelihood ratio test= 8.57  on 2 df,   p=0.01\nWald test            = 8.5  on 2 df,   p=0.01\nScore (logrank) test = 8.83  on 2 df,   p=0.01\n\n\nCode\nAIC(cox_full)\n\n\n[1] 389.1666"
+  },
+  {
+    "objectID": "td4/td4-slides.html#modèles-paramétriques-correction",
+    "href": "td4/td4-slides.html#modèles-paramétriques-correction",
+    "title": "Modèles de survie en R",
+    "section": "7.3 3. Modèles paramétriques – Correction",
+    "text": "7.3 3. Modèles paramétriques – Correction\n7.3.1 Q10 – Modèle de Weibull\n\n\nCode\nweib_best &lt;- survreg(S_strikes ~ uoutput, data = strikes, dist = \"weibull\")\nsummary(weib_best)\n\n\n\nCall:\nsurvreg(formula = S_strikes ~ uoutput, data = strikes, dist = \"weibull\")\n               Value Std. Error     z      p\n(Intercept)  3.79012    0.13944 27.18 &lt;2e-16\nuoutput     -9.67700    3.00825 -3.22 0.0013\nLog(scale)   0.00631    0.10180  0.06 0.9506\n\nScale= 1.01 \n\nWeibull distribution\nLoglik(model)= -285.4   Loglik(intercept only)= -290.2\n    Chisq= 9.6 on 1 degrees of freedom, p= 0.002 \nNumber of Newton-Raphson Iterations: 6 \nn= 62"
+  },
+  {
+    "objectID": "td4/enonce-td4.html",
+    "href": "td4/enonce-td4.html",
+    "title": "TD 4 – Modèles de survie",
+    "section": "",
+    "text": "On s’intéresse à la durée de grèves dans l’industrie manufacturière américaine.\nLes données proviennent de :\n\nKennan, J. (1985), The Duration of Contract Strikes in U.S. Manufacturing, Journal of Econometrics.\n\nNous utiliserons la base StrikeDuration du package AER dans R, qui contient :\n\nduration : durée de la grève (en jours)\nuoutput : choc d’activité non anticipé (mesure de conjoncture macroéconomique)\n\nOn construit les variables suivantes :\n\nune durée possiblement censurée :\n\\(time_i = \\min(duration_i, 200)\\)\nune indicatrice d’événement (fin de grève observée) :\n\\(status_i = \\mathbb{1} \\text{ } (duration_i \\le 200)\\)\ndeux codages de la conjoncture :\n\nuoutput_sign : cycle défavorable / favorable (signe de uoutput)\nuoutput_q : choc faible / moyen / fort (terciles de uoutput)"
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-1-correspondance-entre-codages-du-cycle",
+    "href": "td4/enonce-td4.html#exercice-1-correspondance-entre-codages-du-cycle",
+    "title": "TD 4 – Modèles de survie",
+    "section": "2.1 Exercice 1 – Correspondance entre codages du cycle",
+    "text": "2.1 Exercice 1 – Correspondance entre codages du cycle\nOn construit :\n\nuoutput_sign : 2 modalités (cycle défavorable, favorable)\nuoutput_q : 3 modalités (choc faible, moyen, fort, par terciles)\n\n\nDonner la table de contingence entre ces deux codages.\nCalculer les proportions par ligne.\nCommentez : les deux « échelles » du cycle sont-elles cohérentes ?\n\nIndication R :\n\nIndice : commencer par construire un tableau de contingence avec table(uoutput_sign, uoutput_q), puis utiliser prop.table(..., margin = 1) pour obtenir les proportions par ligne."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-2-corrélations-entre-variables-explicatives",
+    "href": "td4/enonce-td4.html#exercice-2-corrélations-entre-variables-explicatives",
+    "title": "TD 4 – Modèles de survie",
+    "section": "2.2 Exercice 2 – Corrélations entre variables explicatives",
+    "text": "2.2 Exercice 2 – Corrélations entre variables explicatives\nOn considère comme variables explicatives potentielles :\n\nuoutput (continu)\nuoutput_q_num : version numérique de uoutput_q (1 = faible, 2 = moyen, 3 = fort)\n\n\nConstruire la matrice de corrélation entre ces deux variables.\nCommentez : la version catégorielle apporte-t-elle une information réellement nouvelle ?\n\nIndication R :\n\nutiliser la commande corr()"
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-3-courbes-de-survie-brutes",
+    "href": "td4/enonce-td4.html#exercice-3-courbes-de-survie-brutes",
+    "title": "TD 4 – Modèles de survie",
+    "section": "2.3 Exercice 3 – Courbes de survie brutes",
+    "text": "2.3 Exercice 3 – Courbes de survie brutes\nOn trace les courbes de survie Kaplan–Meier de la durée de grève selon uoutput_q.\n\nReprésenter graphiquement les courbes \\(\\hat S(t)\\) pour chacun des trois niveaux de choc.\nCommentez : que constate-t-on sur les différences de durée de grève selon le choc d’activité ?\n\nIndication R :\n\nCommencez par créer l’objet de survie avec Surv(time, status), puis estimez un Kaplan–Meier par groupe avec survfit(Surv_obj ~ uoutput_q, data = …). Utilisez ensuite plot() pour tracer les courbes et legend() pour afficher les trois niveaux de choc."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-4-test-du-log-rank",
+    "href": "td4/enonce-td4.html#exercice-4-test-du-log-rank",
+    "title": "TD 4 – Modèles de survie",
+    "section": "2.4 Exercice 4 – Test du log-rank",
+    "text": "2.4 Exercice 4 – Test du log-rank\nOn souhaite tester l’effet global de uoutput_q sur la durée de grève à l’aide d’un test du log-rank.\n\nÉcrire précisément les hypothèses \\(H_0\\) et \\(H_1\\).\nCalculer la statistique du test et la p-valeur.\nConclure au seuil de 5 % sur l’effet global du choc d’activité.\n\nIndication R :\n\nUtilisez la fonction survdiff(Surv(time, status) ~ uoutput_q, data = ...) pour réaliser le test du log-rank. La sortie vous donne la statistique de type \\(chi^2\\) , les degrés de liberté et la p-valeur, à interpréter pour conclure au seuil de 5 %."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-5-vérification-graphique-de-lhypothèse-de-risques-proportionnels",
+    "href": "td4/enonce-td4.html#exercice-5-vérification-graphique-de-lhypothèse-de-risques-proportionnels",
+    "title": "TD 4 – Modèles de survie",
+    "section": "2.5 Exercice 5 – Vérification graphique de l’hypothèse de risques proportionnels",
+    "text": "2.5 Exercice 5 – Vérification graphique de l’hypothèse de risques proportionnels\nOn trace les courbes de \\(\\log(-\\log(\\hat S(t)))\\) par niveau de uoutput_q.\n\nLes courbes semblent-elles approximativement parallèles ?\nQue suggère ce résultat sur la plausibilité du modèle de Cox avec cette variable ?\n\nIndication R :\n\nUtilisez ggsurvplot() du package survminer en lui passant un objet survfit(Surv(...) ~ uoutput_q, ...) et l’argument fun = \"cloglog\" pour obtenir les courbes de \\(\\log(-\\log(\\hat S(t)))\\) par groupe, puis regardez si elles sont à peu près parallèles."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-6-modèle-de-cox-avec-uoutput-et-uoutput_q_num",
+    "href": "td4/enonce-td4.html#exercice-6-modèle-de-cox-avec-uoutput-et-uoutput_q_num",
+    "title": "TD 4 – Modèles de survie",
+    "section": "3.1 Exercice 6 – Modèle de Cox avec uoutput et uoutput_q_num",
+    "text": "3.1 Exercice 6 – Modèle de Cox avec uoutput et uoutput_q_num\nOn ajuste un modèle de Cox ne contenant que les variables explicatives suivantes :\n\nuoutput (continu)\nuoutput_q_num (version numérique de uoutput_q)\n\n\nÉcrire l’équation du modèle sous la forme :\n\\(h_i(t) = h_0(t),\\exp\\big( \\beta_1 uoutput_i + \\beta_2 uoutput_{q,i} \\big)\\)\nEstimer ce modèle dans R.\nInterpréter le hazard ratio associé à uoutput.\nCalculer le critère AIC du modèle et le noter pour comparaison.\n\nIndication R :\n\najustez un modèle de Cox avec coxph(Surv(time, status) ~ uoutput + uoutput_q_num, data = ...), puis utilisez summary() pour lire les coefficients et interpréter les hazard ratios, et AIC() pour comparer ce modèle aux autres spécifications."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-7-version-purement-catégorielle-du-cycle",
+    "href": "td4/enonce-td4.html#exercice-7-version-purement-catégorielle-du-cycle",
+    "title": "TD 4 – Modèles de survie",
+    "section": "3.2 Exercice 7 – Version purement catégorielle du cycle",
+    "text": "3.2 Exercice 7 – Version purement catégorielle du cycle\nOn ajuste un modèle de Cox où la conjoncture est mesurée seulement par la variable qualitative uoutput_q :\ncox_cat &lt;- coxph(S_strikes ~ uoutput_q, data = strikes)\n\nÉcrire l’équation du modèle :\n\\(h_i(t) = h_0(t),\\exp\\big( \\beta2,\\mathbb{1}{uoutput{q,i} = \\text{Choc moyen}} + \\beta3,\\mathbb{1}{uoutput{q,i} = \\text{Choc fort}} \\big).\\)\nÀ partir de summary(cox_cat), dire s’il existe une différence significative de durée de grève entre au moins deux niveaux de choc.\nComparer la déviance \\((-2\\log L)\\) de ce modèle à celle du modèle précédent."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-8-nombre-de-paramètres-et-emboîtement-des-modèles",
+    "href": "td4/enonce-td4.html#exercice-8-nombre-de-paramètres-et-emboîtement-des-modèles",
+    "title": "TD 4 – Modèles de survie",
+    "section": "3.3 Exercice 8 – Nombre de paramètres et emboîtement des modèles",
+    "text": "3.3 Exercice 8 – Nombre de paramètres et emboîtement des modèles\nOn considère trois modèles :\n\nM1 : S ~ uoutput\nM2 : S ~ uoutput + uoutput_q_num\nM3 : S ~ uoutput_q (facteur 3 modalités)\n\n\nDonner le nombre de paramètres de pente (hors baseline) dans chacun des trois modèles.\nQuelles relations d’emboîtement existe-t-il entre ces modèles (qui est inclus dans qui) ?"
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-9-choix-de-la-meilleure-mesure-du-cycle",
+    "href": "td4/enonce-td4.html#exercice-9-choix-de-la-meilleure-mesure-du-cycle",
+    "title": "TD 4 – Modèles de survie",
+    "section": "3.4 Exercice 9 – Choix de la meilleure mesure du cycle",
+    "text": "3.4 Exercice 9 – Choix de la meilleure mesure du cycle\nOn veut déterminer quelle représentation de la conjoncture (continu vs factorisé) prédit le mieux la durée des grèves.\n\nUtiliser des tests de rapport de vraisemblance (LR) pour comparer :\n\nM1 vs M2\nM1 vs M3\n\nCombiner l’information des tests LR et des AIC pour choisir la mesure du choc d’activité que vous retiendriez.\nJustifier votre choix d’un point de vue économique et économétrique.\n\nIndication R :\n\nestimez séparément les trois modèles de Cox correspondant à M1, M2 et M3, puis utilisez des tests de rapport de vraisemblance via anova(mod_simple, mod_complex, test = \"LRT\") pour comparer les spécifications. Interprétez la p-valeur et l’évolution de l’AIC pour décider si le modèle plus riche améliore significativement l’ajustement par rapport au modèle plus simple."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-10-modèle-de-weibull",
+    "href": "td4/enonce-td4.html#exercice-10-modèle-de-weibull",
+    "title": "TD 4 – Modèles de survie",
+    "section": "4.1 Exercice 10 – Modèle de Weibull",
+    "text": "4.1 Exercice 10 – Modèle de Weibull\nOn ajuste un modèle de Weibull avec la (ou les) variable(s) explicative(s) retenue(s) à la question 9.\n\nEstimer un modèle de Weibull à l’aide de survreg() :\nPréciser le nombre de paramètres estimés (y compris les paramètres de forme / échelle).\nComparer son AIC à celui du modèle de Cox retenu précédemment.\n\nIndication R (exemple avec uoutput seul) :\n\nutilisez survreg(Surv(time, status) ~ uoutput, data = ..., dist = \"weibull\") pour estimer un modèle de Weibull, puis regardez dans summary() quels paramètres sont estimés (intercept, coefficient de uoutput, paramètre de scale) et utilisez AIC() pour comparer ce modèle au modèle de Cox retenu."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-11-courbes-de-survie-et-risque-instantané",
+    "href": "td4/enonce-td4.html#exercice-11-courbes-de-survie-et-risque-instantané",
+    "title": "TD 4 – Modèles de survie",
+    "section": "4.2 Exercice 11 – Courbes de survie et risque instantané",
+    "text": "4.2 Exercice 11 – Courbes de survie et risque instantané\nÀ partir du modèle de durée retenu (Cox ou Weibull) :\n\nTracer les courbes de survie pour différents scénarios de conjoncture (par ex. valeurs faibles, médianes et fortes de uoutput).\nTracer (ou commenter) les taux de risque instantané correspondants.\nCommenter la forme du risque dans le temps (croissant ? décroissant ?).\n\nIndication possible avec le modèle de Cox simple :\n\nCommencez par définir un petit data.frame newdata avec plusieurs valeurs représentatives de uoutput (par exemple des quantiles de la distribution), puis utilisez survfit(mod_cox, newdata = newdata) pour obtenir les courbes de survie prédites. Tracez-les avec plot() et ajoutez une legend() pour comparer visuellement la probabilité de fin de grève selon le niveau de choc."
+  },
+  {
+    "objectID": "td4/enonce-td4.html#exercice-12-interprétation-économique",
+    "href": "td4/enonce-td4.html#exercice-12-interprétation-économique",
+    "title": "TD 4 – Modèles de survie",
+    "section": "4.3 Exercice 12 – Interprétation économique",
+    "text": "4.3 Exercice 12 – Interprétation économique\nSur la base des résultats obtenus (Kaplan–Meier, modèles de Cox, Weibull) :\n\nDans quel contexte conjoncturel les grèves ont-elles le plus de chances d’être courtes ?\nDans quel contexte ont-elles le plus de chances d’être longues ?\nDiscuter ces résultats en termes :\n\nde hazard ratios (probabilité instantanée de fin de grève)\net de fonctions de survie (probabilité de grève encore en cours).\n\n\nRelier cette interprétation aux mécanismes économiques de négociation salariale et de coûts de la grève pour les syndicats et les employeurs."
   },
   {
     "objectID": "td2/td2-slides.html#quand-utiliser-ces-modèles",

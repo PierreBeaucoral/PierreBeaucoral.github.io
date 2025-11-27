@@ -115,5 +115,5 @@ social:
 highlight_name: true
 ---
 
-I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate and adaptation finance are allocated and what they do on the ground, combining geocoded development-finance data with modern causal-inference and machine-learning methods. I focus on how National Adaptation Plans and other climate-policy instruments shape aid flows, emissions trajectories, and vulnerability in low- and middle-income countries.
+ I’m a development economist in training at CERDI. I spend most of my time debugging my R and Python codes trying to understand where "climate money" goes, what it is for, what it changes locally, and how data and ML can help answer these questions.
 {style="text-align: justify;"}

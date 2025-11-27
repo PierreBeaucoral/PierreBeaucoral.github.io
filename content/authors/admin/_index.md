@@ -25,7 +25,7 @@ organizations:
     url: https://cerdi.uca.fr/
 
 # Short bio (displayed in user profile at end of posts)
-bio: I’m a development economist in training at CERDI. I spend most of my time trying to understand where "climate money" goes, what it is for, what it changes locally, and how data and ML can help answer these questions.
+bio: I’m a development economist in training at CERDI. I spend most of my time debugging my R and Python codes trying to understand where "climate money" goes, what it is for, what it changes locally, and how data and ML can help answer these questions.
 
 # Interests to show in About widget
 interests:

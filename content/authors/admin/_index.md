@@ -30,8 +30,8 @@ bio: I am a PhD candidate in Development Economics at CERDI (Université Clermon
 # Interests to show in About widget
 interests:
   - Development economics
-  - Climate & adaptation finance
-  - Geocoded development finance
+  - Climate finance
+  - Geocoded and spatial data analysis
   - Machine learning & causal inference
 
 # Education to show in About widget

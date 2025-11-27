@@ -25,7 +25,7 @@ organizations:
     url: https://cerdi.uca.fr/
 
 # Short bio (displayed in user profile at end of posts)
-bio: I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate and adaptation finance are allocated and what they do on the ground, using geocoded development-finance data, causal inference, and machine learning.
+bio: I’m a development economist in training at CERDI. I spend most of my time trying to understand where "climate money" goes, what it is for, what it changes locally, and how data and ML can help answer these questions.
 
 # Interests to show in About widget
 interests:

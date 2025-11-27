@@ -64,7 +64,7 @@ sections:
           date_end: ''
           description: |2-
               Responsibilities include:
-              * Conducting empirical research on climate and adaptation finance using large-scale geocoded datasets
+              * Conducting empirical research on climate finance
               * Developing causal-inference strategies (DiD, event studies, double machine learning) to evaluate the effects of climate policies such as National Adaptation Plans
               * Building and maintaining reproducible data and code pipelines in R and Python
               * Contributing to teaching in econometrics and quantitative methods

@@ -23,8 +23,7 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 
 ### *Financing the Air We Breathe: Climate vs. Non-Climate Aid and Local CO₂ Emissions – Evidence from Global ADM2 Data*  *(job market paper)*
 
-This paper asks whether climate aid **decarbonizes where it lands**, and how its effects differ from otherwise similar development finance. It assembles a global **ADM2–year panel (2000–2022)** by linking geocoded development projects (GODAD) to EDGAR CO₂ emissions and applies modern staggered DiD estimators. :contentReference[oaicite:1]{index=1}  
-
+This paper asks whether climate aid **decarbonizes where it lands**, and how its effects differ from otherwise similar development finance. It assembles a global **ADM2–year panel (2000–2022)** by linking geocoded development projects (GODAD) to EDGAR CO₂ emissions and applies modern staggered DiD estimators. 
 - **Questions**
   - Do climate-labelled portfolios reduce local emissions at the places where projects are implemented?
   - How do these effects compare with non-climate development finance?
@@ -45,15 +44,14 @@ This paper asks whether climate aid **decarbonizes where it lands**, and how its
   - Non-climate aid **raises local emissions in the medium run**, consistent with development-driven scale effects.
   - Night-lights reactions are stronger in mid-brightness ADM2s (more activity) and muted in already bright places, yet CO₂ still rises—pointing to complex links between economic expansion, lighting, and emissions.
 
-Together, the paper provides the first **global, causally identified, subnational assessment** of how climate versus traditional development finance shape local emissions. :contentReference[oaicite:2]{index=2}  
-
+Together, the paper provides the first **global, causally identified, subnational assessment** of how climate versus traditional development finance shape local emissions. 
 ---
 
 ## Dissertation chapters & ongoing projects
 
 ### 1. *Cracking the Code: Enhancing development finance understanding with artificial intelligence*  
 
-This chapter builds a **topic-modelling and clustering framework** for the full universe of OECD CRS project narratives—around 5 million projects—using **BERTopic** and transformer-based embeddings. :contentReference[oaicite:5]{index=5}  
+This chapter builds a **topic-modelling and clustering framework** for the full universe of OECD CRS project narratives—around 5 million projects—using **BERTopic** and transformer-based embeddings. 
 
 - **Objective**
   - Move beyond sector codes and Rio markers by uncovering **hundreds of data-driven activity clusters**, capturing what projects actually do, in the language of their descriptions.
@@ -72,7 +70,7 @@ This chapter builds a **topic-modelling and clustering framework** for the full 
 
 ### 2. *Under the Green Canopy: Bringing public climate finance determinants analysis up to date with AI*  
 
-This chapter revisits the classic literature on **climate aid determinants** using a more accurate classification of climate projects based on **ClimateFinanceBERT** rather than Rio markers. :contentReference[oaicite:4]{index=4}  
+This chapter revisits the classic literature on **climate aid determinants** using a more accurate classification of climate projects based on **ClimateFinanceBERT** rather than Rio markers. 
 
 - **Data innovation**
   - Applies ClimateFinanceBERT to every bilateral public-finance project in the OECD CRS, assigning each project to **mitigation, adaptation, or environment** categories based on text.
@@ -93,7 +91,7 @@ This chapter demonstrates how **data quality and AI-based classification** funda
 
 ### 3. *No Plan, No Aid? The effects of National Adaptation Plan implementation on received adaptation aid*  
 
-This chapter develops an integrated **theoretical and empirical framework** to study how adopting a **National Adaptation Plan (NAP)** affects the volume of **adaptation finance** received. :contentReference[oaicite:3]{index=3}  
+This chapter develops an integrated **theoretical and empirical framework** to study how adopting a **National Adaptation Plan (NAP)** affects the volume of **adaptation finance** received.
 
 - **Theory:**  
   A recipient–donor model where NAP adoption sends a **two-dimensional signal**: reduced vulnerability but improved institutional capacity. Donors optimally reallocate climate aid across countries in response to this signal, balancing need and merit.
@@ -142,14 +140,14 @@ Across chapters, a common set of **data and methods** underpins the analysis:
 
 ### Climate, environmental & vulnerability data
 
-- Gridded CO₂ emissions (EDGAR) aggregated to ADM2 polygons. :contentReference[oaicite:7]{index=7}  
+- Gridded CO₂ emissions (EDGAR) aggregated to ADM2 polygons. 
 - Climate and weather variables, and vulnerability indicators used to capture exposure and adaptive capacity in allocation and impact analyses.   
 
 ### Causal inference & machine learning
 
 - Modern **difference-in-differences** approaches for staggered policy and treatment adoption (e.g. NAPs, first climate project).
 - Dynamic **event-study** designs and **dose–response** analyses to characterise pre-trends and heterogeneous post-treatment paths.   
-- **Double machine learning** and high-dimensional controls for robustness in determinants models. :contentReference[oaicite:10]{index=10}  
+- **Double machine learning** and high-dimensional controls for robustness in determinants models.
 - **NLP / transformers** (ClimateFinanceBERT, BERTopic) for project classification and topic discovery, forming the data backbone of the climate-finance work.   
 
 ---

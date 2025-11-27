@@ -5,14 +5,7 @@ summary: Research agenda, job market paper, dissertation chapters, and data & me
 date: 2025-01-01
 icon: flask
 ---
-{{< columns >}}
-
-{{< figure src="phd-student.png"
-           alt="Cartoon of a PhD student working at a laptop"
-           width="100%"
->}}
-
-<--->
+<img width="1536" height="1024" alt="phd_student" src="https://github.com/user-attachments/assets/93941b56-cbce-4f36-a837-861ac8157681" />
 
 ## Research agenda
 
@@ -168,3 +161,4 @@ I aim to make my research as **reproducible and reusable** as possible:
 - Replication packages for each chapter (data processing, estimation scripts, and figure code) will be linked here as they become publicly available.
 
 If you are interested in using the datasets or tools developed in this work, or in collaborating on related topics, feel free to [get in touch](/#contact).
+

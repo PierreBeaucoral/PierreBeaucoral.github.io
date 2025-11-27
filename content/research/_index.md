@@ -5,6 +5,14 @@ summary: Research agenda, job market paper, dissertation chapters, and data & me
 date: 2025-01-01
 icon: flask
 ---
+{{< columns >}}
+
+{{< figure src="phd-student.png"
+           alt="Cartoon of a PhD student working at a laptop"
+           width="100%"
+>}}
+
+<--->
 
 ## Research agenda
 

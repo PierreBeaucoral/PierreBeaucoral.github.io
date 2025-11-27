@@ -17,21 +17,22 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: PhD Candidate
+role: PhD Candidate in Development Economics
 
 # Organizations/Affiliations to show in About widget
 organizations:
   - name: CERDI UCA CNRS IRD
-    url: https://cerdi.uca.fr/#/admin
+    url: https://cerdi.uca.fr/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include development economics, climate adaptation and mitigation, environment, development and climate finance.
+bio: I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate and adaptation finance are allocated and what they do on the ground, using geocoded development-finance data, causal inference, and machine learning.
 
 # Interests to show in About widget
 interests:
   - Development economics
-  - Environment
-  - Development finance
+  - Climate & adaptation finance
+  - Geocoded development finance
+  - Machine learning & causal inference
 
 # Education to show in About widget
 education:
@@ -51,21 +52,21 @@ education:
 skills:
   - name: Technical
     items:
-    - name: Econometrics
-      description: ''
-      percent: 100
-      icon: chart-line
-      icon_pack: fas
-    - name: Python
-      description: ''
-      percent: 70
-      icon: python
-      icon_pack: fab
-    - name: R
-      description: ''
-      percent: 80
-      icon: database
-      icon_pack: fas
+      - name: Econometrics
+        description: ''
+        percent: 100
+        icon: chart-line
+        icon_pack: fas
+      - name: Python
+        description: ''
+        percent: 70
+        icon: python
+        icon_pack: fab
+      - name: R
+        description: ''
+        percent: 80
+        icon: database
+        icon_pack: fas
   - name: Hobbies
     color: '#eeac02'
     color_border: '#f0bf23'
@@ -87,9 +88,6 @@ skills:
         icon_pack: fas
 
 # Social/Academic Networking
-# For available icons, see: https://wowchemy.com/docs/getting-started/page-builder/#icons
-#   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
-#   form "mailto:your-email@example.com" or "/#contact" for contact widget.
 social:
   - icon: envelope
     icon_pack: fas
@@ -100,7 +98,7 @@ social:
     label: Follow me on Twitter
     display:
       header: true
-  - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
+  - icon: graduation-cap
     icon_pack: fas
     link: https://scholar.google.com/citations?view_op=new_profile&hl=fr
   - icon: github
@@ -109,9 +107,6 @@ social:
   - icon: linkedin
     icon_pack: fab
     link: https://www.linkedin.com/in/pierre-beaucoral-a55437168/
-  # Link to a PDF of your resume/CV.
-  # To use: copy your resume to `static/uploads/resume.pdf`, enable `ai` icons in `params.yaml`,
-  # and uncomment the lines below.
   - icon: cv
     icon_pack: ai
     link: uploads/resume.pdf
@@ -120,5 +115,5 @@ social:
 highlight_name: true
 ---
 
-This is the official website of Pierre Beaucoral, a PhD student specializing in development economics at CERDI. My research focuses on climate finance, development finance, and aid allocation and effectiveness in relation to environmental issues.
+I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate and adaptation finance are allocated and what they do on the ground, combining geocoded development-finance data with modern causal-inference and machine-learning methods. I focus on how National Adaptation Plans and other climate-policy instruments shape aid flows, emissions trajectories, and vulnerability in low- and middle-income countries.
 {style="text-align: justify;"}

@@ -20,7 +20,7 @@ sections:
         url: uploads/resume.pdf
       cta_alt:
         label: Research projects
-        url: '#projects'
+        url: '/project'
       cta_note:
         label: ''
     design:

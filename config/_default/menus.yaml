@@ -5,29 +5,37 @@
 
 main:
   - name: Home
-    url: '#about'
+    url: '/'
     weight: 10
-  - name: Posts
-    url: '#posts'
+
+  - name: Research
+    url: '/research/'
     weight: 20
+
+  # Dropdown items under "Research"
+  - name: Presentation of my research
+    url: '/research/'
+    parent: Research
+    weight: 21
+
   - name: Projects
-    url: '#projects'
-    weight: 30
-  - name: My researchs
-    url: 'research'
-    weight: 40
-  - name: Talks
-    url: '#talks'
-    weight: 50
+    url: '/#projects'
+    parent: Research
+    weight: 22
+
   - name: Publications
-    url: '#featured'
-    weight: 60
-  - name: Course
-    url: '#course'
-    weight: 70
-  - name: Contact
-    url: '#contact'
-    weight: 80
+    url: '/publication/'
+    parent: Research
+    weight: 23
+
+  - name: Talks
+    url: '/#talks'
+    weight: 30
+
+  - name: Teachings
+    url: '/course'
+    weight: 40
+
 
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.

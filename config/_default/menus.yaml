@@ -19,7 +19,7 @@ main:
     weight: 21
 
   - name: Projects
-    url: '/#projects'
+    url: '/projects'
     parent: Research
     weight: 22
 
@@ -29,7 +29,7 @@ main:
     weight: 23
 
   - name: Talks
-    url: '/#talks'
+    url: '/talks'
     weight: 30
 
   - name: Teachings

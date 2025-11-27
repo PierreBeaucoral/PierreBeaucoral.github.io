@@ -1,7 +1,7 @@
 ---
 title: Research
 type: page
-summary: Research agenda, job market paper, working papers, and data & methods.
+summary: Research agenda, job market paper, dissertation chapters, and data & methods.
 date: 2025-01-01
 icon: flask
 ---
@@ -9,114 +9,156 @@ icon: flask
 ## Research agenda
 
 I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD).  
-My research studies how **climate and adaptation finance** are allocated and what they do on the ground, by combining:
+My work studies how **climate and adaptation finance** are allocated and what they do on the ground, by combining:
 
 - geocoded development-finance data,  
 - climate and environmental indicators, and  
 - modern **causal-inference** and **machine-learning** methods.
 
-I am particularly interested in how **National Adaptation Plans (NAPs)** and other climate-policy instruments shape aid flows, emissions trajectories, and vulnerability in low- and middle-income countries.
+Across projects, I focus on how **climate-labelled vs. non-climate finance** and **adaptation planning instruments** (such as National Adaptation Plans) shape aid flows, local emissions trajectories, and vulnerability in low- and middle-income countries. 
 
 ---
 
 ## Job market paper
 
-### *No Plan, No Aid? National Adaptation Plans and adaptation finance*  *(in progress)*
+### *Financing the Air We Breathe: Climate vs. Non-Climate Aid and Local CO₂ Emissions – Evidence from Global ADM2 Data*  *(job market paper)*
 
-This paper asks whether and how adopting a **National Adaptation Plan** changes the volume and composition of **adaptation finance** received by developing countries.
+This paper asks whether climate aid **decarbonizes where it lands**, and how its effects differ from otherwise similar development finance. It assembles a global **ADM2–year panel (2000–2022)** by linking geocoded development projects (GODAD) to EDGAR CO₂ emissions and applies modern staggered DiD estimators. :contentReference[oaicite:1]{index=1}  
 
-- **Research questions**
-  - Do NAPs increase total adaptation commitments and disbursements?
-  - Do they reorient finance toward more vulnerable sectors or countries?
-  - Are effects driven by specific donor groups (bilaterals, multilaterals, climate funds)?
+- **Questions**
+  - Do climate-labelled portfolios reduce local emissions at the places where projects are implemented?
+  - How do these effects compare with non-climate development finance?
+  - How do effects vary with **cumulative climate exposure** and local development levels?
 
 - **Data**
-  - Geocoded and country-level project data on development and climate finance  
-  - NAP adoption and implementation information  
-  - Vulnerability, exposure, and socio-economic indicators
+  - Global ADM2–year panel built from geocoded project amounts by climate category (non-climate, mitigation, adaptation, environment), using ClimateFinanceBERT-based tagging.
+  - EDGAR gridded CO₂ emissions aggregated to ADM2 boundaries.
+  - VIIRS night-time lights as a proxy for local economic activity.
 
 - **Methods**
-  - Staggered-adoption designs with modern difference-in-differences estimators  
-  - Dynamic event studies to trace the evolution of flows pre- and post-NAP  
-  - Heterogeneity by donor type, sector, and intensity of finance
+  - **Callaway & Sant’Anna–type staggered DiD** with not-yet-treated controls to estimate dynamic effects of first climate-project arrival at the ADM2 level.
+  - **Dose–response design** based on cumulative post-treatment exposure (commitments/disbursements), tracing out how larger flows translate into larger or smaller emission responses.
+  - Event-study profiles with flat pre-trends and placebo event-times.
 
-- **Contribution**
-  - Provides the first systematic quasi-experimental evidence on the effects of NAPs on adaptation finance.  
-  - Connects the literature on adaptation planning, climate finance, and aid allocation with high-resolution data and recent econometric tools.
+- **Key findings (preliminary)**
+  - Climate portfolios lead to **at most zero and on average modest declines** in local log-CO₂, which become more negative as cumulative climate exposure increases.
+  - Non-climate aid **raises local emissions in the medium run**, consistent with development-driven scale effects.
+  - Night-lights reactions are stronger in mid-brightness ADM2s (more activity) and muted in already bright places, yet CO₂ still rises—pointing to complex links between economic expansion, lighting, and emissions.
+
+Together, the paper provides the first **global, causally identified, subnational assessment** of how climate versus traditional development finance shape local emissions. :contentReference[oaicite:2]{index=2}  
 
 ---
 
-## Working papers & ongoing projects
+## Dissertation chapters & ongoing projects
 
-### 1. Determinants of climate vs non-climate development finance
+### 1. *Cracking the Code: Enhancing development finance understanding with artificial intelligence*  
 
-This project studies **which countries and regions receive climate-related finance** relative to “traditional” development projects.
+This chapter builds a **topic-modelling and clustering framework** for the full universe of OECD CRS project narratives—around 5 million projects—using **BERTopic** and transformer-based embeddings. :contentReference[oaicite:5]{index=5}  
 
-- Distinguishes **adaptation, mitigation, and broader environment projects** from other sectors.
-- Explores how vulnerability, governance, income, emissions, and historical ties shape allocation.
-- Uses multi-donor, multi-recipient panels and geocoded project locations to capture both **cross-country** and **within-country** patterns.
+- **Objective**
+  - Move beyond sector codes and Rio markers by uncovering **hundreds of data-driven activity clusters**, capturing what projects actually do, in the language of their descriptions.
+  - Provide a reusable, transparent pipeline that researchers and practitioners can adapt to other large text corpora.
 
-### 2. Local emissions and development projects
+- **Method**
+  - Uses BERTopic to embed and cluster project narratives, yielding **400+ hierarchical, interpretable topics**, from bee-keeping and nutrition to REDD+, social protection, or coastal infrastructure.
+  - Evaluates cluster quality using multiple internal metrics and human interpretability checks.
+  - Provides open code and labelled outputs via GitHub for replication and extension.
 
-This project links **geocoded development projects** with **high-resolution emissions data** to ask how different types of finance affect local environmental outcomes.
+- **Role in the thesis**
+  - Serves as a **foundational data tool**, feeding into downstream applications such as the ClimateFinanceBERT reclassification and climate/non-climate tagging used in other chapters.  
+  - Illustrates how AI can help structure complex development-finance ecosystems and support SDG-related analyses.
 
-- Combines gridded emissions proxies with ADM-level administrative boundaries.
-- Estimates the impact of different project types (e.g. energy, infrastructure, climate-labelled projects) on local emissions trajectories.
-- Uses staggered-adoption designs and event studies at the subnational level.
+---
 
-### 3. Text-based classification of development projects
+### 2. *Under the Green Canopy: Bringing public climate finance determinants analysis up to date with AI*  
 
-To study climate finance and sectoral patterns at scale, I build and evaluate **machine-learning tools** that classify development projects based on their text descriptions.
+This chapter revisits the classic literature on **climate aid determinants** using a more accurate classification of climate projects based on **ClimateFinanceBERT** rather than Rio markers. :contentReference[oaicite:4]{index=4}  
 
-- Fine-tuning and applying **transformer-based models** for:
-  - climate vs non-climate labels,
-  - adaptation vs mitigation vs other environment categories,
-  - sector and theme tagging.
-- Comparing ML-based classifications with traditional purpose codes and manual tagging.
-- Providing labelled datasets and reusable code for researchers working on aid, climate, and development.
+- **Data innovation**
+  - Applies ClimateFinanceBERT to every bilateral public-finance project in the OECD CRS, assigning each project to **mitigation, adaptation, or environment** categories based on text.
+  - Shows that conventional Rio-marker tallies **systematically overstate** both mitigation and adaptation flows.
+
+- **Empirical strategy**
+  - Re-estimates climate aid determinants with a **double-hurdle framework** (selection into any climate aid; volume conditional on being positive).
+  - Replicates a leading determinants study, swapping only the classification scheme, to isolate how better data change conclusions.
+
+- **Main insights (preliminary)**
+  - **Mitigation finance** follows a more structured, outcome-oriented logic once misclassified projects are removed, with only modest residual roles for historical ties.
+  - **Adaptation finance** shifts decisively toward **recipient vulnerability and governance capacity**, while colonial or linguistic ties become statistically insignificant.  
+
+This chapter demonstrates how **data quality and AI-based classification** fundamentally reshape what we think we know about who receives climate finance, and why.
+
+---
+
+
+### 3. *No Plan, No Aid? The effects of National Adaptation Plan implementation on received adaptation aid*  
+
+This chapter develops an integrated **theoretical and empirical framework** to study how adopting a **National Adaptation Plan (NAP)** affects the volume of **adaptation finance** received. :contentReference[oaicite:3]{index=3}  
+
+- **Theory:**  
+  A recipient–donor model where NAP adoption sends a **two-dimensional signal**: reduced vulnerability but improved institutional capacity. Donors optimally reallocate climate aid across countries in response to this signal, balancing need and merit.
+
+- **Empirics:**  
+  - Uses heterogeneity in **NAP adoption timing** to implement a **staggered DiD** design at the country level.
+  - Exploits detailed adaptation-aid data from the OECD CRS, distinguishing adaptation from other flows.
+  - Decomposes responses by donor type (bilateral, multilateral) and recipient characteristics.
+
+- **Contribution:**  
+  Shows that NAP implementation can **increase received adaptation aid**, clarifying how policy signals interact with donor allocation rules and informing debates on planning requirements and “signals” in climate negotiations.
+
+---
+
+### 4. Mapping need and money: subnational vulnerability, human development, and the shape of climate aid  *(exploratory)*
+
+This is an exploratory project that builds a harmonised **ADM2-level panel** combining subnational climate vulnerability, human development, population, and climate aid disbursements. The aim is to develop a set of **visual diagnostics** for how adaptation and other climate finance are distributed across space, rather than to make causal claims.
+
+- **Data combination**
+  - Physical Vulnerability to Climate Change Index (PVCCI) matched to ADM2 units
+  - Subnational HDI from Global Data Lab, spatially intersected with ADM2 boundaries
+  - WorldPop population rasters
+  - Geocoded, ClimateFinanceBERT-tagged adaptation projects aggregated to ADM2
+
+- **Visual tools**
+  - Population-weighted **world cartograms** coloured by vulnerability, highlighting where large vulnerable populations live
+  - Inequality decompositions (within vs between countries) of subnational vulnerability
+  - **HDI–PVCCI bivariate maps** showing where adaptation appears at all (coverage) and where per-capita amounts are highest (intensity)
+
+- **Objective**
+  - Provide a **decision-oriented dashboard** on whether adaptation aid tends to align with high vulnerability, high exposure, and low human development at the subnational level.
+  - Serve as a descriptive baseline and proof of concept for future econometric work on targeting and mandate alignment in climate finance.
+
+The project is at a **very preliminary stage**; visuals and code currently function as an internal exploration rather than a polished paper or formal chapter.
 
 ---
 
 ## Data & methods
 
+Across chapters, a common set of **data and methods** underpins the analysis:
+
 ### Geocoded development finance
 
-A core part of my work is to integrate multiple sources of **geocoded development finance**, including:
+- Integration of **GODAD** and other geocoded aid datasets to build donor–recipient–location–year panels.
+- Systematic harmonisation of project locations to **ADM2 boundaries**, with careful treatment of multi-location projects and time-varying exposure.   
 
-- project-level databases with information on location, sector, amounts and timing,  
-- geospatial tools to harmonise project locations to **ADM2** boundaries,  
-- procedures to handle multi-location projects and time-varying exposure.
+### Climate, environmental & vulnerability data
 
-This allows me to build consistent **donor–recipient–location–year panels** suitable for spatial analysis and causal evaluation.
-
-### Climate & environmental data
-
-To capture environmental outcomes and exposure, I rely on:
-
-- gridded emissions proxies (e.g. sectoral emissions, air pollution),  
-- climate and weather data (temperature, rainfall, extremes),  
-- vulnerability and risk indices.
-
-These datasets are merged with project and administrative boundaries to study how finance interacts with **local climate conditions** and **emissions trajectories**.
+- Gridded CO₂ emissions (EDGAR) aggregated to ADM2 polygons. :contentReference[oaicite:7]{index=7}  
+- Climate and weather variables, and vulnerability indicators used to capture exposure and adaptive capacity in allocation and impact analyses.   
 
 ### Causal inference & machine learning
 
-Across projects, I use and combine:
-
-- Modern **difference-in-differences** approaches for staggered policy adoption  
-- Dynamic event-study designs and post-treatment “dose” analyses  
-- **Double machine learning** for high-dimensional controls  
-- **NLP and representation learning** for text classification of project documents
-
-Code is mainly written in **R** and **Python**, with an emphasis on **reproducible pipelines** and open, well-documented workflows.
+- Modern **difference-in-differences** approaches for staggered policy and treatment adoption (e.g. NAPs, first climate project).
+- Dynamic **event-study** designs and **dose–response** analyses to characterise pre-trends and heterogeneous post-treatment paths.   
+- **Double machine learning** and high-dimensional controls for robustness in determinants models. :contentReference[oaicite:10]{index=10}  
+- **NLP / transformers** (ClimateFinanceBERT, BERTopic) for project classification and topic discovery, forming the data backbone of the climate-finance work.   
 
 ---
 
 ## Data, code & replication materials
 
-Whenever possible, I aim to share **replication packages** and **modular code** that can be reused by other researchers.
+I aim to make my research as **reproducible and reusable** as possible:
 
-- Public repositories are available on my [GitHub profile](https://github.com/PierreBeaucoral).  
-- Replication packages for papers will be linked here as they become available.  
+- Public repositories with code, clustering outputs, and classification tools are hosted on my [GitHub profile](https://github.com/PierreBeaucoral). 
+- Replication packages for each chapter (data processing, estimation scripts, and figure code) will be linked here as they become publicly available.
 
-If you are interested in using the datasets or tools developed in my work, or in collaborating on related questions, feel free to [get in touch](/#contact).
+If you are interested in using the datasets or tools developed in this work, or in collaborating on related topics, feel free to [get in touch](/#contact).

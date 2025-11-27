@@ -12,7 +12,7 @@ sections:
       text: |-
         Climate & development economist · Determinants and Causal effects of climate finance.
 
-        I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate and adaptation finance are allocated and what they do on the ground, using geocoded development-finance data, causal-inference methods, and machine learning.
+        I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate finance are allocated and what they do on the ground, using several geocoded and development-finance data, classic statistics, causal-inference methods, and machine learning.
       image:
         filename: hero-academic.png
       cta:

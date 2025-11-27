@@ -79,21 +79,6 @@ sections:
     design:
       columns: '2'
 
-  - block: markdown
-    id: teaching
-    content:
-      title: Teachings 
-      subtitle: Teaching experiences
-      text: |-
-        **Teaching assistant – Introduction to economics**  
-        Undergraduate course (L1, Université Clermont Auvergne, Autumn 2023). Led tutorial sessions covering basic micro and macro concepts, exercises, and exam preparation.
-
-        **Lecturer – R programming for beginners**  
-        18-hour course introducing R for data analysis in the [Economic Policy Management (GPE) training programme](https://ferdi.fr/en/training-ihedd/gpe-program), master/exec level, Autumn 2024. Focus on importing and cleaning data, basic statistics, and data visualisation for economic policy applications.
-    design:
-      view: compact
-      columns: '2'
-
   - block: portfolio
     id: projects
     content:

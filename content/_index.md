@@ -12,7 +12,7 @@ sections:
       text: |-
         Climate & development economist · Determinants and Causal effects of climate finance.
 
-        I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate finance are allocated and what they do on the ground, using several geocoded and development-finance data, classic statistics, causal-inference methods, and machine learning.
+         I’m a development economist in training at CERDI. I spend most of my time debugging my R and Python codes trying to understand where "climate money" goes, what it is for, what it changes locally, and how data and ML can help answer these questions.
       image:
         filename: hero-academic.png
       cta:

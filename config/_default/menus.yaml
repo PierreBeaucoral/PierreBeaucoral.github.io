@@ -29,7 +29,7 @@ main:
     weight: 23
 
   - name: Talks
-    url: '/talks'
+    url: '/event'
     weight: 30
 
   - name: Teachings

@@ -99,16 +99,16 @@ Why it matters (preliminary insights):
 
 ### 3. *No Plan, No Aid? The effects of National Adaptation Plan implementation on received adaptation aid*  
 
-With [Sebastien Marchand]. Here I study whether **adopting a National Adaptation Plan (NAP)** helps countries **attract more adaptation finance**.
+With [Sebastien Marchand](https://pierrebeaucoral.github.io/authors/smarchand/) and [Michael Goujon](https://pierrebeaucoral.github.io/authors/mgoujon/). Here we study whether **adopting a National Adaptation Plan (NAP)** helps countries **attract more adaptation finance**.
 
-What I do (theory):
+What we do (theory):
 
 - Build a simple **recipient–donor model** in which a NAP sends a **two-dimensional signal**:
   - lower vulnerability (countries look better prepared), and  
   - higher institutional capacity (countries look better able to use funds).
 - Show how donors might optimally **reallocate climate aid** across countries in response to this signal, trading off need and merit.
 
-What I do (empirics):
+What we do (empirics):
 
 - Use differences in **NAP adoption timing** to run a **staggered DiD** at the country level.
 - Combine detailed adaptation-aid data from the OECD CRS with NAP information.

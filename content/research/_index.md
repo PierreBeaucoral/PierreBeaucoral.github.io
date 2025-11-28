@@ -99,7 +99,7 @@ Why it matters (preliminary insights):
 
 ### 3. *No Plan, No Aid? The effects of National Adaptation Plan implementation on received adaptation aid*  
 
-Here I study whether **adopting a National Adaptation Plan (NAP)** helps countries **attract more adaptation finance**.
+With [Sebastien Marchand]. Here I study whether **adopting a National Adaptation Plan (NAP)** helps countries **attract more adaptation finance**.
 
 What I do (theory):
 

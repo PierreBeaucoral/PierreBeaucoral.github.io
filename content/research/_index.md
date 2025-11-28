@@ -5,18 +5,27 @@ summary: Research agenda, job market paper, dissertation chapters, and data & me
 date: 2025-01-01
 icon: flask
 ---
-![unnamed 2](https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6)
+<table>
+  <tr>
+    <td style="width: 30%; vertical-align: top; padding-right: 16px;">
+      <img src="https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6"
+           alt="Profile photo"
+           style="max-width: 100%; border-radius: 8px;">
+    </td>
+    <td style="width: 70%; vertical-align: top;">
 
 ## Research agenda
 
-I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD).  
+I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD).  
 My work studies how **climate and adaptation finance** are allocated and what they do on the ground, by combining:
 
-- geocoded development-finance data,  
-- climate and environmental indicators, and  
+- geocoded development-finance data,  
+- climate and environmental indicators, and  
 - modern **causal-inference** and **machine-learning** methods.
 
-Across projects, I focus on how **climate-labelled vs. non-climate finance** and **adaptation planning instruments** (such as National Adaptation Plans) shape aid flows, local emissions trajectories, and vulnerability in low- and middle-income countries. 
+Across projects, I focus on how **climate-labelled vs. non-climate finance** and **adaptation planning instruments** (such as National Adaptation Plans) shape aid flows, local emissions trajectories, and vulnerability in low- and middle-income countries.
+  </tr>
+</table>
 
 ---
 

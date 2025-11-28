@@ -8,11 +8,11 @@ icon: flask
 
 <div style="display: flex; align-items: flex-start; gap: 20px;">
     <div style="flex: 0 0 200px; max-width: 200px;">
-        <img src="https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6" alt="unnamed 2" style="width: 100%; height: auto;">
+        <img src="[https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6](https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6)" alt="Profile Picture" style="width: 100%; height: auto;">
     </div>
     
     <div style="flex-grow: 1;">
-        ## Research agenda
+## Research agenda
 
 I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD).
 My work studies how **climate and adaptation finance** are allocated and what they do on the ground, by combining:
@@ -51,6 +51,7 @@ This paper asks whether climate aid **decarbonizes where it lands**, and how its
   - Night-lights reactions are stronger in mid-brightness ADM2s (more activity) and muted in already bright places, yet CO₂ still rises—pointing to complex links between economic expansion, lighting, and emissions.
 
 Together, the paper provides the first **global, causally identified, subnational assessment** of how climate versus traditional development finance shape local emissions.
+
 ---
 
 ## Dissertation chapters & ongoing projects

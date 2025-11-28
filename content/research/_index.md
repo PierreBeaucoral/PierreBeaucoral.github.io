@@ -19,7 +19,7 @@ icon: flask
 I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD).  
 My work studies how **climate and adaptation finance** are allocated and what they do on the ground, by combining:
 
-- geocoded development-finance data,  
+- development-finance data,  
 - climate and environmental indicators, and  
 - modern **causal-inference** and **machine-learning** methods.
 
@@ -69,9 +69,7 @@ What I do:
 Why it matters:
 
 - The result is a **reusable data tool** that better captures the real content of development projects.
-- It provides the **building blocks** for the rest of the thesis:
-  - feeding into **ClimateFinanceBERT** reclassification,
-  - and improving climate vs. non-climate tagging in later chapters.
+- It provides the **building blocks** for the rest of the thesis.
 - All code and labelled outputs are made available on GitHub to support **replication and adaptation** by other researchers and practitioners.
 
 ---
@@ -103,8 +101,7 @@ With [Sebastien Marchand](https://pierrebeaucoral.github.io/authors/smarchand/) 
 
 What we do (theory):
 
-- Build a simple **recipient–donor model** in which a NAP sends a **two-dimensional signal**:
-  - lower vulnerability (countries look better prepared), and  
+- Build a simple **recipient–donor model** in which a NAP sends a **signal**:
   - higher institutional capacity (countries look better able to use funds).
 - Show how donors might optimally **reallocate climate aid** across countries in response to this signal, trading off need and merit.
 
@@ -125,19 +122,19 @@ Why it matters:
 
 ### 4. *Mapping need and money: subnational vulnerability, human development, and the shape of climate aid*  *(exploratory)*
 
-This exploratory project is about **seeing where need and money meet—or don’t—on the map**.
+This exploratory project with [Paul Vernus](https://pierrebeaucoral.github.io/authors/pvernus/) is about **seeing where need and money meet—or don’t—on the map**.
 
-What I do:
+What we do:
 
 - Build a harmonised **ADM2-level panel** combining:
-  - Physical Vulnerability to Climate Change Index (PVCCI),
+  - Physical Vulnerability to Climate Change Index (PVCCI) to assess exposure to physical shocks,
   - subnational HDI from Global Data Lab,
   - WorldPop population data, and
   - geocoded, ClimateFinanceBERT-tagged **adaptation projects** aggregated to ADM2.
-- Develop a set of visual tools:
-  - **Population-weighted world cartograms** coloured by vulnerability, to highlight where large vulnerable populations live.
+- Develop a set of visual description:
+  - To highlight where large vulnerable populations live.
   - **Inequality decompositions** (within vs. between countries) of subnational vulnerability.
-  - **HDI–PVCCI bivariate maps** showing both where adaptation finance appears at all (coverage) and where per-capita amounts are highest (intensity).
+  - Show both where adaptation finance appears at all (coverage) and where per-capita amounts are highest (intensity).
 
 Why it matters:
 

@@ -5,7 +5,7 @@ summary: Research agenda, job market paper, dissertation chapters, and data & me
 date: 2025-01-01
 icon: flask
 ---
-<img width="1536" height="1024" alt="phd_student" src="https://github.com/user-attachments/assets/93941b56-cbce-4f36-a837-861ac8157681" />
+![unnamed 2](https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6)
 
 ## Research agenda
 

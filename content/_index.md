@@ -8,9 +8,9 @@ sections:
   - block: hero
     demo: false
     content:
-      title: Pierre Beaucoral
+      title: Hi !
       text: |-
-        Climate & development economist · Determinants and Causal effects of climate finance.
+        Welcome to my personnal website!
 
          I am a PhD candidate in Development Economics at CERDI (Université Clermont Auvergne, CNRS, IRD). My research studies how climate finance are allocated and what they do on the ground, using several geocoded and development-finance data, classic statistics, causal-inference methods, and machine learning.
       image:
@@ -25,14 +25,20 @@ sections:
         label: ''
     design:
       background:
-        gradient_end: '#1976d2'
-        gradient_start: '#004ba0'
-        text_color_light: true
+        color: black
+        image:
+          # Add your image background to `assets/media/`.
+          filename: pexels-enginakyurt-1435752.jpg
+          filters:
+            brightness: 1.0
+          size: cover
+          position: center
+          parallax: false
 
   - block: about.biography
     id: about
     content:
-      title: Biography
+      title: About me
       # Choose a user profile to display (a folder name within `content/authors/`)
       username: admin
     design:

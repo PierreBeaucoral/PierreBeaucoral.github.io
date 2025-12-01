@@ -7,9 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pierre Beaucoral">
-<meta name="dcterms.date" content="2025-09-15">
 
-<title>Économétrie L3 — Cheat Sheet (TD1→TD8) – Introduction à l’économétrie — L3 UCA</title>
+<title>Quiz de révision – Introduction à l’économétrie (L3) – Introduction à l’économétrie — L3 UCA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4013,11 +4012,11 @@ window.Quarto = {
 <span class="menu-text">Global slides</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./cheat-sheet.html" aria-current="page"> 
+    <a class="nav-link" href="./cheat-sheet.html"> 
 <span class="menu-text">Cheat sheet</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Quizz.qmd"> 
+    <a class="nav-link active" href="./Quizz.html" aria-current="page"> 
 <span class="menu-text">Revision Quizz</span></a>
   </li>  
 </ul>
@@ -4036,48 +4035,49 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#rappels-mco-ols" id="toc-rappels-mco-ols" class="nav-link active" data-scroll-target="#rappels-mco-ols"><span class="header-section-number">1</span> Rappels MCO (OLS)</a>
+  <li><a href="#notions-de-base" id="toc-notions-de-base" class="nav-link active" data-scroll-target="#notions-de-base"><span class="header-section-number">1</span> 1. Notions de base</a>
   <ul class="collapse">
-  <li><a href="#hypothèses-blue" id="toc-hypothèses-blue" class="nav-link" data-scroll-target="#hypothèses-blue"><span class="header-section-number">1.1</span> Hypothèses (BLUE)</a></li>
-  <li><a href="#interprétations-usuelles" id="toc-interprétations-usuelles" class="nav-link" data-scroll-target="#interprétations-usuelles"><span class="header-section-number">1.2</span> Interprétations usuelles</a></li>
+  <li><a href="#q1-variables-et-échantillon" id="toc-q1-variables-et-échantillon" class="nav-link" data-scroll-target="#q1-variables-et-échantillon"><span class="header-section-number">1.1</span> Q1 – Variables et échantillon</a></li>
   </ul></li>
-  <li><a href="#normalité-jarquebera" id="toc-normalité-jarquebera" class="nav-link" data-scroll-target="#normalité-jarquebera"><span class="header-section-number">2</span> Normalité (Jarque–Bera)</a></li>
-  <li><a href="#hétéroscédasticité" id="toc-hétéroscédasticité" class="nav-link" data-scroll-target="#hétéroscédasticité"><span class="header-section-number">3</span> Hétéroscédasticité</a>
+  <li><a href="#modèle-de-régression-linéaire-simple" id="toc-modèle-de-régression-linéaire-simple" class="nav-link" data-scroll-target="#modèle-de-régression-linéaire-simple"><span class="header-section-number">2</span> 2. Modèle de régression linéaire simple</a>
   <ul class="collapse">
-  <li><a href="#breuschpagan-bp" id="toc-breuschpagan-bp" class="nav-link" data-scroll-target="#breuschpagan-bp"><span class="header-section-number">3.1</span> Breusch–Pagan (BP)</a></li>
-  <li><a href="#white-générique" id="toc-white-générique" class="nav-link" data-scroll-target="#white-générique"><span class="header-section-number">3.2</span> White (générique)</a></li>
+  <li><a href="#q2-interprétation-et-hypothèses" id="toc-q2-interprétation-et-hypothèses" class="nav-link" data-scroll-target="#q2-interprétation-et-hypothèses"><span class="header-section-number">2.1</span> Q2 – Interprétation et hypothèses</a></li>
   </ul></li>
-  <li><a href="#autocorrélation-séries-temporelles" id="toc-autocorrélation-séries-temporelles" class="nav-link" data-scroll-target="#autocorrélation-séries-temporelles"><span class="header-section-number">4</span> Autocorrélation (séries temporelles)</a>
+  <li><a href="#régression-multiple-et-interprétation-des-coefficients" id="toc-régression-multiple-et-interprétation-des-coefficients" class="nav-link" data-scroll-target="#régression-multiple-et-interprétation-des-coefficients"><span class="header-section-number">3</span> 3. Régression multiple et interprétation des coefficients</a>
   <ul class="collapse">
-  <li><a href="#durbinwatson-dw" id="toc-durbinwatson-dw" class="nav-link" data-scroll-target="#durbinwatson-dw"><span class="header-section-number">4.1</span> Durbin–Watson (DW)</a></li>
-  <li><a href="#breuschgodfrey-bg" id="toc-breuschgodfrey-bg" class="nav-link" data-scroll-target="#breuschgodfrey-bg"><span class="header-section-number">4.2</span> Breusch–Godfrey (BG)</a></li>
+  <li><a href="#q3-effets-partiels-et-variables-omises" id="toc-q3-effets-partiels-et-variables-omises" class="nav-link" data-scroll-target="#q3-effets-partiels-et-variables-omises"><span class="header-section-number">3.1</span> Q3 – Effets partiels et variables omises</a></li>
   </ul></li>
-  <li><a href="#stabilité-des-coefficients" id="toc-stabilité-des-coefficients" class="nav-link" data-scroll-target="#stabilité-des-coefficients"><span class="header-section-number">5</span> Stabilité des coefficients</a>
+  <li><a href="#tests-sur-les-coefficients-t-f-intervalles-de-confiance" id="toc-tests-sur-les-coefficients-t-f-intervalles-de-confiance" class="nav-link" data-scroll-target="#tests-sur-les-coefficients-t-f-intervalles-de-confiance"><span class="header-section-number">4</span> 4. Tests sur les coefficients : <span class="math inline">\(t\)</span>, <span class="math inline">\(F\)</span>, intervalles de confiance</a>
   <ul class="collapse">
-  <li><a href="#chow-point-de-rupture-connu" id="toc-chow-point-de-rupture-connu" class="nav-link" data-scroll-target="#chow-point-de-rupture-connu"><span class="header-section-number">5.1</span> Chow (point de rupture <strong>connu</strong>)</a></li>
-  <li><a href="#quandtandrews-point-inconnu" id="toc-quandtandrews-point-inconnu" class="nav-link" data-scroll-target="#quandtandrews-point-inconnu"><span class="header-section-number">5.2</span> Quandt–Andrews (point <strong>inconnu</strong>)</a></li>
+  <li><a href="#q4-tests-sur-les-coefficients" id="toc-q4-tests-sur-les-coefficients" class="nav-link" data-scroll-target="#q4-tests-sur-les-coefficients"><span class="header-section-number">4.1</span> Q4 – Tests sur les coefficients</a></li>
+  <li><a href="#exercice-calculé-non-scoré-automatiquement" id="toc-exercice-calculé-non-scoré-automatiquement" class="nav-link" data-scroll-target="#exercice-calculé-non-scoré-automatiquement"><span class="header-section-number">4.2</span> Exercice calculé (non scoré automatiquement)</a></li>
   </ul></li>
-  <li><a href="#spécification-ramsey-reset" id="toc-spécification-ramsey-reset" class="nav-link" data-scroll-target="#spécification-ramsey-reset"><span class="header-section-number">6</span> Spécification — Ramsey RESET</a></li>
-  <li><a href="#critères-dinformation-sélection" id="toc-critères-dinformation-sélection" class="nav-link" data-scroll-target="#critères-dinformation-sélection"><span class="header-section-number">7</span> Critères d’information (sélection)</a></li>
-  <li><a href="#endogénéité-variables-instrumentales-vi" id="toc-endogénéité-variables-instrumentales-vi" class="nav-link" data-scroll-target="#endogénéité-variables-instrumentales-vi"><span class="header-section-number">8</span> Endogénéité &amp; Variables Instrumentales (VI)</a>
+  <li><a href="#tests-dhypothèses-sur-les-erreurs-hétéroscédasticité-autocorrélation" id="toc-tests-dhypothèses-sur-les-erreurs-hétéroscédasticité-autocorrélation" class="nav-link" data-scroll-target="#tests-dhypothèses-sur-les-erreurs-hétéroscédasticité-autocorrélation"><span class="header-section-number">5</span> 5. Tests d’hypothèses sur les erreurs : hétéroscédasticité &amp; autocorrélation</a>
   <ul class="collapse">
-  <li><a href="#sources-dendogénéité" id="toc-sources-dendogénéité" class="nav-link" data-scroll-target="#sources-dendogénéité"><span class="header-section-number">8.1</span> Sources d’endogénéité</a></li>
-  <li><a href="#sls-dmc-principe" id="toc-sls-dmc-principe" class="nav-link" data-scroll-target="#sls-dmc-principe"><span class="header-section-number">8.2</span> 2SLS / DMC (principe)</a></li>
-  <li><a href="#tests-associés" id="toc-tests-associés" class="nav-link" data-scroll-target="#tests-associés"><span class="header-section-number">8.3</span> Tests associés</a></li>
+  <li><a href="#q5-hétéroscédasticité" id="toc-q5-hétéroscédasticité" class="nav-link" data-scroll-target="#q5-hétéroscédasticité"><span class="header-section-number">5.1</span> Q5 – Hétéroscédasticité</a></li>
+  <li><a href="#q6-autocorrélation" id="toc-q6-autocorrélation" class="nav-link" data-scroll-target="#q6-autocorrélation"><span class="header-section-number">5.2</span> Q6 – Autocorrélation</a></li>
   </ul></li>
-  <li><a href="#règles-de-décision-résumé-express" id="toc-règles-de-décision-résumé-express" class="nav-link" data-scroll-target="#règles-de-décision-résumé-express"><span class="header-section-number">9</span> Règles de décision — résumé express</a></li>
-  <li><a href="#eviews-mémo-commandes-menus" id="toc-eviews-mémo-commandes-menus" class="nav-link" data-scroll-target="#eviews-mémo-commandes-menus"><span class="header-section-number">10</span> EViews — mémo commandes &amp; menus</a></li>
-  <li><a href="#monte-carlo-idée-usage" id="toc-monte-carlo-idée-usage" class="nav-link" data-scroll-target="#monte-carlo-idée-usage"><span class="header-section-number">11</span> Monte Carlo — idée &amp; usage</a></li>
+  <li><a href="#endogénéité-variables-instrumentales-vi" id="toc-endogénéité-variables-instrumentales-vi" class="nav-link" data-scroll-target="#endogénéité-variables-instrumentales-vi"><span class="header-section-number">6</span> 6. Endogénéité &amp; variables instrumentales (VI)</a>
+  <ul class="collapse">
+  <li><a href="#q7-idée-générale" id="toc-q7-idée-générale" class="nav-link" data-scroll-target="#q7-idée-générale"><span class="header-section-number">6.1</span> Q7 – Idée générale</a></li>
+  <li><a href="#cas-exogénéité-de-x-question-ouverte-non-scorée" id="toc-cas-exogénéité-de-x-question-ouverte-non-scorée" class="nav-link" data-scroll-target="#cas-exogénéité-de-x-question-ouverte-non-scorée"><span class="header-section-number">6.2</span> Cas « exogénéité de <span class="math inline">\(x\)</span> » (question ouverte, non scorée)</a></li>
+  </ul></li>
+  <li><a href="#mini-cas-examen-questions-ouvertes-non-scorées" id="toc-mini-cas-examen-questions-ouvertes-non-scorées" class="nav-link" data-scroll-target="#mini-cas-examen-questions-ouvertes-non-scorées"><span class="header-section-number">7</span> 7. Mini-cas « examen » (questions ouvertes, non scorées)</a>
+  <ul class="collapse">
+  <li><a href="#cas-1-salaire-et-éducation" id="toc-cas-1-salaire-et-éducation" class="nav-link" data-scroll-target="#cas-1-salaire-et-éducation"><span class="header-section-number">7.1</span> Cas 1 – Salaire et éducation</a></li>
+  <li><a href="#cas-2-effet-dun-programme-de-formation-sur-lemploi" id="toc-cas-2-effet-dun-programme-de-formation-sur-lemploi" class="nav-link" data-scroll-target="#cas-2-effet-dun-programme-de-formation-sur-lemploi"><span class="header-section-number">7.2</span> Cas 2 – Effet d’un programme de formation sur l’emploi</a></li>
+  <li><a href="#cas-3-tests-de-significativité" id="toc-cas-3-tests-de-significativité" class="nav-link" data-scroll-target="#cas-3-tests-de-significativité"><span class="header-section-number">7.3</span> Cas 3 – Tests de significativité</a></li>
+  </ul></li>
+  <li><a href="#mini-sondages-type-wooclap-pour-la-discussion-en-classe" id="toc-mini-sondages-type-wooclap-pour-la-discussion-en-classe" class="nav-link" data-scroll-target="#mini-sondages-type-wooclap-pour-la-discussion-en-classe"><span class="header-section-number">8</span> 8. Mini-sondages « type Wooclap » (pour la discussion en classe)</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="cheat-sheet.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Économétrie L3 — Cheat Sheet (TD1→TD8)</h1>
-<p class="subtitle lead">Formules, règles de décision, pas-à-pas EViews</p>
+<h1 class="title">Quiz de révision – Introduction à l’économétrie (L3)</h1>
 </div>
 
 
@@ -4091,12 +4091,6 @@ window.Quarto = {
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 15, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -4106,179 +4100,860 @@ window.Quarto = {
 </header>
 
 
-<blockquote class="blockquote">
-<p><strong>But</strong> : Aide-mémoire compact (formules + procédures) couvrant les TD 1→8 : MCO, diagnostics (normalité, hétéroscédasticité, autocorrélation, stabilité), spécification (RESET), sélection de modèle (AIC/SC/HQC), endogénéité &amp; variables instrumentales, tests associés, et un rappel Monte Carlo.</p>
-</blockquote>
-<section id="rappels-mco-ols" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Rappels MCO (OLS)</h1>
-<section id="hypothèses-blue" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="hypothèses-blue"><span class="header-section-number">1.1</span> Hypothèses (BLUE)</h2>
+<style>
+.quiz-intro {
+padding: 1rem 1.2rem;
+margin-bottom: 1.5rem;
+border-left: 4px solid #0d6efd;
+background-color: #f8f9fa;
+border-radius: 0.25rem;
+}
+.question {
+border: 1px solid #dee2e6;
+border-radius: 0.5rem;
+padding: 0.75rem 1rem;
+margin-bottom: 1rem;
+background-color: #ffffff;
+transition: box-shadow 0.2s, border-color 0.2s;
+}
+.question:hover {
+box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.05);
+}
+.question h3 {
+font-size: 1.05rem;
+margin-top: 0;
+}
+.question.correct {
+border-color: #198754;
+background-color: #f0fff5;
+}
+.question.incorrect {
+border-color: #dc3545;
+background-color: #fff5f5;
+}
+.question .badge {
+font-size: 0.75rem;
+margin-left: 0.3rem;
+}
+#quiz-score-box {
+margin-top: 1.5rem;
+padding: 0.75rem 1rem;
+border-radius: 0.5rem;
+background-color: #f8f9fa;
+border: 1px solid #dee2e6;
+}
+.quiz-buttons {
+margin-top: 1rem;
+display: flex;
+gap: 0.5rem;
+flex-wrap: wrap;
+}
+.quiz-poll {
+border-left: 4px solid #6610f2;
+background-color: #f5f0ff;
+padding: 0.75rem 1rem;
+margin: 1rem 0;
+border-radius: 0.5rem;
+}
+</style>
+<script>
+// Simple quiz engine (no external library)
+
+// Utility: compare two string arrays (order-insensitive)
+function arraysEqual(a, b) {
+  if (a.length !== b.length) return false;
+  const as = [...a].sort();
+  const bs = [...b].sort();
+  for (let i = 0; i < as.length; i++) {
+    if (as[i] !== bs[i]) return false;
+  }
+  return true;
+}
+
+function gradeQuiz() {
+  const questions = document.querySelectorAll('.question[data-qtype]');
+  let total = 0;
+  let correct = 0;
+
+  questions.forEach(q => {
+    const qtype = q.dataset.qtype || "single";
+    const qid   = q.dataset.qid   || "";
+    const inputs = q.querySelectorAll('input[type=radio], input[type=checkbox]');
+    if (inputs.length === 0) return;
+
+    const correctIdx = [];
+    const chosenIdx  = [];
+
+    inputs.forEach((inp, idx) => {
+      if (inp.dataset.correct === "true") {
+        correctIdx.push(String(idx));
+      }
+      if (inp.checked) {
+        chosenIdx.push(String(idx));
+      }
+    });
+
+    if (correctIdx.length === 0) return; // skip unscored
+
+    total += 1;
+
+    const ok = arraysEqual(correctIdx, chosenIdx);
+    q.classList.remove('correct', 'incorrect');
+    if (ok) {
+      q.classList.add('correct');
+      correct += 1;
+    } else {
+      q.classList.add('incorrect');
+    }
+  });
+
+  const scoreBox = document.getElementById('quiz-score-box');
+  if (total === 0) {
+    scoreBox.innerHTML = "<strong>Aucune question scorée trouvée.</strong>";
+  } else {
+    const percent = Math.round(100 * correct / total);
+    scoreBox.innerHTML = `
+      <strong>Score :</strong> ${correct} / ${total} (${percent} %)
+      <br><small>Les questions en vert sont correctes, celles en rouge sont à retravailler.</small>
+    `;
+  }
+}
+
+function resetQuiz() {
+  const questions = document.querySelectorAll('.question[data-qtype]');
+  questions.forEach(q => {
+    q.classList.remove('correct', 'incorrect');
+    const inputs = q.querySelectorAll('input[type=radio], input[type=checkbox]');
+    inputs.forEach(inp => inp.checked = false);
+  });
+  const scoreBox = document.getElementById('quiz-score-box');
+  scoreBox.innerHTML = "<em>Score non calculé.</em>";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const btnGrade = document.getElementById('btn-grade');
+  const btnReset = document.getElementById('btn-reset');
+  if (btnGrade) btnGrade.addEventListener('click', gradeQuiz);
+  if (btnReset) btnReset.addEventListener('click', resetQuiz);
+});
+</script>
+<div class="quiz-intro">
+<p><strong>Objectif :</strong> quiz de 2h pour réviser <em>Introduction à l’économétrie</em> en vue de l’examen (questions de cours + applications, <strong>sans EViews</strong>).</p>
 <ul>
-<li>Linéarité en paramètres ; échantillonnage i.i.d.</li>
-<li><strong>Exogénéité</strong> : <span class="math inline">\(\mathrm{Cov}(X,\varepsilon)=0\)</span>.</li>
-<li><strong>Homoscedasticité</strong> : <span class="math inline">\(\mathrm{Var}(\varepsilon_i)=\sigma^2\)</span>.</li>
-<li><strong>Indépendance sérielle</strong> : <span class="math inline">\(\mathrm{Cov}(\varepsilon_i,\varepsilon_j)=0\)</span> (séries <span class="math inline">\(t\)</span>).</li>
-<li>Normalité (utile surtout <strong>en petit</strong> <span class="math inline">\(N\)</span> pour l’inférence exacte t/F).</li>
+<li>Coche les réponses directement dans la page.</li>
+<li>Clique sur <strong>« Corriger le quiz »</strong> pour voir ton score global.</li>
+<li>Les encadrés verts = bonnes réponses ; rouges = à retravailler.</li>
+<li>Certains exercices (calculs, mini-études de cas, tests sur les erreurs, IV) ne sont <strong>pas</strong> scorés automatiquement : entraîne-toi comme pour l’examen.</li>
 </ul>
-<p><strong>Conséquences</strong><br>
-Sans normalité, OLS reste sans biais &amp; convergent (sous exogénéité), mais <strong>t/F</strong> peuvent être mal calibrés (risque de 1ʳᵉ espèce ↑/↓).</p>
-</section>
-<section id="interprétations-usuelles" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="interprétations-usuelles"><span class="header-section-number">1.2</span> Interprétations usuelles</h2>
-<ul>
-<li><span class="math inline">\(y\)</span> en log, <span class="math inline">\(x\)</span> en niveau : <span class="math inline">\(\beta_k \approx 100 \times \Delta\%\, y\)</span> pour +1 unité de <span class="math inline">\(x_k\)</span> (si <span class="math inline">\(|\beta_k|\)</span> petit).</li>
-<li>Muette <span class="math inline">\(D\)</span> : effet % <span class="math inline">\(\approx 100\times(\exp(\beta_D)-1)\)</span>.</li>
-</ul>
-</section>
-</section>
-<section id="normalité-jarquebera" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Normalité (Jarque–Bera)</h1>
-<p><strong>Statistique</strong> : <span class="math inline">\(JB = N\left(\frac{\eta^2}{6} + \frac{(\nu-3)^2}{24}\right)\ \sim\ \chi^2(2)\)</span> sous <span class="math inline">\(H_0\)</span>.<br>
-Où <strong>skewness</strong> <span class="math inline">\(\eta=0\)</span> et <strong>kurtosis</strong> <span class="math inline">\(\nu=3\)</span> sous normalité.</p>
-<p><strong>Décision (5%)</strong> : Rejeter <span class="math inline">\(H_0\)</span> si <span class="math inline">\(JB&gt;5{.}991\)</span> (ou <em>p</em> &lt; 0,05).</p>
-<p><strong>À faire si rejet</strong> :<br>
-outliers, re‑spécification (non‑linéarités, interactions, logs), <strong>ET</strong> rapporter des <strong>SE robustes</strong> (White/HAC).</p>
-<p><strong>EViews</strong> : <em>View → Residual Diagnostics → Histogram–Normality (JB)</em>.</p>
-</section>
-<section id="hétéroscédasticité" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Hétéroscédasticité</h1>
-<section id="breuschpagan-bp" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="breuschpagan-bp"><span class="header-section-number">3.1</span> Breusch–Pagan (BP)</h2>
-<p>Régression auxiliaire : <span class="math inline">\(\hat\varepsilon_i^2 = \theta_0 + \theta&#39;Z_i + \omega_i\)</span>.<br>
-Statistique : <span class="math inline">\(BP = N \times R^2 \sim \chi^2(K_z)\)</span> (où <span class="math inline">\(K_z\)</span> = nb de <span class="math inline">\(Z\)</span>).<br>
-<strong>Décision</strong> : Rejeter <span class="math inline">\(H_0\)</span> (variance constante) si <span class="math inline">\(BP\)</span> &gt; seuil.</p>
-</section>
-<section id="white-générique" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="white-générique"><span class="header-section-number">3.2</span> White (générique)</h2>
-<p>Inclure <span class="math inline">\(Z\)</span>, interactions et carrés (<span class="math inline">\(Z, Z^2, Z_iZ_j\)</span>).<br>
-Statistique : <span class="math inline">\(W = N \times R^2 \sim \chi^2(K-1)\)</span>.<br>
-Version petits échantillons : <strong>F-test</strong> sur la régression auxiliaire.</p>
-<p><strong>EViews</strong> : <em>View → Residual Diagnostics → Heteroskedasticity Tests → BP/White</em>.<br>
-<strong>Correction</strong> : <em>Estimate → Options → Coefficient covariance = White</em> (ou HAC).</p>
-</section>
-</section>
-<section id="autocorrélation-séries-temporelles" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Autocorrélation (séries temporelles)</h1>
-<section id="durbinwatson-dw" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="durbinwatson-dw"><span class="header-section-number">4.1</span> Durbin–Watson (DW)</h2>
-<p><span class="math inline">\(DW=\sum_{t=2}^T(\hat\varepsilon_t-\hat\varepsilon_{t-1})^2\big/\sum_{t=1}^T\hat\varepsilon_t^2 \approx 2(1-\hat\rho)\)</span>.<br>
-Tableaux <span class="math inline">\(D_L, D_U\)</span> → zones : rejet (+), incertitude, acceptation, rejet (−).<br>
-Limites : constante requise, pas de <span class="math inline">\(y_{t-1}\)</span> comme régresseur, AR(1) seulement.</p>
-</section>
-<section id="breuschgodfrey-bg" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="breuschgodfrey-bg"><span class="header-section-number">4.2</span> Breusch–Godfrey (BG)</h2>
-<p>Régression : <span class="math inline">\(\hat\varepsilon_t=\rho_1\hat\varepsilon_{t-1}+\cdots+\rho_p\hat\varepsilon_{t-p}+Z_t&#39;\theta+\omega_t\)</span>.<br>
-Statistique : <span class="math inline">\(BG = T\times R^2 \sim \chi^2(p)\)</span>.</p>
-<p><strong>EViews</strong> : <em>View → Residual Diagnostics → Serial Correlation LM test</em>.<br>
-<strong>Correction</strong> : HAC (Newey–West) ou modéliser ARMA des erreurs / Cochrane–Orcutt.</p>
-</section>
-</section>
-<section id="stabilité-des-coefficients" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Stabilité des coefficients</h1>
-<section id="chow-point-de-rupture-connu" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="chow-point-de-rupture-connu"><span class="header-section-number">5.1</span> Chow (point de rupture <strong>connu</strong>)</h2>
-<p>Trois régressions (avant, après, complet).<br>
-Statistique : <span class="math inline">\(CH=\dfrac{SCR_t-(SCR_1+SCR_2)}{SCR_1+SCR_2}\times\dfrac{N-2K}{K}\ \leadsto F(K,N-2K)\)</span>.<br>
-<strong>Attention</strong> : hypothèse d’homoscedasticité.</p>
-</section>
-<section id="quandtandrews-point-inconnu" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="quandtandrews-point-inconnu"><span class="header-section-number">5.2</span> Quandt–Andrews (point <strong>inconnu</strong>)</h2>
-<p>Calculer le test de Chow pour toutes ruptures admissibles, retenir la <strong>plus défavorable</strong> (QLR/sup‑Wald).<br>
-<strong>EViews</strong> : <em>View → Stability Diagnostics → Quandt-Andrews Breakpoint Test</em>.<br>
-Pratique : <strong>trier</strong> les données selon la variable “candidate rupture” avant test.</p>
-<p><strong>Solutions si instabilité</strong> : sous‑échantillons ; muettes + interactions ; exclusion outliers (avec prudence).</p>
-</section>
-</section>
-<section id="spécification-ramsey-reset" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Spécification — Ramsey RESET</h1>
-<p>Comparer modèle restreint et modèle enrichi :<br>
-<span class="math inline">\(H_0:\)</span> pas de terme manquant détectable vs <span class="math inline">\(H_1:\)</span> besoin de <span class="math inline">\(\hat y^2,\hat y^3,\dots\)</span> (ou <span class="math inline">\(x^2\)</span>, interactions).<br>
-Test <strong>F</strong> sur <span class="math inline">\((\delta_1,\delta_2,\dots)=0\)</span>.<br>
-<strong>EViews</strong> : <em>View → Stability/Specification → Ramsey RESET</em> (polynôme d’ordre 3–4 usuel).</p>
-</section>
-<section id="critères-dinformation-sélection" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Critères d’information (sélection)</h1>
-<ul>
-<li><span class="math inline">\(AIC=\ln(SCR/N)+\frac{2K}{N}\)</span></li>
-<li><span class="math inline">\(SC=\ln(SCR/N)+\frac{K\ln N}{N}\)</span></li>
-<li><span class="math inline">\(HQC=\ln(SCR/N)+\frac{2K\ln\ln N}{N}\)</span></li>
-</ul>
-<p><strong>Règle</strong> : <strong>minimiser</strong> (à spécification économiquement sensée).<br>
-<strong>EViews</strong> : visibles dans le tableau d’estimation et <em>View → Lag Length Criteria</em> (VAR).</p>
-</section>
-<section id="endogénéité-variables-instrumentales-vi" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Endogénéité &amp; Variables Instrumentales (VI)</h1>
-<section id="sources-dendogénéité" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="sources-dendogénéité"><span class="header-section-number">8.1</span> Sources d’endogénéité</h2>
-<ul>
-<li><strong>Variable omise</strong> corrélée à <span class="math inline">\(X\)</span></li>
-<li><strong>Causalité inverse</strong> (<span class="math inline">\(Y \leftrightarrow X\)</span>)</li>
-<li><strong>Erreur de mesure</strong> sur <span class="math inline">\(X\)</span> (biais d’atténuation)</li>
-</ul>
-</section>
-<section id="sls-dmc-principe" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="sls-dmc-principe"><span class="header-section-number">8.2</span> 2SLS / DMC (principe)</h2>
-<p>1ʳᵉ étape : <span class="math inline">\(X = \pi_0+\pi_1 Z + W&#39;\pi + v \Rightarrow \hat X\)</span>.<br>
-2ᵉ étape : <span class="math inline">\(Y=\beta_0+\beta_1\hat X + W&#39;\gamma + u\)</span> (SE adaptés 2SLS).</p>
-<p><strong>Conditions</strong> pour <span class="math inline">\(Z\)</span> :</p>
-<ul>
-<li><p><strong>Pertinence</strong> (<span class="math inline">\(\mathrm{Cov}(Z,X)\neq 0\)</span>) → <strong>F‑stat 1ʳᵉ étape &gt; 10</strong> (règle pratique).</p></li>
-<li><p><strong>Exogénéité exclue</strong> (<span class="math inline">\(\mathrm{Cov}(Z,u)=0\)</span>).</p></li>
-</ul>
-<p><strong>EViews</strong> : <em>Estimate → Method: TSLS/IV</em> ; lister endogènes &amp; instruments.</p>
-</section>
-<section id="tests-associés" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="tests-associés"><span class="header-section-number">8.3</span> Tests associés</h2>
-<ul>
-<li><strong>Faiblesse des instruments</strong> : F 1ʳᵉ étape (règle &gt;10).</li>
-<li><strong>Sur‑identification</strong> (si <span class="math inline">\(q&gt;p\)</span>) : <strong>Sargan</strong> (homo) / <strong>Hansen‑J</strong> (robuste) <span class="math inline">\(\sim \chi^2(q-p)\)</span>.</li>
-<li><strong>Nécessité d’instrumenter</strong> : <strong>Durbin–Wu–Hausman (DWH)</strong> :<br>
-<span class="math inline">\(H_0\)</span> : OLS non biaisé (<span class="math inline">\(\beta^{OLS}\approx\beta^{IV}\)</span>).</li>
-</ul>
-<p><strong>EViews</strong> : <em>View → IV Diagnostics and Tests → Weak/Orthogonality/Endogeneity</em>.</p>
-</section>
-</section>
-<section id="règles-de-décision-résumé-express" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Règles de décision — résumé express</h1>
-<ul>
-<li><strong>JB</strong> : rejeter si <span class="math inline">\(JB&gt;5.991\)</span> (5 %).</li>
-<li><strong>BP/White</strong> : rejeter si <span class="math inline">\(N R^2\)</span> &gt; seuil <span class="math inline">\(\chi^2\)</span> ; sinon SE robustes.</li>
-<li><strong>DW/BG</strong> : autocorrélation si DW hors bande / <span class="math inline">\(BG&gt;\chi^2(p)\)</span>.</li>
-<li><strong>Chow/QA</strong> : rejet → instabilité ; utiliser interactions/sous‑échantillons.</li>
-<li><strong>RESET</strong> : rejet → re‑spécifier (non‑linéarités, interactions, logs).</li>
-<li><strong>2SLS</strong> : vérifier F&gt;10 (1ʳᵉ étape) ; Hansen‑J ok ; DWH indique si OLS biaisé.</li>
-</ul>
-</section>
-<section id="eviews-mémo-commandes-menus" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> EViews — mémo commandes &amp; menus</h1>
-<ul>
-<li><strong>Estimation OLS</strong> : <code>ls y c X1 X2 ...</code></li>
-<li><strong>TSLS/IV</strong> : <em>Quick → Estimate Equation → Method: TSLS</em>
-<ul>
-<li><em>Endogenous list</em> : variables endogènes</li>
-<li><em>Instrument list</em> : instruments (ajouter contrôles exogènes)</li>
-</ul></li>
-<li><strong>Normalité</strong> : <em>View → Residual Diagnostics → Histogram–Normality</em></li>
-<li><strong>Hétéroscédasticité</strong> : <em>… → Heteroskedasticity Tests → BP / White</em></li>
-<li><strong>Autocorrélation</strong> : <em>… → Serial Correlation LM test (BG)</em></li>
-<li><strong>Stabilité</strong> : <em>View → Stability Diagnostics → Chow / Quandt‑Andrews</em></li>
-<li><strong>RESET</strong> : <em>View → Specification Tests → Ramsey RESET</em></li>
-<li><strong>SE robustes</strong> : <em>Estimate → Options → Covariance Matrix: White/HAC</em></li>
-</ul>
-</section>
-<section id="monte-carlo-idée-usage" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Monte Carlo — idée &amp; usage</h1>
-<ul>
-<li><strong>Principe</strong> : simuler de multiples échantillons à partir d’un modèle fixé (paramètres “vrais”), estimer à chaque réplication, <strong>observer</strong> distribution empirique des estimateurs (biais, variance).</li>
-<li><strong>Utilité</strong> : visualiser convergence (LLN), robustesse des tests, impact de la loi des erreurs.</li>
-<li><strong>Exemple minimal (pseudo‑code)</strong> :
-<ol type="1">
-<li>Pour <span class="math inline">\(r=1..R\)</span>: générer <span class="math inline">\((x_i,\varepsilon_i)\)</span>, <span class="math inline">\(y_i=\alpha+\beta x_i+\varepsilon_i\)</span>, estimer <span class="math inline">\(\hat\beta_r\)</span>.</li>
-<li>Inspecter moyenne/variance de <span class="math inline">\(\{\hat\beta_r\}\)</span>.</li>
-</ol></li>
-</ul>
+</div>
+<div class="quiz-buttons">
+<button id="btn-grade" type="button" class="btn btn-primary">
+<p>Corriger le quiz</p>
+</button>
+<button id="btn-reset" type="button" class="btn btn-outline-secondary">
+<p>Réinitialiser</p>
+</button>
+</div>
+<div id="quiz-score-box">
+<p><em>Score non calculé.</em></p>
+</div>
 <hr>
-<p><strong>Astuce exam</strong> : toujours vérifier <em>exogénéité</em>, regarder <em>résidus</em> (plots + tests), rapporter <strong>SE robustes</strong> si doute, et motiver les choix par <strong>économie</strong> + <strong>diagnostics</strong>.</p>
+<section id="notions-de-base" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="notions-de-base"><span class="header-section-number">1</span> 1. Notions de base</h2>
+<section id="q1-variables-et-échantillon" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="q1-variables-et-échantillon"><span class="header-section-number">1.1</span> Q1 – Variables et échantillon</h3>
+<div class="question" data-qid="q1" data-qtype="single">
+<h3 class="anchored">
+Q1.1 – Comment définir une variable expliquée (dépendante) dans un modèle de régression ?
+</h3>
+<p><label> <input type="radio" name="q1"> C’est la variable qui cause toujours toutes les autres. </label><br></p>
+<p><label> <input type="radio" name="q1" data-correct="true"> C’est la variable dont on cherche à expliquer la variation à l’aide d’autres variables. </label><br></p>
+<p><label> <input type="radio" name="q1"> C’est n’importe quelle variable binaire. </label><br></p>
+<p><label> <input type="radio" name="q1"> C’est la variable qui a le plus de variance dans l’échantillon. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>La variable expliquée (ou dépendante) est celle dont on cherche à modéliser la variation en fonction des variables explicatives (ou régressseurs).<br>
+Par exemple, le salaire en fonction du niveau d’éducation, de l’expérience, etc.</p>
+</details>
+</div>
+<div class="question" data-qid="q2" data-qtype="single">
+<h3 class="anchored">
+Q1.2 – Qu’est-ce qu’un estimateur sans biais ?
+</h3>
+<p><label> <input type="radio" name="q2" data-correct="true"> Un estimateur dont l’espérance est égale à la vraie valeur du paramètre. </label><br></p>
+<p><label> <input type="radio" name="q2"> Un estimateur qui donne forcément la vraie valeur dans l’échantillon observé. </label><br></p>
+<p><label> <input type="radio" name="q2"> Un estimateur qui a la plus petite variance possible. </label><br></p>
+<p><label> <input type="radio" name="q2"> Un estimateur toujours positif. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Un estimateur <span class="math inline">\(\hat\theta\)</span> est <strong>sans biais</strong> si <span class="math inline">\(\mathbb E[\hat\theta] = \theta\)</span>, où <span class="math inline">\(\theta\)</span> est le vrai paramètre à estimer.<br>
+Cela ne veut pas dire que dans un échantillon donné, <span class="math inline">\(\hat\theta = \theta\)</span>, mais qu’en moyenne (sur des échantillons répétés), l’estimateur « vise juste ».</p>
+</details>
+</div>
+<div class="question" data-qid="q3" data-qtype="single">
+<h3 class="anchored">
+Q1.3 – Erreur de mesure classique sur la variable expliquée <span class="math inline">\(Y\)</span>
+</h3>
+<p>On observe <span class="math inline">\(Y^{obs} = Y + u\)</span>, où <span class="math inline">\(u\)</span> est un bruit de mesure indépendant de tout. Que se passe-t-il pour l’estimation MCO (OLS) d’un modèle linéaire ?</p>
+<p><label> <input type="radio" name="q3" data-correct="true"> Les coefficients OLS restent sans biais mais les erreurs standards sont plus grandes. </label><br></p>
+<p><label> <input type="radio" name="q3"> Les coefficients OLS sont biaisés vers zéro. </label><br></p>
+<p><label> <input type="radio" name="q3"> Les coefficients OLS sont biaisés sans direction claire. </label><br></p>
+<p><label> <input type="radio" name="q3"> Le modèle ne peut pas être estimé par OLS. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Une erreur de mesure <strong>classique</strong> sur <span class="math inline">\(Y\)</span> ajoute du bruit au côté gauche mais n’introduit pas de corrélation entre les régressseurs et l’erreur.<br>
+Les MCO restent donc sans biais mais moins précis (variance plus grande).</p>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="modèle-de-régression-linéaire-simple" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="modèle-de-régression-linéaire-simple"><span class="header-section-number">2</span> 2. Modèle de régression linéaire simple</h2>
+<p>Considère le modèle :<br>
+<span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_i + u_i.
+\]</span></p>
+<section id="q2-interprétation-et-hypothèses" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="q2-interprétation-et-hypothèses"><span class="header-section-number">2.1</span> Q2 – Interprétation et hypothèses</h3>
+<div class="question" data-qid="q4" data-qtype="single">
+<h3 class="anchored">
+Q2.1 – Interprétation de <span class="math inline">\(\beta_1\)</span>
+</h3>
+<p><label> <input type="radio" name="q4"> La valeur de <span class="math inline">\(Y\)</span> lorsque <span class="math inline">\(X=0\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q4" data-correct="true"> La variation moyenne de <span class="math inline">\(Y\)</span> associée à une augmentation d’une unité de <span class="math inline">\(X\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q4"> La corrélation entre <span class="math inline">\(X\)</span> et <span class="math inline">\(Y\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q4"> La variance de <span class="math inline">\(Y\)</span>. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Dans un modèle linéaire simple, <span class="math inline">\(\beta_1\)</span> mesure la <strong>pente</strong> de la relation moyenne entre <span class="math inline">\(Y\)</span> et <span class="math inline">\(X\)</span> :<br>
+une augmentation d’une unité de <span class="math inline">\(X\)</span> est associée à une variation moyenne de <span class="math inline">\(\beta_1\)</span> unités de <span class="math inline">\(Y\)</span>.</p>
+</details>
+</div>
+<div class="question" data-qid="q5" data-qtype="multiple">
+<h3 class="anchored">
+Q2.2 – Quelles hypothèses sont nécessaires pour obtenir un estimateur MCO sans biais de <span class="math inline">\(\beta_1\)</span> ? (plusieurs réponses)
+</h3>
+<p><label> <input type="checkbox"> Les erreurs <span class="math inline">\(u_i\)</span> suivent une loi normale. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> <span class="math inline">\(\mathbb E[u_i \mid X_i] = 0\)</span>. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Il existe de la variation dans <span class="math inline">\(X_i\)</span> (pas de constante parfaite). </label><br></p>
+<p><label> <input type="checkbox"> La taille d’échantillon <span class="math inline">\(n\)</span> est supérieure à 1000. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> <span class="math inline">\(\{(X_i, Y_i)\}\)</span> sont i.i.d. (indépendants et identiquement distribués). </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Pour l’absence de biais en MCO, on a besoin notamment de : - <strong>Exogénéité conditionnelle</strong> : <span class="math inline">\(\mathbb E[u_i \mid X_i] = 0\)</span> ; - <strong>Variation dans</strong> <span class="math inline">\(X\)</span> (pas de colinéarité parfaite) ; - <strong>Échantillon i.i.d.</strong> dans la plupart des cadres.</p>
+<p>La normalité des erreurs n’est pas nécessaire pour le <strong>sans biais</strong> (elle sert plutôt pour certains résultats exacts en petits échantillons).</p>
+</details>
+</div>
+<div class="question" data-qid="q6" data-qtype="single">
+<h3 class="anchored">
+Q2.3 – Coefficient de détermination <span class="math inline">\(R^2\)</span>
+</h3>
+<p><label> <input type="radio" name="q6"> C’est la corrélation entre <span class="math inline">\(Y\)</span> et <span class="math inline">\(\hat Y\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q6"> C’est la variance de <span class="math inline">\(Y\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q6" data-correct="true"> C’est la part de la variance de <span class="math inline">\(Y\)</span> expliquée par le modèle. </label><br></p>
+<p><label> <input type="radio" name="q6"> C’est la pente de la droite de régression. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Le <span class="math inline">\(R^2\)</span> est défini comme : <span class="math display">\[
+R^2 = \frac{\text{SCR}}{\text{SCT}} = 1 - \frac{\text{SCE}}{\text{SCT}},
+\]</span> c’est-à-dire la fraction de la variance totale de <span class="math inline">\(Y\)</span> expliquée par la régression.</p>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="régression-multiple-et-interprétation-des-coefficients" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="régression-multiple-et-interprétation-des-coefficients"><span class="header-section-number">3</span> 3. Régression multiple et interprétation des coefficients</h2>
+<p>On considère maintenant : <span class="math display">\[
+Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + u_i.
+\]</span></p>
+<section id="q3-effets-partiels-et-variables-omises" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="q3-effets-partiels-et-variables-omises"><span class="header-section-number">3.1</span> Q3 – Effets partiels et variables omises</h3>
+<div class="question" data-qid="q7" data-qtype="single">
+<h3 class="anchored">
+Q3.1 – Interprétation de <span class="math inline">\(\beta_1\)</span> dans une régression multiple
+</h3>
+<p><label> <input type="radio" name="q7" data-correct="true"> C’est l’effet moyen sur <span class="math inline">\(Y\)</span> d’une augmentation d’une unité de <span class="math inline">\(X_1\)</span> en maintenant les autres régressseurs constants. </label><br></p>
+<p><label> <input type="radio" name="q7"> C’est la corrélation simple entre <span class="math inline">\(X_1\)</span> et <span class="math inline">\(Y\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q7"> C’est la covariance entre <span class="math inline">\(X_1\)</span> et <span class="math inline">\(X_2\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q7"> C’est le changement moyen de <span class="math inline">\(X_2\)</span> quand <span class="math inline">\(X_1\)</span> augmente d’une unité. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Dans une régression multiple, <span class="math inline">\(\beta_1\)</span> mesure un <strong>effet partiel</strong> : la variation de <span class="math inline">\(Y\)</span> lorsque <span class="math inline">\(X_1\)</span> augmente, toutes choses égales par ailleurs (c’est-à-dire à <span class="math inline">\(X_2\)</span> fixé).</p>
+</details>
+</div>
+<div class="question" data-qid="q8" data-qtype="multiple">
+<h3 class="anchored">
+Q3.2 – Biais de variable omise (plusieurs réponses)
+</h3>
+<p>On omet une variable <span class="math inline">\(Z\)</span> pertinente. Dans quelles situations le coefficient estimé <span class="math inline">\(\tilde\beta_1\)</span> sur <span class="math inline">\(X_1\)</span> est-il biaisé ?</p>
+<p><label> <input type="checkbox" data-correct="true"> Quand <span class="math inline">\(Z\)</span> est corrélée avec <span class="math inline">\(X_1\)</span> et a un effet causal sur <span class="math inline">\(Y\)</span>. </label><br></p>
+<p><label> <input type="checkbox"> Quand <span class="math inline">\(Z\)</span> est complètement indépendante de <span class="math inline">\(X_1\)</span>. </label><br></p>
+<p><label> <input type="checkbox"> Quand <span class="math inline">\(Z\)</span> n’a aucun effet sur <span class="math inline">\(Y\)</span>. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Quand <span class="math inline">\(Z\)</span> capture un facteur confondant commun à <span class="math inline">\(X_1\)</span> et <span class="math inline">\(Y\)</span>. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Le <strong>biais de variable omise</strong> apparaît quand la variable manquante : - a un effet sur <span class="math inline">\(Y\)</span> et - est corrélée avec <span class="math inline">\(X_1\)</span>.</p>
+<p>Dans ce cas, l’effet de <span class="math inline">\(Z\)</span> est « absorbé » dans le coefficient de <span class="math inline">\(X_1\)</span>, qui devient biaisé.</p>
+</details>
+</div>
+<div class="question" data-qid="q9" data-qtype="single">
+<h3 class="anchored">
+Q3.3 – Multicolinéarité parfaite
+</h3>
+<p><label> <input type="radio" name="q9" data-correct="true"> Se produit lorsque l’un des régressseurs est une combinaison linéaire exacte des autres. </label><br></p>
+<p><label> <input type="radio" name="q9"> Se produit lorsque les erreurs sont corrélées dans le temps. </label><br></p>
+<p><label> <input type="radio" name="q9"> Se produit lorsque <span class="math inline">\(Y\)</span> suit une loi normale. </label><br></p>
+<p><label> <input type="radio" name="q9"> Est nécessaire pour identifier le modèle. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>La multicolinéarité parfaite (par ex. <span class="math inline">\(X_3 = 2X_1 + X_2\)</span> pour toutes les observations) empêche l’inversion de <span class="math inline">\(X&#39;X\)</span>.<br>
+Le logiciel ne peut alors pas estimer tous les coefficients ; il en « enlève » au moins un.</p>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="tests-sur-les-coefficients-t-f-intervalles-de-confiance" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="tests-sur-les-coefficients-t-f-intervalles-de-confiance"><span class="header-section-number">4</span> 4. Tests sur les coefficients : <span class="math inline">\(t\)</span>, <span class="math inline">\(F\)</span>, intervalles de confiance</h2>
+<section id="q4-tests-sur-les-coefficients" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="q4-tests-sur-les-coefficients"><span class="header-section-number">4.1</span> Q4 – Tests sur les coefficients</h3>
+<div class="question" data-qid="q10" data-qtype="single">
+<h3 class="anchored">
+Q4.1 – Statistique de test <span class="math inline">\(t\)</span> pour <span class="math inline">\(H_0 : \beta_j = 0\)</span>
+</h3>
+<p><label> <input type="radio" name="q10" data-correct="true"> <span class="math inline">\(t = \dfrac{\hat\beta_j - 0}{\text{se}(\hat\beta_j)}\)</span> </label><br></p>
+<p><label> <input type="radio" name="q10"> <span class="math inline">\(t = \dfrac{\hat\beta_j}{\hat\sigma^2}\)</span> </label><br></p>
+<p><label> <input type="radio" name="q10"> <span class="math inline">\(t = \dfrac{\hat\beta_j}{n}\)</span> </label><br></p>
+<p><label> <input type="radio" name="q10"> <span class="math inline">\(t = \dfrac{\hat\beta_j - 1}{\text{se}(\hat\beta_j)}\)</span> </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Pour tester <span class="math inline">\(H_0 : \beta_j = 0\)</span>, on utilise : <span class="math display">\[
+t = \frac{\hat\beta_j - 0}{\text{se}(\hat\beta_j)}.
+\]</span> On compare ensuite <span class="math inline">\(|t|\)</span> à la <strong>valeur tabulée</strong> <span class="math inline">\(t^{*}_{\alpha/2,\ \text{ddl}}\)</span> (par exemple au seuil de 5 %, avec les degrés de liberté adaptés).<br>
+Si <span class="math inline">\(|t| &gt; t^{*}\)</span>, on rejette <span class="math inline">\(H_0\)</span> ; sinon, on ne la rejette pas.</p>
+</details>
+</div>
+<div class="question" data-qid="q11" data-qtype="single">
+<h3 class="anchored">
+Q4.2 – Règle de décision avec la table de Student (seuil 5 %)
+</h3>
+<p>On teste <span class="math inline">\(H_0 : \beta_1 = 0\)</span> dans un modèle avec 100 observations et 4 coefficients estimés (constante incluse). On obtient <span class="math inline">\(t = 2{,}30\)</span>.</p>
+<p>On rappelle que la valeur tabulée à 5 % (bilatéral) pour environ 96 degrés de liberté est <span class="math inline">\(t^* \approx 1{,}98\)</span>.</p>
+<p><label> <input type="radio" name="q11" data-correct="true"> On rejette <span class="math inline">\(H_0\)</span> car <span class="math inline">\(|t| = 2{,}30 &gt; 1{,}98\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q11"> On ne rejette pas <span class="math inline">\(H_0\)</span> car <span class="math inline">\(|t| = 2{,}30 &lt; 1{,}98\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q11"> On ne peut rien dire sans connaître le <span class="math inline">\(R^2\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q11"> Il faut forcément utiliser un logiciel pour conclure. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Degrés de liberté <span class="math inline">\(\text{ddl} = n - K = 100 - 4 = 96\)</span>.</p>
+<p>Au seuil de 5 % (bilatéral), la valeur tabulée est <span class="math inline">\(t^* \approx 1{,}98\)</span>.<br>
+Comme <span class="math inline">\(|t| = 2{,}30 &gt; 1{,}98\)</span>, on <strong>rejette</strong> <span class="math inline">\(H_0\)</span> et on conclut que <span class="math inline">\(\beta_1\)</span> est significativement différent de 0 au seuil de 5 %.</p>
+</details>
+</div>
+<div class="question" data-qid="q12" data-qtype="single">
+<h3 class="anchored">
+Q4.3 – Test <span class="math inline">\(F\)</span> pour plusieurs restrictions linéaires
+</h3>
+<p><label> <input type="radio" name="q12" data-correct="true"> Permet de tester conjointement des hypothèses du type <span class="math inline">\(R\beta = r\)</span> (par ex. <span class="math inline">\(\beta_2 = 0\)</span> et <span class="math inline">\(\beta_3 = 0\)</span>). </label><br></p>
+<p><label> <input type="radio" name="q12"> Ne sert qu’à tester la normalité des résidus. </label><br></p>
+<p><label> <input type="radio" name="q12"> Ne s’applique que dans le cas d’une seule restriction. </label><br></p>
+<p><label> <input type="radio" name="q12"> Est identique au test <span class="math inline">\(t\)</span>. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Le test <span class="math inline">\(F\)</span> permet de tester <strong>plusieurs</strong> restrictions linéaires en même temps, par exemple : <span class="math display">\[
+H_0 : \beta_2 = 0 \quad\text{et}\quad \beta_3 = 0.
+\]</span> On compare la qualité d’ajustement du modèle restreint et du modèle non restreint, puis la statistique <span class="math inline">\(F\)</span> à une <strong>valeur tabulée</strong> de la loi <span class="math inline">\(F\)</span> (selon les degrés de liberté).</p>
+</details>
+</div>
+</section>
+<section id="exercice-calculé-non-scoré-automatiquement" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="exercice-calculé-non-scoré-automatiquement"><span class="header-section-number">4.2</span> Exercice calculé (non scoré automatiquement)</h3>
+<p>Considère un estimateur <span class="math inline">\(\hat\beta_1 = 0{,}8\)</span> avec <span class="math inline">\(\text{se}(\hat\beta_1) = 0{,}25\)</span> et un échantillon de taille <span class="math inline">\(n = 120\)</span>.</p>
+<ol type="1">
+<li>Calcule la statistique <span class="math inline">\(t\)</span> pour <span class="math inline">\(H_0 : \beta_1 = 0\)</span>.<br>
+</li>
+<li>Donne la règle de décision au seuil de 5 % (en utilisant la table de Student, avec <span class="math inline">\(n-K\)</span> degrés de liberté).<br>
+</li>
+<li>Construis un intervalle de confiance à 95 % pour <span class="math inline">\(\beta_1\)</span> et interprète-le.</li>
+</ol>
+<blockquote class="blockquote">
+<p><em>Fais ces calculs sur papier : c’est exactement le type de raisonnement de l’examen.</em></p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="tests-dhypothèses-sur-les-erreurs-hétéroscédasticité-autocorrélation" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="tests-dhypothèses-sur-les-erreurs-hétéroscédasticité-autocorrélation"><span class="header-section-number">5</span> 5. Tests d’hypothèses sur les erreurs : hétéroscédasticité &amp; autocorrélation</h2>
+<section id="q5-hétéroscédasticité" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="q5-hétéroscédasticité"><span class="header-section-number">5.1</span> Q5 – Hétéroscédasticité</h3>
+<div class="question" data-qid="q13" data-qtype="single">
+<h3 class="anchored">
+Q5.1 – Hétéroscédasticité (définition)
+</h3>
+<p><label> <input type="radio" name="q13"> Signifie que les erreurs ont une moyenne non nulle. </label><br></p>
+<p><label> <input type="radio" name="q13" data-correct="true"> Signifie que la variance conditionnelle de l’erreur dépend des régressseurs. </label><br></p>
+<p><label> <input type="radio" name="q13"> Signifie que les erreurs sont corrélées dans le temps. </label><br></p>
+<p><label> <input type="radio" name="q13"> Signifie que les régressseurs sont corrélés entre eux. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>L’hétéroscédasticité correspond à : <span class="math display">\[
+\text{Var}(u_i \mid X_i) = \sigma_i^2
+\]</span> qui varie avec <span class="math inline">\(i\)</span> (et donc avec les régressseurs).<br>
+Elle rend les erreurs standards MCO classiques incorrectes, d’où l’usage d’<strong>erreurs standards robustes</strong>.</p>
+</details>
+</div>
+<div class="question" data-qid="q16" data-qtype="multiple">
+<h3 class="anchored">
+Q5.2 – Tests pour l’hétéroscédasticité (plusieurs réponses)
+</h3>
+<p>Quels tests sont classiquement utilisés pour détecter l’hétéroscédasticité des erreurs dans un modèle MCO ?</p>
+<p><label> <input type="checkbox" data-correct="true"> Test de Breusch–Pagan. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Test de White. </label><br></p>
+<p><label> <input type="checkbox"> Test de Durbin–Watson. </label><br></p>
+<p><label> <input type="checkbox"> Test de Jarque–Bera. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Inspection des résidus (nuage résidus vs prédits) comme indicateur visuel. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<ul>
+<li>Breusch–Pagan et White sont des tests standard pour l’hétéroscédasticité.<br>
+</li>
+<li>Durbin–Watson teste l’<strong>autocorrélation</strong> des résidus (séries temporelles).<br>
+</li>
+<li>Jarque–Bera teste la <strong>normalité</strong> des résidus.<br>
+</li>
+<li>Le graphique « résidus vs valeurs ajustées » peut aider à détecter des motifs de variance non constante.</li>
+</ul>
+</details>
+</div>
+<div class="question" data-qid="q17" data-qtype="single">
+<h3 class="anchored">
+Q5.3 – Décision pour un test de type <span class="math inline">\(\chi^2\)</span> (Breusch–Pagan / White)
+</h3>
+<p>On effectue un test de Breusch–Pagan d’homoscédasticité. On obtient une statistique de test <span class="math inline">\(BP = 7{,}2\)</span> avec 2 degrés de liberté.</p>
+<p>Au seuil de 5 %, la valeur tabulée de <span class="math inline">\(\chi^2_2\)</span> est environ <span class="math inline">\(5{,}99\)</span>.</p>
+<p><label> <input type="radio" name="q17" data-correct="true"> On rejette l’hypothèse d’homoscédasticité car <span class="math inline">\(7{,}2 &gt; 5{,}99\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q17"> On ne rejette pas l’hypothèse d’homoscédasticité car <span class="math inline">\(7{,}2 &lt; 5{,}99\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q17"> On ne peut rien dire sans connaître le <span class="math inline">\(R^2\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q17"> La statistique doit être comparée à une loi de Student, pas à une loi <span class="math inline">\(\chi^2\)</span>. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Les tests de Breusch–Pagan / White sont basés sur une <strong>statistique</strong> <span class="math inline">\(\chi^2\)</span>.</p>
+<p>Comme <span class="math inline">\(BP = 7{,}2 &gt; 5{,}99\)</span>, on <strong>rejette l’hypothèse d’homoscédasticité</strong> au seuil de 5 % et on conclut à la présence d’hétéroscédasticité.<br>
+On utilisera alors par exemple des <strong>erreurs standards robustes</strong> pour les tests sur les coefficients.</p>
+</details>
+</div>
+</section>
+<section id="q6-autocorrélation" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="q6-autocorrélation"><span class="header-section-number">5.2</span> Q6 – Autocorrélation</h3>
+<div class="question" data-qid="q18" data-qtype="single">
+<h3 class="anchored">
+Q5.4 – Autocorrélation des erreurs
+</h3>
+<p><label> <input type="radio" name="q18"> Correspond au fait que les erreurs ont une variance non constante. </label><br></p>
+<p><label> <input type="radio" name="q18" data-correct="true"> Correspond au fait que les erreurs sont corrélées dans le temps (par exemple <span class="math inline">\(u_t\)</span> corrélé à <span class="math inline">\(u_{t-1}\)</span>). </label><br></p>
+<p><label> <input type="radio" name="q18"> Correspond au fait que les régressseurs sont corrélés entre eux. </label><br></p>
+<p><label> <input type="radio" name="q18"> Ne peut se produire qu’en coupe transversale. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>L’<strong>autocorrélation</strong> (ou corrélation sérielle) est un problème typique des données de séries temporelles : les erreurs <span class="math inline">\(u_t\)</span> sont corrélées entre périodes.<br>
+Les MCO restent en général sans biais mais <strong>inefficients</strong>, et les erreurs standards classiques sont fausses.</p>
+</details>
+</div>
+<div class="question" data-qid="q19" data-qtype="multiple">
+<h3 class="anchored">
+Q5.5 – Tests pour l’autocorrélation (plusieurs réponses)
+</h3>
+<p><label> <input type="checkbox" data-correct="true"> Test de Durbin–Watson (autocorrélation d’ordre 1). </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Test de Breusch–Godfrey (autocorrélation d’ordre supérieur). </label><br></p>
+<p><label> <input type="checkbox"> Test de Breusch–Pagan. </label><br></p>
+<p><label> <input type="checkbox"> Test de White. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<ul>
+<li>Durbin–Watson : test spécifique (principalement pour une autocorrélation d’ordre 1).<br>
+</li>
+<li>Breusch–Godfrey : plus général, permet de tester plusieurs retards.<br>
+</li>
+<li>Breusch–Pagan et White concernent l’hétéroscédasticité, pas l’autocorrélation.</li>
+</ul>
+</details>
+</div>
+<div class="question" data-qid="q20" data-qtype="single">
+<h3 class="anchored">
+Q5.6 – Utiliser la table de Durbin–Watson (d<sub>L</sub>, d<sub>U</sub>)
+</h3>
+<p>On estime un modèle de régression sur une série temporelle, avec :</p>
+<ul>
+<li>taille d’échantillon : (n = 50)<br>
+</li>
+<li>nombre de régressseurs (constante incluse) : (k = 3)<br>
+</li>
+<li>statistique de Durbin–Watson observée : (DW = 1{,}20)</li>
+</ul>
+<p>Pour un test au seuil de 5 % (bilatéral), la <strong>table de Durbin–Watson</strong> fournit, pour ces valeurs de (n) et (k) :</p>
+<ul>
+<li>borne inférieure : (d_L = 1{,}33)<br>
+</li>
+<li>borne supérieure : (d_U = 1{,}65)</li>
+</ul>
+<p>On rappelle que pour tester l’hypothèse d’<strong>absence d’autocorrélation positive</strong> des erreurs :</p>
+<ul>
+<li>si (DW &lt; d_L) : on rejette (H_0) (on conclut à une autocorrélation positive) ;<br>
+</li>
+<li>si (d_L DW d_U) : zone d’indétermination ;<br>
+</li>
+<li>si (DW &gt; d_U) : on ne rejette pas (H_0).</li>
+</ul>
+<p>Quelle conclusion tirer ici ?</p>
+<p><label> <input type="radio" name="q20" data-correct="true"> On rejette l’hypothèse d’absence d’autocorrélation positive, car (DW = 1{,}20 &lt; d_L = 1{,}33). </label><br></p>
+<p><label> <input type="radio" name="q20"> On est en zone d’indétermination, car (d_L DW d_U). </label><br></p>
+<p><label> <input type="radio" name="q20"> On ne rejette pas l’hypothèse d’absence d’autocorrélation positive, car (DW &gt; d_U). </label><br></p>
+<p><label> <input type="radio" name="q20"> On ne peut rien dire : la table de Durbin–Watson ne donne pas de bornes (d_L) et (d_U). </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Ici, (DW = 1{,}20) et les bornes tabulées au seuil de 5 % sont (d_L = 1{,}33) et (d_U = 1{,}65).</p>
+<p>On a (DW &lt; d_L), donc on est dans la zone où <strong>on rejette l’hypothèse d’absence d’autocorrélation positive</strong> des erreurs.<br>
+On conclut qu’il y a des indices d’<strong>autocorrélation positive</strong>.</p>
+<p>Rappel de la règle (test d’autocorrélation positive) :</p>
+<ul>
+<li>si (DW &lt; d_L) : rejet de (H_0 : ) ;<br>
+</li>
+<li>si (d_L DW d_U) : zone d’indétermination ;<br>
+</li>
+<li>si (DW &gt; d_U) : on ne rejette pas (H_0).</li>
+</ul>
+</details>
+</div>
+<hr>
+</section>
+</section>
+<section id="endogénéité-variables-instrumentales-vi" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="endogénéité-variables-instrumentales-vi"><span class="header-section-number">6</span> 6. Endogénéité &amp; variables instrumentales (VI)</h2>
+<section id="q7-idée-générale" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="q7-idée-générale"><span class="header-section-number">6.1</span> Q7 – Idée générale</h3>
+<div class="question" data-qid="q21" data-qtype="single">
+<h3 class="anchored">
+Q6.1 – Endogénéité d’un régressseur
+</h3>
+<p><label> <input type="radio" name="q21"> Signifie que la variable expliquée <span class="math inline">\(Y\)</span> est binaire. </label><br></p>
+<p><label> <input type="radio" name="q21" data-correct="true"> Signifie qu’un régressseur est corrélé avec le terme d’erreur <span class="math inline">\(u\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q21"> Signifie que le <span class="math inline">\(R^2\)</span> est faible. </label><br></p>
+<p><label> <input type="radio" name="q21"> Signifie que les erreurs sont hétéroscédastiques. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>L’endogénéité viole l’hypothèse clé <span class="math inline">\(\mathbb E[u_i \mid X_i] = 0\)</span> (ou <span class="math inline">\(\text{Cov}(X,u)=0\)</span>).<br>
+Elle peut venir d’une variable omise, d’une causalité inverse, d’une erreur de mesure, etc.<br>
+Dans ce cas, les MCO sont en général <strong>biaisés et inconsistants</strong>.</p>
+</details>
+</div>
+<div class="question" data-qid="q22" data-qtype="multiple">
+<h3 class="anchored">
+Q6.2 – Conditions pour un instrument valide (plusieurs réponses)
+</h3>
+<p>On souhaite instrumenter une variable endogène <span class="math inline">\(x_i\)</span> à l’aide d’une variable <span class="math inline">\(z_i\)</span>. Quelles sont les deux grandes conditions pour que <span class="math inline">\(z_i\)</span> soit un instrument <strong>valide</strong> ?</p>
+<p><label> <input type="checkbox" data-correct="true"> Pertinence : <span class="math inline">\(\text{Cov}(z_i, x_i) \neq 0\)</span>. </label><br></p>
+<p><label> <input type="checkbox"> Normalité : <span class="math inline">\(z_i\)</span> doit suivre une loi normale. </label><br></p>
+<p><label> <input type="checkbox" data-correct="true"> Exogénéité : <span class="math inline">\(\text{Cov}(z_i, u_i) = 0\)</span>. </label><br></p>
+<p><label> <input type="checkbox"> <span class="math inline">\(z_i\)</span> doit être binaire (0/1). </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<p>Un bon instrument doit être : 1. <strong>Pertinent</strong> : corrélé à la variable endogène <span class="math inline">\(x_i\)</span>. 2. <strong>Exogène</strong> (valide) : non corrélé au terme d’erreur <span class="math inline">\(u_i\)</span>.</p>
+<p>La normalité ou le caractère binaire ne sont pas des conditions nécessaires.</p>
+</details>
+</div>
+<div class="question" data-qid="q23" data-qtype="single">
+<h3 class="anchored">
+Q6.3 – Exact-identification et sur-identification
+</h3>
+<p>On note <span class="math inline">\(K\)</span> le nombre de variables endogènes à instrumenter et <span class="math inline">\(L\)</span> le nombre d’instruments disponibles (hors régressseurs exogènes).</p>
+<p>Quel cas correspond à un modèle <strong>sur-identifié</strong> ?</p>
+<p><label> <input type="radio" name="q23"> <span class="math inline">\(L &lt; K\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q23"> <span class="math inline">\(L = K\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q23" data-correct="true"> <span class="math inline">\(L &gt; K\)</span>. </label><br></p>
+<p><label> <input type="radio" name="q23"> <span class="math inline">\(L = 0\)</span>. </label></p>
+<details>
+<summary>
+Solution et commentaire
+</summary>
+<ul>
+<li><span class="math inline">\(L &lt; K\)</span> : modèle <strong>sous-identifié</strong> (pas assez d’instruments).<br>
+</li>
+<li><span class="math inline">\(L = K\)</span> : <strong>exactement identifié</strong>.<br>
+</li>
+<li><span class="math inline">\(L &gt; K\)</span> : <strong>sur-identifié</strong> : on a plus de conditions d’exogénéité que nécessaire, ce qui permet en principe de <strong>tester la validité globale des instruments</strong> (test de sur-identification type Sargan/Hansen).</li>
+</ul>
+</details>
+</div>
+</section>
+<section id="cas-exogénéité-de-x-question-ouverte-non-scorée" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="cas-exogénéité-de-x-question-ouverte-non-scorée"><span class="header-section-number">6.2</span> Cas « exogénéité de <span class="math inline">\(x\)</span> » (question ouverte, non scorée)</h3>
+<p>On suspecte que la variable <code>revenu</code> est endogène dans une équation de demande. On propose d’utiliser comme instruments :</p>
+<ul>
+<li><code>revenu_moyen_region</code> (revenu moyen dans la région de résidence)<br>
+</li>
+<li><code>distance_travail</code> (distance domicile–travail)</li>
+</ul>
+<ol type="1">
+<li>Discute si ces instruments sont <strong>plausiblement pertinents</strong>.<br>
+</li>
+<li>Discute si ces instruments sont <strong>plausiblement exogènes</strong> (peuvent-ils affecter la demande autrement que via <code>revenu</code> ?).<br>
+</li>
+<li>Propose un exemple d’instrument qui serait clairement <strong>non valide</strong>.</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="mini-cas-examen-questions-ouvertes-non-scorées" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="mini-cas-examen-questions-ouvertes-non-scorées"><span class="header-section-number">7</span> 7. Mini-cas « examen » (questions ouvertes, non scorées)</h2>
+<p>Ces questions imitent le style de l’épreuve finale : <strong>réponse rédigée + raisonnement</strong>.</p>
+<section id="cas-1-salaire-et-éducation" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="cas-1-salaire-et-éducation"><span class="header-section-number">7.1</span> Cas 1 – Salaire et éducation</h3>
+<p>On estime le modèle <span class="math display">\[
+\log(\text{wage}_i) = \beta_0 + \beta_1 \text{educ}_i + \beta_2 \text{exp}_i + u_i,
+\]</span> où <code>wage</code> est le salaire horaire, <code>educ</code> le nombre d’années d’étude et <code>exp</code> l’expérience professionnelle.</p>
+<ol type="1">
+<li>Comment interpréter le coefficient <span class="math inline">\(\beta_1\)</span> dans ce modèle semi-log ?<br>
+</li>
+<li>Propose deux variables supplémentaires qu’il serait pertinent d’ajouter, et explique pourquoi.<br>
+</li>
+<li>Donne un exemple de source possible d’endogénéité dans ce modèle (par rapport à <code>educ</code>). Quelle conséquence sur l’estimation de <span class="math inline">\(\beta_1\)</span> ?</li>
+</ol>
+<blockquote class="blockquote">
+<p><em>Réponds en quelques lignes comme tu le ferais à l’examen.</em></p>
+</blockquote>
+<details>
+<summary>
+<strong>Voir des éléments de réponse</strong>
+</summary>
+<p><strong>1. Interprétation de</strong> <span class="math inline">\(\beta_1\)</span> dans un modèle semi-log</p>
+<ul>
+<li>Le modèle est de type <strong>log-linéaire</strong> :<br>
+<span class="math display">\[\log(\text{wage}) = \beta_0 + \beta_1 \text{educ} + \dots\]</span></li>
+<li>Une augmentation d’une année d’éducation est associée à une variation <strong>approximative</strong> de <span class="math inline">\(100 \times \beta_1\)</span> % du salaire horaire.<br>
+</li>
+<li>Plus précisément, l’effet en pourcentage est <span class="math inline">\(100 \times (\exp(\beta_1) - 1)\)</span> %, mais pour des valeurs « raisonnables » de <span class="math inline">\(\beta_1\)</span> la différence est faible.</li>
+</ul>
+<p><strong>2. Variables supplémentaires possibles</strong></p>
+<p>Exemples de variables pertinentes (au moins deux) :</p>
+<ul>
+<li><strong>Secteur d’activité</strong> (industrie, services, public/privé) : les salaires sont très différents selon le secteur.<br>
+</li>
+<li><strong>Région ou ville de résidence</strong> : le niveau de salaire dépend du marché du travail local et du coût de la vie.<br>
+</li>
+<li><strong>Taille de l’entreprise</strong>, <strong>type de contrat</strong>, <strong>genre</strong>, etc.</li>
+</ul>
+<p>Idée : ajouter des variables qui expliquent le salaire <strong>et</strong> qui sont corrélées à <code>educ</code> pour réduire le biais de variable omise.</p>
+<p><strong>3. Source d’endogénéité sur <code>educ</code></strong></p>
+<p>Exemples :</p>
+<ul>
+<li><strong>Capacité innée / motivation</strong> : les individus plus capables ou plus motivés font plus d’études <strong>et</strong> gagnent plus, même à niveau d’étude égal.<br>
+</li>
+<li><strong>Origine sociale / milieu familial</strong> : les familles favorisées financent plus d’études et offrent des réseaux professionnels.</li>
+</ul>
+<p>Si ces facteurs ne sont pas dans le modèle, ils se retrouvent dans l’erreur <span class="math inline">\(u_i\)</span> et sont corrélés avec <code>educ</code>.<br>
+Conséquence : l’estimateur MCO de <span class="math inline">\(\beta_1\)</span> est <strong>biaisé et inconsistant</strong> (souvent biais vers le haut si les capacités non observées augmentent à la fois education et salaire).</p>
+</details>
+<hr>
+</section>
+<section id="cas-2-effet-dun-programme-de-formation-sur-lemploi" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="cas-2-effet-dun-programme-de-formation-sur-lemploi"><span class="header-section-number">7.2</span> Cas 2 – Effet d’un programme de formation sur l’emploi</h3>
+<p>Une politique publique propose une formation à certains chômeurs. On dispose d’une variable <code>train_i</code> (1 si l’individu a suivi la formation, 0 sinon) et d’une variable <code>employ_i</code> (1 si l’individu est en emploi 6 mois plus tard, 0 sinon). On estime : <span class="math display">\[
+\text{employ}_i = \gamma_0 + \gamma_1 \text{train}_i + \gamma_2 \text{age}_i + \gamma_3 \text{female}_i + v_i.
+\]</span></p>
+<ol type="1">
+<li>Que mesure <span class="math inline">\(\gamma_1\)</span> dans ce modèle linéaire avec variable dépendante binaire ?<br>
+</li>
+<li>Pourquoi l’estimation de <span class="math inline">\(\gamma_1\)</span> pourrait-elle être biaisée (donne au moins une raison) ?<br>
+</li>
+<li>Propose une stratégie (même simple) pour réduire ce biais.</li>
+</ol>
+<details>
+<summary>
+<strong>Voir des éléments de réponse</strong>
+</summary>
+<p><strong>1. Interprétation de</strong> <span class="math inline">\(\gamma_1\)</span></p>
+<ul>
+<li><code>employ</code> vaut 0 ou 1, on est dans un modèle de <strong>probabilité linéaire</strong>.<br>
+</li>
+<li><span class="math inline">\(\gamma_1\)</span> mesure l’effet <strong>moyen</strong> de la formation sur la probabilité d’être en emploi :<br>
+&gt; suivre la formation augmente (en moyenne) la probabilité d’être en emploi de <span class="math inline">\(\gamma_1\)</span> <strong>points de pourcentage</strong> par rapport à ceux qui ne la suivent pas (à âge et sexe donnés).</li>
+</ul>
+<p><strong>2. Pourquoi</strong> <span class="math inline">\(\gamma_1\)</span> peut être biaisé ?</p>
+<p>Au moins une raison :</p>
+<ul>
+<li><strong>Sélection des participants</strong> : les personnes les plus motivées ou les plus employables sont plus susceptibles de demander / obtenir la formation.<br>
+</li>
+<li>La formation n’est pas assignée de façon aléatoire : elle dépend d’un conseiller, de critères administratifs, etc.<br>
+</li>
+<li>Ces facteurs (motivation, employabilité, réseau, santé…) influencent aussi <code>employ</code>, donc <code>train</code> est corrélée avec l’erreur <span class="math inline">\(v_i\)</span> → <strong>endogénéité</strong>.</li>
+</ul>
+<p><strong>3. Stratégies pour réduire le biais</strong></p>
+<p>Idées à citer (même si ce n’est pas parfait) :</p>
+<ul>
+<li>Ajouter davantage de <strong>variables de contrôle</strong> : niveau d’éducation, expérience, historique d’emploi, etc.<br>
+</li>
+<li>Utiliser un <strong>panel</strong> avant/après avec groupe de contrôle et faire une approche type <strong>différences-en-différences</strong> (si données sur plusieurs périodes).<br>
+</li>
+<li>Approche expérimentale : <strong>assignation aléatoire</strong> des formations (RCT).<br>
+</li>
+<li>Approche quasi-expérimentale : <strong>variable instrumentale</strong> qui influence la participation à la formation mais pas directement l’emploi (par exemple, distance au centre de formation, règles d’éligibilité… sous conditions).</li>
+</ul>
+</details>
+<hr>
+</section>
+<section id="cas-3-tests-de-significativité" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="cas-3-tests-de-significativité"><span class="header-section-number">7.3</span> Cas 3 – Tests de significativité</h3>
+<p>On te fournit un tableau de résultats de régression MCO (comme dans les TD). Pour une variable <code>X</code> :</p>
+<ul>
+<li>Coefficient estimé <span class="math inline">\(\hat\beta_X = 0{,}45\)</span><br>
+</li>
+<li>Erreur standard robuste <span class="math inline">\(\text{se}(\hat\beta_X) = 0{,}18\)</span><br>
+</li>
+<li>Taille d’échantillon <span class="math inline">\(n = 250\)</span></li>
+</ul>
+<ol type="1">
+<li>Calcule la statistique <span class="math inline">\(t\)</span> et commente la significativité au seuil de 5 % (en utilisant la table de Student).<br>
+</li>
+<li>Explique la différence entre <strong>significativité statistique</strong> (au sens des tests <span class="math inline">\(t\)</span>) et <strong>importance économique</strong>.<br>
+</li>
+<li>Donne un exemple de situation où un effet statistiquement faible peut être économiquement important.</li>
+</ol>
+<details>
+<summary>
+<strong>Voir des éléments de réponse</strong>
+</summary>
+<p><strong>1. Statistique</strong> <span class="math inline">\(t\)</span> et significativité</p>
+<p>On teste <span class="math inline">\(H_0 : \beta_X = 0\)</span> avec <span class="math display">\[
+t = \frac{\hat\beta_X - 0}{\text{se}(\hat\beta_X)}
+  = \frac{0{,}45}{0{,}18}
+  = 2{,}5.
+\]</span></p>
+<ul>
+<li>Les degrés de liberté sont environ <span class="math inline">\(n - K \approx 250 - K\)</span> (par ex. <span class="math inline">\(\approx 245\)</span>).<br>
+</li>
+<li>Au seuil de 5 % (bilatéral), la valeur tabulée de Student est environ <strong>2</strong>.<br>
+</li>
+<li>Comme <span class="math inline">\(|t| = 2{,}5 &gt; 2\)</span>, on <strong>rejette</strong> <span class="math inline">\(H_0\)</span> au seuil de 5 % : le coefficient est statistiquement différent de 0.</li>
+</ul>
+<p><strong>2. Significativité statistique vs importance économique</strong></p>
+<ul>
+<li><strong>Significativité statistique</strong> : le test <span class="math inline">\(t\)</span> indique si l’on peut rejeter <span class="math inline">\(H_0 : \beta_X = 0\)</span> en comparant <span class="math inline">\(|t|\)</span> à la valeur tabulée de Student.
+<ul>
+<li>Elle dépend de la taille de l’effet <strong>mais aussi</strong> de la précision (erreur standard) et de la taille d’échantillon.<br>
+</li>
+</ul></li>
+<li><strong>Importance économique</strong> : taille <strong>pratique</strong> de l’effet.
+<ul>
+<li>Un effet peut être statistiquement significatif mais très faible en magnitude → peu d’intérêt économique.<br>
+</li>
+<li>À l’inverse, un effet peut être économiquement important mais mal mesuré (échantillon trop petit, mesure bruitée) → difficulté à obtenir un <span class="math inline">\(t\)</span> élevé.</li>
+</ul></li>
+</ul>
+<p><strong>3. Exemple d’effet statistiquement faible mais économiquement important</strong></p>
+<p>Exemples possibles :</p>
+<ul>
+<li>Une politique qui réduit la probabilité de chômage de 1 point de pourcentage.
+<ul>
+<li>Statistiquement, c’est un petit effet (surtout si l’erreur standard est grande), mais pour un <strong>grand nombre d’individus</strong>, cela signifie beaucoup d’emplois supplémentaires.<br>
+</li>
+</ul></li>
+<li>Une petite baisse du taux de mortalité due à une intervention de santé publique (ex.: vaccination) :
+<ul>
+<li>L’effet individuel est faible, mais à l’échelle d’un pays, cela représente un grand nombre de vies sauvées.</li>
+</ul></li>
+</ul>
+<p>Idée à retenir : toujours combiner <strong>lecture des tests</strong> <span class="math inline">\(t\)</span> et des valeurs tabulées avec une réflexion sur la <strong>taille</strong> de l’effet et le contexte économique.</p>
+</details>
+<hr>
+</section>
+</section>
+<section id="mini-sondages-type-wooclap-pour-la-discussion-en-classe" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="mini-sondages-type-wooclap-pour-la-discussion-en-classe"><span class="header-section-number">8</span> 8. Mini-sondages « type Wooclap » (pour la discussion en classe)</h2>
+<p>Ces questions n’ont pas de « bonne » réponse unique : elles servent à lancer le débat.</p>
+<div class="quiz-poll">
+<p><strong>Poll 1 – Quelle erreur te semble la plus grave dans une étude empirique ?</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox">A. Ne pas avoir un R² très élevé<br>
+</label></li>
+<li><label><input type="checkbox">B. Ne pas vérifier les hypothèses du modèle (hétéroscédasticité, autocorrélation, endogénéité, etc.)<br>
+</label></li>
+<li><label><input type="checkbox">C. Oublier de préciser ses sources de données<br>
+</label></li>
+<li><label><input type="checkbox">D. Ne pas arrondir correctement les chiffres dans les tableaux</label></li>
+</ul>
+<blockquote class="blockquote">
+<p>En groupe, justifiez votre choix : que se passe-t-il si on viole les hypothèses du modèle ? si les données ne sont pas bien documentées ?</p>
+</blockquote>
+</div>
+<div class="quiz-poll">
+<p><strong>Poll 2 – Quand tu lis un résultat empirique, qu’est-ce que tu regardes en premier ?</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox">A. Le signe des coefficients<br>
+</label></li>
+<li><label><input type="checkbox">B. La taille (magnitude) des effets<br>
+</label></li>
+<li><label><input type="checkbox">C. Les statistiques t et la comparaison avec les valeurs tabulées<br>
+</label></li>
+<li><label><input type="checkbox">D. L’échantillon, les variables, la stratégie d’identification</label></li>
+</ul>
+<blockquote class="blockquote">
+<p>Discutez : comment hiérarchiser ces éléments pour juger de la crédibilité d’un résultat ?</p>
+</blockquote>
+</div>
+<hr>
+<div class="quiz-buttons">
+<button id="btn-grade" type="button" class="btn btn-primary">
+<p>Corriger le quiz</p>
+</button>
+<button id="btn-reset" type="button" class="btn btn-outline-secondary">
+<p>Réinitialiser</p>
+</button>
+</div>
+<div style="margin-top:1rem;">
+<p><em>Score non calculé.</em></p>
+</div>
 
 
 </section>

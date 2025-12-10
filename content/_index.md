@@ -6,7 +6,7 @@ type: landing
 
 sections:
   - block: hero
-    demo: false
+    demo: true
     content:
       title: Hi !
       text: |-

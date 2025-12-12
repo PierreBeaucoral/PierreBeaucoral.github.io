@@ -28,10 +28,10 @@ publishDate: '2025-01-01T00:00:00Z'
 
 authors: [admin]
 tags:
-  - Intelligence Artificielle
+  - AI
   - Sciences Humaines
   - Méthodologie
-  - Data-SHS
+  - Data
 
 # Is this a featured talk? (true/false)
 featured: false
@@ -52,7 +52,7 @@ links:
 
 url_code: ''
 url_pdf: ''
-url_slides: 'https://pierrebeaucoral.github.io/datashs_2025/'
+url_slides: 'https://pierrebeaucoral.github.io/datashs_2025/datashs_2025_presentation.html'
 url_video: ''
 
 # Markdown Slides (optional).

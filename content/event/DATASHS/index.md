@@ -52,7 +52,7 @@ links:
 
 url_code: ''
 url_pdf: ''
-url_slides: 'https://pierrebeaucoral.github.io/DATASHS/datashs_2025_presentation.html'
+url_slides: 'https://pierrebeaucoral.github.io/datashs_2025_presentation.html'
 url_video: ''
 
 # Markdown Slides (optional).

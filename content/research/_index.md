@@ -28,29 +28,27 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 </table>
 
 ---
+## Development Goals, Emissions Costs?
+**Climate and development finance vis-à-vis local CO₂ emissions**  
+*Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*
 
-## Job market paper
+### Big picture
+Economic development has historically been accompanied by higher CO₂ emissions. Expanding energy systems, transport networks, and cities has delivered large welfare gains—often at substantial carbon cost. A central question for climate policy is whether this development–emissions link can be credibly loosened in the coming decades, especially in low- and middle-income countries where infrastructure and urban growth remain urgent. This project asks: **is development necessarily carbon-intensive, or can it be financed and built in ways that raise living standards without proportionally increasing emissions?**
 
-### *Financing the Air We Breathe: Climate vs. Non-Climate Aid and Local CO₂ Emissions – Evidence from Global ADM2 Data*  *(job market paper)*
+### What I do
+I study how the **composition of development finance**—climate-oriented vs. non-climate portfolios—relates to **subnational CO₂ emissions trajectories**, using a global, place-based empirical design that goes beyond country aggregates and donor self-labels. 
 
-In this paper, I ask a simple question: **does climate aid actually cut CO₂ where it lands?** I compare climate-labelled projects to otherwise similar “regular” development projects.
+### Data & measurement
+- **Unit of analysis:** global panel at **ADM2–year** (2000–2022).
+- **Finance exposure:** geocoded aid projects (GODAD) aggregated to local “portfolios”; climate relevance inferred via **text classification (ClimateFinanceBERT)** rather than relying only on donor labels.   
+- **Outcomes & proxies:** ADM2 CO₂ emissions from EDGAR (spatial aggregation) and night-time lights (VIIRS) as a proxy for local economic activity.
+  
+### Empirical strategy
+- **Staggered rollout / event studies:** modern DiD estimators with not-yet-treated controls to trace dynamic impacts around project adoption.
+- **Dose–response:** complementary analyses using cumulative post-treatment exposure to capture intensity and persistence. 
 
-What I do:
-
-- Build a **global ADM2–year panel (2000–2022)** by linking geocoded development projects (GODAD) to:
-  - EDGAR CO₂ emissions aggregated to ADM2 boundaries, and  
-  - VIIRS night-time lights as a proxy for local economic activity.
-- Classify projects into **non-climate, mitigation, adaptation, and environment** using **ClimateFinanceBERT**.
-- Use modern **staggered difference-in-differences** methods to track what happens to emissions before and after the **first climate project** arrives in a given ADM2.
-- Study **dose–response patterns** by comparing places with low vs. high cumulative climate finance.
-
-What I find (preliminary):
-
-- Climate portfolios lead to **small, at most modest declines** in local log-CO₂, which become more negative as **cumulative climate exposure** grows.
-- Non-climate aid tends to **raise local emissions in the medium run**, in line with development-driven scale effects.
-- Night-lights react more strongly in “middle-brightness” ADM2s (where growth is picking up), but CO₂ often rises even when lights plateau—suggesting more complex links between growth, energy use, and emissions.
-
-Together, the paper offers a **first global, subnational, causally-identified view** of how climate vs. traditional development finance change local emissions where projects are actually implemented.
+### Status
+**JMP / working paper (preliminary).** Current work focuses on refining exposure construction, sectoral decomposition, and additional robustness/spillover tests. 
 
 ---
 

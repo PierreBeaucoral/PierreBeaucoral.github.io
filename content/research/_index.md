@@ -29,7 +29,7 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 
 ---
 ## Development Goals, Emissions Costs?
-**Climate and development finance vis-à-vis local CO₂ emissions**  
+**Climate and development finance vis-à-vis local CO₂ emissions**  -> JOB MARKET PAPER
 *Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*
 
 ### Big picture

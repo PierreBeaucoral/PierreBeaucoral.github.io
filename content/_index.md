@@ -26,14 +26,6 @@ sections:
     design:
       background:
         color: "#503835"
-        image:
-          # Add your image background to `assets/media/`.
-          filename: 
-          filters:
-            brightness: 1.0
-          size: cover
-          position: center
-          parallax: false
 
   - block: about.biography
     id: about

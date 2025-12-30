@@ -1,7 +1,15 @@
 ---
-title: Projects
-sections:
-  - block: portfolio
-    design:
-      view: masonry
+title: Research projects
+cms_exclude: true
+
+# View.
+#   1 = List
+#   2 = Compact
+#   3 = Card
+view: masonry
+
+# Optional header image (relative to `static/media/` folder).
+header:
+  caption: ''
+  image: ''
 ---

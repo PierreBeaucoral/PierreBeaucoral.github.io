@@ -25,10 +25,10 @@ sections:
         label: ''
     design:
       background:
-        color: black
+        color: "#503835"
         image:
           # Add your image background to `assets/media/`.
-          filename: pexels-enginakyurt-1435752.jpg
+          filename: 
           filters:
             brightness: 1.0
           size: cover

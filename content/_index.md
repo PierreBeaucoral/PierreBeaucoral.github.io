@@ -36,15 +36,8 @@ sections:
     design:
       css_class: dark
       background:
-        color: black
-        image:
-          # Add your image background to `assets/media/`.
-          filename: pexels-enginakyurt-1435752.jpg
-          filters:
-            brightness: 1.0
-          size: cover
-          position: center
-          parallax: false
+        color: "#503835"
+        
 
   - block: experience
     content:

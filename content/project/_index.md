@@ -3,5 +3,5 @@ title: Projects
 sections:
   - block: portfolio
     design:
-      view: 2
+      view: masonry
 ---

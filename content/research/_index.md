@@ -29,7 +29,7 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 
 ---
 ## Development Goals, Emissions Costs?
-**Climate and development finance vis-à-vis local CO₂ emissions**  -> JOB MARKET PAPER
+**Climate and development finance vis-à-vis local CO₂ emissions** 
 *Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*
 
 ### Big picture
@@ -48,7 +48,7 @@ I study how the **composition of development finance**—climate-oriented vs. no
 - **Dose–response:** complementary analyses using cumulative post-treatment exposure to capture intensity and persistence. 
 
 ### Status
-**JMP / working paper (preliminary).** Current work focuses on refining exposure construction, sectoral decomposition, and additional robustness/spillover tests. 
+**Preliminary.** Current work focuses on refining exposure construction, sectoral decomposition, and additional robustness/spillover tests. 
 
 ---
 

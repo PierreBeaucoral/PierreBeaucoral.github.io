@@ -37,3 +37,5 @@ This course is designed for those with no prior experience of data analysis. Thi
 # Required files
 
 Data required can be downloaded [here](https://pierrebeaucoral.github.io/course/r-for-beginners/Data.zip), course with code and explanation can be downloaded [here](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html). 
+
+Also, few [slides](https://pierrebeaucoral.github.io/course/r-for-beginners/GPE_Graphiques.html) on how to make visualization in the case of GPE student.

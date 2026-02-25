@@ -1,5 +1,5 @@
 ---
-title: Course
+title: Teaching experience by year
 cms_exclude: true
 
 # View.
@@ -7,7 +7,7 @@ cms_exclude: true
 #   2 = Compact
 #   3 = Card
 #   4 = Citation
-view: 3
+view: 1
 
 # Optional header image (relative to `static/media/` folder).
 banner:
@@ -15,19 +15,17 @@ banner:
   image: ''
 ---
 
-# Teaching experience by year
-
-## 2025
+# 2025
 
 - [Introduction to econometrics (Bachelor level, Teaching Assistant)](https://pierrebeaucoral.github.io/course/econometrics/site.html)
 - [Statistical Modeling (Master level, Teaching Assistant)](https://pierrebeaucoral.github.io/course/modelisation-statistique/site.html)
 - [Introduction to R (Master level, Lecturer)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
 
-## 2024
+# 2024
 
 - [Introduction to R (Master level, Lecturer)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
 
-## 2023
+# 2023
 
 - Introduction to economics (Bachelor level, Teaching Assistant)
 

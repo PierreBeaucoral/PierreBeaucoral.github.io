@@ -34,3 +34,5 @@ banner:
 
 Student Tutor and Academic Support (Université Clermont Auvergne)
 Tutoring and support for first- and second-year undergraduate economics students (help with tutorials and coursework).
+
+--- 

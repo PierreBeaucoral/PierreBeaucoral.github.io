@@ -14,16 +14,19 @@ banner:
   caption: ''
   image: ''
 ---
+# 2026
+
+- [Introduction to DiD (Master level, Lecturer, French)]()
 
 # 2025
 
-- [Introduction to econometrics (Bachelor level, Teaching Assistant)](https://pierrebeaucoral.github.io/course/econometrics/site.html)
-- [Statistical Modeling (Master level, Teaching Assistant)](https://pierrebeaucoral.github.io/course/modelisation-statistique/site.html)
-- [Introduction to R (Master level, Lecturer)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
+- [Introduction to econometrics (Bachelor level, Teaching Assistant, French)](https://pierrebeaucoral.github.io/course/econometrics/site.html)
+- [Statistical Modeling (Master level, Teaching Assistant, French)](https://pierrebeaucoral.github.io/course/modelisation-statistique/site.html)
+- [Introduction to R (Master level, Lecturer, English)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
 
 # 2024
 
-- [Introduction to R (Master level, Lecturer)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
+- [Introduction to R (Master level, Lecturer, English)](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)
 
 # 2023
 

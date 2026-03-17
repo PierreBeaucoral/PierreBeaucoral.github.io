@@ -16,7 +16,7 @@ banner:
 ---
 # 2026
 
-- [Introduction to DiD (Master level, Lecturer, French)]()
+- [Introduction to DiD (Master level, Lecturer, French)](https://pierrebeaucoral.github.io/course/GPE_DID/site.html)
 
 # 2025
 

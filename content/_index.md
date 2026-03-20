@@ -59,6 +59,15 @@ sections:
               * Developing causal-inference strategies (DiD, event studies, double machine learning) to evaluate the effects of climate policies such as National Adaptation Plans
               * Building and maintaining reproducible data and code pipelines in R and Python
               * Contributing to teaching in econometrics and quantitative methods
+        - title: Visiting PhD student
+          company: Central European University
+          company_url: 'https://www.ceu.edu/'
+          company_logo: CEU
+          location: Vienna
+          date_start: '2026-03-30'
+          date_end: '2026-05-31'
+          description: |2-
+             Visiting scholar hosted by [Prof. Florian Weiler][https://people.ceu.edu/florian_weiler] at the [department of Public Policy][https://people.ceu.edu/unit/dpp] and [Doctoral School of Political Science, Public Policy, and International Relations][https://people.ceu.edu/unit/dsps].
         - title: Research assistant
           company: Ferdi
           company_url: 'https://ferdi.fr/'

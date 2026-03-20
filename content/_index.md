@@ -67,7 +67,7 @@ sections:
           date_start: '2026-03-30'
           date_end: '2026-05-31'
           description: |2-
-             Visiting scholar hosted by [Prof. Florian Weiler](https://people.ceu.edu/florian_weiler) at the [department of Public Policy][https://people.ceu.edu/unit/dpp] and [Doctoral School of Political Science, Public Policy, and International Relations][https://people.ceu.edu/unit/dsps].
+             Visiting scholar hosted by [Prof. Florian Weiler](https://people.ceu.edu/florian_weiler) at the [department of Public Policy](https://people.ceu.edu/unit/dpp) and [Doctoral School of Political Science, Public Policy, and International Relations](https://people.ceu.edu/unit/dsps).
         - title: Research assistant
           company: Ferdi
           company_url: 'https://ferdi.fr/'

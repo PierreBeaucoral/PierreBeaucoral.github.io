@@ -62,7 +62,7 @@ sections:
         - title: Visiting PhD student
           company: Central European University
           company_url: 'https://www.ceu.edu/'
-          company_logo: CEU
+          company_logo: ceu
           location: Vienna
           date_start: '2026-03-30'
           date_end: '2026-05-31'

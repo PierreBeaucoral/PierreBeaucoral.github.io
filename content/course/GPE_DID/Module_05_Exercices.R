@@ -78,7 +78,7 @@ favara_sim |>
   group_by(___, ___) |>                    # TODO: année et groupe
   summarise(moy = mean(Dl_hpi), .groups = "drop") |>
   ggplot(aes(x = ___, y = ___, color = ___)) +   # TODO
-  geom_line(size = 1.1) +
+  geom_line(linewidth = 1.1) +
   geom_point(size = 2.5) +
   labs(title = "TODO: ajoutez un titre",
        x = "Année", y = "Variation log prix (Dl_hpi)", color = "Déréglementation") +

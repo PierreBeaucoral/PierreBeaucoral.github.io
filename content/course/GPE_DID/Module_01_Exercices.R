@@ -119,7 +119,7 @@ mpdta_sim |>
   group_by(___, ___) |>                            # Grouper par année et groupe
   summarise(lemp_moy = mean(lemp), .groups = "drop") |>
   ggplot(aes(x = ___, y = ___, color = ___)) +     # Compléter l'esthétique
-  geom_line(size = 1.2) +
+  geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
   labs(title = "Tendances moyennes par groupe de traitement",
        x = "Année", y = "Log emploi moyen", color = "Groupe") +

@@ -85,7 +85,7 @@ resume <- mpdta_desc |>
 
 # TODO : Visualisez les tendances
 ggplot(resume, aes(x = year, y = moy_lemp, color = ___, group = ___)) +
-  geom_line(size = 1.1) +
+  geom_line(linewidth = 1.1) +
   geom_point(size = 3) +
   labs(title = "Tendances du log emploi par groupe de traitement",
        x = "Année", y = "Log emploi moyen (lemp)", color = "Groupe") +

@@ -170,7 +170,7 @@ moyennes_graph <- data_did |>
   mutate(groupe = if_else(traite == 1, "Traité", "Contrôle"))
 
 ggplot(moyennes_graph, aes(x = annee, y = moy, color = groupe, group = groupe)) +
-  geom_line(size = ___) +          # TODO: taille de la ligne (essayez 1.3)
+  geom_line(linewidth = ___) +          # TODO: taille de la ligne (essayez 1.3)
   geom_point(size = ___) +         # TODO: taille des points (essayez 4)
   # Ajoutez une ligne contrefactuelle (ligne pointillée de 2019 traité → 2021 contrôle + tendance)
   labs(

@@ -7,10 +7,6 @@ icon: flask
 ---
 <table>
   <tr>
-    <td style="width: 30%; vertical-align: top; padding-right: 16px;">
-      <img src="https://github.com/user-attachments/assets/6730fd50-971d-42d6-ac54-9ea78258e38d"
-           alt="Profile photo"
-           style="max-width: 100%; border-radius: 8px;">
     </td>
     <td style="width: 70%; vertical-align: top;">
 
@@ -24,6 +20,11 @@ My work studies how **climate and adaptation finance** are allocated and what th
 - modern **causal-inference** and **machine-learning** methods.
 
 Across projects, I focus on how **climate-labelled vs. non-climate finance** and **adaptation planning instruments** (such as National Adaptation Plans) shape aid flows, local emissions trajectories, and vulnerability in low- and middle-income countries.
+    <td style="width: 30%; vertical-align: top; padding-right: 16px;">
+      <img src="https://github.com/user-attachments/assets/6730fd50-971d-42d6-ac54-9ea78258e38d"
+           alt="Profile photo"
+           style="max-width: 100%; border-radius: 8px;">
+   
   </tr>
 </table>
 

@@ -8,7 +8,7 @@ icon: flask
 <table>
   <tr>
     <td style="width: 30%; vertical-align: top; padding-right: 16px;">
-      <img src="https://github.com/user-attachments/assets/8ac56fd5-167a-4b61-9b36-47977bcc08b6"
+      <img src="https://github.com/user-attachments/assets/6730fd50-971d-42d6-ac54-9ea78258e38d"
            alt="Profile photo"
            style="max-width: 100%; border-radius: 8px;">
     </td>

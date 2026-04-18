@@ -130,6 +130,25 @@ function splitAntimeridian(points) {
       }
     }
   }
+  // Topojson rings are closed (first == last). A ring that crosses the
+  // antimeridian an even number of times produces an odd number of
+  // sub-rings, the first and last of which are really the two halves
+  // of a single piece lying on the *same* side of the antimeridian.
+  // Without merging, each half gets an implicit "Z" that draws a
+  // diagonal clear across the map (the Chukotka / eastern-Russia
+  // artifact). Merge the head into the tail so the combined piece
+  // closes cleanly along the antimeridian edge.
+  if (out.length > 1) {
+    const first = points[0], last = points[points.length - 1];
+    const closed = first && last && first[0] === last[0] && first[1] === last[1];
+    if (closed) {
+      const head = out.shift();
+      const tail = out[out.length - 1];
+      const te = tail[tail.length - 1];
+      const startIdx = (head.length && te && head[0][0] === te[0] && head[0][1] === te[1]) ? 1 : 0;
+      for (let i = startIdx; i < head.length; i++) tail.push(head[i]);
+    }
+  }
   return out;
 }
 

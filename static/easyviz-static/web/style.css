@@ -334,10 +334,227 @@ footer.site {
   text-align: center;
 }
 
+/* ── Code modal (R / Python replication) ─────────────────────────── */
+
+.ev-modal-root {
+  display: none;
+  position: fixed; inset: 0; z-index: 100;
+}
+.ev-modal-root.open { display: block; }
+.ev-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+.ev-modal {
+  position: absolute;
+  top: 3vh; left: 50%; transform: translateX(-50%);
+  width: min(980px, 94vw);
+  max-height: 94vh;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  display: flex; flex-direction: column;
+}
+.ev-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border);
+}
+.ev-modal-tabs { display: flex; gap: 0.25rem; }
+.ev-modal-tab {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg-muted);
+  padding: 0.3rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.ev-modal-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.ev-modal-actions { display: flex; gap: 0.35rem; }
+.ev-modal-btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.ev-modal-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ev-modal-pre {
+  flex: 1; overflow: auto;
+  margin: 0; padding: 1rem 1.1rem;
+  background: var(--bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  white-space: pre;
+  color: var(--fg);
+}
+.ev-modal-code { background: transparent; color: inherit; padding: 0; }
+.ev-modal-foot {
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-size: 0.78rem;
+}
+
+/* Show-code button placed in .actions rows */
+.code-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.code-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Methodology caption block */
+.methodology {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  margin: 0.6rem 0;
+  line-height: 1.5;
+}
+.methodology strong { color: var(--fg); }
+
+/* Diagnostics / coverage */
+.diagnostics {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  padding: 0.55rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 0.4rem 0 0.8rem;
+}
+.diagnostics summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--fg);
+  padding: 0.1rem 0;
+}
+.diagnostics .cov-bar {
+  display: inline-block;
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.15rem 0;
+}
+.diagnostics .cov-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.diagnostics table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.diagnostics table th, .diagnostics table td {
+  padding: 0.2rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+/* Citation block */
+.citation {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  white-space: pre-wrap;
+  margin: 0.3rem 0;
+}
+
+/* Saved views list */
+.saved-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.3rem 0 0.8rem;
+}
+.saved-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.7rem;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  border: 1px solid transparent;
+}
+.saved-view a { color: inherit; font-weight: 500; }
+.saved-view button {
+  border: none; background: transparent; color: inherit;
+  cursor: pointer; font-size: 1rem; line-height: 1;
+  padding: 0 0.15rem;
+}
+.saved-view button:hover { color: var(--danger); }
+
+/* ── Map page ─────────────────────────────────────────────────────── */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 460px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+.map-wrap svg { display: block; width: 100%; height: auto; }
+.map-wrap .country { stroke: var(--bg-card); stroke-width: 0.4; cursor: pointer; }
+.map-wrap .country.missing { fill: var(--border); }
+.map-wrap .graticule { fill: none; stroke: var(--border); stroke-opacity: 0.4; }
+.map-wrap .outline { fill: none; stroke: var(--border); stroke-width: 0.6; }
+.map-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.82rem;
+  color: var(--fg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transition: opacity 0.1s;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.3rem 0.1rem;
+  color: var(--fg-muted);
+  font-size: 0.78rem;
+}
+.legend .swatches { display: flex; }
+.legend .swatch { width: 32px; height: 12px; display: inline-block; }
+
+/* Correlation heatmap cells */
+.corr-table { border-collapse: collapse; margin: 0.4rem 0; font-size: 0.82rem; }
+.corr-table th, .corr-table td {
+  padding: 0.35rem 0.55rem; text-align: center;
+  border: 1px solid var(--border); min-width: 55px;
+}
+.corr-table th { background: var(--bg-card); }
+.corr-table td.diag { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
   .controls { grid-template-columns: 1fr; }
   .chart-card .chart-wrap { height: 340px; }
   header.site nav { display: none; }
+  .ev-modal { width: 98vw; top: 1vh; max-height: 98vh; }
 }

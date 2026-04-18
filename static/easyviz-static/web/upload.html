@@ -13,6 +13,7 @@
       <nav>
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
+        <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html" class="active">Upload</a>
         <a href="./conflict.html">Conflict</a>
@@ -39,7 +40,9 @@
       <h2>Chart the normalised data</h2>
       <div class="actions">
         <button id="btn-download">Download normalised CSV</button>
+        <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
       </div>
+      <div id="upload-methodology" class="methodology"></div>
       <div class="chart-card">
         <div class="chart-wrap"><canvas id="chart"></canvas></div>
       </div>
@@ -55,7 +58,8 @@
   <script type="module">
     import { parseFile, detectFormat, detectColumns, normalise } from "./js/csv.js";
     import { makeLine } from "./js/charts.js";
-    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml } from "./js/ui.js";
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml,
+             showCodeModal } from "./js/ui.js";
 
     initDarkMode();
 
@@ -166,12 +170,54 @@
         name: "Uploaded data",
         unit: "",
       });
+      updateMethodology();
     }
 
     document.getElementById("btn-download").addEventListener("click", () => {
       if (!normalisedRows) return;
       downloadCsv("easyviz_normalised.csv", normalisedRows);
     });
+
+    document.getElementById("btn-code").addEventListener("click", () => {
+      if (!normalisedRows) return;
+      const r = `# EasyViz replication — read the normalised CSV exported from Upload
+# pkg: tidyverse (install.packages("tidyverse"))
+library(readr); library(dplyr); library(ggplot2)
+
+df <- read_csv("easyviz_normalised.csv") |>
+  filter(!is.na(value))
+
+ggplot(df, aes(x = year, y = value, colour = entity)) +
+  geom_line(linewidth = 0.8) +
+  labs(title = "Uploaded data", x = "Year", y = NULL, colour = NULL,
+       caption = "Source: user upload normalised by EasyViz.") +
+  theme_minimal(base_size = 12)
+`;
+      const py = `# EasyViz replication — read the normalised CSV exported from Upload
+# pip install pandas matplotlib
+import pandas as pd, matplotlib.pyplot as plt
+
+df = pd.read_csv("easyviz_normalised.csv").dropna(subset=["value"])
+fig, ax = plt.subplots(figsize=(10, 6))
+for entity, sub in df.groupby("entity"):
+    ax.plot(sub["year"], sub["value"], label=entity)
+ax.set_xlabel("Year"); ax.set_ylabel("value")
+ax.legend(loc="best", fontsize=8); ax.grid(alpha=0.3)
+plt.tight_layout(); plt.show()
+`;
+      showCodeModal({ r, python: py, filename: "uploaded_data" });
+    });
+
+    function updateMethodology() {
+      const el = document.getElementById("upload-methodology");
+      if (!normalisedRows || !normalisedRows.length) return;
+      const entities = new Set(normalisedRows.map(r => r.entity));
+      const years = normalisedRows.map(r => r.year).filter(Number.isFinite);
+      el.innerHTML = `<strong>Methodology.</strong> Uploaded dataset normalised to long format
+        (entity × year × value); ${normalisedRows.length.toLocaleString()} observations
+        across ${entities.size} entities, years ${Math.min(...years)}–${Math.max(...years)};
+        source: user-provided file.`;
+    }
   </script>
 </body>
 </html>

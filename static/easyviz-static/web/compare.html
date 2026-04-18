@@ -13,6 +13,7 @@
       <nav>
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
+        <a href="./map.html">Map</a>
         <a href="./compare.html" class="active">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
@@ -24,8 +25,8 @@
   </header>
 
   <main class="container">
-    <h1>Compare two indicators</h1>
-    <p class="lede">Cross-section scatter, bubble with a size variable, OLS trend, or an animated Gapminder-style view.</p>
+    <h1>Compare indicators</h1>
+    <p class="lede">Cross-section scatter, bubble with a size variable, OLS trend, Gapminder-style animation, and pairwise correlation matrix.</p>
 
     <div class="controls">
       <div>
@@ -45,7 +46,7 @@
         <select id="preset"></select>
       </div>
       <div>
-        <label for="year">Year (scatter/bubble/regression)</label>
+        <label for="year">Year (scatter/bubble/regression/corr)</label>
         <input id="year" type="number" min="1960" max="2024" value="2020">
       </div>
     </div>
@@ -55,8 +56,15 @@
       <button class="tab"        data-panel="tab-bubble">Bubble</button>
       <button class="tab"        data-panel="tab-regression">Regression</button>
       <button class="tab"        data-panel="tab-gapminder">Gapminder</button>
+      <button class="tab"        data-panel="tab-corr">Correlation matrix</button>
     </div>
 
+    <div class="actions" id="code-actions" style="margin-top:0.5rem;">
+      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+      <button id="btn-share">Copy share URL</button>
+    </div>
+
+    <div id="methodology" class="methodology" style="display:none;"></div>
     <div id="status"></div>
 
     <section class="tab-panel active" id="tab-scatter">
@@ -93,6 +101,23 @@
         <div class="caption">Move the slider or press Play to animate across years.</div>
       </div>
     </section>
+
+    <section class="tab-panel" id="tab-corr">
+      <div class="controls" style="margin-bottom:0.75rem;">
+        <div class="span-2">
+          <label for="corr-inds">Indicators (ctrl/cmd-click to select 3–8)</label>
+          <select id="corr-inds" multiple size="9"></select>
+        </div>
+        <div>
+          <label for="corr-method">Method</label>
+          <select id="corr-method">
+            <option value="pearson">Pearson</option>
+            <option value="spearman">Spearman</option>
+          </select>
+        </div>
+      </div>
+      <div id="corr-output"></div>
+    </section>
   </main>
 
   <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js.</footer>
@@ -102,10 +127,13 @@
   <script type="module">
     import { INDICATORS, byId } from "./data/catalog.js";
     import { PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
-    import { crossSection, gapminderPanel } from "./js/wdi.js";
+    import { crossSection, gapminderPanel, fetchSeries } from "./js/wdi.js";
     import { makeScatter, makeBubble, makeGapminder } from "./js/charts.js";
     import { olsFit, fmtFit } from "./js/regression.js";
-    import { loading, error, clear, initDarkMode } from "./js/ui.js";
+    import { corrMatrix } from "./js/aggregate.js";
+    import { loading, error, clear, initDarkMode,
+             showCodeModal, methodologyCaption } from "./js/ui.js";
+    import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
 
     initDarkMode();
@@ -121,12 +149,14 @@
     const yearEl = document.getElementById("year");
     const statusEl = document.getElementById("status");
     const fitEl = document.getElementById("fit-summary");
+    const methEl = document.getElementById("methodology");
+    const corrIndsEl = document.getElementById("corr-inds");
+    const corrMethodEl = document.getElementById("corr-method");
+    const corrOut = document.getElementById("corr-output");
 
-    const charts = {}; // keyed by tab id
+    const charts = {};
 
-    // ── Populate ───────────────────────────────────────────────────
-
-    function populate(select, selectedId, { allowNone = false } = {}) {
+    function populate(select, selectedId, { allowNone = false, multi = false } = {}) {
       select.innerHTML = "";
       if (allowNone) {
         const opt = document.createElement("option");
@@ -143,7 +173,7 @@
         for (const r of rows) {
           const opt = document.createElement("option");
           opt.value = r.id; opt.textContent = r.name;
-          if (r.id === selectedId) opt.selected = true;
+          if (!multi && r.id === selectedId) opt.selected = true;
           og.appendChild(opt);
         }
         select.appendChild(og);
@@ -153,6 +183,11 @@
     populate(aEl, url.get("a") || "gdp_pc_ppp");
     populate(bEl, url.get("b") || "life_expectancy");
     populate(sEl, url.get("size") || "population", { allowNone: true });
+    populate(corrIndsEl, null, { multi: true });
+    // Preselect a reasonable starter set for the correlation tab.
+    const defaultCorr = (url.getList("corr").length ? url.getList("corr")
+      : ["gdp_pc_ppp", "life_expectancy", "u5_mortality", "gini", "co2_pc", "unemployment"]);
+    for (const opt of corrIndsEl.options) if (defaultCorr.includes(opt.value)) opt.selected = true;
 
     presetEl.innerHTML = "";
     for (const n of [ALL_COUNTRIES_KEY, ...Object.keys(PRESETS)]) {
@@ -162,8 +197,7 @@
       presetEl.appendChild(opt);
     }
     if (url.get("year")) yearEl.value = url.get("year");
-
-    // ── Tab switching ──────────────────────────────────────────────
+    if (url.get("corr_method")) corrMethodEl.value = url.get("corr_method");
 
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach(t => t.addEventListener("click", () => {
@@ -174,30 +208,53 @@
       render();
     }));
 
-    function activeTab() {
-      return document.querySelector(".tab.active").dataset.panel;
-    }
+    function activeTab() { return document.querySelector(".tab.active").dataset.panel; }
 
     function destroy(key) {
       if (charts[key]) { charts[key].destroy ? charts[key].destroy() : charts[key].chart.destroy(); delete charts[key]; }
     }
 
-    // ── Render ────────────────────────────────────────────────────
-
-    async function render() {
+    function buildSpec() {
       const a = byId(aEl.value), b = byId(bEl.value);
       const s = sEl.value ? byId(sEl.value) : null;
-      if (!a || !b) return;
       const year = parseInt(yearEl.value, 10);
-      const iso3 = resolvePreset(presetEl.value);
       const tab = activeTab();
+      const iso3 = resolvePreset(presetEl.value);
+      const countries = presetEl.value === ALL_COUNTRIES_KEY ? null : iso3;
+
+      if (tab === "tab-scatter")
+        return { kind: "scatter", indicator: a, indicatorB: b, year, countries, filename: `${a?.id || "x"}_vs_${b?.id || "y"}` };
+      if (tab === "tab-bubble")
+        return { kind: "bubble", indicator: a, indicatorB: b, indicatorSize: s, year, countries, filename: `bubble_${a?.id}_${b?.id}` };
+      if (tab === "tab-regression")
+        return { kind: "regression", indicator: a, indicatorB: b, year, countries, filename: `ols_${a?.id}_${b?.id}` };
+      if (tab === "tab-gapminder")
+        return { kind: "gapminder", indicator: a, indicatorB: b, indicatorSize: s, years: [1990, 2024], countries, filename: `gapminder_${a?.id}_${b?.id}` };
+      if (tab === "tab-corr") {
+        const sel = [...corrIndsEl.selectedOptions].map(o => byId(o.value)).filter(Boolean);
+        return { kind: "correlation", indicators: sel, year, countries, method: corrMethodEl.value, filename: `corr_${year}` };
+      }
+      return null;
+    }
+
+    async function render() {
+      const spec = buildSpec();
+      if (!spec) return;
+      const { indicator: a, indicatorB: b, indicatorSize: s, year, countries } = spec;
+      const tab = activeTab();
+      const iso3 = countries || [];
 
       url.update({
         a: aEl.value, b: bEl.value,
         size: sEl.value || null,
         year,
         preset: presetEl.value,
+        corr: tab === "tab-corr" ? [...corrIndsEl.selectedOptions].map(o => o.value) : null,
+        corr_method: corrMethodEl.value,
       });
+
+      methEl.style.display = "block";
+      methEl.innerHTML = `<strong>Methodology.</strong> ${methodologyCaption(spec)}`;
 
       loading(statusEl, "Fetching indicators…");
       try {
@@ -231,6 +288,8 @@
           slider.min = ys[0]; slider.max = ys[ys.length - 1]; slider.value = ys[ys.length - 1];
           document.getElementById("gap-year-label").textContent = slider.value;
           charts.gapminder.setYear(parseInt(slider.value, 10));
+        } else if (tab === "tab-corr") {
+          await renderCorrelation(spec, iso3);
         }
         clear(statusEl);
       } catch (e) {
@@ -238,10 +297,53 @@
       }
     }
 
-    [aEl, bEl, sEl, presetEl, yearEl].forEach(el => el.addEventListener("change", render));
+    async function renderCorrelation(spec, iso3) {
+      const inds = spec.indicators;
+      if (inds.length < 2) {
+        corrOut.innerHTML = `<p>Select at least two indicators.</p>`;
+        return;
+      }
+      const rowsPerCode = await Promise.all(inds.map(i => fetchSeries(i.code, iso3)));
+      const byCode = {};
+      inds.forEach((ind, i) => { byCode[ind.code] = rowsPerCode[i]; });
+      const { codes, matrix, ns } = corrMatrix(byCode, spec.year, spec.method);
+      const labelFor = (code) => inds.find(i => i.code === code)?.name || code;
 
-    // ── Gapminder slider + play ──────────────────────────────────
+      // Build HTML table.
+      const head = `<tr><th></th>${codes.map(c => `<th>${labelFor(c).split(" ").slice(0,2).join(" ")}</th>`).join("")}</tr>`;
+      const body = matrix.map((row, i) =>
+        `<tr><th>${labelFor(codes[i]).split(" ").slice(0,2).join(" ")}</th>${
+          row.map((v, j) => {
+            const color = corrColor(v);
+            return `<td class="${i === j ? 'diag' : ''}" style="${i===j ? '' : `background:${color}; color:${Math.abs(v)>0.5?'white':'inherit'};`}"
+              title="n=${ns[i][j]}">${Number.isFinite(v) ? v.toFixed(2) : "—"}</td>`;
+          }).join("")
+        }</tr>`).join("");
+      corrOut.innerHTML = `
+        <p style="font-size:0.85rem; color: var(--fg-muted);">
+          Pairwise ${spec.method} correlations, year ${spec.year}, across
+          ${iso3.length ? iso3.length + " countries" : "all WDI economies"}.
+          Cell tooltip shows pairwise N.</p>
+        <table class="corr-table">
+          <thead>${head}</thead><tbody>${body}</tbody>
+        </table>
+      `;
+    }
 
+    function corrColor(v) {
+      if (!Number.isFinite(v)) return "transparent";
+      const t = (v + 1) / 2; // [-1,1] → [0,1]
+      // Red (low) → white (mid) → blue (high)
+      const r = Math.round(217 + (45 - 217) * t);
+      const g = Math.round(83 + (95 - 83) * t);
+      const b = Math.round(45 + (217 - 45) * t);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    [aEl, bEl, sEl, presetEl, yearEl, corrMethodEl].forEach(el => el.addEventListener("change", render));
+    corrIndsEl.addEventListener("change", render);
+
+    // Gapminder slider + play.
     const gapSlider = document.getElementById("gap-year");
     const gapLabel = document.getElementById("gap-year-label");
     const gapPlay = document.getElementById("gap-play");
@@ -270,6 +372,21 @@
         }
         gapSlider.value = nxt; gapSlider.dispatchEvent(new Event("input"));
       }, 400);
+    });
+
+    document.getElementById("btn-code").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      showCodeModal({ r: rCode(spec), python: pyCode(spec), filename: spec.filename });
+    });
+
+    document.getElementById("btn-share").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const btn = document.getElementById("btn-share");
+        const prev = btn.textContent; btn.textContent = "✓ Copied";
+        setTimeout(() => { btn.textContent = prev; }, 1500);
+      } catch {}
     });
 
     render();

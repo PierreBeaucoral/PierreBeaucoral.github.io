@@ -13,6 +13,7 @@
       <nav>
         <a href="./index.html">Search</a>
         <a href="./chart.html" class="active">Chart</a>
+        <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
@@ -25,7 +26,7 @@
 
   <main class="container">
     <h1 id="chart-title">Time-series chart</h1>
-    <p class="lede" id="chart-lede">Pick an indicator, select countries, choose a chart type.</p>
+    <p class="lede" id="chart-lede">Pick an indicator, select countries, choose a chart type and transformation.</p>
 
     <div class="controls">
       <div class="span-2">
@@ -58,8 +59,38 @@
       </div>
 
       <div>
+        <label for="transform">Temporal transform</label>
+        <select id="transform">
+          <option value="none">— none (raw) —</option>
+          <option value="ma5">5-year moving average</option>
+          <option value="decade">Decade means</option>
+          <option value="yoy">Year-on-year % change</option>
+          <option value="cagr">Rolling 5-year CAGR (%)</option>
+          <option value="index">Index (base year = 100)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="base-year">Index base year</label>
+        <input id="base-year" type="number" min="1960" max="2025" value="2000" disabled>
+      </div>
+
+      <div>
+        <label for="entity-agg">Aggregate selected countries</label>
+        <select id="entity-agg">
+          <option value="none">— keep individual series —</option>
+          <option value="mean">Unweighted mean</option>
+          <option value="median">Median</option>
+          <option value="sum">Sum</option>
+          <option value="pop_weighted">Population-weighted mean</option>
+          <option value="gdp_weighted">GDP-weighted mean</option>
+        </select>
+      </div>
+
+      <div>
         <label>Options</label>
         <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y)</label>
+        <label class="check"><input id="overlay-agg" type="checkbox"> Overlay aggregate on series</label>
       </div>
 
       <div class="span-2">
@@ -72,10 +103,22 @@
       <button class="primary" id="btn-update">Update chart</button>
       <button id="btn-download">Download CSV</button>
       <button id="btn-share">Copy share URL</button>
+      <button id="btn-save">Save view</button>
+      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+      <button id="btn-cite">Cite</button>
     </div>
+
+    <div id="saved-views" class="saved-views"></div>
+    <div id="citation-box"></div>
+    <div id="methodology" class="methodology" style="display:none;"></div>
 
     <div id="status"></div>
     <div id="stats" class="stats-grid" style="display:none;"></div>
+
+    <details class="diagnostics" id="diagnostics" style="display:none;">
+      <summary>Missing-data diagnostics (coverage &amp; gaps)</summary>
+      <div id="diag-body"></div>
+    </details>
 
     <div class="chart-card">
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
@@ -83,7 +126,7 @@
     </div>
   </main>
 
-  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js.</footer>
+  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js · R code uses the <code>WDI</code> + <code>tidyverse</code> packages.</footer>
 
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -93,8 +136,12 @@
     import { fetchSeries, summaryStats } from "./js/wdi.js";
     import { makeLine, makeBar } from "./js/charts.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
-    import { loading, error, clear, initDarkMode, downloadCsv } from "./js/ui.js";
+    import { loading, error, clear, initDarkMode, downloadCsv,
+             showCodeModal, methodologyCaption, citations } from "./js/ui.js";
+    import { aggregateTime, aggregateEntities, diagnostics } from "./js/aggregate.js";
+    import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
+    import * as views from "./js/savedviews.js";
 
     initDarkMode();
     if (url.isEmbed()) {
@@ -110,19 +157,32 @@
     const yFromEl = document.getElementById("year-from");
     const yToEl = document.getElementById("year-to");
     const logEl = document.getElementById("log-scale");
+    const tfEl = document.getElementById("transform");
+    const baseEl = document.getElementById("base-year");
+    const aggEl = document.getElementById("entity-agg");
+    const overlayEl = document.getElementById("overlay-agg");
     const statusEl = document.getElementById("status");
     const statsEl = document.getElementById("stats");
+    const methEl = document.getElementById("methodology");
+    const diagEl = document.getElementById("diagnostics");
+    const diagBody = document.getElementById("diag-body");
     const canvas = document.getElementById("chart");
+
     let currentChart = null;
     let catalog = [...INDICATORS];
-    let lastRows = null;
+    let lastRawRows = null;
+    let lastShownRows = null;
     let lastIndicator = null;
+    let lastSpec = null;
+
+    tfEl.addEventListener("change", () => {
+      baseEl.disabled = tfEl.value !== "index";
+    });
 
     // ── Populate selects ─────────────────────────────────────────
 
     function populateIndicators(selectedId) {
       indEl.innerHTML = "";
-      // Group by category via <optgroup>.
       const byCat = new Map();
       for (const r of catalog) {
         if (!byCat.has(r.category)) byCat.set(r.category, []);
@@ -169,9 +229,37 @@
       populateCountries(iso3);
     });
 
-    // ── Render ────────────────────────────────────────────────────
+    // ── Spec builder + render ─────────────────────────────────────
 
     function selectedCountries() { return [...countriesEl.selectedOptions].map(o => o.value); }
+
+    function currentTransform() {
+      const method = tfEl.value;
+      if (method === "index") return { method, baseYear: parseInt(baseEl.value, 10) || 2000 };
+      return { method };
+    }
+
+    function currentEntityAgg() {
+      return aggEl.value === "none" ? null : { method: aggEl.value };
+    }
+
+    function buildSpec() {
+      if (!lastIndicator) return null;
+      const iso3 = selectedCountries();
+      const yFrom = parseInt(yFromEl.value, 10) || 1960;
+      const yTo = parseInt(yToEl.value, 10) || 2025;
+      return {
+        kind: "timeseries",
+        indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
+        countries: iso3.length && iso3.length < COUNTRIES.length ? iso3 : null,
+        years: [yFrom, yTo],
+        chartType: typeEl.value,
+        log: logEl.checked,
+        transform: currentTransform(),
+        entityAgg: currentEntityAgg(),
+        filename: lastIndicator.id,
+      };
+    }
 
     async function render() {
       const id = indEl.value;
@@ -185,27 +273,47 @@
       loading(statusEl, `Fetching ${row.name}…`);
       try {
         const rowsAll = await fetchSeries(row.code, iso3);
-        const rows = rowsAll.filter(r => r.year >= yFrom && r.year <= yTo);
-        if (!rows.length) {
+        const rawFiltered = rowsAll.filter(r => r.year >= yFrom && r.year <= yTo);
+        if (!rawFiltered.length) {
           clear(statusEl); error(statusEl, "No data returned for this selection.");
-          statsEl.style.display = "none";
+          statsEl.style.display = "none"; methEl.style.display = "none";
+          diagEl.style.display = "none";
           return;
         }
-        lastRows = rows;
+        lastRawRows = rawFiltered;
         lastIndicator = row;
+
+        // Temporal transform.
+        const transformed = aggregateTime(rawFiltered, currentTransform());
+
+        // Entity aggregation (optional weights fetch).
+        const ea = currentEntityAgg();
+        let finalRows = transformed;
+        let aggregateRows = null;
+        if (ea) {
+          let weights = null;
+          if (ea.method === "pop_weighted")
+            weights = await fetchSeries("SP.POP.TOTL", iso3);
+          else if (ea.method === "gdp_weighted")
+            weights = await fetchSeries("NY.GDP.MKTP.CD", iso3);
+          aggregateRows = aggregateEntities(transformed, { method: ea.method, weights });
+          if (overlayEl.checked) finalRows = [...transformed, ...aggregateRows];
+          else finalRows = aggregateRows;
+        }
+        lastShownRows = finalRows;
 
         if (currentChart) currentChart.destroy();
         if (typeEl.value === "bar") {
-          currentChart = makeBar(canvas, rows, row);
+          currentChart = makeBar(canvas, finalRows, row);
         } else {
-          currentChart = makeLine(canvas, rows, row, {
+          currentChart = makeLine(canvas, finalRows, row, {
             yLog: logEl.checked,
             fill: typeEl.value === "area",
           });
         }
 
         // Summary stats.
-        const stats = summaryStats(rows);
+        const stats = summaryStats(finalRows);
         if (stats) {
           statsEl.style.display = "grid";
           const fmt = (v) => typeof v === "number"
@@ -221,6 +329,19 @@
           `;
         } else statsEl.style.display = "none";
 
+        // Diagnostics.
+        const diag = diagnostics(rawFiltered, { yearFrom: yFrom, yearTo: yTo, countries: iso3 });
+        if (diag) {
+          diagEl.style.display = "block";
+          renderDiagnostics(diag);
+        } else diagEl.style.display = "none";
+
+        // Methodology caption.
+        lastSpec = buildSpec();
+        const caption = methodologyCaption(lastSpec);
+        methEl.style.display = "block";
+        methEl.innerHTML = `<strong>Methodology.</strong> ${caption}`;
+
         clear(statusEl);
 
         // Update URL.
@@ -231,15 +352,46 @@
           chart: typeEl.value,
           log: logEl.checked,
           preset: presetEl.value,
+          tf: tfEl.value !== "none" ? tfEl.value : null,
+          base: tfEl.value === "index" ? baseEl.value : null,
+          agg: aggEl.value !== "none" ? aggEl.value : null,
+          overlay: overlayEl.checked,
         });
 
-        // Title.
         document.getElementById("chart-title").textContent = row.name;
         document.getElementById("chart-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
       } catch (e) {
         error(statusEl, e.message);
       }
     }
+
+    function renderDiagnostics(diag) {
+      const worstCountries = diag.gapsByCountry.slice(0, 10);
+      const covRows = diag.coverageByYear.map(c =>
+        `<tr><td>${c.year}</td><td>${c.n}/${diag.nCountries}</td>
+         <td><span class="cov-bar"><span style="width:${(c.coverage*100).toFixed(0)}%"></span></span></td></tr>`).join("");
+      const gapRows = worstCountries.map(c =>
+        `<tr><td>${c.country}</td><td>${c.n}/${diag.yearSpan}</td>
+         <td>${(c.coverage*100).toFixed(0)}%</td></tr>`).join("");
+      diagBody.innerHTML = `
+        <p>${diag.totalN.toLocaleString()} observations of ${diag.totalPossible.toLocaleString()} possible
+          (${((100*diag.totalN/diag.totalPossible) || 0).toFixed(0)}% coverage over
+          ${diag.nCountries} countries × ${diag.yearSpan} years).</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <strong>Coverage by year</strong>
+            <table><thead><tr><th>Year</th><th>N</th><th></th></tr></thead>
+            <tbody>${covRows}</tbody></table>
+          </div>
+          <div>
+            <strong>Lowest-coverage countries</strong>
+            <table><thead><tr><th>Country</th><th>N</th><th>%</th></tr></thead>
+            <tbody>${gapRows}</tbody></table>
+          </div>
+        </div>`;
+    }
+
+    // ── Event wiring ──────────────────────────────────────────────
 
     document.getElementById("btn-update").addEventListener("click", render);
     indEl.addEventListener("change", render);
@@ -248,10 +400,14 @@
     countriesEl.addEventListener("change", render);
     yFromEl.addEventListener("change", render);
     yToEl.addEventListener("change", render);
+    tfEl.addEventListener("change", render);
+    baseEl.addEventListener("change", render);
+    aggEl.addEventListener("change", render);
+    overlayEl.addEventListener("change", render);
 
     document.getElementById("btn-download").addEventListener("click", () => {
-      if (!lastRows || !lastIndicator) return;
-      downloadCsv(`${lastIndicator.id}.csv`, lastRows);
+      if (!lastShownRows || !lastIndicator) return;
+      downloadCsv(`${lastIndicator.id}.csv`, lastShownRows);
     });
 
     document.getElementById("btn-share").addEventListener("click", async () => {
@@ -261,25 +417,69 @@
         const prev = btn.textContent;
         btn.textContent = "✓ Copied";
         setTimeout(() => { btn.textContent = prev; }, 1500);
-      } catch { /* clipboard may be unavailable; silent */ }
+      } catch {}
     });
+
+    document.getElementById("btn-code").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      showCodeModal({
+        r: rCode(spec),
+        python: pyCode(spec),
+        filename: spec.filename,
+      });
+    });
+
+    document.getElementById("btn-cite").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      const c = citations(spec);
+      const box = document.getElementById("citation-box");
+      box.innerHTML = `
+        <div class="methodology"><strong>APA:</strong> ${c.apa}</div>
+        <pre class="citation">${c.bibtex}</pre>
+      `;
+    });
+
+    document.getElementById("btn-save").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      const name = prompt("Name this view:", spec.indicator.name);
+      if (!name) return;
+      views.saveView("chart", name, window.location.search);
+      renderSavedViews();
+    });
+
+    function renderSavedViews() {
+      const box = document.getElementById("saved-views");
+      const list = views.listViews("chart");
+      if (!list.length) { box.innerHTML = ""; return; }
+      box.innerHTML = list.map((v, i) =>
+        `<span class="saved-view">
+           <a href="./chart.html${v.query}">${v.name.replace(/[<>&]/g, "")}</a>
+           <button data-idx="${i}" title="Delete">✕</button>
+         </span>`).join("");
+      box.querySelectorAll("button").forEach(b =>
+        b.addEventListener("click", () => {
+          views.removeView("chart", Number(b.dataset.idx));
+          renderSavedViews();
+        }));
+    }
 
     // ── Bootstrap ─────────────────────────────────────────────────
 
     (async () => {
       populatePresets();
 
-      // If URL asks for a `wdi_*` indicator, we need the full taxonomy.
       const initialId = url.get("id") || cfg.defaultIndicatorId || "gdp_pc_ppp";
       if (initialId.startsWith("wdi_")) {
         try {
           const full = await loadFull();
           catalog = mergeCatalogs(INDICATORS, full);
-        } catch { /* fall back to curated catalog */ }
+        } catch {}
       }
       populateIndicators(initialId);
 
-      // Seed countries from URL or preset.
       const urlCountries = url.getList("countries");
       if (urlCountries.length) {
         populateCountries(urlCountries);
@@ -289,12 +489,16 @@
         populateCountries(resolvePreset(preset));
       }
 
-      // Seed years, chart type, log.
       const yrs = url.getIntPair("years");
       if (yrs) { yFromEl.value = yrs[0]; yToEl.value = yrs[1]; }
       const ct = url.get("chart"); if (ct) typeEl.value = ct;
       if (url.getBool("log")) logEl.checked = true;
+      const tf = url.get("tf"); if (tf) { tfEl.value = tf; baseEl.disabled = tf !== "index"; }
+      const base = url.get("base"); if (base) baseEl.value = base;
+      const agg = url.get("agg"); if (agg) aggEl.value = agg;
+      if (url.getBool("overlay")) overlayEl.checked = true;
 
+      renderSavedViews();
       render();
     })();
   </script>

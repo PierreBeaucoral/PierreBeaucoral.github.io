@@ -13,6 +13,7 @@
       <nav>
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
+        <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html" class="active">Conflict</a>
@@ -52,7 +53,9 @@
       </div>
       <div class="actions" style="margin-top: 0.75rem;">
         <button id="btn-download">Download aggregated CSV</button>
+        <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
       </div>
+      <div id="conflict-methodology" class="methodology"></div>
     </div>
   </main>
 
@@ -65,7 +68,8 @@
   <script type="module">
     import { parseFile } from "./js/csv.js";
     import { makeLine } from "./js/charts.js";
-    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml } from "./js/ui.js";
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml,
+             showCodeModal } from "./js/ui.js";
 
     initDarkMode();
 
@@ -179,11 +183,64 @@
       });
       document.getElementById("caption").textContent =
         `${aggregated.length.toLocaleString()} country-year rows from ${rows.length.toLocaleString()} source events.`;
+      updateMethodology();
     }
 
     document.getElementById("btn-download").addEventListener("click", () => {
       if (aggregated) downloadCsv("conflict_aggregated.csv", aggregated);
     });
+
+    document.getElementById("btn-code").addEventListener("click", () => {
+      if (!aggregated) return;
+      const r = `# EasyViz replication — aggregate event-level conflict data to country-year
+# Requires: dplyr, readr, ggplot2, lubridate
+library(readr); library(dplyr); library(ggplot2); library(lubridate)
+
+# Read the raw event-level file you uploaded (UCDP GED or HDX conflict data).
+events <- read_csv("your_conflict_events.csv")
+
+# Adapt the column names to match your file:
+agg <- events |>
+  mutate(year = year(as.Date(event_date))) |>    # or use an existing year column
+  group_by(country, year) |>
+  summarise(value = sum(best, na.rm = TRUE), .groups = "drop")  # or n() for counts
+
+ggplot(agg, aes(x = year, y = value, colour = country)) +
+  geom_line(linewidth = 0.8) +
+  labs(title = "Country-year conflict aggregation",
+       x = "Year", y = "Sum per year",
+       caption = "Source: user-supplied event-level dataset.") +
+  theme_minimal(base_size = 12)
+`;
+      const py = `# EasyViz replication — aggregate event-level conflict data to country-year
+# pip install pandas matplotlib
+import pandas as pd, matplotlib.pyplot as plt
+
+events = pd.read_csv("your_conflict_events.csv")
+events["year"] = pd.to_datetime(events["event_date"]).dt.year
+agg = (events.groupby(["country", "year"], as_index=False)["best"].sum()
+               .rename(columns={"best": "value"}))
+
+fig, ax = plt.subplots(figsize=(10, 6))
+for country, sub in agg.groupby("country"):
+    ax.plot(sub["year"], sub["value"], label=country)
+ax.set_xlabel("Year"); ax.set_ylabel("Sum per year")
+ax.legend(fontsize=8, loc="best"); ax.grid(alpha=0.3)
+plt.tight_layout(); plt.show()
+`;
+      showCodeModal({ r, python: py, filename: "conflict_aggregation" });
+    });
+
+    function updateMethodology() {
+      const el = document.getElementById("conflict-methodology");
+      if (!aggregated || !aggregated.length) return;
+      const countries = new Set(aggregated.map(r => r.country));
+      const years = aggregated.map(r => r.year);
+      el.innerHTML = `<strong>Methodology.</strong> Event-level records aggregated to
+        country-year totals; ${aggregated.length.toLocaleString()} country-year rows
+        across ${countries.size} countries, years ${Math.min(...years)}–${Math.max(...years)};
+        source: user-supplied event-level dataset.`;
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyViz — choropleth map</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <span class="brand"><a href="./index.html">EasyViz</a></span>
+      <nav>
+        <a href="./index.html">Search</a>
+        <a href="./chart.html">Chart</a>
+        <a href="./map.html" class="active">Map</a>
+        <a href="./compare.html">Compare</a>
+        <a href="./upload.html">Upload</a>
+        <a href="./conflict.html">Conflict</a>
+      </nav>
+      <div class="tools">
+        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 id="map-title">World choropleth</h1>
+    <p class="lede" id="map-lede">Pick an indicator and a year. Hover a country for its value. Every map exports to CSV and copy-pasteable R (ggplot2 + sf + rnaturalearth).</p>
+
+    <div class="controls">
+      <div class="span-2">
+        <label for="indicator">Indicator</label>
+        <select id="indicator"></select>
+      </div>
+      <div>
+        <label for="year">Year</label>
+        <input id="year" type="number" min="1960" max="2025" value="2020">
+      </div>
+      <div>
+        <label>Options</label>
+        <label class="check"><input id="log" type="checkbox"> Log scale</label>
+        <label class="check"><input id="latest" type="checkbox"> Use latest available year</label>
+      </div>
+    </div>
+
+    <div class="year-slider">
+      <button id="year-prev">◀</button>
+      <input id="year-slider" type="range" min="1960" max="2025" step="1" value="2020">
+      <button id="year-play">▶ Play</button>
+      <div class="year-label" id="year-label">2020</div>
+    </div>
+
+    <div class="actions">
+      <button id="btn-download">Download CSV</button>
+      <button id="btn-share">Copy share URL</button>
+      <button id="btn-save">Save view</button>
+      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+    </div>
+
+    <div id="saved-views" class="saved-views"></div>
+    <div id="methodology" class="methodology" style="display:none;"></div>
+    <div id="status"></div>
+
+    <div class="map-wrap" id="map"></div>
+    <div class="caption" id="caption" style="margin-top:0.5rem;">Boundaries: Natural Earth via world-atlas · Data: World Bank WDI (live).</div>
+  </main>
+
+  <footer class="site">Map geometry: <a href="https://github.com/topojson/world-atlas">world-atlas</a> (Natural Earth, 110m).</footer>
+
+  <script src="./config.js"></script>
+  <script type="module">
+    import { INDICATORS, byId } from "./data/catalog.js";
+    import { fetchSeries } from "./js/wdi.js";
+    import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
+    import { renderChoropleth } from "./js/map.js";
+    import { loading, error, clear, initDarkMode, downloadCsv,
+             showCodeModal, methodologyCaption } from "./js/ui.js";
+    import { rCode, pyCode } from "./js/codegen.js";
+    import * as url from "./js/urlstate.js";
+    import * as views from "./js/savedviews.js";
+
+    initDarkMode();
+    if (url.isEmbed()) {
+      const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
+      document.head.appendChild(s);
+    }
+
+    const indEl = document.getElementById("indicator");
+    const yearEl = document.getElementById("year");
+    const sliderEl = document.getElementById("year-slider");
+    const sliderLabel = document.getElementById("year-label");
+    const logEl = document.getElementById("log");
+    const latestEl = document.getElementById("latest");
+    const statusEl = document.getElementById("status");
+    const methEl = document.getElementById("methodology");
+    const mapEl = document.getElementById("map");
+
+    let catalog = [...INDICATORS];
+    let lastRows = null, lastIndicator = null, lastYear = null;
+
+    function populateIndicators(selectedId) {
+      indEl.innerHTML = "";
+      const byCat = new Map();
+      for (const r of catalog) {
+        if (!byCat.has(r.category)) byCat.set(r.category, []);
+        byCat.get(r.category).push(r);
+      }
+      for (const [cat, rows] of [...byCat.entries()].sort()) {
+        const og = document.createElement("optgroup"); og.label = cat;
+        for (const r of rows) {
+          const opt = document.createElement("option");
+          opt.value = r.id; opt.textContent = r.name;
+          if (r.id === selectedId) opt.selected = true;
+          og.appendChild(opt);
+        }
+        indEl.appendChild(og);
+      }
+    }
+
+    function buildSpec() {
+      if (!lastIndicator || lastYear === null) return null;
+      return {
+        kind: "map",
+        indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
+        year: lastYear,
+        log: logEl.checked,
+        filename: `${lastIndicator.id}_${lastYear}_map`,
+      };
+    }
+
+    async function render() {
+      const id = indEl.value;
+      const row = byId(id) || catalog.find(r => r.id === id);
+      if (!row) { error(statusEl, "Unknown indicator"); return; }
+      lastIndicator = row;
+
+      loading(statusEl, `Fetching ${row.name}…`);
+      try {
+        const all = await fetchSeries(row.code, []); // all countries
+        let year = parseInt(yearEl.value, 10) || 2020;
+        if (latestEl.checked) {
+          const years = [...new Set(all.map(r => r.year))].sort((a, b) => b - a);
+          // pick the latest year with >= 100 observations (avoids sparse
+          // future partial releases).
+          for (const y of years) {
+            const n = all.filter(r => r.year === y).length;
+            if (n >= 100) { year = y; break; }
+          }
+          yearEl.value = year;
+        }
+        lastYear = year;
+        sliderEl.value = year; sliderLabel.textContent = year;
+
+        const slice = all.filter(r => r.year === year);
+        lastRows = slice;
+        const valByIso = new Map(slice.map(r => [r.iso3, r.value]));
+
+        await renderChoropleth(mapEl, valByIso, {
+          title: row.name, unit: row.unit, log: logEl.checked,
+        });
+        clear(statusEl);
+
+        document.getElementById("map-title").textContent = `${row.name} — ${year}`;
+        document.getElementById("map-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
+
+        const spec = buildSpec();
+        methEl.style.display = "block";
+        methEl.innerHTML = `<strong>Methodology.</strong> ${methodologyCaption(spec)}`;
+
+        url.update({ id, year, log: logEl.checked, latest: latestEl.checked });
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    // Events.
+    indEl.addEventListener("change", render);
+    yearEl.addEventListener("change", () => { latestEl.checked = false; render(); });
+    logEl.addEventListener("change", render);
+    latestEl.addEventListener("change", render);
+
+    sliderEl.addEventListener("input", () => {
+      sliderLabel.textContent = sliderEl.value;
+      yearEl.value = sliderEl.value;
+    });
+    sliderEl.addEventListener("change", () => { latestEl.checked = false; render(); });
+
+    document.getElementById("year-prev").addEventListener("click", () => {
+      sliderEl.value = Math.max(+sliderEl.min, +sliderEl.value - 1);
+      sliderEl.dispatchEvent(new Event("input"));
+      sliderEl.dispatchEvent(new Event("change"));
+    });
+
+    let playTimer = null;
+    const playBtn = document.getElementById("year-play");
+    playBtn.addEventListener("click", () => {
+      if (playTimer) {
+        clearInterval(playTimer); playTimer = null; playBtn.textContent = "▶ Play"; return;
+      }
+      playBtn.textContent = "■ Stop";
+      playTimer = setInterval(() => {
+        const nxt = +sliderEl.value + 1;
+        if (nxt > +sliderEl.max) {
+          clearInterval(playTimer); playTimer = null; playBtn.textContent = "▶ Play";
+          return;
+        }
+        sliderEl.value = nxt;
+        sliderEl.dispatchEvent(new Event("input"));
+        sliderEl.dispatchEvent(new Event("change"));
+      }, 900);
+    });
+
+    document.getElementById("btn-download").addEventListener("click", () => {
+      if (!lastRows || !lastIndicator) return;
+      downloadCsv(`${lastIndicator.id}_${lastYear}.csv`, lastRows);
+    });
+
+    document.getElementById("btn-share").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const btn = document.getElementById("btn-share");
+        const prev = btn.textContent; btn.textContent = "✓ Copied";
+        setTimeout(() => { btn.textContent = prev; }, 1500);
+      } catch {}
+    });
+
+    document.getElementById("btn-code").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      showCodeModal({ r: rCode(spec), python: pyCode(spec), filename: spec.filename });
+    });
+
+    document.getElementById("btn-save").addEventListener("click", () => {
+      const spec = buildSpec();
+      if (!spec) return;
+      const name = prompt("Name this view:", `${spec.indicator.name} ${spec.year}`);
+      if (!name) return;
+      views.saveView("map", name, window.location.search);
+      renderSavedViews();
+    });
+
+    function renderSavedViews() {
+      const box = document.getElementById("saved-views");
+      const list = views.listViews("map");
+      if (!list.length) { box.innerHTML = ""; return; }
+      box.innerHTML = list.map((v, i) =>
+        `<span class="saved-view">
+           <a href="./map.html${v.query}">${v.name.replace(/[<>&]/g, "")}</a>
+           <button data-idx="${i}" title="Delete">✕</button>
+         </span>`).join("");
+      box.querySelectorAll("button").forEach(b =>
+        b.addEventListener("click", () => {
+          views.removeView("map", Number(b.dataset.idx));
+          renderSavedViews();
+        }));
+    }
+
+    // Bootstrap.
+    (async () => {
+      const initialId = url.get("id") || "gdp_pc_ppp";
+      if (initialId.startsWith("wdi_")) {
+        try {
+          const full = await loadFull();
+          catalog = mergeCatalogs(INDICATORS, full);
+        } catch {}
+      }
+      populateIndicators(initialId);
+      if (url.get("year")) yearEl.value = url.get("year");
+      if (url.getBool("log")) logEl.checked = true;
+      if (url.getBool("latest")) latestEl.checked = true;
+      renderSavedViews();
+      render();
+    })();
+  </script>
+</body>
+</html>

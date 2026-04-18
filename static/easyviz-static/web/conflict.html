@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyViz — conflict data</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <span class="brand"><a href="./index.html">EasyViz</a></span>
+      <nav>
+        <a href="./index.html">Search</a>
+        <a href="./chart.html">Chart</a>
+        <a href="./compare.html">Compare</a>
+        <a href="./upload.html">Upload</a>
+        <a href="./conflict.html" class="active">Conflict</a>
+      </nav>
+      <div class="tools">
+        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Conflict data</h1>
+    <p class="lede">Upload a UCDP GED export, an HDX conflict CSV, or any event-level dataset with a country, date, and count/severity column. We'll aggregate to annual country-level counts and chart them.</p>
+
+    <div class="info">
+      <strong>Note.</strong> UCDP's public API now requires an access token, and HDX's CDN
+      restricts CORS to its own origin — so a pure-static site can't fetch them live.
+      Two options:
+      <ul style="margin:0.5rem 0 0; padding-left:1.25rem;">
+        <li><strong>Download the CSV from <a href="https://ucdp.uu.se/downloads/">UCDP</a> or <a href="https://data.humdata.org/">HDX</a></strong> and drop it below.</li>
+        <li><strong>Self-host the FastAPI backend</strong> (see <code>api/</code> in the repo) and add an auth-equipped UCDP proxy route. Then point <code>config.js → proxyBase</code> at it.</li>
+      </ul>
+    </div>
+
+    <div class="dropzone" id="dropzone" style="margin-top: 1.25rem;">
+      <p class="primary">Drop a conflict CSV here</p>
+      <p>or <label style="color:var(--accent); cursor:pointer; text-decoration: underline;">click to browse<input id="file" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" style="display:none;"></label></p>
+      <p>Works with UCDP GED exports (columns <code>country</code>, <code>year</code>, <code>best</code>) or any similar structure.</p>
+    </div>
+
+    <div id="status"></div>
+    <div id="config" style="display:none;"></div>
+    <div id="chart-section" style="display:none;">
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart"></canvas></div>
+        <div class="caption" id="caption"></div>
+      </div>
+      <div class="actions" style="margin-top: 0.75rem;">
+        <button id="btn-download">Download aggregated CSV</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site">All file parsing happens locally. Nothing is uploaded.</footer>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script type="module">
+    import { parseFile } from "./js/csv.js";
+    import { makeLine } from "./js/charts.js";
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml } from "./js/ui.js";
+
+    initDarkMode();
+
+    const drop = document.getElementById("dropzone");
+    const fileInput = document.getElementById("file");
+    const statusEl = document.getElementById("status");
+    const cfgEl = document.getElementById("config");
+    const chartSection = document.getElementById("chart-section");
+    const canvas = document.getElementById("chart");
+    let currentChart = null;
+    let rows = null, cols = null;
+    let aggregated = null;
+
+    drop.addEventListener("click", () => fileInput.click());
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("drag"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault(); drop.classList.remove("drag");
+      if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files[0]) handle(fileInput.files[0]);
+    });
+
+    async function handle(file) {
+      loading(statusEl, `Parsing ${file.name}…`);
+      try {
+        const parsed = await parseFile(file);
+        rows = parsed.rows; cols = parsed.cols;
+        clear(statusEl);
+        renderConfig(file.name);
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    function guessCountry(cols) {
+      return cols.find(c => /country|iso|location|admin0/i.test(c)) ?? cols[0];
+    }
+    function guessYear(cols) {
+      return cols.find(c => /^year$|^year_|date_start|event_date/i.test(c)) ?? cols[1] ?? cols[0];
+    }
+    function guessValue(cols) {
+      return cols.find(c => /^best$|fatalit|deaths|count|events/i.test(c));
+    }
+
+    function renderConfig(name) {
+      cfgEl.style.display = "block";
+      cfgEl.innerHTML = `
+        <h2>Columns in ${escapeHtml(name)}</h2>
+        <p class="lede">Pick the country, year, and value columns. We aggregate by summing the value per country-year.</p>
+        <div class="controls">
+          <div>
+            <label>Country column</label>
+            <select id="col-country">${cols.map(c => `<option ${c===guessCountry(cols)?"selected":""}>${escapeHtml(c)}</option>`).join("")}</select>
+          </div>
+          <div>
+            <label>Year column</label>
+            <select id="col-year">${cols.map(c => `<option ${c===guessYear(cols)?"selected":""}>${escapeHtml(c)}</option>`).join("")}</select>
+          </div>
+          <div>
+            <label>Value column (sum per year)</label>
+            <select id="col-value">
+              <option value="">— count events —</option>
+              ${cols.map(c => `<option ${c===guessValue(cols)?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="btn-agg">Aggregate & chart</button>
+        </div>
+      `;
+      document.getElementById("btn-agg").addEventListener("click", aggregate);
+    }
+
+    function parseYear(v) {
+      if (v === null || v === undefined || v === "") return null;
+      if (typeof v === "number") return Math.floor(v);
+      const s = String(v).trim();
+      const m = s.match(/(19|20)\d{2}/);
+      return m ? parseInt(m[0], 10) : null;
+    }
+
+    function aggregate() {
+      const cc = document.getElementById("col-country").value;
+      const yc = document.getElementById("col-year").value;
+      const vc = document.getElementById("col-value").value;
+
+      const totals = new Map();
+      for (const r of rows) {
+        const country = r[cc];
+        const year = parseYear(r[yc]);
+        if (!country || year === null) continue;
+        const v = vc ? Number(r[vc]) : 1;
+        if (!Number.isFinite(v)) continue;
+        const k = `${country}__${year}`;
+        totals.set(k, (totals.get(k) || 0) + v);
+      }
+      aggregated = [...totals.entries()].map(([k, value]) => {
+        const [country, year] = k.split("__");
+        return { country, year: parseInt(year, 10), value };
+      }).sort((a, b) => a.country.localeCompare(b.country) || a.year - b.year);
+
+      if (!aggregated.length) { error(statusEl, "No rows survived aggregation — check the column mapping."); return; }
+      clear(statusEl);
+      chartSection.style.display = "block";
+      if (currentChart) currentChart.destroy();
+      currentChart = makeLine(canvas, aggregated, {
+        name: vc ? `Sum of ${vc}` : "Event count",
+        unit: vc ? vc : "events",
+      });
+      document.getElementById("caption").textContent =
+        `${aggregated.length.toLocaleString()} country-year rows from ${rows.length.toLocaleString()} source events.`;
+    }
+
+    document.getElementById("btn-download").addEventListener("click", () => {
+      if (aggregated) downloadCsv("conflict_aggregated.csv", aggregated);
+    });
+  </script>
+</body>
+</html>

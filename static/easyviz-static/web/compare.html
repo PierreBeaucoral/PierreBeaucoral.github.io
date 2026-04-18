@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyViz — compare</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <span class="brand"><a href="./index.html">EasyViz</a></span>
+      <nav>
+        <a href="./index.html">Search</a>
+        <a href="./chart.html">Chart</a>
+        <a href="./compare.html" class="active">Compare</a>
+        <a href="./upload.html">Upload</a>
+        <a href="./conflict.html">Conflict</a>
+      </nav>
+      <div class="tools">
+        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Compare two indicators</h1>
+    <p class="lede">Cross-section scatter, bubble with a size variable, OLS trend, or an animated Gapminder-style view.</p>
+
+    <div class="controls">
+      <div>
+        <label for="ind-a">X-axis</label>
+        <select id="ind-a"></select>
+      </div>
+      <div>
+        <label for="ind-b">Y-axis</label>
+        <select id="ind-b"></select>
+      </div>
+      <div>
+        <label for="ind-size">Bubble size (for bubble/gapminder)</label>
+        <select id="ind-size"></select>
+      </div>
+      <div>
+        <label for="preset">Countries</label>
+        <select id="preset"></select>
+      </div>
+      <div>
+        <label for="year">Year (scatter/bubble/regression)</label>
+        <input id="year" type="number" min="1960" max="2024" value="2020">
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-panel="tab-scatter">Scatter</button>
+      <button class="tab"        data-panel="tab-bubble">Bubble</button>
+      <button class="tab"        data-panel="tab-regression">Regression</button>
+      <button class="tab"        data-panel="tab-gapminder">Gapminder</button>
+    </div>
+
+    <div id="status"></div>
+
+    <section class="tab-panel active" id="tab-scatter">
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-scatter"></canvas></div>
+        <div class="caption">Source: World Bank WDI.</div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-bubble">
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-bubble"></canvas></div>
+        <div class="caption">Bubble size = third indicator.</div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-regression">
+      <div id="fit-summary" class="info" style="display:none;"></div>
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-regression"></canvas></div>
+        <div class="caption">OLS fit on the cross-section.</div>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-gapminder">
+      <div class="year-slider">
+        <button id="gap-prev">◀</button>
+        <input id="gap-year" type="range" min="1960" max="2024" step="1" value="2020">
+        <button id="gap-play">▶ Play</button>
+        <div class="year-label" id="gap-year-label">2020</div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart-gapminder"></canvas></div>
+        <div class="caption">Move the slider or press Play to animate across years.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js.</footer>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script type="module">
+    import { INDICATORS, byId } from "./data/catalog.js";
+    import { PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
+    import { crossSection, gapminderPanel } from "./js/wdi.js";
+    import { makeScatter, makeBubble, makeGapminder } from "./js/charts.js";
+    import { olsFit, fmtFit } from "./js/regression.js";
+    import { loading, error, clear, initDarkMode } from "./js/ui.js";
+    import * as url from "./js/urlstate.js";
+
+    initDarkMode();
+    if (url.isEmbed()) {
+      const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
+      document.head.appendChild(s);
+    }
+
+    const aEl = document.getElementById("ind-a");
+    const bEl = document.getElementById("ind-b");
+    const sEl = document.getElementById("ind-size");
+    const presetEl = document.getElementById("preset");
+    const yearEl = document.getElementById("year");
+    const statusEl = document.getElementById("status");
+    const fitEl = document.getElementById("fit-summary");
+
+    const charts = {}; // keyed by tab id
+
+    // ── Populate ───────────────────────────────────────────────────
+
+    function populate(select, selectedId, { allowNone = false } = {}) {
+      select.innerHTML = "";
+      if (allowNone) {
+        const opt = document.createElement("option");
+        opt.value = ""; opt.textContent = "— none —";
+        select.appendChild(opt);
+      }
+      const byCat = new Map();
+      for (const r of INDICATORS) {
+        if (!byCat.has(r.category)) byCat.set(r.category, []);
+        byCat.get(r.category).push(r);
+      }
+      for (const [cat, rows] of [...byCat.entries()].sort()) {
+        const og = document.createElement("optgroup"); og.label = cat;
+        for (const r of rows) {
+          const opt = document.createElement("option");
+          opt.value = r.id; opt.textContent = r.name;
+          if (r.id === selectedId) opt.selected = true;
+          og.appendChild(opt);
+        }
+        select.appendChild(og);
+      }
+    }
+
+    populate(aEl, url.get("a") || "gdp_pc_ppp");
+    populate(bEl, url.get("b") || "life_expectancy");
+    populate(sEl, url.get("size") || "population", { allowNone: true });
+
+    presetEl.innerHTML = "";
+    for (const n of [ALL_COUNTRIES_KEY, ...Object.keys(PRESETS)]) {
+      const opt = document.createElement("option");
+      opt.value = n; opt.textContent = n;
+      if (n === (url.get("preset") || ALL_COUNTRIES_KEY)) opt.selected = true;
+      presetEl.appendChild(opt);
+    }
+    if (url.get("year")) yearEl.value = url.get("year");
+
+    // ── Tab switching ──────────────────────────────────────────────
+
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach(t => t.addEventListener("click", () => {
+      tabs.forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.getElementById(t.dataset.panel).classList.add("active");
+      render();
+    }));
+
+    function activeTab() {
+      return document.querySelector(".tab.active").dataset.panel;
+    }
+
+    function destroy(key) {
+      if (charts[key]) { charts[key].destroy ? charts[key].destroy() : charts[key].chart.destroy(); delete charts[key]; }
+    }
+
+    // ── Render ────────────────────────────────────────────────────
+
+    async function render() {
+      const a = byId(aEl.value), b = byId(bEl.value);
+      const s = sEl.value ? byId(sEl.value) : null;
+      if (!a || !b) return;
+      const year = parseInt(yearEl.value, 10);
+      const iso3 = resolvePreset(presetEl.value);
+      const tab = activeTab();
+
+      url.update({
+        a: aEl.value, b: bEl.value,
+        size: sEl.value || null,
+        year,
+        preset: presetEl.value,
+      });
+
+      loading(statusEl, "Fetching indicators…");
+      try {
+        if (tab === "tab-scatter") {
+          const pts = await crossSection(a.code, b.code, year, iso3);
+          destroy("scatter");
+          charts.scatter = makeScatter(document.getElementById("chart-scatter"), pts, a, b, year);
+        } else if (tab === "tab-bubble") {
+          if (!s) { clear(statusEl); error(statusEl, "Pick a size indicator for the bubble chart."); return; }
+          const panel = await gapminderPanel(a.code, b.code, iso3, s.code);
+          const pts = panel.filter(p => p.year === year);
+          if (!pts.length) { clear(statusEl); error(statusEl, `No data for ${year}. Try an earlier year.`); return; }
+          destroy("bubble");
+          charts.bubble = makeBubble(document.getElementById("chart-bubble"), pts, a, b, s, year);
+        } else if (tab === "tab-regression") {
+          const pts = await crossSection(a.code, b.code, year, iso3);
+          const fit = olsFit(pts);
+          fitEl.style.display = "block";
+          fitEl.textContent = `OLS: ${fmtFit(fit)}`;
+          destroy("regression");
+          charts.regression = makeScatter(document.getElementById("chart-regression"), pts, a, b, year, { fit });
+        } else if (tab === "tab-gapminder") {
+          const panel = await gapminderPanel(a.code, b.code, iso3, s?.code ?? null);
+          if (!panel.length) { clear(statusEl); error(statusEl, "No overlapping data for the panel."); return; }
+          destroy("gapminder");
+          charts.gapminder = makeGapminder(
+            document.getElementById("chart-gapminder"), panel, a, b, s
+          );
+          const slider = document.getElementById("gap-year");
+          const ys = charts.gapminder.years;
+          slider.min = ys[0]; slider.max = ys[ys.length - 1]; slider.value = ys[ys.length - 1];
+          document.getElementById("gap-year-label").textContent = slider.value;
+          charts.gapminder.setYear(parseInt(slider.value, 10));
+        }
+        clear(statusEl);
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    [aEl, bEl, sEl, presetEl, yearEl].forEach(el => el.addEventListener("change", render));
+
+    // ── Gapminder slider + play ──────────────────────────────────
+
+    const gapSlider = document.getElementById("gap-year");
+    const gapLabel = document.getElementById("gap-year-label");
+    const gapPlay = document.getElementById("gap-play");
+    let playTimer = null;
+
+    gapSlider.addEventListener("input", () => {
+      gapLabel.textContent = gapSlider.value;
+      if (charts.gapminder) charts.gapminder.setYear(parseInt(gapSlider.value, 10));
+    });
+
+    document.getElementById("gap-prev").addEventListener("click", () => {
+      gapSlider.value = Math.max(+gapSlider.min, +gapSlider.value - 1);
+      gapSlider.dispatchEvent(new Event("input"));
+    });
+
+    gapPlay.addEventListener("click", () => {
+      if (playTimer) {
+        clearInterval(playTimer); playTimer = null; gapPlay.textContent = "▶ Play"; return;
+      }
+      gapPlay.textContent = "■ Stop";
+      playTimer = setInterval(() => {
+        const nxt = +gapSlider.value + 1;
+        if (nxt > +gapSlider.max) {
+          clearInterval(playTimer); playTimer = null; gapPlay.textContent = "▶ Play";
+          return;
+        }
+        gapSlider.value = nxt; gapSlider.dispatchEvent(new Event("input"));
+      }, 400);
+    });
+
+    render();
+  </script>
+</body>
+</html>

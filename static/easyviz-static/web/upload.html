@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyViz — upload your data</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <span class="brand"><a href="./index.html">EasyViz</a></span>
+      <nav>
+        <a href="./index.html">Search</a>
+        <a href="./chart.html">Chart</a>
+        <a href="./compare.html">Compare</a>
+        <a href="./upload.html" class="active">Upload</a>
+        <a href="./conflict.html">Conflict</a>
+      </nav>
+      <div class="tools">
+        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Upload your own data</h1>
+    <p class="lede">Drop a CSV or Excel file. EasyViz auto-detects the columns, resolves country names to ISO3, and reshapes wide tables to long format — all in the browser, nothing is uploaded anywhere.</p>
+
+    <div class="dropzone" id="dropzone">
+      <p class="primary">Drop a file here</p>
+      <p>or <label style="color:var(--accent); cursor:pointer; text-decoration: underline;">click to browse<input id="file" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" style="display:none;"></label></p>
+      <p>Accepted: .csv .tsv .xlsx .xls</p>
+    </div>
+
+    <div id="status"></div>
+    <div id="step-detect" style="display:none;"></div>
+    <div id="chart-section" style="display:none;">
+      <h2>Chart the normalised data</h2>
+      <div class="actions">
+        <button id="btn-download">Download normalised CSV</button>
+      </div>
+      <div class="chart-card">
+        <div class="chart-wrap"><canvas id="chart"></canvas></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site">All parsing happens locally in the browser. Your file never leaves your machine.</footer>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script type="module">
+    import { parseFile, detectFormat, detectColumns, normalise } from "./js/csv.js";
+    import { makeLine } from "./js/charts.js";
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml } from "./js/ui.js";
+
+    initDarkMode();
+
+    const drop = document.getElementById("dropzone");
+    const fileInput = document.getElementById("file");
+    const statusEl = document.getElementById("status");
+    const detectEl = document.getElementById("step-detect");
+    const chartSection = document.getElementById("chart-section");
+    const canvas = document.getElementById("chart");
+    let currentChart = null;
+    let parsedRows = null, parsedCols = null;
+    let normalisedRows = null;
+
+    drop.addEventListener("click", () => fileInput.click());
+    drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("drag"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault(); drop.classList.remove("drag");
+      if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files[0]) handle(fileInput.files[0]);
+    });
+
+    async function handle(file) {
+      loading(statusEl, `Parsing ${file.name}…`);
+      try {
+        const { rows, cols } = await parseFile(file);
+        parsedRows = rows; parsedCols = cols;
+        clear(statusEl);
+        renderDetectStep();
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    function renderDetectStep() {
+      const fmt = detectFormat(parsedCols);
+      const mapping = detectColumns(parsedRows, parsedCols);
+      detectEl.style.display = "block";
+      detectEl.innerHTML = `
+        <h2>Detected structure</h2>
+        <p class="lede">Review the guesses below and tweak if needed. Format: <code>${fmt}</code> · ${parsedRows.length.toLocaleString()} rows · ${parsedCols.length} columns.</p>
+        <div class="controls">
+          <div>
+            <label>Format</label>
+            <select id="fmt">
+              <option value="long" ${fmt==="long"?"selected":""}>long (one row per entity×year)</option>
+              <option value="wide" ${fmt==="wide"?"selected":""}>wide (year columns)</option>
+            </select>
+          </div>
+          <div>
+            <label>Entity column</label>
+            <select id="col-entity">${parsedCols.map(c => `<option ${c===mapping.entity?"selected":""}>${escapeHtml(c)}</option>`).join("")}</select>
+          </div>
+          <div>
+            <label>Year column (long only)</label>
+            <select id="col-year">
+              <option value="">— none —</option>
+              ${parsedCols.map(c => `<option ${c===mapping.year?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label>Value column (long only)</label>
+            <select id="col-value">
+              ${mapping.value_candidates.map(c => `<option ${c===mapping.value?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label>Options</label>
+            <label class="check"><input id="entity-iso3" type="checkbox"> Entity column is already ISO3</label>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="btn-normalise">Normalise & chart</button>
+        </div>
+      `;
+      document.getElementById("btn-normalise").addEventListener("click", doNormalise);
+    }
+
+    function doNormalise() {
+      const fmt = document.getElementById("fmt").value;
+      const entityCol = document.getElementById("col-entity").value;
+      const yearCol = document.getElementById("col-year").value || null;
+      const valueCol = document.getElementById("col-value").value;
+      const entityIsIso3 = document.getElementById("entity-iso3").checked;
+
+      loading(statusEl, "Normalising…");
+      try {
+        normalisedRows = normalise(parsedRows, { entityCol, yearCol, valueCol, fmt, entityIsIso3 });
+        if (!normalisedRows.length) { clear(statusEl); error(statusEl, "No rows survived normalisation — check column mapping."); return; }
+        clear(statusEl);
+        renderChart();
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    function renderChart() {
+      // Convert normalised rows to the { country, year, value } shape
+      // our line-chart factory expects.
+      const display = normalisedRows.map(r => ({
+        country: r.entity, year: r.year, value: r.value,
+      }));
+      chartSection.style.display = "block";
+      if (currentChart) currentChart.destroy();
+      currentChart = makeLine(canvas, display, {
+        name: "Uploaded data",
+        unit: "",
+      });
+    }
+
+    document.getElementById("btn-download").addEventListener("click", () => {
+      if (!normalisedRows) return;
+      downloadCsv("easyviz_normalised.csv", normalisedRows);
+    });
+  </script>
+</body>
+</html>

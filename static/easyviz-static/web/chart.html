@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EasyViz — chart</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <span class="brand"><a href="./index.html">EasyViz</a></span>
+      <nav>
+        <a href="./index.html">Search</a>
+        <a href="./chart.html" class="active">Chart</a>
+        <a href="./compare.html">Compare</a>
+        <a href="./upload.html">Upload</a>
+        <a href="./conflict.html">Conflict</a>
+      </nav>
+      <div class="tools">
+        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 id="chart-title">Time-series chart</h1>
+    <p class="lede" id="chart-lede">Pick an indicator, select countries, choose a chart type.</p>
+
+    <div class="controls">
+      <div class="span-2">
+        <label for="indicator">Indicator</label>
+        <select id="indicator"></select>
+      </div>
+
+      <div>
+        <label for="preset">Preset</label>
+        <select id="preset"></select>
+      </div>
+
+      <div>
+        <label for="chart-type">Chart type</label>
+        <select id="chart-type">
+          <option value="line">Line</option>
+          <option value="area">Area</option>
+          <option value="bar">Bar (latest year)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="year-from">Year from</label>
+        <input id="year-from" type="number" min="1960" max="2025" value="1990">
+      </div>
+
+      <div>
+        <label for="year-to">Year to</label>
+        <input id="year-to" type="number" min="1960" max="2025" value="2024">
+      </div>
+
+      <div>
+        <label>Options</label>
+        <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y)</label>
+      </div>
+
+      <div class="span-2">
+        <label for="countries">Countries (ctrl/cmd-click to multi-select)</label>
+        <select id="countries" multiple size="10"></select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="btn-update">Update chart</button>
+      <button id="btn-download">Download CSV</button>
+      <button id="btn-share">Copy share URL</button>
+    </div>
+
+    <div id="status"></div>
+    <div id="stats" class="stats-grid" style="display:none;"></div>
+
+    <div class="chart-card">
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+      <div class="caption" id="caption">Source: World Bank WDI.</div>
+    </div>
+  </main>
+
+  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js.</footer>
+
+  <script src="./config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script type="module">
+    import { INDICATORS, byId } from "./data/catalog.js";
+    import { COUNTRIES, ISO3_TO_NAME, PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
+    import { fetchSeries, summaryStats } from "./js/wdi.js";
+    import { makeLine, makeBar } from "./js/charts.js";
+    import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
+    import { loading, error, clear, initDarkMode, downloadCsv } from "./js/ui.js";
+    import * as url from "./js/urlstate.js";
+
+    initDarkMode();
+    if (url.isEmbed()) {
+      const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
+      document.head.appendChild(s);
+    }
+
+    const cfg = window.EASYVIZ_CONFIG || {};
+    const indEl = document.getElementById("indicator");
+    const countriesEl = document.getElementById("countries");
+    const presetEl = document.getElementById("preset");
+    const typeEl = document.getElementById("chart-type");
+    const yFromEl = document.getElementById("year-from");
+    const yToEl = document.getElementById("year-to");
+    const logEl = document.getElementById("log-scale");
+    const statusEl = document.getElementById("status");
+    const statsEl = document.getElementById("stats");
+    const canvas = document.getElementById("chart");
+    let currentChart = null;
+    let catalog = [...INDICATORS];
+    let lastRows = null;
+    let lastIndicator = null;
+
+    // ── Populate selects ─────────────────────────────────────────
+
+    function populateIndicators(selectedId) {
+      indEl.innerHTML = "";
+      // Group by category via <optgroup>.
+      const byCat = new Map();
+      for (const r of catalog) {
+        if (!byCat.has(r.category)) byCat.set(r.category, []);
+        byCat.get(r.category).push(r);
+      }
+      for (const [cat, rows] of [...byCat.entries()].sort()) {
+        const og = document.createElement("optgroup");
+        og.label = cat;
+        for (const r of rows) {
+          const opt = document.createElement("option");
+          opt.value = r.id;
+          opt.textContent = r.name;
+          if (r.id === selectedId) opt.selected = true;
+          og.appendChild(opt);
+        }
+        indEl.appendChild(og);
+      }
+    }
+
+    function populateCountries(selectedIso3) {
+      countriesEl.innerHTML = "";
+      for (const [iso, name] of COUNTRIES) {
+        const opt = document.createElement("option");
+        opt.value = iso;
+        opt.textContent = name;
+        if (selectedIso3.includes(iso)) opt.selected = true;
+        countriesEl.appendChild(opt);
+      }
+    }
+
+    function populatePresets() {
+      presetEl.innerHTML = "";
+      const names = [ALL_COUNTRIES_KEY, ...Object.keys(PRESETS)];
+      for (const n of names) {
+        const opt = document.createElement("option");
+        opt.value = n; opt.textContent = n;
+        if (n === (cfg.defaultPreset ?? "Default (20 diverse)")) opt.selected = true;
+        presetEl.appendChild(opt);
+      }
+    }
+
+    presetEl.addEventListener("change", () => {
+      const iso3 = resolvePreset(presetEl.value);
+      populateCountries(iso3);
+    });
+
+    // ── Render ────────────────────────────────────────────────────
+
+    function selectedCountries() { return [...countriesEl.selectedOptions].map(o => o.value); }
+
+    async function render() {
+      const id = indEl.value;
+      const row = byId(id) || catalog.find(r => r.id === id);
+      if (!row) { error(statusEl, "Unknown indicator"); return; }
+
+      const iso3 = selectedCountries();
+      const yFrom = parseInt(yFromEl.value, 10) || 1960;
+      const yTo = parseInt(yToEl.value, 10) || 2025;
+
+      loading(statusEl, `Fetching ${row.name}…`);
+      try {
+        const rowsAll = await fetchSeries(row.code, iso3);
+        const rows = rowsAll.filter(r => r.year >= yFrom && r.year <= yTo);
+        if (!rows.length) {
+          clear(statusEl); error(statusEl, "No data returned for this selection.");
+          statsEl.style.display = "none";
+          return;
+        }
+        lastRows = rows;
+        lastIndicator = row;
+
+        if (currentChart) currentChart.destroy();
+        if (typeEl.value === "bar") {
+          currentChart = makeBar(canvas, rows, row);
+        } else {
+          currentChart = makeLine(canvas, rows, row, {
+            yLog: logEl.checked,
+            fill: typeEl.value === "area",
+          });
+        }
+
+        // Summary stats.
+        const stats = summaryStats(rows);
+        if (stats) {
+          statsEl.style.display = "grid";
+          const fmt = (v) => typeof v === "number"
+            ? (Math.abs(v) >= 1000 ? v.toFixed(0) : v.toFixed(2))
+            : String(v);
+          statsEl.innerHTML = `
+            <div class="stat"><div class="k">N</div><div class="v">${stats.n.toLocaleString()}</div></div>
+            <div class="stat"><div class="k">Min</div><div class="v">${fmt(stats.min)}</div></div>
+            <div class="stat"><div class="k">Max</div><div class="v">${fmt(stats.max)}</div></div>
+            <div class="stat"><div class="k">Mean</div><div class="v">${fmt(stats.mean)}</div></div>
+            <div class="stat"><div class="k">Median</div><div class="v">${fmt(stats.median)}</div></div>
+            <div class="stat"><div class="k">Years</div><div class="v">${stats.year_min}–${stats.year_max}</div></div>
+          `;
+        } else statsEl.style.display = "none";
+
+        clear(statusEl);
+
+        // Update URL.
+        url.update({
+          id,
+          countries: iso3.length && iso3.length < COUNTRIES.length ? iso3 : null,
+          years: `${yFrom}-${yTo}`,
+          chart: typeEl.value,
+          log: logEl.checked,
+          preset: presetEl.value,
+        });
+
+        // Title.
+        document.getElementById("chart-title").textContent = row.name;
+        document.getElementById("chart-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
+      } catch (e) {
+        error(statusEl, e.message);
+      }
+    }
+
+    document.getElementById("btn-update").addEventListener("click", render);
+    indEl.addEventListener("change", render);
+    typeEl.addEventListener("change", render);
+    logEl.addEventListener("change", render);
+    countriesEl.addEventListener("change", render);
+    yFromEl.addEventListener("change", render);
+    yToEl.addEventListener("change", render);
+
+    document.getElementById("btn-download").addEventListener("click", () => {
+      if (!lastRows || !lastIndicator) return;
+      downloadCsv(`${lastIndicator.id}.csv`, lastRows);
+    });
+
+    document.getElementById("btn-share").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const btn = document.getElementById("btn-share");
+        const prev = btn.textContent;
+        btn.textContent = "✓ Copied";
+        setTimeout(() => { btn.textContent = prev; }, 1500);
+      } catch { /* clipboard may be unavailable; silent */ }
+    });
+
+    // ── Bootstrap ─────────────────────────────────────────────────
+
+    (async () => {
+      populatePresets();
+
+      // If URL asks for a `wdi_*` indicator, we need the full taxonomy.
+      const initialId = url.get("id") || cfg.defaultIndicatorId || "gdp_pc_ppp";
+      if (initialId.startsWith("wdi_")) {
+        try {
+          const full = await loadFull();
+          catalog = mergeCatalogs(INDICATORS, full);
+        } catch { /* fall back to curated catalog */ }
+      }
+      populateIndicators(initialId);
+
+      // Seed countries from URL or preset.
+      const urlCountries = url.getList("countries");
+      if (urlCountries.length) {
+        populateCountries(urlCountries);
+      } else {
+        const preset = url.get("preset") || cfg.defaultPreset || "Default (20 diverse)";
+        presetEl.value = preset;
+        populateCountries(resolvePreset(preset));
+      }
+
+      // Seed years, chart type, log.
+      const yrs = url.getIntPair("years");
+      if (yrs) { yFromEl.value = yrs[0]; yToEl.value = yrs[1]; }
+      const ct = url.get("chart"); if (ct) typeEl.value = ct;
+      if (url.getBool("log")) logEl.checked = true;
+
+      render();
+    })();
+  </script>
+</body>
+</html>

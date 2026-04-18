@@ -187,7 +187,12 @@ export function methodologyCaption(spec) {
   } else if (indicator) {
     parts.push(`${indicator.name}${indicator.unit ? ` (${indicator.unit})` : ""}`);
   }
-  if (years) parts.push(`${years[0]}–${years[1]}`);
+  if (spec.period && spec.period.method) {
+    const m = spec.period.method;
+    const label = m === "sum" ? "cumulative sum"
+                : m === "mean" ? "mean" : m;
+    parts.push(`${label} ${spec.period.yearFrom}–${spec.period.yearTo} (NA-dropped per country)`);
+  } else if (years) parts.push(`${years[0]}–${years[1]}`);
   else if (year) parts.push(`${year}`);
   if (countries && countries.length && countries.length < 50) {
     parts.push(`${countries.length} economies`);

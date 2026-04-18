@@ -370,10 +370,24 @@ function rFillScale(palette, { log = false, reverse = false, diverging = false, 
 
 export function rMap(spec) {
   const {
-    indicator, year, log = false,
+    indicator, year, period = null, log = false,
     palette = "viridis", reverse = false, diverging = false, center = 0,
   } = spec;
-  return `# EasyViz replication — choropleth map (${indicator.name}, ${year})
+  const useP = period && period.method && period.method !== "single";
+  const y1 = useP ? period.yearFrom : year;
+  const y2 = useP ? period.yearTo   : year;
+  const rAggFn = {
+    mean: "mean", median: "median", sum: "sum", max: "max", min: "min",
+  }[useP ? period.method : "mean"] || "mean";
+  const titleLabel = useP
+    ? `paste(${Q(indicator.name)}, "—", ${Q(`${period.method} ${y1}–${y2}`)})`
+    : `paste(${Q(indicator.name)}, "—", ${year})`;
+  const aggBlock = useP
+    ? `  group_by(iso3c) |>
+  summarise(value = ${rAggFn}(value, na.rm = TRUE), n = dplyr::n(), .groups = "drop") |>
+  filter(is.finite(value))`
+    : `  filter(!is.na(value))`;
+  return `# EasyViz replication — choropleth map (${indicator.name}, ${useP ? `${period.method} ${y1}–${y2}` : year})
 # Palette: ${palette}${reverse ? " (reversed)" : ""}${diverging ? ` · diverging at ${center}` : ""}
 pkgs <- c("WDI", "dplyr", "ggplot2", "sf", "rnaturalearth", "rnaturalearthdata", "scales")
 to_install <- setdiff(pkgs, rownames(installed.packages()))
@@ -382,10 +396,10 @@ invisible(lapply(pkgs, library, character.only = TRUE))
 
 df <- WDI(country = "all",
           indicator = ${Q(indicator.code)},
-          start = ${year}, end = ${year}) |>
+          start = ${y1}, end = ${y2}) |>
   as_tibble() |>
   rename(value = all_of(${Q(indicator.code)})) |>
-  filter(!is.na(value))
+${aggBlock}
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
 world <- dplyr::left_join(world, df, by = c("iso_a3" = "iso3c"))
@@ -395,7 +409,7 @@ ggplot(world) +
   ${rFillScale(palette, { log, reverse, diverging, center })} +
   coord_sf(crs = "+proj=robin") +
   labs(
-    title = paste(${Q(indicator.name)}, "—", ${year}),
+    title = ${titleLabel},
     fill = ${Q(indicator.unit || "")},
     caption = "Source: World Bank WDI. Boundaries: Natural Earth."
   ) +
@@ -666,12 +680,37 @@ plt.show()
 
 export function pyMap(spec) {
   const {
-    indicator, year, log = false,
+    indicator, year, period = null, log = false,
     palette = "viridis", reverse = false, diverging = false, center = 0,
   } = spec;
+  const useP = period && period.method && period.method !== "single";
+  const y1 = useP ? period.yearFrom : year;
+  const y2 = useP ? period.yearTo   : year;
+  const pyAgg = {
+    mean: "mean", median: "median", sum: "sum", max: "max", min: "min",
+  }[useP ? period.method : "mean"] || "mean";
   const basePy = PY_PALETTES[palette] || "viridis";
   const pyCmap = reverse ? `${basePy}_r` : basePy;
-  return `# EasyViz replication — choropleth map (${indicator.name}, ${year})
+  const titleStr = useP
+    ? `${indicator.name} — ${period.method} ${y1}–${y2}`
+    : `${indicator.name} — ${year}`;
+  const fetchAndAgg = useP
+    ? `df = wbdata.get_dataframe(
+    {${Q(indicator.code)}: "value"},
+    country="all",
+    date=(datetime(${y1}, 1, 1), datetime(${y2}, 1, 1)),
+).reset_index()
+# NA-drop, then collapse the ${y1}-${y2} window to one value per country.
+df = (df.dropna(subset=["value"])
+        .groupby("country", as_index=False)
+        .agg(value=("value", ${Q(pyAgg)}),
+             n_obs=("value", "count")))`
+    : `df = wbdata.get_dataframe(
+    {${Q(indicator.code)}: "value"},
+    country="all",
+    date=(datetime(${year}, 1, 1), datetime(${year}, 1, 1)),
+).reset_index().dropna()`;
+  return `# EasyViz replication — choropleth map (${useP ? `${period.method} ${y1}–${y2}` : year})
 # Palette: ${palette}${reverse ? " (reversed)" : ""}${diverging ? ` · diverging at ${center}` : ""}
 # pip install wbdata pandas geopandas matplotlib
 
@@ -679,11 +718,7 @@ import pandas as pd, geopandas as gpd, matplotlib.pyplot as plt, wbdata
 import matplotlib.colors as mcolors
 from datetime import datetime
 
-df = wbdata.get_dataframe(
-    {${Q(indicator.code)}: "value"},
-    country="all",
-    date=(datetime(${year}, 1, 1), datetime(${year}, 1, 1)),
-).reset_index().dropna()
+${fetchAndAgg}
 
 # Natural Earth low-res country boundaries ship with geopandas.
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
@@ -700,7 +735,7 @@ norm = mcolors.TwoSlopeNorm(vmin=${center} - half, vcenter=${center}, vmax=${cen
 fig, ax = plt.subplots(figsize=(12, 6))
 world.plot(column="value", ax=ax, legend=True, cmap=cmap, norm=norm,
            missing_kwds={"color": "lightgrey"})
-ax.set_title(${Q(`${indicator.name} — ${year}`)})
+ax.set_title(${Q(titleStr)})
 ax.set_axis_off()
 plt.tight_layout()
 plt.show()

@@ -34,8 +34,23 @@
         <select id="indicator"></select>
       </div>
       <div>
-        <label for="year">Year</label>
+        <label for="year" id="year-label-text">Year <span class="ev-help" data-help="Single-year mode: the value shown is for this year. Period-aggregation mode: this is the first year of the window.">ⓘ</span></label>
         <input id="year" type="number" min="1960" max="2025" value="2020">
+      </div>
+      <div>
+        <label for="year-to">Year to <span class="ev-help" data-help="End of the aggregation window (inclusive). Ignored in single-year mode.">ⓘ</span></label>
+        <input id="year-to" type="number" min="1960" max="2025" value="2024" disabled>
+      </div>
+      <div>
+        <label for="agg-mode">Period aggregation <span class="ev-help" data-help="Single year: show the value for the chosen year. Mean/median/sum/max/min: collapse the window to one value per country, dropping missing years (NAs) so sparse indicators fill more of the map.">ⓘ</span></label>
+        <select id="agg-mode">
+          <option value="single">Single year (no aggregation)</option>
+          <option value="mean">Mean over period</option>
+          <option value="median">Median over period</option>
+          <option value="sum">Cumulative sum over period</option>
+          <option value="max">Max over period</option>
+          <option value="min">Min over period</option>
+        </select>
       </div>
       <div>
         <label for="palette">Palette <span class="ev-help" data-help="Viridis family is perceptually uniform and colourblind-safe. Use diverging ramps (Red–Blue, Spectral…) when zero is a meaningful midpoint (e.g., growth rates).">ⓘ</span></label>
@@ -123,6 +138,8 @@
 
     const indEl = document.getElementById("indicator");
     const yearEl = document.getElementById("year");
+    const yearToEl = document.getElementById("year-to");
+    const aggModeEl = document.getElementById("agg-mode");
     const sliderEl = document.getElementById("year-slider");
     const sliderLabel = document.getElementById("year-label");
     const logEl = document.getElementById("log");
@@ -134,6 +151,29 @@
     const statusEl = document.getElementById("status");
     const methEl = document.getElementById("methodology");
     const mapEl = document.getElementById("map");
+
+    function periodAggregators() {
+      return {
+        mean:   arr => arr.reduce((a, b) => a + b, 0) / arr.length,
+        median: arr => {
+          const s = [...arr].sort((a, b) => a - b);
+          const n = s.length, m = Math.floor(n / 2);
+          return n % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+        },
+        sum:    arr => arr.reduce((a, b) => a + b, 0),
+        max:    arr => Math.max(...arr),
+        min:    arr => Math.min(...arr),
+      };
+    }
+
+    function isPeriodMode() { return aggModeEl.value !== "single"; }
+
+    aggModeEl.addEventListener("change", () => {
+      yearToEl.disabled = !isPeriodMode();
+      latestEl.disabled = isPeriodMode();
+      if (isPeriodMode()) latestEl.checked = false;
+      render();
+    });
 
     let catalog = [...INDICATORS];
     let lastRows = null, lastIndicator = null, lastYear = null;
@@ -159,16 +199,25 @@
 
     function buildSpec() {
       if (!lastIndicator || lastYear === null) return null;
+      const period = isPeriodMode() ? {
+        method: aggModeEl.value,
+        yearFrom: parseInt(yearEl.value, 10),
+        yearTo: parseInt(yearToEl.value, 10),
+      } : null;
+      const suffix = period
+        ? `_${period.method}_${period.yearFrom}_${period.yearTo}_map`
+        : `_${lastYear}_map`;
       return {
         kind: "map",
         indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
         year: lastYear,
+        period,
         log: logEl.checked,
         palette: paletteEl.value,
         reverse: reverseEl.checked,
         diverging: divergingEl.checked,
         center: Number(centerEl.value) || 0,
-        filename: `${lastIndicator.id}_${lastYear}_map`,
+        filename: `${lastIndicator.id}${suffix}`,
       };
     }
 
@@ -181,23 +230,50 @@
       loading(statusEl, `Fetching ${row.name}…`);
       try {
         const all = await fetchSeries(row.code, []); // all countries
+        const period = isPeriodMode();
         let year = parseInt(yearEl.value, 10) || 2020;
-        if (latestEl.checked) {
-          const years = [...new Set(all.map(r => r.year))].sort((a, b) => b - a);
-          // pick the latest year with >= 100 observations (avoids sparse
-          // future partial releases).
-          for (const y of years) {
-            const n = all.filter(r => r.year === y).length;
-            if (n >= 100) { year = y; break; }
-          }
-          yearEl.value = year;
-        }
-        lastYear = year;
-        sliderEl.value = year; sliderLabel.textContent = year;
+        let yFrom = year, yTo = parseInt(yearToEl.value, 10) || year;
+        if (yTo < yFrom) { const t = yFrom; yFrom = yTo; yTo = t; }
 
-        const slice = all.filter(r => r.year === year);
+        let slice, valByIso, titleStr;
+        if (period) {
+          const method = aggModeEl.value;
+          const agg = periodAggregators()[method];
+          // Group by iso3, drop NA, apply aggregator.
+          const byIso = new Map();
+          for (const r of all) {
+            if (r.year < yFrom || r.year > yTo) continue;
+            if (!Number.isFinite(r.value)) continue;
+            if (!byIso.has(r.iso3)) byIso.set(r.iso3, []);
+            byIso.get(r.iso3).push(r.value);
+          }
+          valByIso = new Map();
+          slice = [];
+          for (const [iso, vals] of byIso) {
+            if (!vals.length) continue;
+            const v = agg(vals);
+            valByIso.set(iso, v);
+            slice.push({ iso3: iso, year: `${yFrom}-${yTo}`, value: v, n: vals.length });
+          }
+          lastYear = year;
+          titleStr = `${row.name} — ${method} ${yFrom}–${yTo}`;
+          sliderEl.value = year; sliderLabel.textContent = `${yFrom}–${yTo}`;
+        } else {
+          if (latestEl.checked) {
+            const years = [...new Set(all.map(r => r.year))].sort((a, b) => b - a);
+            for (const y of years) {
+              const n = all.filter(r => r.year === y).length;
+              if (n >= 100) { year = y; break; }
+            }
+            yearEl.value = year;
+          }
+          lastYear = year;
+          sliderEl.value = year; sliderLabel.textContent = year;
+          slice = all.filter(r => r.year === year);
+          valByIso = new Map(slice.map(r => [r.iso3, r.value]));
+          titleStr = `${row.name} — ${year}`;
+        }
         lastRows = slice;
-        const valByIso = new Map(slice.map(r => [r.iso3, r.value]));
 
         await renderChoropleth(mapEl, valByIso, {
           title: row.name, unit: row.unit, log: logEl.checked,
@@ -208,7 +284,7 @@
         });
         clear(statusEl);
 
-        document.getElementById("map-title").textContent = `${row.name} — ${year}`;
+        document.getElementById("map-title").textContent = titleStr;
         document.getElementById("map-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
 
         const spec = buildSpec();
@@ -217,7 +293,9 @@
 
         url.update({
           id, year,
-          log: logEl.checked, latest: latestEl.checked,
+          to: period ? yTo : null,
+          agg: period ? aggModeEl.value : null,
+          log: logEl.checked, latest: period ? false : latestEl.checked,
           palette: paletteEl.value,
           reverse: reverseEl.checked,
           diverging: divergingEl.checked,
@@ -231,6 +309,7 @@
     // Events.
     indEl.addEventListener("change", render);
     yearEl.addEventListener("change", () => { latestEl.checked = false; render(); });
+    yearToEl.addEventListener("change", render);
     logEl.addEventListener("change", render);
     paletteEl.addEventListener("change", render);
     reverseEl.addEventListener("change", render);
@@ -333,6 +412,12 @@
       }
       populateIndicators(initialId);
       if (url.get("year")) yearEl.value = url.get("year");
+      if (url.get("to")) yearToEl.value = url.get("to");
+      if (url.get("agg")) {
+        aggModeEl.value = url.get("agg");
+        yearToEl.disabled = !isPeriodMode();
+        latestEl.disabled = isPeriodMode();
+      }
       if (url.getBool("log")) logEl.checked = true;
       if (url.getBool("latest")) latestEl.checked = true;
       if (url.get("palette")) paletteEl.value = url.get("palette");

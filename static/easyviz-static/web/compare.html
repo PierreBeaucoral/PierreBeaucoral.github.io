@@ -49,6 +49,35 @@
         <label for="year">Year (scatter/bubble/regression/corr)</label>
         <input id="year" type="number" min="1960" max="2024" value="2020">
       </div>
+      <div>
+        <label for="qual-palette">Series palette <span class="ev-help" data-help="Applies to scatter, bubble, regression, and gapminder. Okabe–Ito is colourblind-safe.">ⓘ</span></label>
+        <select id="qual-palette">
+          <option value="tableau10">Tableau 10 (default)</option>
+          <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
+          <option value="set1">ColorBrewer Set1</option>
+          <option value="set2">ColorBrewer Set2</option>
+          <option value="dark2">ColorBrewer Dark2</option>
+          <option value="pastel">ColorBrewer Pastel</option>
+          <option value="bright">Bright</option>
+        </select>
+      </div>
+      <div>
+        <label for="seq-palette">Correlation palette <span class="ev-help" data-help="Diverging ramps are centred at 0; sequential ramps span −1→+1. Red-Blue is the ggplot default.">ⓘ</span></label>
+        <select id="seq-palette">
+          <optgroup label="Diverging (recommended)">
+            <option value="rdbu" selected>Red–Blue</option>
+            <option value="piyg">Pink–Green</option>
+            <option value="brbg">Brown–Teal</option>
+            <option value="spectral">Spectral</option>
+          </optgroup>
+          <optgroup label="Sequential">
+            <option value="viridis">Viridis</option>
+            <option value="plasma">Plasma</option>
+            <option value="blues">Blues</option>
+            <option value="greys">Greys</option>
+          </optgroup>
+        </select>
+      </div>
     </div>
 
     <div class="tabs" role="tablist">
@@ -61,6 +90,7 @@
 
     <div class="actions" id="code-actions" style="margin-top:0.5rem;">
       <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+      <button id="btn-png">Download PNG</button>
       <button id="btn-share">Copy share URL</button>
     </div>
 
@@ -132,11 +162,14 @@
     import { olsFit, fmtFit } from "./js/regression.js";
     import { corrMatrix } from "./js/aggregate.js";
     import { loading, error, clear, initDarkMode,
-             showCodeModal, methodologyCaption } from "./js/ui.js";
+             showCodeModal, methodologyCaption,
+             initHelpIcons, downloadPng, errorWithRetry } from "./js/ui.js";
+    import { continuousColor } from "./js/palettes.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
 
     initDarkMode();
+    initHelpIcons();
     if (url.isEmbed()) {
       const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
       document.head.appendChild(s);
@@ -153,6 +186,8 @@
     const corrIndsEl = document.getElementById("corr-inds");
     const corrMethodEl = document.getElementById("corr-method");
     const corrOut = document.getElementById("corr-output");
+    const qualPalEl = document.getElementById("qual-palette");
+    const seqPalEl = document.getElementById("seq-palette");
 
     const charts = {};
 
@@ -199,6 +234,10 @@
     if (url.get("year")) yearEl.value = url.get("year");
     if (url.get("corr_method")) corrMethodEl.value = url.get("corr_method");
 
+    const cfg = window.EASYVIZ_CONFIG || {};
+    qualPalEl.value = url.get("qpal") || cfg.defaultQualPalette || "tableau10";
+    seqPalEl.value  = url.get("cpal") || "rdbu";
+
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach(t => t.addEventListener("click", () => {
       tabs.forEach(x => x.classList.remove("active"));
@@ -221,18 +260,20 @@
       const tab = activeTab();
       const iso3 = resolvePreset(presetEl.value);
       const countries = presetEl.value === ALL_COUNTRIES_KEY ? null : iso3;
+      const qualPalette = qualPalEl.value;
+      const seqPalette  = seqPalEl.value;
 
       if (tab === "tab-scatter")
-        return { kind: "scatter", indicator: a, indicatorB: b, year, countries, filename: `${a?.id || "x"}_vs_${b?.id || "y"}` };
+        return { kind: "scatter", indicator: a, indicatorB: b, year, countries, qualPalette, filename: `${a?.id || "x"}_vs_${b?.id || "y"}` };
       if (tab === "tab-bubble")
-        return { kind: "bubble", indicator: a, indicatorB: b, indicatorSize: s, year, countries, filename: `bubble_${a?.id}_${b?.id}` };
+        return { kind: "bubble", indicator: a, indicatorB: b, indicatorSize: s, year, countries, qualPalette, filename: `bubble_${a?.id}_${b?.id}` };
       if (tab === "tab-regression")
-        return { kind: "regression", indicator: a, indicatorB: b, year, countries, filename: `ols_${a?.id}_${b?.id}` };
+        return { kind: "regression", indicator: a, indicatorB: b, year, countries, qualPalette, filename: `ols_${a?.id}_${b?.id}` };
       if (tab === "tab-gapminder")
-        return { kind: "gapminder", indicator: a, indicatorB: b, indicatorSize: s, years: [1990, 2024], countries, filename: `gapminder_${a?.id}_${b?.id}` };
+        return { kind: "gapminder", indicator: a, indicatorB: b, indicatorSize: s, years: [1990, 2024], countries, qualPalette, filename: `gapminder_${a?.id}_${b?.id}` };
       if (tab === "tab-corr") {
         const sel = [...corrIndsEl.selectedOptions].map(o => byId(o.value)).filter(Boolean);
-        return { kind: "correlation", indicators: sel, year, countries, method: corrMethodEl.value, filename: `corr_${year}` };
+        return { kind: "correlation", indicators: sel, year, countries, method: corrMethodEl.value, seqPalette, filename: `corr_${year}` };
       }
       return null;
     }
@@ -251,6 +292,8 @@
         preset: presetEl.value,
         corr: tab === "tab-corr" ? [...corrIndsEl.selectedOptions].map(o => o.value) : null,
         corr_method: corrMethodEl.value,
+        qpal: qualPalEl.value === (cfg.defaultQualPalette || "tableau10") ? null : qualPalEl.value,
+        cpal: seqPalEl.value === "rdbu" ? null : seqPalEl.value,
       });
 
       methEl.style.display = "block";
@@ -258,30 +301,31 @@
 
       loading(statusEl, "Fetching indicators…");
       try {
+        const qp = qualPalEl.value;
         if (tab === "tab-scatter") {
           const pts = await crossSection(a.code, b.code, year, iso3);
           destroy("scatter");
-          charts.scatter = makeScatter(document.getElementById("chart-scatter"), pts, a, b, year);
+          charts.scatter = makeScatter(document.getElementById("chart-scatter"), pts, a, b, year, { palette: qp });
         } else if (tab === "tab-bubble") {
           if (!s) { clear(statusEl); error(statusEl, "Pick a size indicator for the bubble chart."); return; }
           const panel = await gapminderPanel(a.code, b.code, iso3, s.code);
           const pts = panel.filter(p => p.year === year);
           if (!pts.length) { clear(statusEl); error(statusEl, `No data for ${year}. Try an earlier year.`); return; }
           destroy("bubble");
-          charts.bubble = makeBubble(document.getElementById("chart-bubble"), pts, a, b, s, year);
+          charts.bubble = makeBubble(document.getElementById("chart-bubble"), pts, a, b, s, year, { palette: qp });
         } else if (tab === "tab-regression") {
           const pts = await crossSection(a.code, b.code, year, iso3);
           const fit = olsFit(pts);
           fitEl.style.display = "block";
           fitEl.textContent = `OLS: ${fmtFit(fit)}`;
           destroy("regression");
-          charts.regression = makeScatter(document.getElementById("chart-regression"), pts, a, b, year, { fit });
+          charts.regression = makeScatter(document.getElementById("chart-regression"), pts, a, b, year, { fit, palette: qp });
         } else if (tab === "tab-gapminder") {
           const panel = await gapminderPanel(a.code, b.code, iso3, s?.code ?? null);
           if (!panel.length) { clear(statusEl); error(statusEl, "No overlapping data for the panel."); return; }
           destroy("gapminder");
           charts.gapminder = makeGapminder(
-            document.getElementById("chart-gapminder"), panel, a, b, s
+            document.getElementById("chart-gapminder"), panel, a, b, s, { palette: qp }
           );
           const slider = document.getElementById("gap-year");
           const ys = charts.gapminder.years;
@@ -293,7 +337,7 @@
         }
         clear(statusEl);
       } catch (e) {
-        error(statusEl, e.message);
+        errorWithRetry(statusEl, e, render);
       }
     }
 
@@ -333,14 +377,10 @@
     function corrColor(v) {
       if (!Number.isFinite(v)) return "transparent";
       const t = (v + 1) / 2; // [-1,1] → [0,1]
-      // Red (low) → white (mid) → blue (high)
-      const r = Math.round(217 + (45 - 217) * t);
-      const g = Math.round(83 + (95 - 83) * t);
-      const b = Math.round(45 + (217 - 45) * t);
-      return `rgb(${r},${g},${b})`;
+      return continuousColor(t, seqPalEl.value);
     }
 
-    [aEl, bEl, sEl, presetEl, yearEl, corrMethodEl].forEach(el => el.addEventListener("change", render));
+    [aEl, bEl, sEl, presetEl, yearEl, corrMethodEl, qualPalEl, seqPalEl].forEach(el => el.addEventListener("change", render));
     corrIndsEl.addEventListener("change", render);
 
     // Gapminder slider + play.
@@ -378,6 +418,24 @@
       const spec = buildSpec();
       if (!spec) return;
       showCodeModal({ r: rCode(spec), python: pyCode(spec), filename: spec.filename });
+    });
+
+    document.getElementById("btn-png").addEventListener("click", () => {
+      const tab = activeTab();
+      const canvasId = {
+        "tab-scatter":    "chart-scatter",
+        "tab-bubble":     "chart-bubble",
+        "tab-regression": "chart-regression",
+        "tab-gapminder":  "chart-gapminder",
+      }[tab];
+      if (!canvasId) {
+        error(statusEl, "PNG export is available on chart tabs (not the correlation table).");
+        return;
+      }
+      const canvas = document.getElementById(canvasId);
+      const spec = buildSpec();
+      const bg = getComputedStyle(document.body).backgroundColor || "#ffffff";
+      downloadPng(canvas, `${spec?.filename || "compare"}.png`, { background: bg });
     });
 
     document.getElementById("btn-share").addEventListener("click", async () => {

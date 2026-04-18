@@ -26,6 +26,8 @@
 // All snippets are commented, include a dependency-install line, and
 // print the final data frame so the user can sanity-check.
 
+import { qualRScale, qualPyHexList } from "./palettes.js";
+
 const Q = (s) => `"${String(s ?? "").replace(/"/g, '\\"')}"`;
 const Qvec = (arr) => `c(${arr.map(Q).join(", ")})`;
 const PyList = (arr) => `[${arr.map(s => `"${s}"`).join(", ")}]`;
@@ -43,7 +45,8 @@ function isoVecPy(countries) {
 // ── R: time-series ──────────────────────────────────────────────────────
 export function rTimeseries(spec) {
   const { indicator, countries, years, chartType = "line", log = false,
-          transform = { method: "none" }, entityAgg = null } = spec;
+          transform = { method: "none" }, entityAgg = null,
+          qualPalette = "tableau10" } = spec;
   const [y1, y2] = years || [1990, 2024];
   const ggtype = chartType === "bar"
     ? `geom_col(position = "dodge")`
@@ -88,7 +91,8 @@ raw <- WDI(
 ${tfLines}${aggLines}# ── 3. Plot ──────────────────────────────────────────────────────────
 ggplot(raw, aes(x = year, y = value, colour = country${chartType === "area" ? ", fill = country" : ""})) +
   ${ggtype} +
-${logLine}  labs(
+${logLine}  ${qualRScale(qualPalette, "colour")} +
+  ${chartType === "area" ? `${qualRScale(qualPalette, "fill")} +\n  ` : ""}labs(
     title = indicator_name,
     subtitle = paste0(year_from, "–", year_to),
     x = "Year",
@@ -208,8 +212,9 @@ raw <- raw |>
 
 // ── R: scatter / regression ─────────────────────────────────────────────
 export function rScatter(spec) {
-  const { indicator: a, indicatorB: b, countries, year, kind } = spec;
+  const { indicator: a, indicatorB: b, countries, year, kind, qualPalette = "tableau10" } = spec;
   const withFit = kind === "regression";
+  const firstHex = (qualPyHexList(qualPalette).match(/"#[0-9a-fA-F]{6}"/) || ['"#4E79A7"'])[0];
   return `# EasyViz replication — ${a.name} vs. ${b.name} (${year})
 pkgs <- c("WDI", "dplyr", "ggplot2")
 to_install <- setdiff(pkgs, rownames(installed.packages()))
@@ -234,8 +239,8 @@ cat("slope =", coef(fit)[2], " intercept =", coef(fit)[1],
     " R² =", summary(fit)$r.squared, " n =", nrow(df), "\\n")
 
 ` : ""}ggplot(df, aes(x = x, y = y)) +
-  geom_point(colour = "#2d5fd9", size = 2) +
-  ${withFit ? `geom_smooth(method = "lm", se = TRUE, colour = "#d9532d") +\n  ` : ""}labs(
+  geom_point(colour = ${firstHex}, size = 2) +
+  ${withFit ? `geom_smooth(method = "lm", se = TRUE, colour = "black") +\n  ` : ""}labs(
     title = paste(${Q(a.name)}, "vs.", ${Q(b.name)}, "—", year_target),
     x = ${Q(`${a.name} (${a.unit})`)},
     y = ${Q(`${b.name} (${b.unit})`)},
@@ -247,7 +252,8 @@ cat("slope =", coef(fit)[2], " intercept =", coef(fit)[1],
 
 // ── R: bubble ───────────────────────────────────────────────────────────
 export function rBubble(spec) {
-  const { indicator: a, indicatorB: b, indicatorSize: s, countries, year } = spec;
+  const { indicator: a, indicatorB: b, indicatorSize: s, countries, year, qualPalette = "tableau10" } = spec;
+  const firstHex = (qualPyHexList(qualPalette).match(/"#[0-9a-fA-F]{6}"/) || ['"#4E79A7"'])[0];
   return `# EasyViz replication — bubble (${a.name} × ${b.name}, size = ${s.name}, ${year})
 pkgs <- c("WDI", "dplyr", "ggplot2")
 to_install <- setdiff(pkgs, rownames(installed.packages()))
@@ -266,7 +272,7 @@ df <- WDI(
   filter(!is.na(x), !is.na(y), !is.na(size), region != "Aggregates")
 
 ggplot(df, aes(x = x, y = y, size = size, label = country)) +
-  geom_point(alpha = 0.55, colour = "#2d5fd9") +
+  geom_point(alpha = 0.55, colour = ${firstHex}) +
   scale_size_continuous(range = c(2, 15), name = ${Q(s.name)}) +
   labs(
     title = paste(${Q(a.name)}, "vs.", ${Q(b.name)}, "—", year_target),
@@ -280,7 +286,7 @@ ggplot(df, aes(x = x, y = y, size = size, label = country)) +
 
 // ── R: gapminder (animated) ─────────────────────────────────────────────
 export function rGapminder(spec) {
-  const { indicator: a, indicatorB: b, indicatorSize: s, countries, years } = spec;
+  const { indicator: a, indicatorB: b, indicatorSize: s, countries, years, qualPalette = "tableau10" } = spec;
   const [y1, y2] = years || [1990, 2024];
   return `# EasyViz replication — Gapminder-style animation
 # Extra dependency: gganimate + gifski (for GIF export).
@@ -299,6 +305,7 @@ df <- WDI(country = countries, indicator = indicators,
 
 p <- ggplot(df, aes(x = x, y = y${s ? ", size = size" : ""}, colour = region)) +
   geom_point(alpha = 0.7) +
+  ${qualRScale(qualPalette, "colour")} +
   ${s ? "scale_size_continuous(range = c(2, 15)) +\n  " : ""}labs(
     title = "{closest_state}",
     x = ${Q(`${a.name} (${a.unit})`)},
@@ -316,10 +323,59 @@ animate(p, nframes = 100, fps = 8)
 }
 
 // ── R: choropleth map ───────────────────────────────────────────────────
+// Palette metadata mirrors web/js/map.js so the emitted R code picks a
+// scale_fill_* call equivalent to what is shown in the UI.
+const R_PALETTES = {
+  viridis:  { kind: "seq", call: `scale_fill_viridis_c(option = "viridis"` },
+  plasma:   { kind: "seq", call: `scale_fill_viridis_c(option = "plasma"` },
+  magma:    { kind: "seq", call: `scale_fill_viridis_c(option = "magma"` },
+  inferno:  { kind: "seq", call: `scale_fill_viridis_c(option = "inferno"` },
+  cividis:  { kind: "seq", call: `scale_fill_viridis_c(option = "cividis"` },
+  turbo:    { kind: "seq", call: `scale_fill_viridis_c(option = "turbo"` },
+  blues:    { kind: "seq", call: `scale_fill_distiller(palette = "Blues", direction = 1` },
+  greens:   { kind: "seq", call: `scale_fill_distiller(palette = "Greens", direction = 1` },
+  oranges:  { kind: "seq", call: `scale_fill_distiller(palette = "Oranges", direction = 1` },
+  reds:     { kind: "seq", call: `scale_fill_distiller(palette = "Reds", direction = 1` },
+  greys:    { kind: "seq", call: `scale_fill_distiller(palette = "Greys", direction = 1` },
+  rdbu:     { kind: "div", call: `scale_fill_distiller(palette = "RdBu", direction = 1` },
+  piyg:     { kind: "div", call: `scale_fill_distiller(palette = "PiYG", direction = 1` },
+  brbg:     { kind: "div", call: `scale_fill_distiller(palette = "BrBG", direction = 1` },
+  spectral: { kind: "div", call: `scale_fill_distiller(palette = "Spectral", direction = 1` },
+};
+
+const PY_PALETTES = {
+  viridis: "viridis", plasma: "plasma", magma: "magma", inferno: "inferno",
+  cividis: "cividis", turbo: "turbo",
+  blues: "Blues", greens: "Greens", oranges: "Oranges", reds: "Reds", greys: "Greys",
+  rdbu: "RdBu", piyg: "PiYG", brbg: "BrBG", spectral: "Spectral",
+};
+
+function rFillScale(palette, { log = false, reverse = false, diverging = false, center = 0 } = {}) {
+  const meta = R_PALETTES[palette] || R_PALETTES.viridis;
+  const args = [];
+  if (reverse) args.push(meta.call.includes("direction = 1") ? null : "direction = -1");
+  // For distiller palettes reverse is flipped by overriding direction:
+  let call = meta.call;
+  if (reverse && call.includes("direction = 1")) call = call.replace("direction = 1", "direction = -1");
+  // Viridis options support `direction = -1` too.
+  if (reverse && call.includes("viridis_c")) args.push("direction = -1");
+  if (log && !(diverging || meta.kind === "div")) args.push(`trans = "log10"`);
+  if (diverging || meta.kind === "div") {
+    args.push(`limits = c(-max(abs(world$value - ${center}), na.rm = TRUE) + ${center}, max(abs(world$value - ${center}), na.rm = TRUE) + ${center})`);
+    args.push(`rescaler = ~ scales::rescale_mid(.x, mid = ${center})`);
+  }
+  args.push(`na.value = "grey90"`);
+  return `${call}, ${args.filter(Boolean).join(", ")})`;
+}
+
 export function rMap(spec) {
-  const { indicator, year, log = false } = spec;
+  const {
+    indicator, year, log = false,
+    palette = "viridis", reverse = false, diverging = false, center = 0,
+  } = spec;
   return `# EasyViz replication — choropleth map (${indicator.name}, ${year})
-pkgs <- c("WDI", "dplyr", "ggplot2", "sf", "rnaturalearth", "rnaturalearthdata")
+# Palette: ${palette}${reverse ? " (reversed)" : ""}${diverging ? ` · diverging at ${center}` : ""}
+pkgs <- c("WDI", "dplyr", "ggplot2", "sf", "rnaturalearth", "rnaturalearthdata", "scales")
 to_install <- setdiff(pkgs, rownames(installed.packages()))
 if (length(to_install)) install.packages(to_install)
 invisible(lapply(pkgs, library, character.only = TRUE))
@@ -336,7 +392,7 @@ world <- dplyr::left_join(world, df, by = c("iso_a3" = "iso3c"))
 
 ggplot(world) +
   geom_sf(aes(fill = value), colour = "white", linewidth = 0.1) +
-  ${log ? `scale_fill_viridis_c(trans = "log10", na.value = "grey90")` : `scale_fill_viridis_c(na.value = "grey90")`} +
+  ${rFillScale(palette, { log, reverse, diverging, center })} +
   coord_sf(crs = "+proj=robin") +
   labs(
     title = paste(${Q(indicator.name)}, "—", ${year}),
@@ -414,7 +470,8 @@ head(panel, 20)
 
 export function pyTimeseries(spec) {
   const { indicator, countries, years, chartType = "line", log = false,
-          transform = { method: "none" }, entityAgg = null } = spec;
+          transform = { method: "none" }, entityAgg = null,
+          qualPalette = "tableau10" } = spec;
   const [y1, y2] = years || [1990, 2024];
 
   const tfLines = transformSnippetPy(transform);
@@ -446,9 +503,11 @@ df["year"] = pd.to_datetime(df["date"]).dt.year
 df = df[["country", "year", "value"]].sort_values(["country", "year"])
 
 ${tfLines}${aggLines}# ── 3. Plot ──────────────────────────────────────────────────────────
+colors = [${qualPyHexList(qualPalette)}]
 fig, ax = plt.subplots(figsize=(10, 6))
-for country, sub in df.groupby("country"):
-    ax.${plotKind === "bar" ? `bar(sub["year"], sub["value"], label=country)` : `plot(sub["year"], sub["value"], label=country, marker="o", markersize=3)`}
+for i, (country, sub) in enumerate(df.groupby("country")):
+    c = colors[i % len(colors)]
+    ax.${plotKind === "bar" ? `bar(sub["year"], sub["value"], label=country, color=c)` : `plot(sub["year"], sub["value"], label=country, color=c, marker="o", markersize=3)`}
 ${logLine}ax.set_title(indicator_name)
 ax.set_xlabel("Year")
 ax.set_ylabel(${Q(indicator.unit || "")})
@@ -541,8 +600,9 @@ df = (df.assign(wv=lambda d: d["value"] * d["weight"])
 }
 
 export function pyScatter(spec) {
-  const { indicator: a, indicatorB: b, countries, year, kind } = spec;
+  const { indicator: a, indicatorB: b, countries, year, kind, qualPalette = "tableau10" } = spec;
   const withFit = kind === "regression";
+  const firstHex = (qualPyHexList(qualPalette).match(/"#[0-9a-fA-F]{6}"/) || ['"#4E79A7"'])[0];
   return `# EasyViz replication — ${a.name} vs. ${b.name} (${year})
 # pip install wbdata pandas matplotlib seaborn statsmodels
 
@@ -559,11 +619,11 @@ df = wbdata.get_dataframe(
 ).reset_index().dropna()
 
 fig, ax = plt.subplots(figsize=(9, 6))
-ax.scatter(df["x"], df["y"], alpha=0.7, s=35, color="#2d5fd9")
+ax.scatter(df["x"], df["y"], alpha=0.7, s=35, color=${firstHex})
 ${withFit ? `X = sm.add_constant(df["x"]); model = sm.OLS(df["y"], X).fit()
 print(model.summary())
 xs = df["x"].sort_values(); ax.plot(xs, model.predict(sm.add_constant(xs)),
-                                    color="#d9532d", linewidth=2,
+                                    color="black", linewidth=2,
                                     label=f"OLS (R²={model.rsquared:.2f})")
 ax.legend()
 ` : ""}ax.set_xlabel(${Q(`${a.name} (${a.unit})`)})
@@ -576,7 +636,8 @@ plt.show()
 }
 
 export function pyBubble(spec) {
-  const { indicator: a, indicatorB: b, indicatorSize: s, countries, year } = spec;
+  const { indicator: a, indicatorB: b, indicatorSize: s, countries, year, qualPalette = "tableau10" } = spec;
+  const firstHex = (qualPyHexList(qualPalette).match(/"#[0-9a-fA-F]{6}"/) || ['"#4E79A7"'])[0];
   return `# EasyViz replication — bubble (${a.name} × ${b.name}, size = ${s.name}, ${year})
 # pip install wbdata pandas matplotlib
 
@@ -593,7 +654,7 @@ df = wbdata.get_dataframe(
 
 sizes = 20 + 400 * (df["size"] - df["size"].min()) / (df["size"].max() - df["size"].min() + 1e-9)
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.scatter(df["x"], df["y"], s=sizes, alpha=0.55, color="#2d5fd9", edgecolor="#1a3e94")
+ax.scatter(df["x"], df["y"], s=sizes, alpha=0.55, color=${firstHex}, edgecolor="black", linewidth=0.4)
 ax.set_xlabel(${Q(`${a.name} (${a.unit})`)})
 ax.set_ylabel(${Q(`${b.name} (${b.unit})`)})
 ax.set_title(${Q(`${a.name} vs. ${b.name} · size = ${s.name} · ${year}`)})
@@ -604,13 +665,20 @@ plt.show()
 }
 
 export function pyMap(spec) {
-  const { indicator, year, log = false } = spec;
+  const {
+    indicator, year, log = false,
+    palette = "viridis", reverse = false, diverging = false, center = 0,
+  } = spec;
+  const basePy = PY_PALETTES[palette] || "viridis";
+  const pyCmap = reverse ? `${basePy}_r` : basePy;
   return `# EasyViz replication — choropleth map (${indicator.name}, ${year})
+# Palette: ${palette}${reverse ? " (reversed)" : ""}${diverging ? ` · diverging at ${center}` : ""}
 # pip install wbdata pandas geopandas matplotlib
 
 import pandas as pd, geopandas as gpd, matplotlib.pyplot as plt, wbdata
+import matplotlib.colors as mcolors
 from datetime import datetime
-${log ? "import matplotlib.colors as mcolors\n" : ""}
+
 df = wbdata.get_dataframe(
     {${Q(indicator.code)}: "value"},
     country="all",
@@ -621,14 +689,18 @@ df = wbdata.get_dataframe(
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 world = world.merge(df, left_on="name", right_on="country", how="left")
 
+cmap = ${Q(pyCmap)}
+${diverging ? `half = max(abs(world["value"].max() - ${center}),
+           abs(${center} - world["value"].min()))
+norm = mcolors.TwoSlopeNorm(vmin=${center} - half, vcenter=${center}, vmax=${center} + half)
+` : log ? `norm = mcolors.LogNorm(vmin=max(world["value"].min(), 1e-3),
+                      vmax=world["value"].max())
+` : `norm = None
+`}
 fig, ax = plt.subplots(figsize=(12, 6))
-${log ? `world.plot(column="value", ax=ax, legend=True, cmap="viridis",
-           norm=mcolors.LogNorm(vmin=max(world["value"].min(), 1e-3),
-                                vmax=world["value"].max()),
+world.plot(column="value", ax=ax, legend=True, cmap=cmap, norm=norm,
            missing_kwds={"color": "lightgrey"})
-` : `world.plot(column="value", ax=ax, legend=True, cmap="viridis",
-           missing_kwds={"color": "lightgrey"})
-`}ax.set_title(${Q(`${indicator.name} — ${year}`)})
+ax.set_title(${Q(`${indicator.name} — ${year}`)})
 ax.set_axis_off()
 plt.tight_layout()
 plt.show()

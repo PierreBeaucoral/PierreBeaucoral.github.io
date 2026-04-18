@@ -38,9 +38,41 @@
         <input id="year" type="number" min="1960" max="2025" value="2020">
       </div>
       <div>
+        <label for="palette">Palette <span class="ev-help" data-help="Viridis family is perceptually uniform and colourblind-safe. Use diverging ramps (Red–Blue, Spectral…) when zero is a meaningful midpoint (e.g., growth rates).">ⓘ</span></label>
+        <select id="palette">
+          <optgroup label="Perceptually uniform">
+            <option value="viridis">Viridis</option>
+            <option value="plasma">Plasma</option>
+            <option value="magma">Magma</option>
+            <option value="inferno">Inferno</option>
+            <option value="cividis">Cividis (colourblind-safe)</option>
+            <option value="turbo">Turbo</option>
+          </optgroup>
+          <optgroup label="Single-hue (ColorBrewer)">
+            <option value="blues">Blues</option>
+            <option value="greens">Greens</option>
+            <option value="oranges">Oranges</option>
+            <option value="reds">Reds</option>
+            <option value="greys">Greys</option>
+          </optgroup>
+          <optgroup label="Diverging (ColorBrewer)">
+            <option value="rdbu">Red–Blue</option>
+            <option value="piyg">Pink–Green</option>
+            <option value="brbg">Brown–Teal</option>
+            <option value="spectral">Spectral</option>
+          </optgroup>
+        </select>
+      </div>
+      <div>
         <label>Options</label>
-        <label class="check"><input id="log" type="checkbox"> Log scale</label>
-        <label class="check"><input id="latest" type="checkbox"> Use latest available year</label>
+        <label class="check"><input id="log" type="checkbox"> Log scale <span class="ev-help" data-help="log₁₀ of the value before colour mapping. Use for right-skewed indicators (GDP, population, trade flows).">ⓘ</span></label>
+        <label class="check"><input id="reverse" type="checkbox"> Reverse palette <span class="ev-help" data-help="Flip the colour ramp so high values map to the low-value end (useful for indicators where 'more is worse', e.g., poverty rate).">ⓘ</span></label>
+        <label class="check"><input id="diverging" type="checkbox"> Diverging around centre <span class="ev-help" data-help="Centre the colour scale on the value in the 'Diverging centre' field — the midpoint gets the neutral colour; above and below diverge in opposite directions.">ⓘ</span></label>
+        <label class="check"><input id="latest" type="checkbox"> Use latest available year <span class="ev-help" data-help="Pick the most recent year with at least 100 country observations — avoids the sparse future partial releases.">ⓘ</span></label>
+      </div>
+      <div>
+        <label for="center">Diverging centre <span class="ev-help" data-help="Only used when 'Diverging around centre' is on. Typically 0 for growth rates, or the global mean for levels.">ⓘ</span></label>
+        <input id="center" type="number" step="any" value="0" placeholder="0">
       </div>
     </div>
 
@@ -53,6 +85,7 @@
 
     <div class="actions">
       <button id="btn-download">Download CSV</button>
+      <button id="btn-svg">Download SVG</button>
       <button id="btn-share">Copy share URL</button>
       <button id="btn-save">Save view</button>
       <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
@@ -75,12 +108,14 @@
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
     import { renderChoropleth } from "./js/map.js";
     import { loading, error, clear, initDarkMode, downloadCsv,
-             showCodeModal, methodologyCaption } from "./js/ui.js";
+             showCodeModal, methodologyCaption,
+             initHelpIcons, downloadSvg, errorWithRetry } from "./js/ui.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
     import * as views from "./js/savedviews.js";
 
     initDarkMode();
+    initHelpIcons();
     if (url.isEmbed()) {
       const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
       document.head.appendChild(s);
@@ -91,6 +126,10 @@
     const sliderEl = document.getElementById("year-slider");
     const sliderLabel = document.getElementById("year-label");
     const logEl = document.getElementById("log");
+    const paletteEl = document.getElementById("palette");
+    const reverseEl = document.getElementById("reverse");
+    const divergingEl = document.getElementById("diverging");
+    const centerEl = document.getElementById("center");
     const latestEl = document.getElementById("latest");
     const statusEl = document.getElementById("status");
     const methEl = document.getElementById("methodology");
@@ -125,6 +164,10 @@
         indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
         year: lastYear,
         log: logEl.checked,
+        palette: paletteEl.value,
+        reverse: reverseEl.checked,
+        diverging: divergingEl.checked,
+        center: Number(centerEl.value) || 0,
         filename: `${lastIndicator.id}_${lastYear}_map`,
       };
     }
@@ -158,6 +201,10 @@
 
         await renderChoropleth(mapEl, valByIso, {
           title: row.name, unit: row.unit, log: logEl.checked,
+          palette: paletteEl.value,
+          reverse: reverseEl.checked,
+          diverging: divergingEl.checked,
+          center: Number(centerEl.value) || 0,
         });
         clear(statusEl);
 
@@ -168,9 +215,16 @@
         methEl.style.display = "block";
         methEl.innerHTML = `<strong>Methodology.</strong> ${methodologyCaption(spec)}`;
 
-        url.update({ id, year, log: logEl.checked, latest: latestEl.checked });
+        url.update({
+          id, year,
+          log: logEl.checked, latest: latestEl.checked,
+          palette: paletteEl.value,
+          reverse: reverseEl.checked,
+          diverging: divergingEl.checked,
+          center: centerEl.value,
+        });
       } catch (e) {
-        error(statusEl, e.message);
+        errorWithRetry(statusEl, e, render);
       }
     }
 
@@ -178,6 +232,10 @@
     indEl.addEventListener("change", render);
     yearEl.addEventListener("change", () => { latestEl.checked = false; render(); });
     logEl.addEventListener("change", render);
+    paletteEl.addEventListener("change", render);
+    reverseEl.addEventListener("change", render);
+    divergingEl.addEventListener("change", render);
+    centerEl.addEventListener("change", render);
     latestEl.addEventListener("change", render);
 
     sliderEl.addEventListener("input", () => {
@@ -214,6 +272,14 @@
     document.getElementById("btn-download").addEventListener("click", () => {
       if (!lastRows || !lastIndicator) return;
       downloadCsv(`${lastIndicator.id}_${lastYear}.csv`, lastRows);
+    });
+
+    document.getElementById("btn-svg").addEventListener("click", () => {
+      if (!lastIndicator || lastYear === null) return;
+      const svg = mapEl.querySelector("svg");
+      if (!svg) return;
+      const bg = getComputedStyle(document.body).backgroundColor || "#ffffff";
+      downloadSvg(svg, `${lastIndicator.id}_${lastYear}_map.svg`, { background: bg });
     });
 
     document.getElementById("btn-share").addEventListener("click", async () => {
@@ -269,6 +335,10 @@
       if (url.get("year")) yearEl.value = url.get("year");
       if (url.getBool("log")) logEl.checked = true;
       if (url.getBool("latest")) latestEl.checked = true;
+      if (url.get("palette")) paletteEl.value = url.get("palette");
+      if (url.getBool("reverse")) reverseEl.checked = true;
+      if (url.getBool("diverging")) divergingEl.checked = true;
+      if (url.get("center")) centerEl.value = url.get("center");
       renderSavedViews();
       render();
     })();

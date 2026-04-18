@@ -237,6 +237,127 @@ export function citations(spec, { accessed = new Date() } = {}) {
   return { bibtex, apa };
 }
 
+// ── Inline help popovers ────────────────────────────────────────────────
+//
+// Author: <span data-help="short explanation">ⓘ</span> next to any label,
+// or call `initHelpIcons()` once on page load to wire them. On hover /
+// focus the popover appears; click toggles it sticky. Keyboard-accessible
+// by design — each icon is a <button>.
+
+let _helpTip = null;
+function ensureHelpTip() {
+  if (_helpTip) return _helpTip;
+  _helpTip = document.createElement("div");
+  _helpTip.className = "ev-help-tip";
+  _helpTip.setAttribute("role", "tooltip");
+  document.body.appendChild(_helpTip);
+  return _helpTip;
+}
+
+function showHelp(btn) {
+  const tip = ensureHelpTip();
+  tip.textContent = btn.dataset.help || "";
+  const r = btn.getBoundingClientRect();
+  tip.style.left = `${r.left + window.scrollX + r.width / 2}px`;
+  tip.style.top  = `${r.bottom + window.scrollY + 6}px`;
+  tip.classList.add("show");
+}
+
+function hideHelp() {
+  if (_helpTip) _helpTip.classList.remove("show");
+}
+
+export function initHelpIcons(root = document) {
+  root.querySelectorAll("[data-help]").forEach(el => {
+    if (el.dataset.helpBound) return;
+    el.dataset.helpBound = "1";
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", "Help");
+    el.addEventListener("mouseenter", () => showHelp(el));
+    el.addEventListener("focus",      () => showHelp(el));
+    el.addEventListener("mouseleave", hideHelp);
+    el.addEventListener("blur",       hideHelp);
+  });
+}
+
+// Shorthand for emitting a help icon inline in innerHTML templates.
+export function helpIcon(text) {
+  return `<span class="ev-help" data-help="${escapeHtml(text)}">ⓘ</span>`;
+}
+
+// ── PNG / SVG exporters ────────────────────────────────────────────────
+
+// Download a Chart.js canvas as PNG. Re-paints the background colour
+// first so saved figures aren't transparent (which looks broken on dark
+// slide decks).
+export function downloadPng(canvas, filename = "chart.png", { background = null } = {}) {
+  if (!canvas) return;
+  const bg = background || getComputedStyle(document.body).backgroundColor || "#ffffff";
+  const out = document.createElement("canvas");
+  out.width = canvas.width;
+  out.height = canvas.height;
+  const ctx = out.getContext("2d");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(canvas, 0, 0);
+  out.toBlob(blob => {
+    if (!blob) return;
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+  }, "image/png");
+}
+
+// Serialize an <svg> element to a downloadable file. Embeds a white
+// background rect so the file renders correctly outside the browser.
+export function downloadSvg(svgEl, filename = "map.svg", { background = "#ffffff" } = {}) {
+  if (!svgEl) return;
+  const clone = svgEl.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  const viewBox = clone.getAttribute("viewBox");
+  if (viewBox && background) {
+    const [, , w, h] = viewBox.split(/\s+/).map(Number);
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", "0"); rect.setAttribute("y", "0");
+    rect.setAttribute("width", w); rect.setAttribute("height", h);
+    rect.setAttribute("fill", background);
+    clone.insertBefore(rect, clone.firstChild);
+  }
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(clone);
+  const blob = new Blob([xml], { type: "image/svg+xml;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+// ── Friendlier error messages ──────────────────────────────────────────
+
+export function humanizeError(e) {
+  const msg = (e && e.message) ? String(e.message) : String(e);
+  if (/Failed to fetch|NetworkError|ERR_NETWORK/i.test(msg))
+    return "Couldn't reach the World Bank API. Check your connection, then retry.";
+  if (/CORS|Access-Control/i.test(msg))
+    return "The server blocked the request (CORS). Try again; if it persists, use the optional FastAPI proxy.";
+  if (/429|rate/i.test(msg))
+    return "Too many requests in a short window — wait a few seconds and retry.";
+  if (/NaN|no data|empty/i.test(msg))
+    return "No data returned for this selection. Widen the year range or try different countries.";
+  return msg;
+}
+
+export function errorWithRetry(el, e, retry) {
+  if (!el) return;
+  const msg = humanizeError(e);
+  el.innerHTML = `<div class="error">${escapeHtml(msg)}
+    <button class="ev-retry">Retry</button></div>`;
+  const btn = el.querySelector(".ev-retry");
+  if (btn && typeof retry === "function") btn.addEventListener("click", retry);
+}
+
 // ── Keyboard shortcut: `/` focuses the first [data-search] input ────────
 
 export function initSearchHotkey() {

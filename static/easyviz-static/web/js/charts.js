@@ -1,14 +1,13 @@
 // Chart.js builders — one factory per chart type. Each returns the live
 // Chart instance so the caller can .destroy() before re-rendering.
 
-const PALETTE = [
-  "#2d5fd9", "#d9532d", "#2dd98f", "#d9b62d", "#9c2dd9",
-  "#2dc5d9", "#d92d7a", "#6bd92d", "#d9752d", "#2d34d9",
-  "#d92d2d", "#2dd9c5", "#b0d92d", "#752dd9", "#d92db0",
-  "#3e7a8c", "#8c3e3e", "#8c7a3e", "#3e8c5a", "#5a3e8c",
-];
+import { qualColors, withAlpha } from "./palettes.js";
 
-const colorFor = (i) => PALETTE[i % PALETTE.length];
+// Resolve a palette name to an indexed color function for N series.
+function colorFn(paletteName, nSeries) {
+  const hex = qualColors(paletteName || "tableau10", Math.max(nSeries, 1));
+  return (i) => hex[i % hex.length];
+}
 
 function groupByCountry(rows) {
   const by = new Map();
@@ -22,13 +21,15 @@ function groupByCountry(rows) {
 
 // ── Time-series (line / bar / area) ────────────────────────────────────
 
-export function makeLine(canvas, rows, indicator, { yLog = false, fill = false } = {}) {
+export function makeLine(canvas, rows, indicator, { yLog = false, fill = false, palette = "tableau10" } = {}) {
   const byCountry = groupByCountry(rows);
-  const datasets = [...byCountry.entries()].map(([country, rs], i) => ({
+  const entries = [...byCountry.entries()];
+  const colorFor = colorFn(palette, entries.length);
+  const datasets = entries.map(([country, rs], i) => ({
     label: country,
     data: rs.map(r => ({ x: r.year, y: r.value })),
     borderColor: colorFor(i),
-    backgroundColor: fill ? colorFor(i) + "33" : colorFor(i),
+    backgroundColor: fill ? withAlpha(colorFor(i), 0.2) : colorFor(i),
     fill,
     tension: 0.15,
     pointRadius: 2,
@@ -51,7 +52,7 @@ export function makeLine(canvas, rows, indicator, { yLog = false, fill = false }
   });
 }
 
-export function makeBar(canvas, rows, indicator, { year = null } = {}) {
+export function makeBar(canvas, rows, indicator, { year = null, palette = "tableau10" } = {}) {
   // Single-year cross-country bar. If year is null, use the latest year
   // that has the most countries (the "most complete" cross-section).
   const byYear = new Map();
@@ -64,6 +65,7 @@ export function makeBar(canvas, rows, indicator, { year = null } = {}) {
     year = entries[0]?.[0];
   }
   const slice = (byYear.get(year) || []).slice().sort((a, b) => b.value - a.value);
+  const colorFor = colorFn(palette, slice.length);
   return new Chart(canvas, {
     type: "bar",
     data: {
@@ -88,22 +90,26 @@ export function makeBar(canvas, rows, indicator, { year = null } = {}) {
 
 // ── Cross-section scatter (+ optional OLS overlay) ─────────────────────
 
-export function makeScatter(canvas, points, indA, indB, year, { fit = null } = {}) {
+export function makeScatter(canvas, points, indA, indB, year, { fit = null, palette = "tableau10" } = {}) {
+  const colorFor = colorFn(palette, points.length);
   const datasets = [{
     label: `${year}`,
     data: points.map(p => ({ x: p.x, y: p.y, iso3: p.iso3, country: p.country })),
-    backgroundColor: "#2d5fd9",
+    backgroundColor: points.map((_, i) => colorFor(i)),
+    borderColor: points.map((_, i) => colorFor(i)),
     pointRadius: 4,
   }];
-  if (fit) datasets.push({
-    label: `OLS (R²=${fit.r2.toFixed(2)})`,
-    data: fit.line,
-    type: "line",
-    borderColor: "#d9532d",
-    borderWidth: 2,
-    pointRadius: 0,
-    fill: false,
-  });
+  if (fit) {
+    datasets.push({
+      label: `OLS (R²=${fit.r2.toFixed(2)})`,
+      data: fit.line,
+      type: "line",
+      borderColor: "#111",
+      borderWidth: 2,
+      pointRadius: 0,
+      fill: false,
+    });
+  }
   return new Chart(canvas, {
     type: "scatter",
     data: { datasets },
@@ -130,19 +136,20 @@ export function makeScatter(canvas, points, indA, indB, year, { fit = null } = {
 
 // ── Bubble (X, Y, size) ────────────────────────────────────────────────
 
-export function makeBubble(canvas, points, indA, indB, indSize, year) {
+export function makeBubble(canvas, points, indA, indB, indSize, year, { palette = "tableau10" } = {}) {
   if (!points.length) return null;
   const sizes = points.map(p => p.size);
   const sMin = Math.min(...sizes), sMax = Math.max(...sizes);
   const scale = (s) => 4 + 26 * ((s - sMin) / Math.max(1e-9, sMax - sMin));
+  const colorFor = colorFn(palette, points.length);
   return new Chart(canvas, {
     type: "bubble",
     data: {
       datasets: [{
         label: `${year}`,
         data: points.map(p => ({ x: p.x, y: p.y, r: scale(p.size), country: p.country, size: p.size })),
-        backgroundColor: "#2d5fd988",
-        borderColor: "#2d5fd9",
+        backgroundColor: points.map((_, i) => withAlpha(colorFor(i), 0.55)),
+        borderColor: points.map((_, i) => colorFor(i)),
         borderWidth: 1,
       }],
     },
@@ -171,7 +178,10 @@ export function makeBubble(canvas, points, indA, indB, indSize, year) {
 // but the cleanest UX is a manual year slider that re-renders. This
 // function returns a controller object: {chart, setYear()}.
 
-export function makeGapminder(canvas, panel, indA, indB, indSize) {
+export function makeGapminder(canvas, panel, indA, indB, indSize, { palette = "tableau10" } = {}) {
+  const countries = [...new Set(panel.map(p => p.country))];
+  const countryIndex = new Map(countries.map((c, i) => [c, i]));
+  const colorFor = colorFn(palette, countries.length);
   const years = [...new Set(panel.map(p => p.year))].sort();
   // Fix axis ranges across years so bubbles "move" rather than rescale.
   const xs = panel.map(p => p.x), ys = panel.map(p => p.y);
@@ -196,14 +206,21 @@ export function makeGapminder(canvas, panel, indA, indB, indSize) {
     }));
   }
 
+  const styleFor = (data) => ({
+    backgroundColor: data.map(d => withAlpha(colorFor(countryIndex.get(d.country) ?? 0), 0.6)),
+    borderColor: data.map(d => colorFor(countryIndex.get(d.country) ?? 0)),
+  });
+
+  const initData = dataForYear(currentYear);
+  const initStyle = styleFor(initData);
   const chart = new Chart(canvas, {
     type: "bubble",
     data: {
       datasets: [{
         label: String(currentYear),
-        data: dataForYear(currentYear),
-        backgroundColor: "#2d5fd988",
-        borderColor: "#2d5fd9",
+        data: initData,
+        backgroundColor: initStyle.backgroundColor,
+        borderColor: initStyle.borderColor,
         borderWidth: 1,
       }],
     },
@@ -228,8 +245,12 @@ export function makeGapminder(canvas, panel, indA, indB, indSize) {
 
   function setYear(y) {
     currentYear = y;
+    const d = dataForYear(y);
+    const s = styleFor(d);
     chart.data.datasets[0].label = String(y);
-    chart.data.datasets[0].data = dataForYear(y);
+    chart.data.datasets[0].data = d;
+    chart.data.datasets[0].backgroundColor = s.backgroundColor;
+    chart.data.datasets[0].borderColor = s.borderColor;
     chart.options.plugins.title.text = `${indA.name} vs. ${indB.name} · ${y}`;
     chart.update();
   }

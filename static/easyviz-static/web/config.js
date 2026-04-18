@@ -18,4 +18,10 @@ window.EASYVIZ_CONFIG = {
 
   // Default preset when the chart page first loads
   defaultPreset: "Default (20 diverse)",
+
+  // Default palettes. `qualPalette` drives line / scatter / bubble / bar
+  // series colors; `seqPalette` drives choropleth maps and correlation
+  // heatmaps. Valid values are listed in web/js/palettes.js.
+  defaultQualPalette: "tableau10",
+  defaultSeqPalette: "viridis",
 };

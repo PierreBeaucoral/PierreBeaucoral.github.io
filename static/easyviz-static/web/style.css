@@ -550,6 +550,142 @@ footer.site {
 .corr-table th { background: var(--bg-card); }
 .corr-table td.diag { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 
+/* ── Help icons + tooltip ────────────────────────────────────────── */
+
+.ev-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;
+  margin-left: 0.25rem;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--fg-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+  user-select: none;
+  vertical-align: middle;
+  transition: background 0.12s, color 0.12s;
+}
+.ev-help:hover, .ev-help:focus {
+  background: var(--accent);
+  color: white;
+  outline: none;
+}
+
+.ev-help-tip {
+  position: absolute;
+  z-index: 200;
+  max-width: 280px;
+  padding: 0.5rem 0.7rem;
+  background: var(--fg);
+  color: var(--bg-card);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.12s;
+}
+.ev-help-tip.show { opacity: 1; }
+
+/* Retry button embedded in error banners */
+.ev-retry {
+  margin-left: 0.6rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.ev-retry:hover { background: currentColor; color: var(--bg-card); }
+
+/* ── Landing tiles (index.html) ──────────────────────────────────── */
+
+.landing-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+.landing-tile {
+  display: block;
+  padding: 0.9rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--fg);
+  transition: border-color 0.12s, transform 0.12s;
+}
+.landing-tile:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.landing-tile .tile-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.landing-tile .tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px; height: 26px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.landing-tile .tile-desc {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+
+/* ── Empty-state example-query chips ─────────────────────────────── */
+
+.empty-state {
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--fg-muted);
+  margin: 0.75rem 0;
+}
+.empty-state h3 { margin-top: 0; color: var(--fg); font-size: 1rem; }
+.empty-state .examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.empty-state .example-chip {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.empty-state .example-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
@@ -557,4 +693,25 @@ footer.site {
   .chart-card .chart-wrap { height: 340px; }
   header.site nav { display: none; }
   .ev-modal { width: 98vw; top: 1vh; max-height: 98vh; }
+  .ev-help-tip { max-width: 200px; }
+}
+
+/* ── Print stylesheet (for clean chart/map exports) ──────────────── */
+
+@media print {
+  header.site, footer.site, .actions, .controls, .tabs,
+  .year-slider, .saved-views, #status, .diagnostics,
+  .ev-modal-root, .ev-help, .ev-help-tip {
+    display: none !important;
+  }
+  body, html { background: white !important; color: black !important; }
+  .chart-card, .map-wrap, .corr-table, .methodology {
+    border-color: #ccc !important;
+    background: white !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+  .chart-card .chart-wrap { height: 420px; }
+  h1 { font-size: 1.25rem; }
+  p.lede, .methodology { font-size: 0.78rem; color: #333; }
 }

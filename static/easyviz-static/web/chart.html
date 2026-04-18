@@ -59,7 +59,7 @@
       </div>
 
       <div>
-        <label for="transform">Temporal transform</label>
+        <label for="transform">Temporal transform <span class="ev-help" data-help="Reshapes the series over time. MA5 smooths noise; decade means collapse to ten-year windows; YoY and CAGR express growth; index rescales to a reference year.">ⓘ</span></label>
         <select id="transform">
           <option value="none">— none (raw) —</option>
           <option value="ma5">5-year moving average</option>
@@ -71,12 +71,12 @@
       </div>
 
       <div>
-        <label for="base-year">Index base year</label>
+        <label for="base-year">Index base year <span class="ev-help" data-help="Only used for 'Index' transform. The value in this year becomes 100 for each country; other years are rescaled proportionally.">ⓘ</span></label>
         <input id="base-year" type="number" min="1960" max="2025" value="2000" disabled>
       </div>
 
       <div>
-        <label for="entity-agg">Aggregate selected countries</label>
+        <label for="entity-agg">Aggregate selected countries <span class="ev-help" data-help="Collapses many countries into a single series. Population- or GDP-weighted means reflect the region's overall path; unweighted mean treats every country equally.">ⓘ</span></label>
         <select id="entity-agg">
           <option value="none">— keep individual series —</option>
           <option value="mean">Unweighted mean</option>
@@ -89,8 +89,21 @@
 
       <div>
         <label>Options</label>
-        <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y)</label>
-        <label class="check"><input id="overlay-agg" type="checkbox"> Overlay aggregate on series</label>
+        <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y) <span class="ev-help" data-help="Plot the Y axis on a log₁₀ scale. Use when the indicator spans several orders of magnitude (e.g., GDP, population).">ⓘ</span></label>
+        <label class="check"><input id="overlay-agg" type="checkbox"> Overlay aggregate on series <span class="ev-help" data-help="Keep individual country lines and draw the chosen aggregate on top for comparison.">ⓘ</span></label>
+      </div>
+
+      <div>
+        <label for="palette">Colour palette <span class="ev-help" data-help="One hue per country. Okabe–Ito is the colourblind-safe default. The choice propagates into the exported R and Python code.">ⓘ</span></label>
+        <select id="palette">
+          <option value="tableau10">Tableau 10 (default)</option>
+          <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
+          <option value="set1">ColorBrewer Set1</option>
+          <option value="set2">ColorBrewer Set2</option>
+          <option value="dark2">ColorBrewer Dark2</option>
+          <option value="pastel">ColorBrewer Pastel</option>
+          <option value="bright">Bright</option>
+        </select>
       </div>
 
       <div class="span-2">
@@ -102,6 +115,7 @@
     <div class="actions">
       <button class="primary" id="btn-update">Update chart</button>
       <button id="btn-download">Download CSV</button>
+      <button id="btn-png">Download PNG</button>
       <button id="btn-share">Copy share URL</button>
       <button id="btn-save">Save view</button>
       <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
@@ -137,13 +151,15 @@
     import { makeLine, makeBar } from "./js/charts.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
     import { loading, error, clear, initDarkMode, downloadCsv,
-             showCodeModal, methodologyCaption, citations } from "./js/ui.js";
+             showCodeModal, methodologyCaption, citations,
+             initHelpIcons, downloadPng, errorWithRetry } from "./js/ui.js";
     import { aggregateTime, aggregateEntities, diagnostics } from "./js/aggregate.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
     import * as views from "./js/savedviews.js";
 
     initDarkMode();
+    initHelpIcons();
     if (url.isEmbed()) {
       const s = document.createElement("style"); s.textContent = url.EMBED_CSS;
       document.head.appendChild(s);
@@ -161,6 +177,7 @@
     const baseEl = document.getElementById("base-year");
     const aggEl = document.getElementById("entity-agg");
     const overlayEl = document.getElementById("overlay-agg");
+    const paletteEl = document.getElementById("palette");
     const statusEl = document.getElementById("status");
     const statsEl = document.getElementById("stats");
     const methEl = document.getElementById("methodology");
@@ -257,6 +274,7 @@
         log: logEl.checked,
         transform: currentTransform(),
         entityAgg: currentEntityAgg(),
+        qualPalette: paletteEl.value,
         filename: lastIndicator.id,
       };
     }
@@ -304,11 +322,12 @@
 
         if (currentChart) currentChart.destroy();
         if (typeEl.value === "bar") {
-          currentChart = makeBar(canvas, finalRows, row);
+          currentChart = makeBar(canvas, finalRows, row, { palette: paletteEl.value });
         } else {
           currentChart = makeLine(canvas, finalRows, row, {
             yLog: logEl.checked,
             fill: typeEl.value === "area",
+            palette: paletteEl.value,
           });
         }
 
@@ -356,12 +375,13 @@
           base: tfEl.value === "index" ? baseEl.value : null,
           agg: aggEl.value !== "none" ? aggEl.value : null,
           overlay: overlayEl.checked,
+          qpal: paletteEl.value !== "tableau10" ? paletteEl.value : null,
         });
 
         document.getElementById("chart-title").textContent = row.name;
         document.getElementById("chart-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
       } catch (e) {
-        error(statusEl, e.message);
+        errorWithRetry(statusEl, e, render);
       }
     }
 
@@ -404,10 +424,16 @@
     baseEl.addEventListener("change", render);
     aggEl.addEventListener("change", render);
     overlayEl.addEventListener("change", render);
+    paletteEl.addEventListener("change", render);
 
     document.getElementById("btn-download").addEventListener("click", () => {
       if (!lastShownRows || !lastIndicator) return;
       downloadCsv(`${lastIndicator.id}.csv`, lastShownRows);
+    });
+
+    document.getElementById("btn-png").addEventListener("click", () => {
+      if (!lastIndicator) return;
+      downloadPng(canvas, `${lastIndicator.id}.png`);
     });
 
     document.getElementById("btn-share").addEventListener("click", async () => {
@@ -497,6 +523,8 @@
       const base = url.get("base"); if (base) baseEl.value = base;
       const agg = url.get("agg"); if (agg) aggEl.value = agg;
       if (url.getBool("overlay")) overlayEl.checked = true;
+      const qpal = url.get("qpal") || cfg.defaultQualPalette;
+      if (qpal) paletteEl.value = qpal;
 
       renderSavedViews();
       render();

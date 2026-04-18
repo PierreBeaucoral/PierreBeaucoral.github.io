@@ -89,28 +89,48 @@ function quantileBreaks(values, k) {
 
 function logSafe(v) { return Math.log10(Math.max(v, 1e-12)); }
 
-// Viridis-lite (6-stop). Picked for perceptual uniformity without a
-// colormap library. Returns rgb string for a value in [0,1].
-const VIRIDIS = [
-  [68, 1, 84], [59, 82, 139], [33, 145, 140],
-  [94, 201, 98], [253, 231, 37], [255, 255, 140],
-];
-function colorRamp(t) {
-  if (!Number.isFinite(t)) return "#d0d0d0";
-  t = Math.max(0, Math.min(1, t));
-  const x = t * (VIRIDIS.length - 1);
-  const i = Math.floor(x), f = x - i;
-  const a = VIRIDIS[i], b = VIRIDIS[Math.min(i + 1, VIRIDIS.length - 1)];
-  const r = Math.round(a[0] + (b[0] - a[0]) * f);
-  const g = Math.round(a[1] + (b[1] - a[1]) * f);
-  const bl = Math.round(a[2] + (b[2] - a[2]) * f);
-  return `rgb(${r},${g},${bl})`;
-}
+import { SEQUENTIAL as PALETTES, continuousColor as colorRamp, seqKind } from "./palettes.js";
+export { SEQUENTIAL as PALETTES } from "./palettes.js";
 
 // Classic equirectangular projection (no D3 to keep bundle small).
 // We compute a simple linear mapping: [-180,180] → [0,w], [90,-90] → [0,h].
 function project([x, y], w, h) {
   return [ (x + 180) / 360 * w, (90 - y) / 180 * h ];
+}
+
+// Split a ring of [lon, lat] at antimeridian (±180°) crossings.
+// Without this, countries like Russia or Fiji render as a horizontal
+// band stretching across the whole map because consecutive vertices
+// jump from ~179° to ~-179°, and a straight line in screen space cuts
+// through every other country on that latitude.
+//
+// Strategy: at each crossing, insert interpolated vertices at ±180°
+// with the latitude linearly interpolated at the crossing, and split
+// the ring into two sub-rings each closed at the antimeridian.
+function splitAntimeridian(points) {
+  const out = [[]];
+  for (let i = 0; i < points.length; i++) {
+    const cur = points[i];
+    out[out.length - 1].push(cur);
+    if (i + 1 < points.length) {
+      const nxt = points[i + 1];
+      const dx = nxt[0] - cur[0];
+      if (dx > 180) {
+        // Crossing westward through the antimeridian.
+        const t = (-180 - cur[0]) / (nxt[0] - 360 - cur[0]);
+        const yAt = cur[1] + t * (nxt[1] - cur[1]);
+        out[out.length - 1].push([-180, yAt]);
+        out.push([[180, yAt]]);
+      } else if (dx < -180) {
+        // Crossing eastward through the antimeridian.
+        const t = (180 - cur[0]) / (nxt[0] + 360 - cur[0]);
+        const yAt = cur[1] + t * (nxt[1] - cur[1]);
+        out[out.length - 1].push([180, yAt]);
+        out.push([[-180, yAt]]);
+      }
+    }
+  }
+  return out;
 }
 
 // Walk geometry rings and emit SVG path data. Supports Polygon and
@@ -142,12 +162,18 @@ function pathFor(geom, w, h, arcs) {
     let d = "";
     for (const r of rings) {
       if (!r.length) continue;
-      for (let i = 0; i < r.length; i++) {
-        const [px, py] = transformPoint(r[i]);
-        const [sx, sy] = project([px, py], w, h);
-        d += (i === 0 ? "M" : "L") + sx.toFixed(1) + "," + sy.toFixed(1);
+      // Decode to lon/lat first, then split at the antimeridian before
+      // projecting to screen coords.
+      const lonlat = r.map(transformPoint);
+      const subs = splitAntimeridian(lonlat);
+      for (const sub of subs) {
+        if (sub.length < 2) continue;
+        for (let i = 0; i < sub.length; i++) {
+          const [sx, sy] = project(sub[i], w, h);
+          d += (i === 0 ? "M" : "L") + sx.toFixed(1) + "," + sy.toFixed(1);
+        }
+        d += "Z";
       }
-      d += "Z";
     }
     return d;
   }
@@ -197,9 +223,22 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
     return;
   }
 
+  const palette = opts.palette && PALETTES[opts.palette] ? opts.palette : "viridis";
+  const reverse = Boolean(opts.reverse);
+  const diverging = opts.diverging ?? (seqKind(palette) === "diverging");
+  const center = Number.isFinite(opts.center) ? opts.center : 0;
+
   const lo = Math.min(...values), hi = Math.max(...values);
+  // For diverging palettes, re-centre 0→0.5 so the mid-hue marks the
+  // reference value. Extend the symmetric range to the wider tail so
+  // neither side saturates prematurely.
+  const half = diverging ? Math.max(Math.abs(hi - center), Math.abs(center - lo)) : 0;
   const norm = (v) => {
     if (!Number.isFinite(v)) return NaN;
+    if (diverging) {
+      if (half === 0) return 0.5;
+      return 0.5 + (v - center) / (2 * half);
+    }
     if (opts.log && lo > 0) {
       const lloN = logSafe(lo), lhiN = logSafe(hi);
       if (lhiN === lloN) return 0.5;
@@ -219,7 +258,7 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
       path.classList.add("missing");
       path.setAttribute("fill", "#e1e1e1");
     } else {
-      path.setAttribute("fill", colorRamp(norm(val)));
+      path.setAttribute("fill", colorRamp(norm(val), palette, reverse));
     }
     const name = geo.properties?.name || iso3 || "—";
     path.addEventListener("mousemove", (e) => {
@@ -242,7 +281,7 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
   const swatches = [];
   for (let i = 0; i < stops; i++) {
     const t = i / (stops - 1);
-    swatches.push(`<span class="swatch" style="background:${colorRamp(t)}"></span>`);
+    swatches.push(`<span class="swatch" style="background:${colorRamp(t, palette, reverse)}"></span>`);
   }
   const fmt = (v) => {
     if (!Number.isFinite(v)) return "—";

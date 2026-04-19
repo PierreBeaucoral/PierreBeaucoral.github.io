@@ -11,7 +11,7 @@ authors:
 author_notes:
 
 date: '2026-04-19T00:00:00Z'
-doi: ''
+doi: 'https://doi.org/10.1007/s41060-026-01086-w'
 
 # Schedule page publish date (NOT publication's date).
 publishDate: '2017-01-01T00:00:00Z'
@@ -22,7 +22,7 @@ publishDate: '2017-01-01T00:00:00Z'
 publication_types: ['article']
 
 # Publication name and optional abbreviated publication name.
-publication: In *Ferdi development policies working paper series*
+publication: In *International Journal of Data Science and Analytics*
 publication_short: ""
 
 abstract: |-

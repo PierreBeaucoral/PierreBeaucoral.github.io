@@ -1,13 +1,10 @@
-name: Deploy Wowchemy website to GitHub Pages
+name: Deploy Hugo Blox website to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
   push:
     branches: ["main"]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
-# Provide permission to clone the repo and deploy it to GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -22,39 +19,47 @@ defaults:
     shell: bash
 
 jobs:
-  # Build website
   build:
-    if: github.repository_owner != 'wowchemy'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Fetch history for Hugo's .GitInfo and .Lastmod
           fetch-depth: 0
-      - name: Setup Go
-        uses: actions/setup-go@v4
+
+      - name: Setup Go (for Hugo Modules)
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
-      - name: Setup Hugo
+          go-version: '1.22'
+
+      - name: Setup Hugo (extended, pinned)
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.119.0'
+          # Pin to a version known to work with blox-bootstrap v5.9.7.
+          # 0.160.x fine thanks to the local layouts/shortcodes/table.html
+          # override that replaces the removed getCSV function.
+          hugo-version: '0.160.1'
           extended: true
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Fetch Hugo modules
+        run: hugo mod get
+
       - name: Build with Hugo
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-        run: |
-          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
 
-  # Deploy website to GitHub Pages hosting
   deploy:
-    if: github.repository_owner != 'wowchemy'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

@@ -2,14 +2,11 @@
 title: Posts
 cms_exclude: true
 
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-view: 2
+# View (Hugo Blox): list | compact | card | citation
+view: compact
 
 # Optional header image (relative to `static/media/` folder).
-header:
+banner:
   caption: ''
   image: ''
 ---

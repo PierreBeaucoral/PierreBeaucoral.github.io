@@ -17,14 +17,17 @@ marketing:
   seo:
     site_type: Person
     local_business_type: ''
-    org_name: ''
-    description: 'Pierre Beaucoral, economist special website'
-    twitter: 'pierrebeaucoral'
+    org_name: 'CERDI — Université Clermont Auvergne, CNRS, IRD'
+    description: 'Pierre Beaucoral — PhD candidate in development and environmental economics at CERDI. Research on climate finance, geocoded development aid, ML/NLP, and causal inference.'
+    twitter: 'PBeaucoral'
+    # Default Open Graph / Twitter share image (lives in assets/media/)
+    share:
+      image: 'hero-academic.png'
   analytics:
     google_analytics: 'G-0V150P3Y8N'
     baidu_tongji: ''
     google_tag_manager: 'GTM-M27JJH29'
-    microsoft_clarity: ''  
+    microsoft_clarity: ''
   verification:
     google: ''
     baidu: ''

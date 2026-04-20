@@ -18,12 +18,7 @@ removePathAccents: true
 ############################
 ## MODULES
 ############################
-
-module:
-  imports:
-    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify
-    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal
-    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5
+# Module imports live in config/_default/module.yaml (HugoBlox).
 
 ############################
 ## ADVANCED
@@ -44,7 +39,9 @@ permalinks:
   tags: '/tag/:slug/'
   categories: '/category/:slug/'
   publication_types: '/publication-type/:slug/'
-disableAliases: true
+# Emit HTML redirects for frontmatter `aliases` so old URLs keep working
+# on static hosts (GitHub Pages has no _redirects support).
+disableAliases: false
 outputs:
   home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
   section: [HTML, RSS]

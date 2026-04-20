@@ -73,8 +73,8 @@ slides: ""
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects:
-  - Climate Finance Estimation
-  - CRS ML
+  - climate-finance-estimation
+  - crs-ml
 ---
 
 Slides available upon requests.

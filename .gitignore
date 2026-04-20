@@ -1,10 +1,28 @@
 # IDEs
 .idea/
+.DS_Store
 
 # Hugo
 resources/
 public/
+public_baseline/
 jsconfig.json
 node_modules/
 go.sum
 .hugo_build.lock
+
+# Build caches that should never be committed
+.quarto/
+_freeze/
+
+# R session
+.Rproj.user/
+.Rhistory
+.RData
+
+# LaTeX aux
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

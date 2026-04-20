@@ -1,0 +1,48 @@
+{{/* Override of blox-bootstrap/v5 table.html for Hugo ≥ 0.123. */}}
+{{/* Replaces removed getCSV with resources.Get / resources.GetRemote + transform.Unmarshal. */}}
+
+{{ $src := .Get "path" }}
+{{ $delimiter := .Get "delimiter" | default "," }}
+{{ $useHeaderRow := (eq (lower (.Get "header" | default "true")) "true") }}
+{{ $caption := .Get "caption" }}
+
+{{ $rows := slice }}
+{{ $is_remote := strings.HasPrefix $src "http" }}
+{{ if $is_remote }}
+  {{ with resources.GetRemote $src }}
+    {{ with .Err }}
+      {{ errorf "table shortcode: %s" . }}
+    {{ else }}
+      {{ $rows = . | transform.Unmarshal (dict "delimiter" $delimiter) }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ $local := path.Join $.Page.File.Dir $src }}
+  {{ with resources.Get $local }}
+    {{ $rows = . | transform.Unmarshal (dict "delimiter" $delimiter) }}
+  {{ else }}
+    {{ errorf "table shortcode: could not find %s" $local }}
+  {{ end }}
+{{ end }}
+
+<table class="table">
+  {{ if and $useHeaderRow (gt (len $rows) 0) }}
+    {{ $headerRow := index $rows 0 }}
+    {{ $rows = after 1 $rows }}
+    <tr> {{ range $headerRow }} <th>{{ . | markdownify | emojify }}</th> {{ end }} </tr>
+  {{ end }}
+  {{ range $rows }}
+    <tr>
+      {{ range . }}
+        {{ if (findRE "^\\d+$" .) }}
+          <td data-table-dtype="number">{{ . }}</td>
+        {{ else }}
+          <td data-table-dtype="text">{{ . | markdownify | emojify }}</td>
+        {{ end }}
+      {{ end }}
+    </tr>
+  {{ end }}
+  {{ if $caption }}
+    <caption>{{ $caption | markdownify | emojify }}</caption>
+  {{ end }}
+</table>

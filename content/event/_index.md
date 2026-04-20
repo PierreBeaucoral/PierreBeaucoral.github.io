@@ -2,14 +2,11 @@
 title: Recent & Upcoming Talks
 cms_exclude: true
 
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-view: 3
+# View (Hugo Blox): list | compact | card | citation | masonry | showcase
+view: card
 
 # Optional header image (relative to `static/media/` folder).
-header:
+banner:
   caption: ''
   image: ''
 ---

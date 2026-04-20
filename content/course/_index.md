@@ -2,12 +2,8 @@
 title: Teaching experience by year
 cms_exclude: true
 
-# View.
-#   1 = List
-#   2 = Compact
-#   3 = Card
-#   4 = Citation
-view: 1
+# View (Hugo Blox): list | compact | card | citation
+view: list
 
 # Optional header image (relative to `static/media/` folder).
 banner:
@@ -16,7 +12,7 @@ banner:
 ---
 # 2026
 
-- [Introduction to DiD (Master level, Lecturer, French)](https://pierrebeaucoral.github.io/course/gpe_did/site.html)
+- [Introduction to DiD (Master level, Lecturer, French)](https://pierrebeaucoral.github.io/course/gpe-did/site.html)
 
 # 2025
 

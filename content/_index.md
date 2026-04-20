@@ -98,7 +98,7 @@ sections:
       offset: 0
       order: desc
     design:
-      view: date-title-summary
+      view: compact
       spacing:
         padding: [0, 0, 0, 0]
 

@@ -100,7 +100,12 @@ social:
       header: true
   - icon: graduation-cap
     icon_pack: fas
-    link: https://scholar.google.com/citations?view_op=new_profile&hl=fr
+    link: https://scholar.google.com/citations?user=avg94hwAAAAJ&hl=fr
+    label: Google Scholar
+  - icon: orcid
+    icon_pack: ai
+    link: https://orcid.org/0009-0009-6713-5608
+    label: ORCID 0009-0009-6713-5608
   - icon: github
     icon_pack: fab
     link: https://github.com/PierreBeaucoral

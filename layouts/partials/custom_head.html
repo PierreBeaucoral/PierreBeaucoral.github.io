@@ -1,0 +1,79 @@
+{{/*
+  custom_head.html — local extensions to site_head.html
+  - Plausible analytics (privacy-respecting)
+  - JSON-LD structured data (Person on home, ScholarlyArticle on publications)
+*/}}
+
+{{/* Plausible analytics (cookieless, GDPR-friendly) */}}
+{{ with site.Params.marketing.analytics.plausible }}
+  {{ if hugo.IsProduction }}
+    <script defer data-domain="{{ . }}" src="https://plausible.io/js/script.js"></script>
+  {{ end }}
+{{ end }}
+
+{{/* JSON-LD: Person on homepage */}}
+{{ if .IsHome }}
+  {{ $author := site.GetPage "/authors/admin" }}
+  {{ if $author }}
+    {{ $sameAs := slice }}
+    {{ range $author.Params.social }}
+      {{ if and .link (ne .icon "envelope") (not (hasPrefix .link "/")) (not (hasPrefix .link "uploads/")) }}
+        {{ $sameAs = $sameAs | append .link }}
+      {{ end }}
+    {{ end }}
+    {{ $person := dict
+      "@context" "https://schema.org"
+      "@type" "Person"
+      "name" $author.Title
+      "givenName" ($author.Params.first_name | default "")
+      "familyName" ($author.Params.last_name | default "")
+      "jobTitle" ($author.Params.role | default "")
+      "description" ($author.Params.bio | default site.Params.marketing.seo.description)
+      "url" site.BaseURL
+      "sameAs" $sameAs
+      "affiliation" (dict
+        "@type" "Organization"
+        "name" (site.Params.marketing.seo.org_name | default "")
+      )
+    }}
+    <script type="application/ld+json">{{ $person | jsonify (dict "indent" "  ") | safeJS }}</script>
+  {{ end }}
+{{ end }}
+
+{{/* JSON-LD: ScholarlyArticle on publication pages */}}
+{{ if eq .Section "publication" }}
+  {{ if and .Params.title (not .IsSection) }}
+    {{ $authors := slice }}
+    {{ range .Params.authors }}
+      {{ $authorEntry := . }}
+      {{ $authorPage := site.GetPage (printf "/authors/%s" .) }}
+      {{ if $authorPage }}
+        {{ $authorEntry = $authorPage.Title }}
+      {{ end }}
+      {{ $authors = $authors | append (dict "@type" "Person" "name" $authorEntry) }}
+    {{ end }}
+    {{ $article := dict
+      "@context" "https://schema.org"
+      "@type" "ScholarlyArticle"
+      "headline" .Title
+      "name" .Title
+      "author" $authors
+      "datePublished" (.Date.Format "2006-01-02")
+      "url" .Permalink
+      "abstract" (.Params.abstract | default "")
+    }}
+    {{ with .Params.doi }}
+      {{ $doi := . }}
+      {{ if hasPrefix $doi "https://doi.org/" }}
+        {{ $doi = strings.TrimPrefix "https://doi.org/" $doi }}
+      {{ else if hasPrefix $doi "http://doi.org/" }}
+        {{ $doi = strings.TrimPrefix "http://doi.org/" $doi }}
+      {{ end }}
+      {{ $article = merge $article (dict "identifier" (dict "@type" "PropertyValue" "propertyID" "doi" "value" $doi)) }}
+    {{ end }}
+    {{ with .Params.publication }}
+      {{ $article = merge $article (dict "isPartOf" (dict "@type" "Periodical" "name" (. | plainify))) }}
+    {{ end }}
+    <script type="application/ld+json">{{ $article | jsonify (dict "indent" "  ") | safeJS }}</script>
+  {{ end }}
+{{ end }}

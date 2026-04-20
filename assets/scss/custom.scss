@@ -1,0 +1,63 @@
+// ---------------------------------------------------------------------------
+// Accessibility overrides (WCAG 2.1 AA)
+// ---------------------------------------------------------------------------
+// Goals:
+//   * visible focus rings on every interactive element (keyboard nav)
+//   * ≥ 4.5 : 1 contrast for tag pills in both light and dark modes
+//   * readable underline on inline links for users with low colour acuity
+//   * never hide content solely behind colour
+
+// Keyboard focus ring — visible on all themes
+:focus-visible {
+  outline: 3px solid #f4b400 !important;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+// Make inline content links visibly linked (underline, not just colour)
+article a,
+.article-content a,
+.universal-wrapper a:not(.btn):not(.nav-link):not(.page-link) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+// Tag pills — enforce contrast in both modes
+.badge, .btn-page-header, .article-tags .badge {
+  background-color: #e1ecf4;
+  color: #0b3d66;
+  border: 1px solid #9fc4e3;
+
+  &:hover, &:focus {
+    background-color: #cfe2f3;
+    color: #07263f;
+  }
+}
+
+.dark .badge, .dark .article-tags .badge,
+[data-theme="dark"] .badge {
+  background-color: #163143;
+  color: #e9f3fb;
+  border-color: #3b6380;
+
+  &:hover, &:focus {
+    background-color: #1f465f;
+    color: #ffffff;
+  }
+}
+
+// Skip-link (added via JS partial if needed) styling
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 10000;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
+  }
+}

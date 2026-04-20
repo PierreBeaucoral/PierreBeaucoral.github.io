@@ -1,9 +1,11 @@
-module github.com/wowchemy/starter-hugo-academic
+module github.com/PierreBeaucoral/PierreBeaucoral.github.io
 
-go 1.15
+go 1.21
 
 require (
-	github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-netlify v1.0.1-0.20231016002024-b343bdd4a0a3
-	github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-plugin-reveal v0.0.0-20231016002024-b343bdd4a0a3
-	github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy/v5 v5.8.2-0.20231019172801-b70eaa9c6bae
+	github.com/HugoBlox/hugo-blox-builder/modules/blox-bootstrap/v5 v5.9.7 // indirect
+	github.com/HugoBlox/hugo-blox-builder/modules/blox-core v0.4.1 // indirect
+	github.com/HugoBlox/hugo-blox-builder/modules/blox-plugin-netlify v1.2.0 // indirect
+	github.com/HugoBlox/hugo-blox-builder/modules/blox-plugin-reveal v1.2.4 // indirect
+	github.com/HugoBlox/hugo-blox-builder/modules/blox-seo v0.3.1 // indirect
 )

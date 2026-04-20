@@ -24,10 +24,13 @@ marketing:
     share:
       image: 'hero-academic.png'
   analytics:
-    google_analytics: 'G-0V150P3Y8N'
+    google_analytics: ''
     baidu_tongji: ''
-    google_tag_manager: 'GTM-M27JJH29'
+    google_tag_manager: ''
     microsoft_clarity: ''
+    # Privacy-respecting alternative. Uncomment and set your Plausible domain
+    # after registering at https://plausible.io (or self-hosting).
+    # plausible: 'pierrebeaucoral.github.io'
   verification:
     google: ''
     baidu: ''

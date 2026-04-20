@@ -37,15 +37,5 @@ main:
     weight: 40
 
   - name: CV
-    url: '/cv/'
-    weight: 50
-
-  - name: CV (PDF)
     url: '/uploads/resume.pdf'
-    parent: CV
-    weight: 51
-
-  - name: CV (web)
-    url: '/cv/'
-    parent: CV
-    weight: 52
+    weight: 50

@@ -3,7 +3,7 @@
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="{{ "/" | relLangURL }}">
-      <span class="dot"></span>
+      {{ with resources.Get "media/icon.png" }}<img class="brand-icon" src="{{ .RelPermalink }}" alt="" width="26" height="26">{{ else }}<span class="dot"></span>{{ end }}
       <span class="name">{{ site.Title }}</span>
     </a>
     <nav class="nav">

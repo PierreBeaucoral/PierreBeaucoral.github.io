@@ -1,0 +1,24 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  {{ with .Params.eyebrow }}<div class="eyebrow">{{ . }}</div>{{ else }}<div class="eyebrow">{{ .Title }}</div>{{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.summary }}<p class="lede">{{ . }}</p>{{ end }}
+</div>
+
+<div class="wrap" style="padding-top:24px;padding-bottom:40px;">
+  {{ if eq .Section "project" }}
+    <div class="rows">{{ range (sort .Pages "Date" "desc") }}{{ partial "pub-item.html" . }}{{ end }}</div>
+  {{ else }}
+    <div class="rows">
+      {{ range (sort .Pages "Date" "desc") }}
+      <a href="{{ .RelPermalink }}">
+        <div class="row" style="grid-template-columns:150px 1fr;">
+          <div class="when" style="color:var(--muted);">{{ dateFormat "Jan 2006" .Date }}</div>
+          <div><h3>{{ .Title }}</h3>{{ with .Params.summary }}<p class="desc">{{ . | plainify | truncate 200 }}</p>{{ end }}</div>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}

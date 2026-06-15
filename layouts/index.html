@@ -1,0 +1,139 @@
+{{ define "main" }}
+{{- $author := or (site.GetPage "/authors/admin") (site.GetPage "authors/admin") -}}
+{{- $avatarRes := "" -}}
+{{- with $author }}{{ $avatarRes = .Resources.GetMatch "avatar*" }}{{ end -}}
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="grid wrap-wide" style="margin:0 auto;">
+    <div>
+      <div class="eyebrow">PhD Candidate · Development &amp; Environmental Economics</div>
+      <h1>I examine how <em>climate finance</em> is allocated, and what it changes on the ground.</h1>
+      <p class="lede">Development economist at <strong>CERDI</strong> (CNRS · UCA · IRD). I use geocoded data, machine learning, and causal inference to follow climate and development finance from commitment to local impact.</p>
+      <div class="actions">
+        <a class="btn btn-clay" href="#research">Read the research</a>
+        <a class="btn-ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="meta">
+        <span>CERDI · Clermont-Ferrand</span>
+        <span class="accent">→ Visiting CEU Vienna · 2026</span>
+      </div>
+    </div>
+    <div class="portrait">
+      <div class="frame"></div>
+      <div class="pic">{{ with $avatarRes }}<img src="{{ (.Fill "600x720").RelPermalink }}" alt="{{ site.Title }}">{{ else }}<div style="width:300px;height:360px;"></div>{{ end }}</div>
+      <div class="caption">45.78°N, 3.08°E - Clermont-Ferrand, FR</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="section wrap-wide" id="research">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">01 · Research</div>
+      <h2>What I work on</h2>
+    </div>
+    <p style="max-width:340px;color:var(--muted);font-size:15.5px;">Four threads, one question: does development and climate finance reach the places and outcomes it promises?</p>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="num" style="color:var(--clay);">01</div><h3>Climate &amp; adaptation finance</h3><p>Tracking the volume, targeting, and gaps in "climate money" - from international commitments to who actually receives it.</p></div>
+    <div class="card"><div class="num" style="color:var(--forest2);">02</div><h3>Geocoded &amp; spatial data</h3><p>Mapping development aid to the subnational places it lands, so impact can be measured where it actually happens.</p></div>
+    <div class="card"><div class="num" style="color:var(--ocean);">03</div><h3>Causal inference</h3><p>Difference-in-differences, event studies, and double machine learning to estimate the real effects of climate policy.</p></div>
+    <div class="card"><div class="num" style="color:var(--clay);">04</div><h3>ML &amp; NLP for economics</h3><p>Using text-as-data and machine learning to classify and extract signal from large policy and project corpora.</p></div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+{{- $pool := where site.RegularPages "Section" "publication" -}}
+{{- range (where site.RegularPages "Section" "project") -}}{{- if .Params.status -}}{{- $pool = $pool | append . -}}{{- end -}}{{- end -}}
+{{- $featured := where $pool "Params.featured_home" true -}}
+{{- if not $featured }}{{ $featured = first 5 (sort $pool "Date" "desc") }}{{ end -}}
+<section class="section wrap-wide" id="work">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">02 · Selected work</div>
+      <h2>Publications &amp; working papers</h2>
+    </div>
+    <a class="section-link" href="{{ "/publication/" | relLangURL }}">All publications →</a>
+  </div>
+  <div class="rows">
+    {{ range sort $featured "Date" "desc" }}{{ partial "pub-item.html" . }}{{ end }}
+  </div>
+</section>
+
+<!-- WRITING -->
+<section class="section-dark">
+  <div class="section wrap-wide" style="padding-bottom:96px;">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">03 · Writing</div>
+        <h2>From the notebook</h2>
+      </div>
+      <a class="section-link" href="{{ "/post/" | relLangURL }}">All posts →</a>
+    </div>
+    <div class="post-grid">
+      {{ range first 3 (sort (where site.RegularPages "Section" "post") "Date" "desc") }}
+      <a class="post-card" href="{{ .RelPermalink }}">
+        <div class="thumb">{{ with .Resources.GetMatch "featured*" }}<img src="{{ (.Fill "640x400 smart").RelPermalink }}" alt="">{{ end }}</div>
+        <div class="date">{{ dateFormat "Jan 2, 2006" .Date | upper }}</div>
+        <h3>{{ .Title }}</h3>
+        {{ with .Params.summary }}<p>{{ . | plainify | truncate 90 }}</p>{{ end }}
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section wrap-wide" id="about">
+  <div class="about">
+    <div>
+      <div class="eyebrow">04 · About</div>
+      <h2>Hi there.</h2>
+      {{ with $author.Params.bio }}<p>{{ . }}</p>{{ end }}
+      <p>From March to May 2026 I'm a visiting PhD researcher at Central European University in Vienna, hosted by Prof. Florian Weiler in the Department of Public Policy.</p>
+      <div class="socials">
+        <a href="https://scholar.google.com/citations?user=avg94hwAAAAJ&hl=fr" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://orcid.org/0009-0009-6713-5608" target="_blank" rel="noopener">ORCID</a>
+        <a href="https://github.com/PierreBeaucoral" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/pierre-beaucoral-a55437168/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div>
+      <div class="sublabel">Experience</div>
+      <div class="timeline">
+        <div class="item"><span class="node" style="background:var(--clay);"></span><div class="when" style="color:var(--clay);">OCT 2023 - PRESENT</div><div class="role">PhD Researcher</div><div class="org">CERDI · CNRS · UCA · IRD - Clermont-Ferrand</div></div>
+        <div class="item"><span class="node" style="background:var(--ocean);"></span><div class="when" style="color:var(--ocean);">MAR - MAY 2026</div><div class="role">Visiting PhD Researcher</div><div class="org">Central European University - Vienna</div></div>
+        <div class="item"><span class="node" style="background:var(--forest2);"></span><div class="when" style="color:var(--forest2);">OCT 2022 - SEP 2023</div><div class="role">Research Assistant</div><div class="org">FERDI - Clermont-Ferrand</div></div>
+      </div>
+      <div class="sublabel">Education</div>
+      <div class="edu">
+        {{ range $author.Params.education.courses }}
+        <div class="erow"><span style="font-size:15px;">{{ .course }}<br><span style="color:var(--muted);font-size:13.5px;">{{ .institution }}</span></span><span class="yr">{{ .year }}</span></div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="grid wrap-wide" style="margin:0 auto;">
+    <div>
+      <div class="eyebrow">05 · Contact</div>
+      <h2>Let's talk research, teaching, or a collaboration.</h2>
+      <p class="lede">The best way to reach me is by email. I'm always glad to hear from co-authors, students, and others.</p>
+    </div>
+    <div class="card2">
+      <div class="lab">Email</div>
+      <div class="email">
+        <a href="mailto:pierre.beaucoral@uca.fr">pierre.beaucoral@uca.fr</a>
+        <button class="copy-btn" data-copy="pierre.beaucoral@uca.fr">Copy</button>
+      </div>
+      <div class="lab">Office</div>
+      <div class="addr">CERDI · Floor 4<br>26 Avenue Léon Blum<br>63000 Clermont-Ferrand, France</div>
+    </div>
+  </div>
+</section>
+{{ end }}

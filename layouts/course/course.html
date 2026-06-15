@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">Teaching</div>
+  <h1>Econometrics, statistical modelling, and the tools that make research reproducible.</h1>
+  <p class="lede">From undergraduate econometrics to master-level causal methods and R programming - I care about students leaving with workflows they can actually re-run.</p>
+</div>
+
+<div class="wrap" style="padding-top:8px;padding-bottom:40px;">
+  <div class="rows">
+    {{ range (sort .Pages "Date" "desc") }}
+    {{- /* Link to the course's static site.html when it exists; otherwise the detail page. */ -}}
+    {{- $slug := .File.ContentBaseName -}}
+    {{- $href := .RelPermalink -}}{{- $ext := false -}}
+    {{- if os.FileExists (printf "static/course/%s/site.html" $slug) -}}{{- $href = printf "/course/%s/site.html" $slug -}}{{- $ext = true -}}{{- end -}}
+    <a class="" href="{{ $href }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }}>
+      <div class="row" style="grid-template-columns:150px 1fr;">
+        <div class="when" style="color:var(--forest2);">{{ dateFormat "2006" .Date }}</div>
+        <div>
+          <h3 style="margin-bottom:8px;">{{ .Title }}</h3>
+          {{ with .Params.summary }}<p class="desc">{{ . }}</p>{{ end }}
+        </div>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+  <div style="margin-top:36px;display:flex;justify-content:flex-end;">
+    <a class="section-link" href="{{ "/course/" | relLangURL }}">All teaching →</a>
+  </div>
+</div>
+{{ end }}

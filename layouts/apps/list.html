@@ -1,0 +1,53 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">Apps &amp; Dashboards</div>
+  <h1>Interactive tools I build to make open data explorable.</h1>
+  <p class="lede">Fast, static web apps - no backend, no cold start. The browser does the work, and every view is a shareable URL.</p>
+</div>
+
+<div class="wrap" style="padding-top:56px;padding-bottom:40px;">
+
+  <div class="app">
+    <div class="preview">
+      <div class="chrome"><i style="background:#D9534F;opacity:.5;"></i><i style="background:#E0A93C;opacity:.55;"></i><i style="background:#5FA463;opacity:.55;"></i><span class="url">pierrebeaucoral.github.io/easyviz-static/web</span></div>
+      <div class="stage">
+        <iframe src="https://pierrebeaucoral.github.io/easyviz-static/web/?embed=1" title="EasyViz" loading="lazy"></iframe>
+        <a class="open-overlay" href="https://pierrebeaucoral.github.io/easyviz-static/web/" target="_blank" rel="noopener" aria-label="Open EasyViz"></a>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span class="tag tag-forest">● Live</span><span class="mono" style="font-size:11px;color:var(--muted);">2026</span>
+      </div>
+      <h2>EasyViz</h2>
+      <p class="lede">A static World Bank WDI explorer that loads in under a second. Search 100+ indicators, chart with country presets, run OLS and Gapminder-style animations, upload your own CSV - all in the browser, talking straight to the World Bank API.</p>
+      <div class="techs">
+        <span class="tag tag-line">Vanilla JS</span><span class="tag tag-line">Chart.js</span><span class="tag tag-line">World Bank API</span><span class="tag tag-line">Open data</span>
+      </div>
+      <a class="btn btn-forest" href="https://pierrebeaucoral.github.io/easyviz-static/web/" target="_blank" rel="noopener">Launch EasyViz ↗</a>
+    </div>
+  </div>
+
+  <div class="app">
+    <div class="preview">
+      <div class="chrome"><i style="background:#D9534F;opacity:.5;"></i><i style="background:#E0A93C;opacity:.55;"></i><i style="background:#5FA463;opacity:.55;"></i><span class="url">pierrebeaucoral.github.io/dashboard-france-ouvert</span></div>
+      <div class="stage">
+        <iframe src="https://pierrebeaucoral.github.io/dashboard-france-ouvert/index.html" title="France · Données ouvertes" loading="lazy"></iframe>
+        <a class="open-overlay" href="https://pierrebeaucoral.github.io/dashboard-france-ouvert/index.html" target="_blank" rel="noopener" aria-label="Open France Données ouvertes"></a>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span class="tag tag-ocean">● Live</span><span class="mono" style="font-size:11px;color:var(--muted);">2026</span>
+      </div>
+      <h2>France · Données ouvertes</h2>
+      <p class="lede">A commune-level dashboard of French open data from data.gouv.fr: elections, housing, air quality, security, public finance, health, income, demographics, energy &amp; carbon, mobility, and organic farming - plus bivariate maps, a correlation explorer, and small-multiples by département.</p>
+      <div class="techs">
+        <span class="tag tag-line">Quarto</span><span class="tag tag-line">data.gouv.fr</span><span class="tag tag-line">Bivariate maps</span><span class="tag tag-line">Small multiples</span>
+      </div>
+      <a class="btn btn-ocean" href="https://pierrebeaucoral.github.io/dashboard-france-ouvert/index.html" target="_blank" rel="noopener">Open the dashboard ↗</a>
+    </div>
+  </div>
+
+</div>
+{{ end }}

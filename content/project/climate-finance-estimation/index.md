@@ -9,6 +9,10 @@ tags:
 - Climate Finance
 date: '2024-09-06'
 
+# Publication stage (surfaces this project on the Publications page)
+status: rr
+# rr_journal: ""   # optional — set the journal name to show it next to the R&R badge
+
 image:
   caption: Created with assistance of deepai
   focal_point: Smart

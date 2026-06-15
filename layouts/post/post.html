@@ -1,0 +1,20 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">Writing</div>
+  <h1>From the notebook.</h1>
+  <p class="lede">Notes on tools, methods, and the occasional data detour - LLMs, LaTeX alternatives, wildfire data, and what AI is really changing in research.</p>
+</div>
+
+<div class="wrap" style="padding-top:56px;padding-bottom:40px;">
+  <div class="post-grid">
+    {{ range (sort .Pages "Date" "desc") }}
+    <a class="post-card" href="{{ .RelPermalink }}">
+      <div class="thumb">{{ with .Resources.GetMatch "featured*" }}<img src="{{ (.Fill "640x400 smart").RelPermalink }}" alt="">{{ end }}</div>
+      <div class="date">{{ dateFormat "Jan 2, 2006" .Date | upper }}</div>
+      <h2>{{ .Title }}</h2>
+      {{ with .Params.summary }}<p>{{ . | plainify | truncate 110 }}</p>{{ end }}
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

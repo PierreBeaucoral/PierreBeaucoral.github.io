@@ -1,0 +1,49 @@
+{{ define "main" }}
+{{- $backURL := "/publication/" -}}{{- $backLabel := "Publications" -}}
+{{- if eq .Section "event" -}}{{- $backURL = "/event/" -}}{{- $backLabel = "Talks" -}}
+{{- else if eq .Section "course" -}}{{- $backURL = "/course/" -}}{{- $backLabel = "Teaching" -}}
+{{- else if eq .Section "project" -}}{{- $backURL = "/publication/" -}}{{- $backLabel = "Publications" -}}{{- end -}}
+<article class="article">
+  <a class="back" href="{{ $backURL | relLangURL }}">← {{ $backLabel }}</a>
+
+  <div class="badges" style="margin:26px 0 12px;">
+    {{ with .Params.status }}<span class="chip {{ if eq . "jmp" }}chip-jmp{{ else if eq . "rr" }}chip-rr{{ else if eq . "published" }}chip-published{{ else if eq . "wip" }}chip-wip{{ else }}chip-wp{{ end }}">{{ if eq . "wip" }}Work in progress{{ else if eq . "wp" }}Working paper{{ else }}{{ . | upper }}{{ end }}</span>{{ end }}
+    <span class="mono" style="font-size:11px;color:var(--muted);">{{ dateFormat "January 2006" .Date }}</span>
+  </div>
+
+  <h1>{{ .Title }}</h1>
+  {{- $names := slice -}}
+  {{- range .Params.authors -}}
+    {{- $ap := site.GetPage (printf "authors/%s" .) -}}
+    {{- $hasProfile := and $ap $ap.File -}}
+    {{- $disp := . -}}
+    {{- if eq . "admin" -}}{{- $disp = "Pierre Beaucoral" -}}{{- else if $hasProfile -}}{{- $disp = $ap.Title -}}{{- end -}}
+    {{- if $hasProfile -}}{{- $names = $names | append (printf `<a href="%s">%s</a>` $ap.RelPermalink $disp) -}}{{- else -}}{{- $names = $names | append $disp -}}{{- end -}}
+  {{- end -}}
+  {{ with $names }}<p style="font-size:16px;margin-bottom:4px;"><strong>{{ delimit . ", " | safeHTML }}</strong></p>{{ end }}
+  {{ with .Params.publication }}<p class="byline"><em>{{ . | markdownify }}</em></p>{{ end }}
+
+  <div class="links" style="margin-bottom:40px;">
+    {{ with .Params.url_pdf }}<a class="btn btn-forest" style="font-size:12px;padding:10px 18px;" href="{{ . }}" target="_blank" rel="noopener">Read PDF ↗</a>{{ end }}
+    {{ with .Params.external_link }}<a class="btn-outline" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 18px;border-radius:999px;" href="{{ . }}" target="_blank" rel="noopener">Project ↗</a>{{ end }}
+    {{ with .Params.url_code }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Code ↗</a>{{ end }}
+    {{ with .Params.url_slides }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Slides ↗</a>{{ end }}
+    {{ with .Params.doi }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">DOI ↗</a>{{ end }}
+  </div>
+</article>
+
+{{ with .Resources.GetMatch "featured*" }}
+<div class="figure">
+  <div class="box"><img src="{{ (.Fill "1600x900 smart").RelPermalink }}" alt="" style="width:100%;height:auto;"></div>
+</div>
+{{ end }}
+
+<section class="article" style="padding-top:48px;">
+  {{ with .Params.abstract }}
+  <div class="mono" style="font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--clay);margin-bottom:18px;">Abstract</div>
+  <div class="prose"><p>{{ . | markdownify }}</p></div>
+  {{ end }}
+  {{ with .Content }}<div class="prose" style="margin-top:18px;">{{ . }}</div>{{ end }}
+  {{ with .Params.tags }}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:34px;">{{ range . }}<span class="tag tag-forest">{{ . }}</span>{{ end }}</div>{{ end }}
+</section>
+{{ end }}

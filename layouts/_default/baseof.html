@@ -1,0 +1,32 @@
+{{- /* Base template — overrides the Hugo Blox module. */ -}}
+<!DOCTYPE html>
+<html lang="{{ site.LanguageCode | default "en" }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  {{ partial "site-header.html" . }}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "site-footer.html" . }}
+  <script>
+    // Header shadow on scroll
+    (function () {
+      var h = document.querySelector('.site-header');
+      if (!h) return;
+      var onScroll = function () { h.classList.toggle('scrolled', window.scrollY > 24); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+    // Copy-email buttons
+    document.querySelectorAll('[data-copy]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        try { navigator.clipboard.writeText(b.getAttribute('data-copy')); } catch (e) {}
+        var t = b.textContent; b.textContent = 'Copied \u2713';
+        setTimeout(function () { b.textContent = t; }, 1800);
+      });
+    });
+  </script>
+</body>
+</html>

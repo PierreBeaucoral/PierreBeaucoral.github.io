@@ -11,6 +11,9 @@ tags:
 - Machine learning
 date: '2025-12-11'
 
+# Publication stage (surfaces this project on the Publications page)
+status: wip
+
 image:
   caption: Created with assistance of nano banana
   focal_point: Smart

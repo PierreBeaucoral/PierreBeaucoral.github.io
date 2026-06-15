@@ -1,0 +1,28 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">Talks &amp; Seminars</div>
+  <h1>Presenting research across conferences and seminars.</h1>
+  <p class="lede">A selection of talks where I shared work in progress with economists, policy researchers, and data-science audiences.</p>
+</div>
+
+<div class="wrap" style="padding-top:8px;padding-bottom:40px;">
+  <div class="rows">
+    {{ range (sort .Pages "Date" "desc") }}
+    <div class="row" style="grid-template-columns:170px 1fr;">
+      <div class="when" style="color:var(--clay);">{{ dateFormat "Jan 2006" .Date }}</div>
+      <div>
+        <h3 style="margin-bottom:6px;">{{ .Params.event | default .Title }}</h3>
+        {{ with .Params.summary }}<p class="desc" style="margin-bottom:6px;">{{ . }}</p>{{ end }}
+        {{ with .Params.location }}<div class="authors" style="margin-bottom:0;">{{ . }}</div>{{ end }}
+        <div class="links">
+          {{ with .Params.url_slides }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Slides ↗</a>{{ end }}
+          {{ with .Params.url_video }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Video ↗</a>{{ end }}
+          {{ with .Params.url_code }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Code ↗</a>{{ end }}
+          {{ with .Params.event_url }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Event ↗</a>{{ end }}
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

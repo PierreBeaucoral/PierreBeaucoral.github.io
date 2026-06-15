@@ -5,13 +5,16 @@ summary: >
 
 authors:
   - admin
-  - Michael Goujon
-  - Sebastien Marchand
+  - mgoujon
+  - smarchand
 tags:
 - Ongoing work
 - Development finance
 - Climate Finance
 date: '2025-01-01'
+
+# Publication stage (surfaces this project on the Publications page)
+status: wip
 
 image:
   caption: Created with assistance of deepai

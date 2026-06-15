@@ -1,0 +1,52 @@
+{{ define "main" }}
+{{- /* Project detail = compact teaser page. No images, just a short sum-up,
+       authors, status, and links — same aesthetic as the rest of the site. */ -}}
+{{- $statusLabel := "" -}}{{- $chip := "" -}}
+{{- with .Params.status -}}
+  {{- if eq . "jmp" -}}{{- $statusLabel = "Job market paper" -}}{{- $chip = "chip-jmp" -}}
+  {{- else if eq . "rr" -}}{{- $statusLabel = "Revise & resubmit" -}}{{- $chip = "chip-rr" -}}
+  {{- else if eq . "published" -}}{{- $statusLabel = "Published" -}}{{- $chip = "chip-published" -}}
+  {{- else if eq . "wip" -}}{{- $statusLabel = "Work in progress" -}}{{- $chip = "chip-wip" -}}
+  {{- else -}}{{- $statusLabel = "Working paper" -}}{{- $chip = "chip-wp" -}}{{- end -}}
+{{- end -}}
+
+<article class="article">
+  <a class="back" href="{{ "/publication/" | relLangURL }}">← Publications</a>
+
+  <div class="eyebrow" style="margin:26px 0 14px;">{{ with $statusLabel }}{{ . }}{{ else }}Project{{ end }}</div>
+
+  <h1>{{ .Title }}</h1>
+
+  {{- $names := slice -}}
+  {{- range .Params.authors -}}
+    {{- $ap := site.GetPage (printf "authors/%s" .) -}}
+    {{- $hasProfile := and $ap $ap.File -}}
+    {{- $disp := . -}}
+    {{- if eq . "admin" -}}{{- $disp = "Pierre Beaucoral" -}}{{- else if $hasProfile -}}{{- $disp = $ap.Title -}}{{- end -}}
+    {{- if $hasProfile -}}{{- $names = $names | append (printf `<a href="%s">%s</a>` $ap.RelPermalink $disp) -}}{{- else -}}{{- $names = $names | append $disp -}}{{- end -}}
+  {{- end -}}
+  {{ with $names }}<p class="byline" style="margin-top:10px;">{{ delimit . " · " | safeHTML }}</p>{{ end }}
+
+  {{ with .Params.summary }}<p class="lede" style="font-size:18px;color:var(--muted);line-height:1.65;max-width:640px;margin-top:24px;">{{ . }}</p>{{ end }}
+
+  {{ with .Content }}<div class="prose" style="margin-top:22px;">{{ . }}</div>{{ end }}
+
+  {{- $hasLinks := or .Params.external_link .Params.url_pdf .Params.url_slides .Params.url_code -}}
+  {{ if $hasLinks }}
+  <div class="links" style="margin-top:30px;">
+    {{ with .Params.url_pdf }}<a class="btn btn-forest" style="font-size:12px;padding:10px 18px;" href="{{ . }}" target="_blank" rel="noopener">Read PDF ↗</a>{{ end }}
+    {{ with .Params.external_link }}<a class="btn-outline" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 18px;border-radius:999px;" href="{{ . }}" target="_blank" rel="noopener">Project page ↗</a>{{ end }}
+    {{ with .Params.url_code }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Code ↗</a>{{ end }}
+    {{ with .Params.url_slides }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Slides ↗</a>{{ end }}
+  </div>
+  {{ end }}
+
+  {{ if eq .Params.status "wip" }}
+  <p class="mono" style="font-size:11.5px;letter-spacing:0.06em;color:var(--muted);margin-top:34px;border-top:1px solid var(--line);padding-top:18px;">
+    Preliminary work in progress — full paper and results coming soon.
+  </p>
+  {{ end }}
+
+  {{ with .Params.tags }}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;">{{ range . }}<span class="tag tag-forest">{{ . }}</span>{{ end }}</div>{{ end }}
+</article>
+{{ end }}

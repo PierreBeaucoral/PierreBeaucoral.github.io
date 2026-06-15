@@ -1,0 +1,19 @@
+{{- $sec := .Section -}}
+{{- $isHome := .IsHome -}}
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="{{ "/" | relLangURL }}">
+      <span class="dot"></span>
+      <span class="name">{{ site.Title }}</span>
+    </a>
+    <nav class="nav">
+      <a href="{{ "/#research" | relLangURL }}">Research</a>
+      <a href="{{ "/publication/" | relLangURL }}" class="{{ if or (eq $sec "publication") (eq $sec "project") }}active{{ end }}">Publications</a>
+      <a href="{{ "/event/" | relLangURL }}" class="{{ if eq $sec "event" }}active{{ end }}">Talks</a>
+      <a href="{{ "/course/" | relLangURL }}" class="{{ if eq $sec "course" }}active{{ end }}">Teaching</a>
+      <a href="{{ "/apps/" | relLangURL }}" class="{{ if eq $sec "apps" }}active{{ end }}">Apps</a>
+      <a href="{{ "/post/" | relLangURL }}" class="{{ if eq $sec "post" }}active{{ end }}">Writing</a>
+      <a class="cv" href="{{ "uploads/resume.pdf" | relLangURL }}" target="_blank" rel="noopener">CV ↓</a>
+    </nav>
+  </div>
+</header>

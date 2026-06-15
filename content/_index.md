@@ -2,7 +2,7 @@
 # Leave the homepage title empty to use the site title
 title: ''
 date: 2022-10-24
-type: landing
+# type: landing  # disabled so Hugo uses the project layouts/index.html (custom homepage)
 
 sections:
   - block: hero

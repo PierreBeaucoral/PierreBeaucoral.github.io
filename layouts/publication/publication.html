@@ -1,0 +1,42 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">Publications</div>
+  <h1>Peer-reviewed work and working papers.</h1>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+    <span class="chip chip-jmp">Job market paper</span>
+    <span class="chip chip-published">Published</span>
+    <span class="chip chip-rr">R&amp;R</span>
+    <span class="chip chip-wp">Working paper</span>
+    <span class="chip chip-wip">Work in progress</span>
+    <span class="mono" style="font-size:11px;color:var(--muted);margin-left:6px;">↳ status &amp; homepage-pin set per paper</span>
+  </div>
+</div>
+
+{{- /* Pool = all publications + only projects that opt in via `status`. */ -}}
+{{- $pool := where site.RegularPages "Section" "publication" -}}
+{{- range (where site.RegularPages "Section" "project") -}}{{- if .Params.status -}}{{- $pool = $pool | append . -}}{{- end -}}{{- end -}}
+{{- $items := slice -}}
+{{- range (sort $pool "Date" "desc") -}}
+  {{- if not .Params.exclude -}}
+  {{- $s := .Params.status -}}
+  {{- if not $s -}}{{- if and (eq .Section "publication") .Params.doi -}}{{- $s = "published" -}}{{- else -}}{{- $s = "wp" -}}{{- end -}}{{- end -}}
+  {{- $items = $items | append (dict "page" . "status" $s) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $groups := slice (dict "k" "jmp" "label" "Job market paper" "color" "var(--clay)") (dict "k" "published" "label" "Published" "color" "var(--forest2)") (dict "k" "rr" "label" "Revise &amp; resubmit" "color" "var(--ocean)") (dict "k" "wp" "label" "Working papers" "color" "var(--muted)") (dict "k" "wip" "label" "Work in progress" "color" "var(--muted)") -}}
+
+<div class="wrap" style="padding-top:40px;padding-bottom:48px;">
+  {{ range $groups }}
+    {{ $g := where $items "status" .k }}
+    {{ if $g }}
+      <section style="margin-bottom:8px;">
+        <div class="group-label" style="color:{{ .color | safeCSS }};">{{ .label | safeHTML }}</div>
+        <div class="rows">
+          {{ range $g }}{{ partial "pub-item.html" .page }}{{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ end }}
+</div>
+{{ end }}

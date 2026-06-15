@@ -119,7 +119,7 @@ Why it matters:
 
 ---
 
-### 4. *Mapping need and money: subnational vulnerability, human development, and the shape of climate aid*  *(exploratory)*
+### 4. *Scaling Down Climate Finance Justice*  *(exploratory)*
 
 This exploratory project with [Paul Vernus](https://pierrebeaucoral.github.io/authors/pvernus/) is about **seeing where need and money meet—or don’t—on the map**.
 

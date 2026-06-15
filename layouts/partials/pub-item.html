@@ -1,0 +1,44 @@
+{{- /* Renders one publication/working-paper row.
+       Status resolves from `.Params.status` (published|rr|jmp|wp);
+       falls back to "published" if a DOI exists, else "working paper". */ -}}
+{{- $p := . -}}
+{{- $status := $p.Params.status -}}
+{{- if not $status -}}
+  {{- if and (eq $p.Section "publication") $p.Params.doi -}}{{- $status = "published" -}}{{- else -}}{{- $status = "wp" -}}{{- end -}}
+{{- end -}}
+{{- $label := "Working paper" -}}{{- $chip := "chip-wp" -}}{{- $accent := "var(--muted)" -}}
+{{- if eq $status "jmp" -}}{{- $label = "JMP" -}}{{- $chip = "chip-jmp" -}}{{- $accent = "var(--clay)" -}}
+{{- else if eq $status "rr" -}}{{- $label = "R&R" -}}{{- $chip = "chip-rr" -}}{{- $accent = "var(--ocean)" -}}
+{{- else if eq $status "published" -}}{{- $label = "Journal article" -}}{{- $chip = "chip-published" -}}{{- $accent = "var(--forest2)" -}}
+{{- else if eq $status "wip" -}}{{- $label = "Work in progress" -}}{{- $chip = "chip-wip" -}}{{- $accent = "var(--muted)" -}}
+{{- end -}}
+{{- $url := $p.Params.url_pdf | default $p.Params.external_link | default $p.RelPermalink -}}
+{{- /* Build author list. Display full names; link to a profile page when one
+       exists (a real content/authors/<x>/ bundle, not an auto taxonomy term). */ -}}
+{{- $names := slice -}}
+{{- range $p.Params.authors -}}
+  {{- $ap := site.GetPage (printf "authors/%s" .) -}}
+  {{- $hasProfile := and $ap $ap.File -}}
+  {{- $disp := . -}}
+  {{- if eq . "admin" -}}{{- $disp = "P. Beaucoral" -}}{{- else if $hasProfile -}}{{- $disp = $ap.Title -}}{{- end -}}
+  {{- if $hasProfile -}}{{- $names = $names | append (printf `<a href="%s">%s</a>` $ap.RelPermalink $disp) -}}{{- else -}}{{- $names = $names | append $disp -}}{{- end -}}
+{{- end -}}
+{{- $desc := $p.Params.summary | default $p.Summary -}}
+<div class="row" style="grid-template-columns:140px 1fr;">
+  <div class="when" style="color:{{ $accent | safeCSS }};">{{ dateFormat "2006" $p.Date }}</div>
+  <div>
+    <div class="badges">
+      <span class="chip {{ $chip }}">{{ $label }}{{ if and (eq $status "rr") $p.Params.rr_journal }} · {{ $p.Params.rr_journal }}{{ end }}</span>
+      {{ if $p.Params.featured_home }}<span class="mono" style="font-size:9.5px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);">★ on homepage</span>{{ end }}
+    </div>
+    <a href="{{ $url }}"{{ if hasPrefix $url "http" }} target="_blank" rel="noopener"{{ end }}><h3>{{ $p.Title }}</h3></a>
+    {{ with $p.Params.publication }}<p class="authors">{{ delimit $names " · " | safeHTML }}{{ if $names }} · {{ end }}<em>{{ . | markdownify }}</em></p>{{ else }}{{ with $names }}<p class="authors">{{ delimit . ", " | safeHTML }}</p>{{ end }}{{ end }}
+    {{ with $desc }}<p class="desc">{{ . | plainify | truncate 240 }}</p>{{ end }}
+    <div class="links">
+      {{ with $p.Params.url_pdf }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">PDF ↗</a>{{ end }}
+      {{ with $p.Params.doi }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">DOI ↗</a>{{ end }}
+      {{ with $p.Params.external_link }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Project ↗</a>{{ end }}
+      {{ range $p.Params.tags }}<span class="tag tag-line">{{ . }}</span>{{ end }}
+    </div>
+  </div>
+</div>

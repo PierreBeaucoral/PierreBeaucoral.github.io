@@ -1,0 +1,29 @@
+{{ define "main" }}
+<article class="article">
+  <a class="back" href="{{ "/post/" | relLangURL }}">← Writing</a>
+  <div class="badges" style="margin:26px 0 0;">
+    <span class="mono" style="font-size:11px;color:var(--muted);">{{ dateFormat "Jan 2, 2006" .Date | upper }}{{ with .ReadingTime }} · {{ . }} MIN{{ end }}</span>
+  </div>
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.summary }}<p class="byline">{{ . }}</p>{{ end }}
+</article>
+
+{{ with .Resources.GetMatch "featured*" }}
+<div class="figure" style="max-width:880px;margin:0 auto;padding:0 40px;">
+  <div class="box" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 24px 50px -34px rgba(27,38,32,0.5);">
+    <img src="{{ (.Fill "1600x900 smart").RelPermalink }}" alt="" style="width:100%;height:auto;">
+  </div>
+</div>
+{{ end }}
+
+<section class="article" style="padding-top:44px;">
+  <div class="prose">{{ .Content }}</div>
+  {{ $gallery := .Resources.Match "gallery*" }}
+  {{ with $gallery }}
+  <div class="gallery">
+    {{ range . }}<a href="{{ .RelPermalink }}" target="_blank" rel="noopener"><img src="{{ (.Fill "900x675 smart").RelPermalink }}" alt="" loading="lazy"></a>{{ end }}
+  </div>
+  {{ end }}
+  {{ with .Params.tags }}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:34px;">{{ range . }}<span class="tag tag-forest">{{ . }}</span>{{ end }}</div>{{ end }}
+</section>
+{{ end }}

@@ -1,0 +1,47 @@
+{{ define "main" }}
+{{- $av := .Resources.GetMatch "avatar*" -}}
+<section class="wrap" style="padding-top:72px;padding-bottom:28px;border-bottom:1px solid var(--line);">
+  <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap;">
+    {{ with $av }}<img src="{{ (.Fill "300x360").RelPermalink }}" alt="{{ $.Title }}" style="width:150px;height:180px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex-shrink:0;">{{ end }}
+    <div style="flex:1;min-width:300px;">
+      <div class="eyebrow">Author</div>
+      <h1 class="serif" style="font-weight:500;font-size:clamp(30px,4vw,46px);letter-spacing:-0.015em;margin:12px 0 8px;">{{ .Title }}</h1>
+      {{ with .Params.role }}<p style="font-size:17px;color:var(--muted);margin-bottom:6px;">{{ . }}</p>{{ end }}
+      {{ range .Params.organizations }}<p class="mono" style="font-size:12px;letter-spacing:0.04em;color:var(--clay);margin-bottom:2px;">{{ with .url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}{{ .name }}{{ with .url }}</a>{{ end }}</p>{{ end }}
+      {{ with .Params.bio }}<p style="font-size:16px;line-height:1.65;margin-top:16px;max-width:660px;">{{ . }}</p>{{ end }}
+    </div>
+  </div>
+</section>
+
+{{ with .Params.interests }}
+<section class="wrap" style="padding-top:34px;">
+  <div class="sublabel">Interests</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">{{ range . }}<span class="tag tag-line">{{ . }}</span>{{ end }}</div>
+</section>
+{{ end }}
+
+{{ with .Params.education.courses }}
+<section class="wrap" style="padding-top:30px;">
+  <div class="sublabel">Education</div>
+  <div class="edu" style="max-width:620px;">
+    {{ range . }}<div class="erow"><span style="font-size:15px;">{{ .course }}<br><span style="color:var(--muted);font-size:13.5px;">{{ .institution }}</span></span><span class="yr">{{ .year }}</span></div>{{ end }}
+  </div>
+</section>
+{{ end }}
+
+{{ with .Pages }}
+<section class="wrap" style="padding-top:40px;padding-bottom:56px;">
+  <div class="sublabel">Selected work</div>
+  <div class="rows">
+    {{ range (sort . "Date" "desc") }}
+    <a href="{{ .RelPermalink }}">
+      <div class="row" style="grid-template-columns:130px 1fr;">
+        <div class="when" style="color:var(--muted);">{{ dateFormat "2006" .Date }}</div>
+        <div><h3 style="font-size:20px;">{{ .Title }}</h3>{{ with .Params.publication }}<p class="authors"><em>{{ . | markdownify }}</em></p>{{ end }}</div>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+{{ end }}

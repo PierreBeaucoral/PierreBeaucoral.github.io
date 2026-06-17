@@ -1,0 +1,34 @@
+{{ define "main" }}
+<div class="page-head wrap">
+  <div class="eyebrow">In the press</div>
+  <h1>Interviews, podcasts, and media coverage.</h1>
+  <p class="lede">Where my research and public engagement have been featured beyond academic venues.</p>
+</div>
+
+<div class="wrap" style="padding-top:8px;padding-bottom:40px;">
+  <div class="rows">
+    {{ range (sort .Pages "Date" "desc") }}
+    {{- $url := .Params.link | default .Params.url_article -}}
+    <div class="row" style="grid-template-columns:170px 1fr;">
+      <div class="when" style="color:var(--ocean);">{{ dateFormat "Jan 2006" .Date }}</div>
+      <div>
+        <div class="badges">
+          {{ with .Params.type }}<span class="tag tag-ocean">{{ . }}</span>{{ end }}
+          {{ with .Params.role }}<span class="tag tag-line">{{ . }}</span>{{ end }}
+        </div>
+        {{ if $url }}<a href="{{ $url }}" target="_blank" rel="noopener"><h3 style="margin:8px 0 4px;">{{ .Title }}</h3></a>{{ else }}<h3 style="margin:8px 0 4px;">{{ .Title }}</h3>{{ end }}
+        {{ with .Params.outlet }}<div class="authors" style="margin-bottom:6px;">{{ . }}</div>{{ end }}
+        {{ with .Params.summary }}<p class="desc">{{ . | plainify }}</p>{{ end }}
+        {{- $t := lower (.Params.type | default "") -}}
+        {{- $primaryLabel := "Read ↗" -}}
+        {{- if or (in $t "podcast") (in $t "video") (in $t "radio") -}}{{- $primaryLabel = "Listen / watch ↗" -}}{{- end -}}
+        <div class="links">
+          {{ with .Params.link }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">{{ $primaryLabel }}</a>{{ end }}
+          {{ with .Params.url_article }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Article ↗</a>{{ end }}
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

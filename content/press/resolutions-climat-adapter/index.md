@@ -10,5 +10,5 @@ summary: >
   and ensure it reaches the most vulnerable — "si on n'investit pas dans l'adaptation
   aujourd'hui, on sera confronté à des coûts de réparation plus élevés."
 
-link: https://www.secours-catholique.org/sites/default/files/03-Documents/MES775-Mai2026-STCLight.pdf
+link: https://www.secours-catholique.org/m-informer/enquetes/dereglements-climatiques-lurgence-de-sadapter
 ---

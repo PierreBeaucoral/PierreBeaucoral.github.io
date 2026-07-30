@@ -11,6 +11,12 @@
 <meta property="og:type" content="{{ if .IsHome }}profile{{ else }}article{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 
+{{- /* Site icon */ -}}
+{{ with resources.Get "media/icon.png" }}
+  <link rel="icon" type="image/png" href="{{ .RelPermalink }}">
+  <link rel="apple-touch-icon" href="{{ (.Resize "180x180 png").RelPermalink }}">
+{{ end }}
+
 {{- /* Fonts */ -}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

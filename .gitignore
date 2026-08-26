@@ -26,3 +26,6 @@ _freeze/
 *.out
 *.toc
 *.synctex.gz
+
+# graphify knowledge-graph output (local analysis artefact)
+graphify-out/

@@ -8,10 +8,13 @@
 <div class="wrap" style="padding-top:8px;padding-bottom:40px;">
   <div class="rows">
     {{ range (sort .Pages "Date" "desc") }}
-    {{- /* Link to the course's static site.html when it exists; otherwise the detail page. */ -}}
+    {{- /* Link to an explicit external_link, else the course's static site.html when it
+           exists, else the detail page. external_link covers courses hosted in their own
+           repo (e.g. macro1-aes), which have no static/course/<slug>/site.html here. */ -}}
     {{- $slug := .File.ContentBaseName -}}
     {{- $href := .RelPermalink -}}{{- $ext := false -}}
-    {{- if os.FileExists (printf "static/course/%s/site.html" $slug) -}}{{- $href = printf "/course/%s/site.html" $slug -}}{{- $ext = true -}}{{- end -}}
+    {{- with .Params.external_link -}}{{- $href = . -}}{{- $ext = true -}}
+    {{- else -}}{{- if os.FileExists (printf "static/course/%s/site.html" $slug) -}}{{- $href = printf "/course/%s/site.html" $slug -}}{{- $ext = true -}}{{- end -}}{{- end -}}
     <a class="" href="{{ $href }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }}>
       <div class="row" style="grid-template-columns:150px 1fr;">
         <div class="when" style="color:var(--forest2);">{{ dateFormat "2006" .Date }}</div>
@@ -23,6 +26,11 @@
     </a>
     {{ end }}
   </div>
+
+  {{- /* Body of content/course/_index.md, rendered after the cards: teaching that has no
+         course site of its own (earlier TA work, tutoring) and so cannot be a card. */ -}}
+  {{ with .Content }}<div class="prose" style="margin-top:44px;">{{ . }}</div>{{ end }}
+
   <div style="margin-top:36px;display:flex;justify-content:flex-end;">
     <a class="section-link" href="{{ "/course/" | relLangURL }}">All teaching →</a>
   </div>

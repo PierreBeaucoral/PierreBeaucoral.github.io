@@ -19,7 +19,8 @@
 
   <div class="links" style="margin-bottom:40px;">
     {{ with .Params.url_pdf }}<a class="btn btn-forest" style="font-size:12px;padding:10px 18px;" href="{{ . }}" target="_blank" rel="noopener">Read PDF ↗</a>{{ end }}
-    {{ with .Params.external_link }}<a class="btn-outline" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 18px;border-radius:999px;" href="{{ . }}" target="_blank" rel="noopener">Project ↗</a>{{ end }}
+    {{- /* This template only serves the course section, so external_link is the course site. */ -}}
+    {{ with .Params.external_link }}<a class="btn-outline" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 18px;border-radius:999px;" href="{{ . }}" target="_blank" rel="noopener">Course site ↗</a>{{ end }}
     {{ with .Params.url_code }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Code ↗</a>{{ end }}
     {{ with .Params.url_slides }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">Slides ↗</a>{{ end }}
     {{ with .Params.doi }}<a class="pill" href="{{ . }}" target="_blank" rel="noopener">DOI ↗</a>{{ end }}

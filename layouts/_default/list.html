@@ -5,6 +5,10 @@
   {{ with .Params.summary }}<p class="lede">{{ . }}</p>{{ end }}
 </div>
 
+{{- /* Render the section's own _index.md body (e.g. the research agenda).
+       Without this the body is silently dropped and the page looks empty. */ -}}
+{{ with .Content }}<div class="wrap"><div class="prose" style="padding-top:8px;">{{ . }}</div></div>{{ end }}
+
 <div class="wrap" style="padding-top:24px;padding-bottom:40px;">
   {{ if eq .Section "project" }}
     <div class="rows">{{ range (sort .Pages "Date" "desc") }}{{ partial "pub-item.html" . }}{{ end }}</div>

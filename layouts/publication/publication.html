@@ -12,6 +12,9 @@
   </div>
 </div>
 
+{{- /* Section intro from content/publication/_index.md (ORCID/Scholar links, badge legend). */ -}}
+{{ with .Content }}<div class="wrap"><div class="prose" style="padding-top:8px;">{{ . }}</div></div>{{ end }}
+
 {{- /* Pool = all publications + only projects that opt in via `status`. */ -}}
 {{- $pool := where site.RegularPages "Section" "publication" -}}
 {{- range (where site.RegularPages "Section" "project") -}}{{- if .Params.status -}}{{- $pool = $pool | append . -}}{{- end -}}{{- end -}}

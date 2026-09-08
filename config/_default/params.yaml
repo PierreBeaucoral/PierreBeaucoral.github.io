@@ -131,10 +131,19 @@ icon.pack:
 # alters page weight (fonts, images, scripts), then update `grams`, `rating`
 # and `tested` below so the footer never states a stale number.
 carbon:
-  grams: '0.06'
-  rating: 'A'
-  tested: 'September 2026'
+  grams: '0.034'
+  rating: 'A+'
+  tested: '8 September 2026'
   # Report page for this site; only exists for URLs that have been tested.
-  report: 'https://www.websitecarbon.com/website/pierrebeaucoral-github-io/'
+  #
+  # NOTE: Website Carbon caches a result per URL for the day it was tested, so
+  # the bare-domain report still shows the pre-optimisation figure (0.057 g, A)
+  # from the test run earlier on 8 Sep 2026. The `/index.html` report below is
+  # the same page re-tested after the font work landed, and is what `grams` and
+  # `rating` above quote. Once the bare-domain URL re-tests, submit
+  # https://pierrebeaucoral.github.io/ at https://www.websitecarbon.com/ and
+  # switch this back to the tidier slug:
+  #   https://www.websitecarbon.com/website/pierrebeaucoral-github-io/
+  report: 'https://www.websitecarbon.com/website/pierrebeaucoral-github-io-index-html/'
   # Calculator homepage, so a reader can test any page they like.
   calculator: 'https://www.websitecarbon.com/'

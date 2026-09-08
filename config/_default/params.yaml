@@ -124,3 +124,17 @@ security:
 
 icon.pack:
   ai : true  # Academicons icon pack https://jpswalsh.github.io/academicons/
+
+# Carbon footprint
+# Shown as a disclaimer line in the site footer. The figures come from
+# https://www.websitecarbon.com/ — re-test the homepage after any change that
+# alters page weight (fonts, images, scripts), then update `grams`, `rating`
+# and `tested` below so the footer never states a stale number.
+carbon:
+  grams: '0.06'
+  rating: 'A'
+  tested: 'September 2026'
+  # Report page for this site; only exists for URLs that have been tested.
+  report: 'https://www.websitecarbon.com/website/pierrebeaucoral-github-io/'
+  # Calculator homepage, so a reader can test any page they like.
+  calculator: 'https://www.websitecarbon.com/'

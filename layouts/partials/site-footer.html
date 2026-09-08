@@ -8,4 +8,19 @@
       <a href="https://scholar.google.com/citations?user=avg94hwAAAAJ&hl=fr" target="_blank" rel="noopener">Scholar</a>
     </div>
   </div>
+
+  {{- /* Carbon disclaimer. Figures live in config/_default/params.yaml and are
+         re-tested by hand — see the comment there before editing. */ -}}
+  {{ with site.Params.carbon }}
+  <div class="wrap carbon">
+    <span class="carbon-dot" aria-hidden="true"></span>
+    <p>
+      Visiting this page emits about <strong>{{ .grams }} g of CO<sub>2</sub></strong>
+      &mdash; rated <strong>{{ .rating }}</strong> by
+      <a href="{{ .report }}" target="_blank" rel="noopener">Website Carbon</a>{{ with .tested }},
+      last measured {{ . }}{{ end }}. Self-hosted fonts, no trackers, no third-party scripts.
+      <a href="{{ .calculator }}" target="_blank" rel="noopener">Test any page&nbsp;&#8599;</a>
+    </p>
+  </div>
+  {{ end }}
 </footer>

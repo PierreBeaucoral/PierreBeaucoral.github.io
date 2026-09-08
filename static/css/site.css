@@ -3,6 +3,39 @@
    Earthy / climate palette · Newsreader + IBM Plex Sans/Mono
    ============================================================ */
 
+/* ---- Self-hosted fonts (SIL OFL 1.1 — see /fonts/OFL.txt) ----------------
+   Subset to the site's glyph repertoire and instanced on the variable axes:
+   optical size pinned (opsz 32), weight kept as a range so headings, body
+   and bold text all render from one file per style.
+   331 KB from fonts.gstatic.com -> 118 KB served from this origin.
+   Rebuild with tools/build-fonts.py after adding new scripts or symbols.
+   -------------------------------------------------------------------------- */
+@font-face{
+  font-family:'Newsreader';
+  src:url('../fonts/newsreader-var.woff2') format('woff2');
+  font-weight:400 600; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Newsreader';
+  src:url('../fonts/newsreader-italic-var.woff2') format('woff2');
+  font-weight:400 600; font-style:italic; font-display:swap;
+}
+@font-face{
+  font-family:'IBM Plex Sans';
+  src:url('../fonts/plex-sans-var.woff2') format('woff2');
+  font-weight:400 700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'IBM Plex Mono';
+  src:url('../fonts/plex-mono-400.woff2') format('woff2');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'IBM Plex Mono';
+  src:url('../fonts/plex-mono-500.woff2') format('woff2');
+  font-weight:500; font-style:normal; font-display:swap;
+}
+
 :root{
   --paper:#EEF0EA; --ink:#1E231D; --muted:#6B6F62; --line:#DCDFD2;
   --forest:#18241D; --forest2:#2E6048; --clay:#9C5234; --ocean:#2C5C70; --cream:#F0F2EA;
@@ -220,6 +253,27 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .site-footer a{transition:color .2s;}
 .site-footer a:hover{color:var(--cream);}
 .site-footer .links{display:flex;gap:22px;}
+
+/* Carbon disclaimer strip */
+.site-footer .carbon{
+  display:flex;align-items:flex-start;gap:10px;
+  padding-bottom:34px;margin-top:-8px;   /* horizontal padding comes from .wrap, which is responsive */
+  font-size:11.5px;line-height:1.6;color:rgba(240,242,234,0.45);
+}
+/* Constrain the measure on the paragraph, not the container: .carbon shares
+   .wrap with the footer bar above it and must keep the same left edge. */
+.site-footer .carbon p{margin:0;max-width:760px;}
+.site-footer .carbon strong{font-weight:500;color:rgba(240,242,234,0.72);}
+.site-footer .carbon a{
+  color:rgba(240,242,234,0.72);
+  border-bottom:1px solid rgba(240,242,234,0.28);
+  white-space:nowrap;
+}
+.site-footer .carbon a:hover{color:var(--cream);border-bottom-color:var(--cream);}
+.site-footer .carbon-dot{
+  flex-shrink:0;width:7px;height:7px;margin-top:7px;border-radius:50%;
+  background:#7FB069;
+}
 
 /* ---- Responsive ---- */
 @media (max-width:880px){

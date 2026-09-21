@@ -57,8 +57,16 @@
     </div>
     <a class="section-link" href="{{ "/publication/" | relLangURL }}">All publications →</a>
   </div>
+  {{- /* A job market paper leads, whatever its date; everything else follows
+         reverse-chronologically. Sorting purely by date buried the JMP. */ -}}
+  {{- $jmp := where $featured "Params.status" "jmp" -}}
+  {{- $rest := slice -}}
+  {{- range sort $featured "Date" "desc" -}}
+    {{- if ne .Params.status "jmp" -}}{{- $rest = $rest | append . -}}{{- end -}}
+  {{- end -}}
   <div class="rows">
-    {{ range sort $featured "Date" "desc" }}{{ partial "pub-item.html" . }}{{ end }}
+    {{ range (sort $jmp "Date" "desc") }}{{ partial "pub-item.html" . }}{{ end }}
+    {{ range $rest }}{{ partial "pub-item.html" . }}{{ end }}
   </div>
 </section>
 

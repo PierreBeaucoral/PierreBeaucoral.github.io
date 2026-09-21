@@ -12,7 +12,7 @@ tags:
 date: '2025-12-11'
 
 # Publication stage (surfaces this project on the Publications page)
-status: wip
+status: jmp
 
 image:
   caption: Created with assistance of nano banana

@@ -1,7 +1,7 @@
 ---
 title: Research
 type: page
-summary: Research agenda, job market paper, dissertation chapters, and data & methods.
+summary: Research agenda, dissertation chapters, and data & methods.
 date: 2025-01-01
 icon: flask
 ---

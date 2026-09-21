@@ -3,6 +3,11 @@
 title: ''
 date: 2022-10-24
 # type: landing  # disabled so Hugo uses the project layouts/index.html (custom homepage)
+#
+# NOTE: with `type: landing` commented out, NOTHING in the `sections:` block
+# below is rendered. The live homepage is layouts/index.html — edit there.
+# The content here is kept only so the landing page can be revived, and is
+# mirrored to match the live titles.
 
 sections:
   - block: hero
@@ -46,7 +51,7 @@ sections:
       #   Refer to https://wowchemy.com/docs/customization/#date-format
       date_format: jan 2006
       items:
-        - title: PhD student
+        - title: PhD Candidate
           company: CERDI CNRS UCA IRD
           company_url: 'https://cerdi.uca.fr/#/'
           company_logo: CERDI
@@ -59,7 +64,7 @@ sections:
               * Developing causal-inference strategies (DiD, event studies, double machine learning) to evaluate the effects of climate policies such as National Adaptation Plans
               * Building and maintaining reproducible data and code pipelines in R and Python
               * Contributing to teaching in econometrics and quantitative methods
-        - title: Visiting PhD student
+        - title: Visiting PhD Researcher
           company: Central European University
           company_url: 'https://www.ceu.edu/'
           company_logo: ceu

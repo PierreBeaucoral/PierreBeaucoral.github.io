@@ -11,7 +11,7 @@
 {{ with .Resources.GetMatch "featured*" }}
 <div class="figure" style="max-width:880px;margin:0 auto;padding:0 40px;">
   <div class="box" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 24px 50px -34px rgba(27,38,32,0.5);">
-    <img src="{{ (.Fill "1600x900 smart").RelPermalink }}" alt="" style="width:100%;height:auto;">
+    {{ $f := .Fill "1600x900 smart" }}<img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" style="width:100%;height:auto;">
   </div>
 </div>
 {{ end }}
@@ -21,7 +21,7 @@
   {{ $gallery := .Resources.Match "gallery*" }}
   {{ with $gallery }}
   <div class="gallery">
-    {{ range . }}<a href="{{ .RelPermalink }}" target="_blank" rel="noopener"><img src="{{ (.Fill "900x675 smart").RelPermalink }}" alt="" loading="lazy"></a>{{ end }}
+    {{ range . }}<a href="{{ .RelPermalink }}" target="_blank" rel="noopener">{{ $g := .Fill "900x675 smart" }}<img src="{{ $g.RelPermalink }}" width="{{ $g.Width }}" height="{{ $g.Height }}" loading="lazy" decoding="async" alt=""></a>{{ end }}
   </div>
   {{ end }}
   {{ with .Params.tags }}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:34px;">{{ range . }}<span class="tag tag-forest">{{ . }}</span>{{ end }}</div>{{ end }}

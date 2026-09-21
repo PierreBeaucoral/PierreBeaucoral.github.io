@@ -2,7 +2,7 @@
 {{- $av := .Resources.GetMatch "avatar*" -}}
 <section class="wrap" style="padding-top:72px;padding-bottom:28px;border-bottom:1px solid var(--line);">
   <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap;">
-    {{ with $av }}<img src="{{ (.Fill "300x360").RelPermalink }}" alt="{{ $.Title }}" style="width:150px;height:180px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex-shrink:0;">{{ end }}
+    {{ with $av }}{{ $a := .Fill "300x360" }}<img src="{{ $a.RelPermalink }}" width="{{ $a.Width }}" height="{{ $a.Height }}" alt="Portrait of {{ $.Title }}" style="width:150px;height:180px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex-shrink:0;">{{ end }}
     <div style="flex:1;min-width:300px;">
       <div class="eyebrow">Author</div>
       <h1 class="serif" style="font-weight:500;font-size:clamp(30px,4vw,46px);letter-spacing:-0.015em;margin:12px 0 8px;">{{ .Title }}</h1>

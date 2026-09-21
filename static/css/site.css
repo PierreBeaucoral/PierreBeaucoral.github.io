@@ -37,8 +37,13 @@
 }
 
 :root{
-  --paper:#EEF0EA; --ink:#1E231D; --muted:#6B6F62; --line:#DCDFD2;
+  --paper:#EEF0EA; --ink:#1E231D; --muted:#666A5E; --line:#DCDFD2;
   --forest:#18241D; --forest2:#2E6048; --clay:#9C5234; --ocean:#2C5C70; --cream:#F0F2EA;
+  /* Clay is only 2.8:1 on --forest; this lighter clay reads 5.7:1 on it.
+     Use it for any clay-coloured text sitting on a dark surface. */
+  --clay-on-dark:#D08A5F;
+  /* Clay text on its own 10% tint is 4.36:1; this darker clay reads 5.3:1. */
+  --clay-on-tint:#8A4829;
   --wrap:1100px;
 }
 
@@ -75,25 +80,25 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .brand .brand-icon{width:26px;height:26px;object-fit:contain;display:block;}
 .brand .name{font-family:'Newsreader',serif;font-size:20px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap;}
 .nav{display:flex;align-items:center;gap:22px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);}
-.nav a{transition:color .2s;}
+.nav a{display:inline-flex;align-items:center;min-height:44px;transition:color .2s;}
 .nav a:hover,.nav a.active{color:var(--ink);}
 .nav a.cv{color:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:7px 16px;}
 .nav a.cv:hover{background:var(--ink);color:var(--paper);}
 
 /* ---- Buttons / chips / tags ---- */
-.btn{display:inline-block;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px;transition:transform .2s,filter .2s,background .2s,color .2s;}
+.btn{display:inline-block;font-weight:600;font-size:15px;padding:13px 24px;min-height:44px;border-radius:999px;transition:transform .2s,filter .2s,background .2s,color .2s;}
 .btn-clay{background:var(--clay);color:var(--cream);}
 .btn-forest{background:var(--forest2);color:var(--cream);}
 .btn-ocean{background:var(--ocean);color:var(--cream);}
 .btn-clay:hover,.btn-forest:hover,.btn-ocean:hover{filter:brightness(1.08);transform:translateY(-2px);}
 .btn-outline{border:1px solid var(--ink);color:var(--ink);}
 .btn-outline:hover{background:var(--ink);color:var(--paper);}
-.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;border:1px solid var(--line);border-radius:999px;padding:6px 13px;color:var(--muted);transition:all .2s;}
+.pill{display:inline-flex;align-items:center;min-height:44px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;border:1px solid var(--line);border-radius:999px;padding:6px 15px;color:var(--muted);transition:all .2s;}
 .pill:hover{border-color:var(--ink);color:var(--ink);}
 .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;text-transform:uppercase;padding:4px 10px;border-radius:999px;}
 .tag-forest{color:var(--forest2);background:rgba(46,96,72,0.09);}
 .tag-ocean{color:var(--ocean);background:rgba(44,92,112,0.10);}
-.tag-clay{color:var(--clay);background:rgba(156,82,52,0.10);}
+.tag-clay{color:var(--clay-on-tint);background:rgba(156,82,52,0.10);}
 .tag-line{color:var(--muted);border:1px solid var(--line);}
 
 .chip{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;}
@@ -107,7 +112,7 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .hero{background:var(--forest);color:var(--cream);position:relative;
   background-image:radial-gradient(rgba(243,239,228,0.11) 1px,transparent 1.4px);background-size:24px 24px;}
 .hero .grid{display:grid;grid-template-columns:1.35fr 0.95fr;gap:72px;align-items:center;padding:96px 40px 104px;}
-.hero .eyebrow{color:var(--clay);margin-bottom:26px;}
+.hero .eyebrow{color:var(--clay-on-dark);margin-bottom:26px;}
 .hero h1{font-weight:500;font-size:clamp(38px,5.2vw,66px);line-height:1.04;letter-spacing:-0.018em;margin-bottom:28px;}
 .hero h1 em{font-style:italic;color:#B8D4A8;}
 .hero .lede{font-size:18px;line-height:1.6;color:rgba(243,239,228,0.74);max-width:560px;margin-bottom:38px;}
@@ -116,7 +121,7 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .hero .actions .btn-ghost{border:1px solid rgba(243,239,228,0.4);color:var(--cream);font-weight:500;padding:14px 26px;border-radius:999px;transition:all .2s;}
 .hero .actions .btn-ghost:hover{border-color:var(--cream);background:rgba(243,239,228,0.06);}
 .hero .meta{margin-top:44px;display:flex;gap:28px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.08em;color:rgba(243,239,228,0.5);text-transform:uppercase;}
-.hero .meta .accent{color:var(--clay);}
+.hero .meta .accent{color:var(--clay-on-dark);}
 .portrait{position:relative;justify-self:center;}
 .portrait .frame{position:absolute;inset:18px -18px -18px 18px;border:1.5px solid var(--clay);border-radius:6px;}
 .portrait .pic{position:relative;background:#2A3A31;border-radius:6px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);}
@@ -144,8 +149,10 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 
 /* ---- List rows (publications / talks / teaching) ---- */
 .rows{border-top:1px solid var(--line);}
-.row{display:grid;grid-template-columns:150px 1fr auto;gap:32px;align-items:start;padding:30px 8px;border-bottom:1px solid var(--line);transition:background .2s,padding .2s;}
-.row:hover{background:#fff;padding-left:18px;padding-right:18px;}
+.row{display:grid;grid-template-columns:150px 1fr auto;gap:32px;align-items:start;padding:30px 18px;border-bottom:1px solid var(--line);transition:background .2s,transform .2s;}
+/* Animate transform, never padding: padding re-lays out the row and shifts
+   the text under the cursor mid-hover. */
+.row:hover{background:#fff;transform:translateX(10px);}
 .row .when{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.05em;text-transform:uppercase;padding-top:5px;}
 .row .when .yr{color:var(--muted);}
 .row h3{font-weight:600;font-size:23px;line-height:1.25;margin-bottom:8px;}
@@ -183,7 +190,7 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .about h2{font-weight:500;font-size:clamp(28px,3.4vw,40px);line-height:1.15;margin-bottom:24px;}
 .about p{color:var(--muted);font-size:16px;line-height:1.65;margin-bottom:18px;}
 .about .socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
-.about .socials a{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 16px;transition:all .2s;}
+.about .socials a{display:inline-flex;align-items:center;min-height:44px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 18px;transition:all .2s;}
 .about .socials a:hover{border-color:var(--ink);}
 .timeline{border-left:2px solid var(--line);padding-left:26px;display:flex;flex-direction:column;gap:28px;margin-bottom:44px;}
 .timeline .item{position:relative;}
@@ -199,14 +206,14 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 /* ---- Contact ---- */
 .contact{background:var(--ocean);color:var(--cream);}
 .contact .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;padding:88px 40px;}
-.contact .eyebrow{color:rgba(243,239,228,0.7);}
+.contact .eyebrow{color:rgba(243,239,228,0.85);}
 .contact h2{font-weight:500;font-size:clamp(32px,4vw,52px);line-height:1.05;margin-bottom:20px;}
 .contact .lede{font-size:16px;color:rgba(243,239,228,0.8);max-width:440px;}
 .contact .card2{background:rgba(243,239,228,0.10);border:1px solid rgba(243,239,228,0.25);border-radius:12px;padding:30px;}
-.contact .card2 .lab{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,239,228,0.6);margin-bottom:8px;}
+.contact .card2 .lab{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(243,239,228,0.95);margin-bottom:8px;}
 .contact .card2 .email{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;}
 .contact .card2 .email a{font-size:17px;font-weight:600;word-break:break-all;}
-.copy-btn{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;background:var(--cream);color:var(--ocean);border:none;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600;}
+.copy-btn{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;background:var(--cream);color:var(--ocean);border:none;border-radius:999px;padding:8px 16px;min-height:44px;cursor:pointer;font-weight:600;}
 .contact .card2 .addr{font-size:15px;color:rgba(243,239,228,0.92);line-height:1.5;}
 
 /* ---- App cards ---- */
@@ -253,12 +260,13 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
 .site-footer a{transition:color .2s;}
 .site-footer a:hover{color:var(--cream);}
 .site-footer .links{display:flex;gap:22px;}
+.site-footer .links a,.site-footer .bar > span{display:inline-flex;align-items:center;min-height:44px;}
 
 /* Carbon disclaimer strip */
 .site-footer .carbon{
   display:flex;align-items:flex-start;gap:10px;
   padding-bottom:34px;margin-top:-8px;   /* horizontal padding comes from .wrap, which is responsive */
-  font-size:11.5px;line-height:1.6;color:rgba(240,242,234,0.45);
+  font-size:11.5px;line-height:1.6;color:rgba(240,242,234,0.55);
 }
 /* Constrain the measure on the paragraph, not the container: .carbon shares
    .wrap with the footer bar above it and must keep the same left edge. */
@@ -288,4 +296,65 @@ h1,h2,h3{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:-
   .row{grid-template-columns:1fr;gap:10px;}
   .row .arrow{display:none;}
   .post-grid{grid-template-columns:1fr;}
+}
+
+/* ============================================================
+   Accessibility & motion
+   These rules previously lived in assets/scss/custom.scss, which the
+   HugoBlox theme compiled. The custom baseof.html/head.html bypass that
+   pipeline entirely, so the file was never served — the rules live here now.
+   ============================================================ */
+
+/* ---- Keyboard focus ----
+   Dual-tone ring. A single colour cannot clear 3:1 against both the ivory
+   page and the forest/ocean sections: amber on --paper measures 1.61:1.
+   So the indicator is always two concentric rings — a light inner halo and
+   a dark outer ring. Whichever surface the control sits on, one of the two
+   contrasts against it (WCAG 2.2 Focus Appearance / 1.4.11 non-text).
+   The transparent outline is a hook for Windows forced-colors mode, which
+   discards box-shadow but repaints a real outline. */
+:focus-visible{
+  outline:2px solid transparent;
+  outline-offset:2px;
+  box-shadow:0 0 0 2px var(--paper), 0 0 0 5px var(--ink);
+  border-radius:3px;
+}
+@media (forced-colors:active){
+  :focus-visible{outline:3px solid Highlight;box-shadow:none;}
+}
+/* Programmatic focus on <main> (skip-link target) should not draw a ring. */
+main:focus{outline:none;}
+
+/* ---- Skip link ---- */
+.skip-link{
+  position:absolute;top:-100px;left:0;z-index:10000;
+  background:var(--ink);color:var(--paper);
+  font-family:'IBM Plex Mono',monospace;font-size:13px;
+  padding:12px 20px;transition:top .2s ease;
+}
+.skip-link:focus{top:0;}
+
+/* ---- Reduced motion --------------------------------------------------
+   Honours the OS "reduce motion" setting: no smooth scroll-jacking, no
+   hover lifts, no transitions. Content still reaches its final state.
+   -------------------------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .card:hover,.post-card:hover,.btn:hover,.row:hover{transform:none;}
+}
+
+/* ---- Body copy floor ----
+   Skill baseline is 16px body text; these were 14.5–15.5px. */
+.card p,.row .desc,.post-card p{font-size:16px;}
+
+/* Visible to screen readers only (aria-live status text, etc.). */
+.visually-hidden{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
 }

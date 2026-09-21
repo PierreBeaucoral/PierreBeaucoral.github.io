@@ -29,7 +29,7 @@
   <div>
     <div class="badges">
       <span class="chip {{ $chip }}">{{ $label }}{{ if and (eq $status "rr") $p.Params.rr_journal }} · {{ $p.Params.rr_journal }}{{ end }}</span>
-      {{ if $p.Params.featured_home }}<span class="mono" style="font-size:9.5px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);">★ on homepage</span>{{ end }}
+      {{ if $p.Params.featured_home }}<span class="mono" style="font-size:12px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);">★ on homepage</span>{{ end }}
     </div>
     <a href="{{ $url }}"{{ if hasPrefix $url "http" }} target="_blank" rel="noopener"{{ end }}><h3>{{ $p.Title }}</h3></a>
     {{ with $p.Params.publication }}<p class="authors">{{ delimit $names " · " | safeHTML }}{{ if $names }} · {{ end }}<em>{{ . | markdownify }}</em></p>{{ else }}{{ with $names }}<p class="authors">{{ delimit . ", " | safeHTML }}</p>{{ end }}{{ end }}

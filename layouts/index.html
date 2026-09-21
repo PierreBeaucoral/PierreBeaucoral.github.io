@@ -21,7 +21,7 @@
     </div>
     <div class="portrait">
       <div class="frame"></div>
-      <div class="pic">{{ with $avatarRes }}<img src="{{ (.Fill "600x720").RelPermalink }}" alt="{{ site.Title }}">{{ else }}<div style="width:300px;height:360px;"></div>{{ end }}</div>
+      <div class="pic">{{ with $avatarRes }}{{ $pic := .Fill "600x720" }}<img src="{{ $pic.RelPermalink }}" width="{{ $pic.Width }}" height="{{ $pic.Height }}" fetchpriority="high" alt="Portrait of {{ site.Title }}">{{ else }}<div style="width:300px;height:360px;"></div>{{ end }}</div>
       <div class="caption">45.78°N, 3.08°E - Clermont-Ferrand, FR</div>
     </div>
   </div>
@@ -75,7 +75,7 @@
     <div class="post-grid">
       {{ range first 3 (sort (where site.RegularPages "Section" "post") "Date" "desc") }}
       <a class="post-card" href="{{ .RelPermalink }}">
-        <div class="thumb">{{ with .Resources.GetMatch "featured*" }}<img src="{{ (.Fill "640x400 smart").RelPermalink }}" alt="">{{ end }}</div>
+        <div class="thumb">{{ with .Resources.GetMatch "featured*" }}{{ $t := .Fill "640x400 smart" }}<img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" loading="lazy" decoding="async" alt="">{{ end }}</div>
         <div class="date">{{ dateFormat "Jan 2, 2006" .Date | upper }}</div>
         <h3>{{ .Title }}</h3>
         {{ with .Params.summary }}<p>{{ . | plainify | truncate 90 }}</p>{{ end }}
@@ -129,7 +129,8 @@
       <div class="lab">Email</div>
       <div class="email">
         <a href="mailto:pierre.beaucoral@uca.fr">pierre.beaucoral@uca.fr</a>
-        <button class="copy-btn" data-copy="pierre.beaucoral@uca.fr">Copy</button>
+        <button class="copy-btn" type="button" data-copy="pierre.beaucoral@uca.fr">Copy</button>
+        <span data-copy-status role="status" aria-live="polite" class="visually-hidden"></span>
       </div>
       <div class="lab">Office</div>
       <div class="addr">CERDI · Floor 4<br>26 Avenue Léon Blum<br>63000 Clermont-Ferrand, France</div>

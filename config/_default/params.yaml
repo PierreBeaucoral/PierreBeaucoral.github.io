@@ -4,12 +4,19 @@
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
 # Appearance
-
-appearance:
-  theme_day: rose
-  theme_night: dark
-  font: classic
-  font_size: L
+#
+# NOTE: this block is inert. It configures the HugoBlox theme, which
+# layouts/_default/baseof.html and layouts/partials/head.html bypass
+# entirely — the site is styled by static/css/site.css alone. In
+# particular `theme_night: dark` never produced a dark mode; the custom
+# stylesheet defines a single light palette. Left here (commented) so the
+# next person does not spend an afternoon wondering why it does nothing.
+#
+# appearance:
+#   theme_day: rose
+#   theme_night: dark
+#   font: classic
+#   font_size: L
 
 # SEO
 

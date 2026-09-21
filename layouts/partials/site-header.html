@@ -16,5 +16,21 @@
       <a href="{{ "/press/" | relLangURL }}" class="{{ if eq $sec "press" }}active{{ end }}">Press</a>
       <a class="cv" href="{{ "uploads/resume.pdf" | relLangURL }}" target="_blank" rel="noopener">CV ↓</a>
     </nav>
+    {{- /* Mobile navigation. .nav is display:none below 640px, so without this
+           the site had no navigation at all on a phone. <details> gives the
+           open/closed state to assistive tech with no JavaScript. */ -}}
+    <details class="navdrawer">
+      <summary role="button" aria-label="Menu">&#9776;</summary>
+      <nav class="drawer" aria-label="Main (mobile)">
+        <a href="{{ "/#research" | relLangURL }}">Research</a>
+        <a href="{{ "/publication/" | relLangURL }}" class="{{ if or (eq $sec "publication") (eq $sec "project") }}active{{ end }}">Publications</a>
+        <a href="{{ "/event/" | relLangURL }}" class="{{ if eq $sec "event" }}active{{ end }}">Talks</a>
+        <a href="{{ "/course/" | relLangURL }}" class="{{ if eq $sec "course" }}active{{ end }}">Teaching</a>
+        <a href="{{ "/apps/" | relLangURL }}" class="{{ if eq $sec "apps" }}active{{ end }}">Apps</a>
+        <a href="{{ "/post/" | relLangURL }}" class="{{ if eq $sec "post" }}active{{ end }}">Writing</a>
+        <a href="{{ "/press/" | relLangURL }}" class="{{ if eq $sec "press" }}active{{ end }}">Press</a>
+        <a href="{{ "uploads/resume.pdf" | relLangURL }}" target="_blank" rel="noopener">CV (PDF) &#8599;</a>
+      </nav>
+    </details>
   </div>
 </header>

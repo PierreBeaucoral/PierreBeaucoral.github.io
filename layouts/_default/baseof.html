@@ -34,6 +34,17 @@
         }, 1800);
       });
     });
+    // Close the mobile nav drawer on Escape and on outside click.
+    (function () {
+      var d = document.querySelector('.navdrawer');
+      if (!d) return;
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); }
+      });
+      document.addEventListener('click', function (e) {
+        if (d.open && !d.contains(e.target)) { d.open = false; }
+      });
+    })();
   </script>
 </body>
 </html>

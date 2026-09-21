@@ -334,6 +334,37 @@ main:focus{outline:none;}
 }
 .skip-link:focus{top:0;}
 
+/* ---- Mobile navigation ----------------------------------------------
+   Below 640px .nav is hidden (see the responsive block above). Without
+   this drawer the site had no navigation at all on a phone. Built on
+   <details>/<summary> so it needs no JavaScript and keeps native
+   keyboard and screen-reader semantics (expanded/collapsed announced).
+   -------------------------------------------------------------------- */
+.navdrawer{display:none;position:relative;}
+.navdrawer > summary{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border:1px solid var(--line);border-radius:8px;
+  cursor:pointer;list-style:none;color:var(--ink);font-size:17px;
+}
+.navdrawer > summary::-webkit-details-marker{display:none;}
+.navdrawer[open] > summary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.navdrawer .drawer{
+  position:absolute;right:0;top:calc(100% + 10px);min-width:220px;
+  background:var(--paper);border:1px solid var(--line);border-radius:10px;
+  box-shadow:0 18px 40px -20px rgba(27,38,32,0.35);
+  padding:8px;display:flex;flex-direction:column;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;
+  letter-spacing:0.04em;text-transform:uppercase;
+}
+.navdrawer .drawer a{
+  display:flex;align-items:center;min-height:44px;padding:0 14px;
+  border-radius:6px;color:var(--muted);
+}
+.navdrawer .drawer a:hover,.navdrawer .drawer a.active{background:var(--cream);color:var(--ink);}
+@media (max-width:640px){
+  .navdrawer{display:block;}
+}
+
 /* ---- Reduced motion --------------------------------------------------
    Honours the OS "reduce motion" setting: no smooth scroll-jacking, no
    hover lifts, no transitions. Content still reaches its final state.

@@ -13,7 +13,7 @@ editor_options:
     wrap: 72
 ---
 
-This spring I spent a few weeks as a visiting PhD researcher at the
+This spring I spent a few weeks as a visiting PhD candidate at the
 [Department of Public Policy](https://dpp.ceu.edu/) and the [Doctoral
 School of Political Science, Public Policy and International
 Relations](https://dsps.ceu.edu/) at **Central European University**, on

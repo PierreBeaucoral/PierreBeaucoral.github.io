@@ -64,7 +64,7 @@ sections:
               * Developing causal-inference strategies (DiD, event studies, double machine learning) to evaluate the effects of climate policies such as National Adaptation Plans
               * Building and maintaining reproducible data and code pipelines in R and Python
               * Contributing to teaching in econometrics and quantitative methods
-        - title: Visiting PhD Researcher
+        - title: Visiting PhD Candidate
           company: Central European University
           company_url: 'https://www.ceu.edu/'
           company_logo: ceu

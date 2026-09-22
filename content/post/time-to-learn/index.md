@@ -34,6 +34,13 @@ more appealing than returning to a difficult paper. I want room for
 curiosity, and I want to finish my research. So I made a small model to
 think through that tension.
 
+The trade-off in it is not new. Spending time to become more productive
+later, at the cost of what you produce now, is the problem Ben-Porath
+wrote down in 1967, and what follows is a stripped-down, two-period
+version of his — no accumulating stock of skill, no career to spread it
+over. What I had to add is the part he had no reason to model: that a
+detour might simply not transfer.
+
 ## The time available
 
 Imagine a block of {{< model-inline "B" >}} hours left after required teaching and other

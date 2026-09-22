@@ -154,6 +154,15 @@ surplus_share <- surplus / objective_at_optimum
 surplus_minutes <- 60 * surplus / marginal_cost(e_odds)
 stopifnot(surplus > 0, surplus_share < 0.01)
 
+# What the risk itself costs: with a certain payoff the crossing sits at
+# e_sure, so the hours between e_odds and e_sure are ones a guaranteed payoff
+# would have justified. Stopping at e_odds is correct under uncertainty, not a
+# mistake, so this band is the price of the risk and not a loss from error.
+certain_gap <- function(e) marginal_benefit(e, p$eta) - marginal_cost(e)
+uncertainty_surplus <- integrate(certain_gap, e_odds, e_sure, rel.tol = 1e-12)$value
+uncertainty_minutes <- 60 * uncertainty_surplus / marginal_cost(e_sure)
+stopifnot(uncertainty_surplus > 0)
+
 # One curve per row, revealed in the order the post needs them.
 ct_levels <- c("Cost of the next hour",
                "Gain if the payoff were sure",
@@ -173,22 +182,28 @@ ct_all <- rbind(
   ct_curve(5, marginal_benefit(e_grid, p$eta, p$pi_tilde)))
 
 # Legend labels carry the crossing, so the plot needs no annotation clutter.
-ct_chart <- function(shown, band = FALSE) {
+ct_chart <- function(shown, band = FALSE, legend_labels = NULL,
+                     revealed = shown, annotate_band = TRUE,
+                     x_breaks = seq(0, p$B, by = 2)) {
   keep <- ct_levels[shown]
   labels <- setNames(ifelse(is.na(ct_stops[shown]), keep,
                             paste0(keep, "  —  stops at ",
                                    format(round(ct_stops[shown], 1), nsmall = 1), " h")), keep)
-  curves <- ct_all[ct_all$component %in% keep, ]
+  if (!is.null(legend_labels)) labels <- legend_labels
+  curves <- ct_all[ct_all$component %in% ct_levels[revealed], ]
   curves$component <- factor(curves$component, levels = keep)
-  stops <- ct_stops[shown][!is.na(ct_stops[shown])]
+  stops <- ct_stops[revealed][!is.na(ct_stops[revealed])]
   plot <- ggplot(curves, aes(e, value, colour = component))
-  if (band) {
-    ribbon <- data.frame(e = seq(e_pessimist, e_odds, length.out = 200))
-    ribbon$upper <- marginal_benefit(ribbon$e, p$eta, p$pi)
+  if (!isFALSE(band)) {
+    # TRUE keeps the blog figure's band; a list gives span and bounding curve.
+    spec <- if (isTRUE(band)) list(from = e_pessimist, to = e_odds, prob = p$pi) else band
+    ribbon <- data.frame(e = seq(spec$from, spec$to, length.out = 200))
+    ribbon$upper <- marginal_benefit(ribbon$e, p$eta, spec$prob)
     ribbon$lower <- marginal_cost(ribbon$e)
     plot <- plot +
       geom_ribbon(data = ribbon, aes(e, ymin = lower, ymax = upper),
-                  inherit.aes = FALSE, fill = "#77482F", alpha = .38) +
+                  inherit.aes = FALSE, fill = "#77482F", alpha = .38)
+    if (annotate_band) plot <- plot +
       annotate("segment", x = e_odds + .3, y = 2.05, xend = (e_pessimist + e_odds) / 2,
                yend = 1.32, linewidth = .5, colour = "#77482F") +
       annotate("text", x = e_odds + .4, y = 2.25, hjust = 0, size = 5.8, colour = "#77482F",
@@ -199,9 +214,9 @@ ct_chart <- function(shown, band = FALSE) {
   plot + geom_line(linewidth = 1.5) +
     geom_vline(xintercept = stops, linetype = "dashed", colour = "#8A968C") +
     annotate("point", x = stops, y = marginal_cost(stops), size = 3.6, colour = "#4A7A5E") +
-    scale_colour_manual(values = ct_palette, labels = labels) +
+    scale_colour_manual(values = ct_palette, labels = labels, limits = keep, drop = FALSE) +
     guides(colour = guide_legend(ncol = 2, byrow = TRUE)) +
-    scale_x_continuous(breaks = seq(0, p$B, by = 2), limits = c(0, p$B)) +
+    scale_x_continuous(breaks = x_breaks, limits = c(0, p$B)) +
     scale_y_continuous(limits = c(0, 4.8), expand = expansion(mult = c(0, .02))) +
     labs(title = "The hour that costs more, and the hour that promises less",
          subtitle = "Illustrative simulation · invented parameters",
@@ -237,7 +252,7 @@ stopifnot(ct_checks$value[4] < 0, ct_checks$value[5] < 0)  # Proposition 2: caut
 write.csv(ct_checks, file.path(model_dir, "ct-lt-checks.csv"), row.names = FALSE)
 
 
-# Web SVGs; the deck is pure TikZ and embeds no plots.
+# Web SVGs and carousel PDFs share the same curves, crossings and palette.
 charts <- list(sensibilite = chart2,
                `ct-lt-1` = chart3, `ct-lt-2` = chart4, `ct-lt-3` = chart5)
 for (name in names(charts)) {
@@ -245,11 +260,89 @@ for (name in names(charts)) {
          device = svglite::svglite, width = 12, height = 7.2, bg = "#EEF0EA")
 }
 
+# Adapt the blog graph's typography and legend to a portrait carousel.
+carousel_chart <- function(shown, band = FALSE, revealed = shown,
+                           x_breaks = seq(0, 3.5, by = .5)) {
+  keep <- ct_levels[shown]
+  short <- c("Cost of the next hour", "Gain without uncertainty",
+             "Uncertain gain + quality", "Gain with uncertainty", "Gain at pessimistic odds")
+  labels <- setNames(ifelse(is.na(ct_stops[shown]), short[shown],
+                            paste0(short[shown], "  (",
+                                   format(round(ct_stops[shown], 1), nsmall = 1), " h)")), keep)
+  labels[!keep %in% ct_levels[revealed]] <- ""
+  ct_chart(shown, band = band, legend_labels = labels,
+           revealed = revealed, annotate_band = FALSE, x_breaks = x_breaks) +
+    guides(colour = guide_legend(ncol = 1, byrow = TRUE)) +
+    labs(title = NULL, subtitle = NULL, x = "Hours exploring (zoom)", y = "Progress per hour") +
+    theme_minimal(base_size = 18, base_family = "sans") +
+    theme(plot.background = element_rect(fill = "#F1F1EB", colour = NA),
+          panel.grid.minor = element_blank(),
+          legend.position = "bottom", legend.title = element_blank(),
+          legend.text = element_text(size = 18),
+          legend.key.width = grid::unit(1, "cm"),
+          legend.spacing.y = grid::unit(0, "cm"),
+          axis.text = element_text(size = 18, colour = "#6C746E"),
+          axis.title = element_text(size = 18),
+          plot.margin = margin(14, 20, 6, 8))
+}
+ggsave(file.path(model_dir, "ct-lt-carousel-basic.pdf"),
+       carousel_chart(c(1, 2, 4)) +
+         coord_cartesian(xlim = c(0, 3.5), ylim = c(.75, 3), expand = FALSE),
+       device = cairo_pdf, width = 16.4, height = 12, units = "cm", bg = "#F1F1EB")
+# First encounter: full time budget, certain payoff, direct curve explanations.
+intro_chart <- carousel_chart(c(1, 2), x_breaks = seq(0, p$B, by = 2)) +
+  labs(x = "Hours exploring", y = "Progress per hour") +
+  theme(legend.position = "none") +
+  annotate("text", x = .64 * p$B, y = 4.05, size = 6.35, colour = ct_palette[2],
+           label = "Learning gain:\nless from each extra hour") +
+  annotate("segment", x = .41 * p$B, y = 3.55,
+           xend = .1 * p$B, yend = marginal_benefit(.1 * p$B),
+           colour = ct_palette[2], linewidth = .6,
+           arrow = grid::arrow(length = grid::unit(.18, "cm"))) +
+  annotate("text", x = .60 * p$B, y = 3.05, size = 6.35, colour = ct_palette[1],
+           label = "Cost of exploration:\nless time for urgent work") +
+  annotate("segment", x = .71 * p$B, y = 2.45,
+           xend = .8 * p$B, yend = marginal_cost(.8 * p$B),
+           colour = ct_palette[1], linewidth = .6,
+           arrow = grid::arrow(length = grid::unit(.18, "cm")))
+ggsave(file.path(model_dir, "ct-lt-carousel-intro.pdf"), intro_chart,
+       device = cairo_pdf, width = 16.4, height = 11, units = "cm", bg = "#F1F1EB")
+
+# Fixed axes and legend keep the surplus overlays aligned as evidence appears.
+for (step in 1:3) {
+  revealed <- if (step == 1) c(1, 5) else c(1, 4, 5)
+  plot <- carousel_chart(c(1, 4, 5), band = step == 3, revealed = revealed,
+                         x_breaks = c(0, round(e_pessimist, 1), round(e_odds, 1), 2, 2.5)) +
+    coord_cartesian(xlim = c(0, 2.5), ylim = c(.8, 2.4), expand = FALSE)
+  ggsave(file.path(model_dir, paste0("ct-lt-carousel-surplus-", step, ".pdf")), plot,
+         device = cairo_pdf, width = 16.4, height = 12, units = "cm", bg = "#F1F1EB")
+}
+
+# The risk band uses the certain curve as its ceiling and a wider x window.
+for (step in 1:3) {
+  revealed <- if (step == 1) c(1, 4) else c(1, 2, 4)
+  plot <- carousel_chart(c(1, 2, 4),
+                         band = if (step == 3) list(from = e_odds, to = e_sure, prob = NA) else FALSE,
+                         revealed = revealed,
+                         x_breaks = c(0, round(e_odds, 1), 2, round(e_sure, 1), 4)) +
+    coord_cartesian(xlim = c(0, 4), ylim = c(.8, 3.2), expand = FALSE)
+  ggsave(file.path(model_dir, paste0("ct-lt-carousel-risk-", step, ".pdf")), plot,
+         device = cairo_pdf, width = 16.4, height = 12, units = "cm", bg = "#F1F1EB")
+}
+
 # Deck constants generated from the same parameter file, not retyped in TeX.
 macros <- c(BaseBudget = p$B, BaseOptimum = e_star, BaseBeta = p$beta,
             BaseHorizon = p$H, BaseEta = p$eta, BaseTau = p$tau, BaseK = p$K,
             BaseUrgency = p$w, BaseDelta = p$delta,
-            HighUrgency = p$high_urgency, LowUrgency = p$low_urgency)
+            HighUrgency = p$high_urgency, LowUrgency = p$low_urgency,
+            CertainCrossing = round(e_sure, 1), RiskCrossing = round(e_odds, 1),
+            PessimistCrossing = round(e_pessimist, 1),
+            PerceivedOddsTen = 10 * p$pi_tilde, TrueOddsTen = 10 * p$pi,
+            ExtraExplorationMinutes = round(60 * (e_odds - e_pessimist)),
+            SurplusValue = round(surplus, 2), SurplusMinutes = round(surplus_minutes),
+            RiskSurplusValue = round(uncertainty_surplus, 2),
+            RiskSurplusMinutes = round(uncertainty_minutes),
+            ExtraCertainMinutes = round(60 * (e_sure - e_odds)))
 writeLines(sprintf("\\newcommand{\\%s}{%s}", names(macros),
                    vapply(macros, function(x) format(x, trim = TRUE,
                                                     scientific = FALSE), character(1))),

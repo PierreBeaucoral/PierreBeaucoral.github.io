@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Reproduce the illustration, validate it, compile the deck and bundle sources."""
+"""Reproduce the illustration, validate it and compile the deck."""
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-import zipfile
 
 
 def main():
@@ -28,16 +27,7 @@ def main():
             if marker in log:
                 raise RuntimeError(f"Inspect the LaTeX build: {marker}")
         shutil.copy2(Path(build) / "learning-detours.pdf", output / "learning-detours.pdf")
-    sources = [p for p in model.rglob("*") if p.is_file()
-               and p.suffix in {".md", ".py", ".R", ".json", ".tex", ".csv", ".pdf"}]
-    sources += [p for p in (repo / "content/post/time-to-learn").rglob("*") if p.is_file()]
-    sources.append(repo / "layouts/shortcodes/model-equation.html")
-    sources.append(repo / "layouts/shortcodes/model-inline.html")
-    with zipfile.ZipFile(output / "learning-detours-source.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(sources):
-            archive.write(path, path.relative_to(repo))
     print(f"Created {output / 'learning-detours.pdf'}")
-    print(f"Created {output / 'learning-detours-source.zip'}")
 
 
 if __name__ == "__main__":

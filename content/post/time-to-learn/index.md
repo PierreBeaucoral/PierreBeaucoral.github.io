@@ -3,7 +3,7 @@ title: "When do I make time to learn?"
 date: 2026-09-21
 # Unlisted: reachable at its URL, kept out of every list, feed and sitemap.
 unlisted: true
-_build:
+build:
   list: never
   render: always
 summary: "How much time do I give to learning something new? A small two-period model, with the detour treated as a bet on whether what I learn transfers."

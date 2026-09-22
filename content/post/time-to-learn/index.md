@@ -109,10 +109,12 @@ Somewhere between the two, they meet, and that point is where I stop.
 The benefit in that comparison is not the payoff a detour delivers when it
 lands. It is that payoff weighted by the chance it lands at all, and marked
 down again because a gain I might get is worth less to me than the same gain
-in hand. Both markdowns pull the crossing to the left. Neither changes
-whether I explore at all: the first hour either looks worth taking or it
-does not, and caution has no grip on that decision, only on how far to carry
-it.
+in hand. Both markdowns pull the crossing to the left, but they do not work the
+same way on the first hour. Caution has no grip there: with no hours
+invested yet there is no uncertain payoff to be cautious about, so it
+changes how far I carry a detour, never whether I start one. The odds do
+bite at the first hour, and hard enough that if I put them below about two
+in ten I would not begin at all.
 
 ![Two curves meeting: the cost of the next hour of research forgone rises as exploration grows, while its expected benefit falls faster once the payoff is treated as a bet. Invented parameters; the crossing moves from 2.9 to 1.5 hours. Every later figure in this post adds one more curve to these same axes.](ct-lt-1.svg)
 
@@ -150,10 +152,12 @@ it chooses the whole block. Otherwise, it stops at the interior crossing.
 When {{< model-inline "\beta H\eta=0" >}}, current research takes the whole block; when {{< model-inline "B=0" >}},
 there is simply no time to allocate.
 
-The retained productivity term is constant in {{< model-inline "e" >}}. As a result, changing
-{{< model-inline "\delta" >}} shifts the level of the objective but leaves this optimum unchanged.
-Making skill obsolescence change the allocation would require another
-mechanism.
+The retained productivity term is constant in {{< model-inline "e" >}}. In this certain-payoff
+version, changing {{< model-inline "\delta" >}} therefore shifts the level of the objective but
+leaves the optimum unchanged. That neutrality is special to it: once the
+payoff is a bet and I am cautious about it, {{< model-inline "\delta" >}} moves the level I am
+judging outcomes from, and the stopping point shifts with it — by under a
+minute in this example, but not by nothing.
 
 ## Why the answer changes from one situation to another
 

@@ -389,3 +389,25 @@ main:focus{outline:none;}
   position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
 }
+
+/* ---- Math ----
+   Equations are MathML rendered at build time by
+   work/learning-detours/render_equations.py, so nothing runs in the browser.
+   Browsers reach for the generic `math` family, which is missing on some
+   systems (Chrome then falls back to the sans body face and the fractions and
+   brackets stop lining up), so real math faces are named first. The size bump
+   compensates for the small x-height of those faces next to 17px Plex Sans. */
+.article .prose math{
+  font-family:'STIX Two Math','Latin Modern Math','Cambria Math','Newsreader',Georgia,math;
+  font-size:1.1em;line-height:normal;
+}
+.article .prose math[display="block"]{font-size:1.22em;}
+.model-equation{
+  margin:22px 0;padding:6px 2px;
+  overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.model-equation p{margin:0;}
+.article .prose table{border-collapse:collapse;margin:22px 0;font-size:16px;width:100%;}
+.article .prose th,.article .prose td{text-align:left;padding:8px 14px 8px 0;border-bottom:1px solid var(--line);}
+.article .prose thead th{border-bottom:1px solid var(--ink);font-weight:600;}

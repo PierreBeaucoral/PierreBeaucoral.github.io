@@ -1,0 +1,6 @@
+{{- $key := md5 (.Get 0) -}}
+{{- with .Page.Resources.GetMatch (printf "equations/inline-%s.html" $key) -}}
+  {{- .Content | safeHTML -}}
+{{- else -}}
+  {{- errorf "Missing inline equation on %s; run render_equations.py" $.Page.File.Path -}}
+{{- end -}}

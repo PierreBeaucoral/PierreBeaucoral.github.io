@@ -29,3 +29,10 @@ _freeze/
 
 # graphify knowledge-graph output (local analysis artefact)
 graphify-out/
+
+# Working files kept local: session state, agent config, quality reports
+.claude/
+MEMORY.md
+session_logs/
+quality_reports/
+*.bak

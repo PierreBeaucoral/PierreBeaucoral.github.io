@@ -1,0 +1,19 @@
+{
+  "B": 10,
+  "K": 1,
+  "w": 1,
+  "beta": 0.9,
+  "H": 10,
+  "eta": 0.5,
+  "tau": 1,
+  "delta": 0.05,
+  "high_urgency": 5,
+  "low_urgency": 0.3,
+  "quality_eta": 0.25,
+  "quality_weight": 1,
+  "recognition": 0.6666666666666666,
+  "theta": 0.6,
+  "pi": 0.6,
+  "pi_tilde": 0.4,
+  "u_curvature": 0.005
+}

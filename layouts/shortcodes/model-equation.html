@@ -1,0 +1,8 @@
+{{- $name := .Get 0 -}}
+{{- with .Page.Resources.GetMatch (printf "equations/%s.html" $name) -}}
+<div class="model-equation" tabindex="0" role="group" aria-label="Model equation: {{ $name }}">
+  {{ .Content | safeHTML }}
+</div>
+{{- else -}}
+  {{- errorf "Missing model equation %s on %s" $name $.Page.File.Path -}}
+{{- end -}}

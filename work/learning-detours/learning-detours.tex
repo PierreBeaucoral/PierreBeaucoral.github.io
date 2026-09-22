@@ -1,0 +1,307 @@
+\documentclass[12pt]{beamer}
+\geometry{paperwidth=18cm,paperheight=22.5cm}
+\usepackage{lmodern,fontspec}
+\setsansfont{lmsans10-regular.otf}[BoldFont=lmsans10-bold.otf,ItalicFont=lmsans10-oblique.otf]
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\input{model-values.tex}
+% Palette. Two concepts, one colour each, never reassigned: research is
+% current work, detour is exploration. `detourfill` is the fill-only variant of
+% detour — a hex tuned for a 16pt label is too dark for a large block. `ink` is
+% a text and line-art colour and is never used as a fill for data.
+\definecolor{paper}{HTML}{F1F1EB}
+\definecolor{inkbase}{HTML}{17231C}
+\definecolor{mutedbase}{HTML}{6C746E}
+\definecolor{researchbase}{HTML}{1C4639}
+\definecolor{detourbase}{HTML}{2C5A78}
+\definecolor{detourfillbase}{HTML}{6F9AB5}
+\definecolor{darktext}{HTML}{E6EAE2}
+\definecolor{darkmuted}{HTML}{8D998F}
+\definecolor{darkresearch}{HTML}{C2D8CA}
+\definecolor{darkdetour}{HTML}{5486AD}
+\setbeamercolor{normal text}{fg=inkbase,bg=paper}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+\hypersetup{pdftitle={When do I make time to learn?},pdfauthor={Pierre Beaucoral}}
+% Line-art palette. Dark frames swap the two colours; every primitive follows.
+% Light slides by default; the two dark frames re-let the same five names, so
+% every primitive and label below follows without a second set of colours.
+\colorlet{ink}{inkbase}
+\colorlet{canvas}{paper}
+\colorlet{muted}{mutedbase}
+\colorlet{research}{researchbase}
+\colorlet{detour}{detourbase}
+\colorlet{detourfill}{detourfillbase}
+\newcommand{\darkframe}{\colorlet{ink}{darktext}\colorlet{canvas}{inkbase}%
+  \colorlet{muted}{darkmuted}\colorlet{research}{darkresearch}%
+  \colorlet{detour}{darkdetour}\colorlet{detourfill}{darkdetour}}
+\tikzset{
+  title/.style={anchor=north west,align=left,text width=15.4cm,inner sep=0pt,font=\fontsize{38}{44}\selectfont\bfseries},
+  body/.style={anchor=north west,align=left,text width=15.4cm,inner sep=0pt,font=\fontsize{24}{31}\selectfont},
+  label/.style={align=center,inner sep=0pt,font=\fontsize{22}{27}\selectfont},
+  art/.style={draw=ink,line width=1.6pt,line cap=round,line join=round},
+  thin art/.style={draw=ink,line width=1.1pt,line cap=round},
+  arrow/.style={-{Latex[length=.34cm]},draw=ink,line width=1.6pt},
+  tinylabel/.style={anchor=north west,inner sep=0pt,font=\fontsize{15}{18}\selectfont}
+}
+% All art is drawn in the frame's y-down system: a smaller y is higher on the page.
+% Origin of each primitive is its lower-left anchor unless stated otherwise.
+\newcommand{\sheet}[3]{\begin{scope}[shift={(#1,#2)},scale=#3]
+  \draw[art,fill=canvas] (0,0) rectangle (1.3,-1.75);
+  \foreach \i in {1,...,5}{\draw[thin art] (.22,{-.26*\i}) -- (1.08,{-.26*\i});}
+\end{scope}}
+\newcommand{\stack}[3]{\begin{scope}[shift={(#1,#2)},scale=#3]
+  \draw[art,fill=canvas] (.34,0) rectangle (1.64,-1.75);
+  \draw[art,fill=canvas] (.17,-.2) rectangle (1.47,-1.95);
+  \draw[art,fill=canvas] (0,-.4) rectangle (1.3,-2.15);
+  \foreach \i in {1,...,5}{\draw[thin art] (.22,{-.4-.26*\i}) -- (1.08,{-.4-.26*\i});}
+\end{scope}}
+\newcommand{\bookicon}[3]{\begin{scope}[shift={(#1,#2)},scale=#3]
+  \draw[art,fill=canvas] (0,0) .. controls (.5,.34) and (1.1,.34) .. (1.6,0)
+    -- (1.6,-1.5) .. controls (1.1,-1.16) and (.5,-1.16) .. (0,-1.5) -- cycle;
+  \draw[art] (.8,.17) -- (.8,-1.33);
+\end{scope}}
+\newcommand{\clockicon}[3]{\begin{scope}[shift={(#1,#2)}]
+  \draw[art,fill=canvas] (0,0) circle (#3);
+  \foreach \a in {0,30,...,330}{\draw[thin art] (\a:{#3*.78}) -- (\a:{#3*.94});}
+  \draw[art] (0,0) -- (60:{#3*.5});
+  \draw[art] (0,0) -- (-15:{#3*.72});
+\end{scope}}
+% A small standing figure, hand at the chin. Feet sit on (#1,#2); height is 4.1*#3.
+\newcommand{\pierre}[3]{\begin{scope}[shift={(#1,#2)},scale=#3]
+  \draw[art] (-.55,0) -- (0,-1.2) -- (.55,0);
+  \draw[art] (0,-1.2) -- (0,-2.05);
+  \draw[art] (0,-1.85) -- (-.8,-1.45);
+  \draw[art] (0,-1.85) -- (.5,-2.15) -- (.34,-2.62);
+  \draw[art,fill=canvas] (0,-3.05) circle (.62);
+  \draw[thin art] (-.27,-3.16) -- (-.07,-3.16);
+  \draw[thin art] (.11,-3.16) -- (.31,-3.16);
+  \draw[thin art] (-.62,-3.16) .. controls (-.5,-3.85) and (.5,-3.85) .. (.62,-3.1);
+\end{scope}}
+% Thought bubble with its three trailing dots aimed at the figure below-left.
+\newcommand{\bubble}[4]{\draw[art,fill=canvas,rounded corners=22pt] (#1,#2) rectangle (#3,#4);}
+\newcommand{\bubbledots}[2]{\begin{scope}[shift={(#1,#2)}]
+  \draw[art,fill=canvas] (0,0) circle (.3);
+  \draw[art,fill=canvas] (-.55,.6) circle (.19);
+  \draw[art,fill=canvas] (-.95,1.05) circle (.12);
+\end{scope}}
+\newcommand{\speech}[4]{\draw[art,fill=canvas,rounded corners=20pt] (#1,#2) rectangle (#3,#4);}
+\newcommand{\speechtail}[2]{\draw[art,fill=canvas,line join=round]
+  (#1,#2) -- ({#1-.55},{#2+1.15}) -- ({#1+.85},{#2-.06}) -- cycle;}
+\newcommand{\footer}[1]{%
+ \node[tinylabel,text=muted] at (1.3,21.4) {Pierre Beaucoral};
+ \node[anchor=north east,inner sep=0pt,text=muted,font=\fontsize{15}{18}\selectfont] at (16.7,21.4) {#1 / 9};
+}
+\newcommand{\topline}[1]{\node[tinylabel,text=muted] at (1.3,1.0) {#1};}
+\begin{document}
+
+% Opening question. Figure at the lower left, bubble above right holding both options.
+\begin{frame}[plain]
+\darkframe
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\fill[inkbase] (0,0) rectangle (18,22.5);
+\node[tinylabel,text=muted] at (1.3,1.0) {USEFUL DETOURS};
+\node[title,text=ink] at (1.3,2.0) {What shall I do\\with my time?};
+\bubble{4.6}{6.6}{16.4}{12.8}
+\bubbledots{4.3}{13.8}
+\stack{6.1}{11.3}{1.0}
+\node[label,text=research] at (6.85,12.2) {A paper};
+\bookicon{12.0}{10.8}{1.15}
+\node[label,text=detour] at (12.9,12.2) {Something new};
+\node[label,text=ink,font=\fontsize{26}{31}\selectfont] at (10.5,8.1) {Ten free hours};
+\pierre{3.2}{19.2}{1.1}
+\node[body,text=ink,text width=10.4cm] at (7.0,16.0) {Teaching, meetings,\\and admin are done.\\How do I use the\\hours left?};
+\footer{1}
+\end{tikzpicture}
+\end{frame}
+
+% The same hour, two destinations. Clock centred, one option on each side.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{THE TIME CONSTRAINT}
+\node[title] at (1.3,2.0) {The same hour\\has two uses.};
+\clockicon{9}{8.4}{1.9}
+\draw[arrow] (7.0,9.1) -- (4.6,10.6);
+\draw[arrow] (11.0,9.1) -- (13.4,10.6);
+\stack{2.5}{14.6}{1.05}
+\node[label,text=research] at (3.9,15.6) {Advance a paper\\already started};
+\bookicon{12.6}{14.1}{1.2}
+\node[label,text=detour] at (13.55,15.6) {Learn something\\I can use later};
+\node[body] at (1.3,18.2) {Each hour goes to one of them.};
+\footer{2}
+\end{tikzpicture}
+\end{frame}
+
+% The return on a detour: exploration, a retained technique, two future outcomes.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{A POSSIBLE RETURN}
+\node[title] at (1.3,2.0) {A detour can improve\\later research.};
+\draw[arrow,draw=detour] (7.5,5.9) .. controls (8.2,5.1) and (8.8,6.7) .. (9.4,5.9)
+  .. controls (9.8,5.4) and (10.1,5.6) .. (10.5,5.9);
+\node[label,text=detour] at (9,7.0) {A detour};
+\draw[arrow] (9,7.6) -- (9,8.2);
+\bookicon{8.1}{10.5}{1.2}
+\node[label,text=detour] at (9,11.6) {A technique I keep};
+\draw[arrow] (7.9,12.3) -- (5.0,13.8);
+\draw[arrow] (10.1,12.3) -- (13.0,13.8);
+\stack{2.0}{16.4}{.8}\stack{3.6}{16.4}{.8}\stack{5.2}{16.4}{.8}
+\node[label,text=detour] at (4.1,17.3) {More research};
+\stack{12.3}{16.4}{.95}
+\draw[art,draw=detourfill,fill=detourfill] (14.5,15.0) -- (14.72,14.55) -- (14.94,15.0) -- (15.42,15.06)
+  -- (15.07,15.39) -- (15.16,15.86) -- (14.72,15.63) -- (14.28,15.86) -- (14.37,15.39)
+  -- (14.02,15.06) -- cycle;
+\node[label,text=detour] at (13.4,17.3) {Better research};
+\node[body] at (1.3,18.9) {Faster execution.\\Stronger designs and checks.};
+\footer{3}
+\end{tikzpicture}
+\end{frame}
+
+% Opportunity cost: ten one-hour blocks, two allocations, icon legend.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{THE OPPORTUNITY COST}
+\node[title] at (1.3,2.0) {Longer detours leave\\less time for\\current projects.};
+\node[body] at (1.3,7.4) {A small detour};
+\foreach \i in {0,...,6}{\fill[research] ({1.3+1.4*\i},8.9) rectangle ({2.6+1.4*\i},10.1);}
+\foreach \i in {7,...,9}{\fill[detourfill] ({1.3+1.4*\i},8.9) rectangle ({2.6+1.4*\i},10.1);}
+\node[body] at (1.3,12.1) {A longer detour};
+\foreach \i in {0,...,2}{\fill[research] ({1.3+1.4*\i},13.6) rectangle ({2.6+1.4*\i},14.8);}
+\foreach \i in {3,...,9}{\fill[detourfill] ({1.3+1.4*\i},13.6) rectangle ({2.6+1.4*\i},14.8);}
+\sheet{1.3}{17.6}{.62}
+\node[label,anchor=west,text=research] at (2.5,16.9) {Research};
+\bookicon{8.6}{17.2}{.65}
+\node[label,anchor=west,text=detour] at (10.0,16.9) {Exploration};
+\node[body] at (1.3,18.9) {The papers on my desk\\still need to move forward.};
+\footer{4}
+\end{tikzpicture}
+\end{frame}
+
+% Asymmetric visibility: the near cost is drawn solid, the far gain faint and dashed.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{WHAT IF?}
+\node[title] at (1.3,2.0) {I know the cost of\\a digression, but only\\infer its value.};
+\pierre{2.9}{11.2}{1.0}
+\draw[arrow] (4.3,9.2) -- (6.6,8.4);
+\sheet{7.2}{9.2}{.9}
+\node[label,anchor=west,text=research] at (9.1,8.3) {The afternoon\\I give up today};
+\draw[arrow,dash pattern=on .18cm off .16cm] (4.3,11.2) -- (6.6,13.9);
+\begin{scope}[opacity=.45]
+\stack{7.2}{16.1}{.9}
+\end{scope}
+\node[label,anchor=west,text=detour] at (9.5,15.1) {The stronger project,\\if the detour lands};
+\node[body] at (1.3,18.0) {The cost is certain, the gain\\a chance. Putting the odds too\\low sets aside too little time.};
+\footer{5}
+\end{tikzpicture}
+\end{frame}
+
+% The marginal question, drawn as a balance: a page today against a book later.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{WEIGHING THE NEXT HOUR}
+\node[title] at (1.3,2.0) {I stop where\\the two curves meet.};
+% Same functions as the post's ct-lt.svg: e runs 0 to 10 across 2.6--15.4,
+% value 0 to 4.7 down 15.5--6.5. Cost rises with theta<1; benefit falls, and
+% falls further once the payoff is only a chance.
+\draw[thin art,draw=muted] (2.6,15.5) -- (15.5,15.5);
+\draw[thin art,draw=muted] (2.6,15.5) -- (2.6,6.6);
+\draw[art,draw=research] plot[domain=0:9.4,samples=90,smooth]
+  (\x*1.28+2.6,{15.5-1.9*pow((10-\x)/10,-0.4)});
+\draw[art,draw=detour] plot[domain=0:10,samples=90,smooth]
+  (\x*1.28+2.6,{15.5-1.9*4.5/(1+\x)});
+\draw[art,draw=detour,dash pattern=on .18cm off .16cm] plot[domain=0:10,samples=90,smooth]
+  (\x*1.28+2.6,{15.5-1.9*2.637/(1+\x)});
+\draw[thin art,draw=muted,dash pattern=on .1cm off .12cm] (6.34,15.5) -- (6.34,13.31);
+\draw[thin art,draw=muted,dash pattern=on .1cm off .12cm] (4.49,15.5) -- (4.49,13.47);
+\fill[detour] (6.34,13.31) circle (.14);
+\fill[detour] (4.49,13.47) circle (.14);
+% Legend in the empty upper right of the plot; strokes match the curves exactly.
+\draw[art,draw=research] (7.5,6.9) -- (8.3,6.9);
+\node[label,anchor=west,text=research] at (8.6,6.9) {Cost of the next hour};
+\draw[art,draw=detour] (7.5,8.1) -- (8.3,8.1);
+\node[label,anchor=west,text=detour] at (8.6,8.1) {Gain without uncertainty};
+\draw[art,draw=detour,dash pattern=on .18cm off .16cm] (7.5,9.3) -- (8.3,9.3);
+\node[label,anchor=west,text=detour] at (8.6,9.3) {Gain with uncertainty};
+% Axis labels and crossing values connect the reading sequence to the plot.
+\node[label,anchor=west,text=muted] at (2.6,5.8) {Value of the next hour};
+\node[label,anchor=north,text=detour] at (4.49,15.8) {1.5};
+\node[label,anchor=north,text=detour] at (6.34,15.8) {2.9};
+\node[label,anchor=north east,text=muted] at (15.5,15.8) {Exploration (hours)};
+% Three numbered reading steps replace the explanatory paragraph.
+\foreach \x/\n/\c in {3.6/1/research,9/2/detour,14.4/3/ink}{
+  \draw[thin art,draw=\c] (\x,18.0) circle (.43);
+  \node[label,text=\c] at (\x,18.0) {\n};
+}
+\draw[arrow,draw=muted] (4.4,18.0) -- (8.2,18.0);
+\draw[arrow,draw=muted] (9.8,18.0) -- (13.6,18.0);
+\node[label,anchor=north,text width=4.6cm,text=research] at (3.6,18.8) {Cost rises};
+\node[label,anchor=north,text width=4.6cm,text=detour] at (9,18.8) {Odds lower\\the gain};
+\node[label,anchor=north,text width=4.6cm,text=ink] at (14.4,18.8) {Stop earlier\\2.9 to 1.5 h};
+\footer{6}
+\end{tikzpicture}
+\end{frame}
+
+% Invented example: the same ten-hour block split two ways.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{AN INVENTED EXAMPLE}
+\node[title] at (1.3,2.0) {A fuller valuation\\changes the choice.};
+\pgfmathsetmacro{\partialsplit}{1.3+14*(1-\PerceivedOptimum/\BaseBudget)}
+\pgfmathsetmacro{\fullsplit}{1.3+14*(1-\FullerOptimum/\BaseBudget)}
+\node[body] at (1.3,6.9) {Two-thirds of benefits recognised};
+\fill[research] (1.3,8.4) rectangle (\partialsplit,9.6);
+\fill[detourfill] (\partialsplit,8.4) rectangle (15.3,9.6);
+\draw[art,draw=detour] (\partialsplit,8.0) -- (\partialsplit,10.0);
+\node[body,text=detour,font=\fontsize{29}{34}\selectfont\bfseries] at (1.3,10.4)
+{\PerceivedOptimum\ hours exploring};
+\node[body] at (1.3,13.2) {Full assumed benefit recognised};
+\fill[research] (1.3,14.7) rectangle (\fullsplit,15.9);
+\fill[detourfill] (\fullsplit,14.7) rectangle (15.3,15.9);
+\draw[art,draw=detour] (\fullsplit,14.3) -- (\fullsplit,16.3);
+\node[body,text=detour,font=\fontsize{29}{34}\selectfont\bfseries] at (1.3,16.7)
+{\FullerOptimum\ hours exploring};
+\node[body] at (1.3,19.1) {Same ten-hour block.\\Current research time also falls.};
+\footer{7}
+\end{tikzpicture}
+\end{frame}
+
+% An aside I owe the reader before the closing question.
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\topline{AN HONEST ASIDE}
+\node[title] at (1.3,2.0) {A fair objection.};
+\speech{4.2}{6.8}{16.5}{11.9}
+\speechtail{5.7}{11.8}
+\node[label,align=center,text width=11.2cm,font=\fontsize{27}{33}\selectfont] at (10.35,9.35)
+{Am I justifying my\\procrastination with\\a toy model?};
+\pierre{3.6}{17.8}{1.05}
+\node[body,text width=9.6cm] at (7.4,15.0) {Possibly.\\The hours still have to\\go somewhere.};
+\footer{8}
+\end{tikzpicture}
+\end{frame}
+
+% Closing question, with the figure taking the longer route to the same page.
+\begin{frame}[plain]
+\darkframe
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)},x=1cm,y=-1cm]
+\fill[inkbase] (0,0) rectangle (18,22.5);
+\node[tinylabel,text=muted] at (1.3,1.0) {THE QUESTION I KEEP};
+\node[title,text=ink,font=\fontsize{40}{47}\selectfont\bfseries] at (1.3,2.2)
+{Is digression\\progression?};
+\pierre{2.9}{11.5}{.95}
+\draw[arrow,draw=detour,dash pattern=on .2cm off .18cm]
+  (4.2,10.9) .. controls (6.9,8.4) and (10.6,8.5) .. (12.5,10.3);
+\bookicon{8.2}{9.2}{.9}
+\stack{13.0}{12.2}{.95}
+\node[body,text=detour,text width=13cm] at (1.3,13.4)
+{Sometimes the long way round\\reaches the better page.};
+\node[body,text=ink] at (1.3,16.4)
+{I counted the hours both ways.\\The arithmetic is in\\the blog article.};
+\node[tinylabel,text=muted] at (1.3,19.8)
+{\href{https://pierrebeaucoral.github.io/post/time-to-learn/}{pierrebeaucoral.github.io/post/time-to-learn/}};
+\footer{9}
+\end{tikzpicture}
+\end{frame}
+\end{document}

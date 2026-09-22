@@ -331,6 +331,4 @@ see it delaying? I would like to leave room for that question while still
 giving the papers on my desk the attention they need.
 
 A [short visual carousel](/uploads/learning-detours/learning-detours.pdf)
-walks through the intuition. The [editable sources and reproducible
-simulation](/uploads/learning-detours/learning-detours-source.zip) include
-the full assumptions, proof and numerical checks.
+walks through the intuition.

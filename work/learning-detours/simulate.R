@@ -319,10 +319,10 @@ for (step in 1:3) {
 }
 
 # The risk band uses the certain curve as its ceiling and a wider x window.
-for (step in 1:3) {
+for (step in 1:2) {
   revealed <- if (step == 1) c(1, 4) else c(1, 2, 4)
   plot <- carousel_chart(c(1, 2, 4),
-                         band = if (step == 3) list(from = e_odds, to = e_sure, prob = NA) else FALSE,
+                         band = if (step == 2) list(from = e_odds, to = e_sure, prob = NA) else FALSE,
                          revealed = revealed,
                          x_breaks = c(0, round(e_odds, 1), 2, round(e_sure, 1), 4)) +
     coord_cartesian(xlim = c(0, 4), ylim = c(.8, 3.2), expand = FALSE)

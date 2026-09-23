@@ -1097,5 +1097,12 @@
     "title": "TD 3 : Régression multinomiale (R)",
     "section": "7 Conclusion TD3",
     "text": "7 Conclusion TD3\n\nOn a estimé :\n\nun logit multinomial nominal pour SUBTYPE ;\nun logit ordinal pour GRADE.\n\nOn a :\n\ntesté l’ajustement du modèle nominal via un Hosmer–Lemeshow multinomial ;\nutilisé des tests de rapport de vraisemblance pour :\n\nsimplifier les modèles (variables non significatives),\ntester l’intérêt d’interactions dans le modèle ordinal ;\n\nChoisi les spécifications finales.\n\n\nÀ retenir :\n\nPour les variables nominales, on compare chaque modalité à une référence via des odds-ratios.\nPour les variables ordinales, le modèle logit/probit ordonné repose sur une variable latente et des seuils, avec une interprétation en termes de tendance vers des catégories plus élevées ou plus basses."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n\nCode\n1 + 1\n\n\n[1] 2"
   }
 ]

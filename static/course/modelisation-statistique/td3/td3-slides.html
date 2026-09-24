@@ -977,6 +977,7 @@ text-indent: -1em;
 }
 .reveal .slide:not(.center) {
 height: 100%;
+overflow-y: auto;
 }
 .reveal .slide.scrollable {
 overflow-y: auto;
@@ -1534,7 +1535,7 @@ X-squared = 4.0727, df = 10, p-value = 0.944</code></pre>
 <p>En diminuant le nombre de groupes, le test Hosmer–Lemeshow devient applicable. Les p-values varient avec g, ce qui montre que le test est assez instable dans ce petit échantillon multinomial. Néanmoins, pour la plupart des partitions (g = 4, 5, 7, 8, 9, 10), on ne rejette pas l’hypothèse d’un bon ajustement (p-value &gt; 5 %). On peut donc conclure qu’<strong>il n’y a pas de signe clair de mauvais ajustement du modèle aux données</strong>, tout en rappelant que ce test doit être interprété avec prudence.</p>
 </blockquote>
 </section>
-<section class="slide level2">
+<section class="slide level2 scrollable">
 
 <h3 data-number="5.5" id="simplification-du-modèle-tests-lr"><span class="header-section-number">5.5</span> Simplification du modèle (tests LR)</h3>
 <p>On cherche un modèle <strong>plus parcimonieux</strong> en retirant les variables non significatives.</p>

@@ -977,6 +977,7 @@ text-indent: -1em;
 }
 .reveal .slide:not(.center) {
 height: 100%;
+overflow-y: auto;
 }
 .reveal .slide.scrollable {
 overflow-y: auto;
@@ -1070,45 +1071,8 @@ Pierre Beaucoral
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-
-<li><a href="#/rappel-de-cours-modèles-logit-et-probit" id="/toc-rappel-de-cours-modèles-logit-et-probit"><span class="header-section-number">1</span> Rappel de cours : Modèles Logit et Probit</a>
-<ul>
-<li><a href="#/quand-utiliser-ces-modèles" id="/toc-quand-utiliser-ces-modèles"><span class="header-section-number">1.1</span> Quand utiliser ces modèles ?</a></li>
-<li><a href="#/pourquoi-ne-pas-utiliser-une-régression-linéaire" id="/toc-pourquoi-ne-pas-utiliser-une-régression-linéaire"><span class="header-section-number">1.2</span> Pourquoi ne pas utiliser une régression linéaire ?</a></li>
-<li><a href="#/fonction-de-lien-du-modèle-logit" id="/toc-fonction-de-lien-du-modèle-logit"><span class="header-section-number">1.3</span> Fonction de lien du modèle Logit</a></li>
-<li><a href="#/fonction-de-lien-du-modèle-probit" id="/toc-fonction-de-lien-du-modèle-probit"><span class="header-section-number">1.4</span> Fonction de lien du modèle Probit</a></li>
-<li><a href="#/comparaison-graphique-des-liens-logit-et-probit" id="/toc-comparaison-graphique-des-liens-logit-et-probit"><span class="header-section-number">1.5</span> Comparaison graphique des liens Logit et Probit</a></li>
-<li><a href="#/interprétation-économique" id="/toc-interprétation-économique"><span class="header-section-number">1.6</span> Interprétation économique</a></li>
-
-<li>
-<ul>
-<li><a href="#/résumé-comparatif" id="/toc-résumé-comparatif"><span class="header-section-number">1.6.1</span> Résumé comparatif</a></li>
-</ul></li>
-
-</ul></li>
-<li><a href="#/questions-td" id="/toc-questions-td"><span class="header-section-number">2</span> Questions TD</a>
-<ul>
-<li><a href="#/télécharger-le-fichier-bankloant.xls-depuis-lent-puis-importer-les-données-dans-r" id="/toc-télécharger-le-fichier-bankloant.xls-depuis-lent-puis-importer-les-données-dans-r"><span class="header-section-number">2.1</span> Télécharger le fichier bankloanT.xls depuis l’ENT, puis importer les données dans R</a></li>
-<li><a href="#/etudier-la-distribution-de-la-variable-ed.-créer-une-variable-catégorielle-puis-une-variable-ne-contenant-que-4-classes." id="/toc-etudier-la-distribution-de-la-variable-ed.-créer-une-variable-catégorielle-puis-une-variable-ne-contenant-que-4-classes."><span class="header-section-number">2.2</span> Etudier la distribution de la variable ed. Créer une variable catégorielle, puis une variable ne contenant que 4 classes.</a></li>
-
-
-<li><a href="#/etudier-la-matrice-des-corrélations." id="/toc-etudier-la-matrice-des-corrélations."><span class="header-section-number">2.3</span> Etudier la matrice des corrélations.</a></li>
-<li><a href="#/recoder-la-variable-à-expliquer-en-variable-quantitative-puis-réaliser-une-première-régression-logistique." id="/toc-recoder-la-variable-à-expliquer-en-variable-quantitative-puis-réaliser-une-première-régression-logistique."><span class="header-section-number">2.4</span> Recoder la variable à expliquer en variable quantitative puis réaliser une première régression logistique.</a></li>
-<li><a href="#/réaliser-une-deuxième-régression-logistique-incluant-aussi-la-variable-educ-en-classe." id="/toc-réaliser-une-deuxième-régression-logistique-incluant-aussi-la-variable-educ-en-classe."><span class="header-section-number">2.5</span> Réaliser une deuxième régression logistique incluant aussi la variable educ en classe.</a></li>
-<li><a href="#/tester-lajustement-de-ce-modèle-complet." id="/toc-tester-lajustement-de-ce-modèle-complet."><span class="header-section-number">2.6</span> Tester l’ajustement de ce modèle complet.</a></li>
-<li><a href="#/grâce-à-la-commande-anova-réaliser-un-test-de-rapport-de-vraisemblance-entre-les-deux-modèles-ajustés." id="/toc-grâce-à-la-commande-anova-réaliser-un-test-de-rapport-de-vraisemblance-entre-les-deux-modèles-ajustés."><span class="header-section-number">2.7</span> Grâce à la commande anova, réaliser un test de rapport de vraisemblance entre les deux modèles ajustés.</a></li>
-<li><a href="#/ôter-la-variable-la-moins-significative-du-modèle-retenu." id="/toc-ôter-la-variable-la-moins-significative-du-modèle-retenu."><span class="header-section-number">2.8</span> Ôter la variable la moins significative du modèle retenu.</a></li>
-<li><a href="#/une-variable-est-à-nouveau-très-peu-significative." id="/toc-une-variable-est-à-nouveau-très-peu-significative."><span class="header-section-number">2.9</span> Une variable est à nouveau très peu significative.</a></li>
-<li><a href="#/etablir-le-tableau-de-contingence-des-individus-bien-ou-mal-classés-avec-une-règle-de-coupure-à-05" id="/toc-etablir-le-tableau-de-contingence-des-individus-bien-ou-mal-classés-avec-une-règle-de-coupure-à-05"><span class="header-section-number">2.10</span> Etablir le tableau de contingence des individus bien ou mal classés avec une règle de coupure à 0,5</a></li>
-<li><a href="#/etablir-la-courbe-roc-pour-le-meilleur-modèle-puis-calculer-les-probabilités-prédites-et-étudier-leur-distribution" id="/toc-etablir-la-courbe-roc-pour-le-meilleur-modèle-puis-calculer-les-probabilités-prédites-et-étudier-leur-distribution"><span class="header-section-number">2.11</span> Etablir la courbe ROC pour le « meilleur » modèle, puis calculer les “probabilités prédites” et étudier leur distribution</a>
-<ul>
-<li><a href="#/interprétation-du-graphe" id="/toc-interprétation-du-graphe"><span class="header-section-number">2.11.1</span> Interprétation du graphe</a></li>
-</ul></li>
-<li><a href="#/refaire-la-même-modélisation-avec-un-modèle-probit-et-observer-les-différences-et-ressemblances-avec-la-modélisation-logit." id="/toc-refaire-la-même-modélisation-avec-un-modèle-probit-et-observer-les-différences-et-ressemblances-avec-la-modélisation-logit."><span class="header-section-number">2.12</span> Refaire la même modélisation avec un modèle Probit et observer les différences et ressemblances avec la modélisation Logit.</a></li>
-<li><a href="#/pour-aller-plus-loin" id="/toc-pour-aller-plus-loin"><span class="header-section-number">2.13</span> Pour aller plus loin…</a></li>
-<li><a href="#/règle-de-décision-probabilité-de-remboursement-0.7" id="/toc-règle-de-décision-probabilité-de-remboursement-0.7"><span class="header-section-number">2.14</span> Règle de décision (probabilité de remboursement &gt;= 0.7)</a></li>
-<li><a href="#/etablir-le-tableau-de-contingence-des-individus-bien-ou-mal-classés-en-considérant-comme-défaillants-potentiels-tous-les-individus-ayant-moins-de-70-de-chances-de-rembourser." id="/toc-etablir-le-tableau-de-contingence-des-individus-bien-ou-mal-classés-en-considérant-comme-défaillants-potentiels-tous-les-individus-ayant-moins-de-70-de-chances-de-rembourser."><span class="header-section-number">2.15</span> Etablir le tableau de contingence des individus bien ou mal classés en considérant comme défaillants potentiels tous les individus ayant moins de 70% de chances de rembourser.</a></li>
-</ul></li>
+<li><a href="#/rappel-de-cours-modèles-logit-et-probit" id="/toc-rappel-de-cours-modèles-logit-et-probit"><span class="header-section-number">1</span> Rappel de cours : Modèles Logit et Probit</a></li>
+<li><a href="#/questions-td" id="/toc-questions-td"><span class="header-section-number">2</span> Questions TD</a></li>
 </ul>
 </nav>
 </section>

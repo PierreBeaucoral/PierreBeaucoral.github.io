@@ -11,16 +11,8 @@ banner:
   image: ''
 ---
 
-## Earlier teaching and mentoring
+## Earlier teaching
 
-Courses with their own site are listed above. The following do not have one:
-
-### 2023
-
-- Introduction to economics (Bachelor level, Teaching Assistant)
-
-### 2018–2021
-
-Student Tutor and Academic Support (Université Clermont Auvergne) — tutoring and
-support for first- and second-year undergraduate economics students (help with
-tutorials and coursework).
+- **2023** · Introduction to economics — Bachelor level, teaching assistant.
+- **2018–2021** · Student tutor, Université Clermont Auvergne — tutoring first- and
+  second-year economics undergraduates on tutorials and coursework.

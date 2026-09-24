@@ -1306,6 +1306,24 @@ $ deaths         &lt;dbl&gt; 18, 22, 19, 55, 117, 170, 179, 120, 120, 2, 4, 3, 3
 <pre><code>[1] &quot;cigarPipeOnly&quot;  &quot;cigarretteOnly&quot; &quot;cigarrettePlus&quot; &quot;no&quot;            </code></pre>
 </div>
 </div>
+<aside class="notes">
+<p><strong>Q1 : pourquoi <code>i.agecod</code> plutôt que <code>agecod</code> ?</strong> (en R : <code>factor</code>)</p>
+<ul>
+<li><code>i.agecod</code> / <code>factor(age)</code> crée <strong>une indicatrice par classe</strong> (8 pour l’âge, 3 pour le tabac) : un effet propre à chaque classe, sans forme imposée.</li>
+<li><code>agecod</code> seul traiterait le code 1…9 comme <strong>numérique</strong> : un effet <strong>linéaire</strong> sur le log-taux (même hausse d’une classe à l’autre). Pour le tabac, ça n’aurait aucun sens (catégories non ordonnées).</li>
+<li>Coquille dans le fichier : <code>45-59</code> = <strong>45-49</strong>.</li>
+</ul>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section class="slide level2">
 
@@ -1332,8 +1350,7 @@ $ deaths         &lt;dbl&gt; 18, 22, 19, 55, 117, 170, 179, 120, 120, 2, 4, 3, 3
   9800000  36925000  85850000 155894444 230550000 605200000 </code></pre>
 </div>
 </div>
-<ul>
-<li><aside class="notes">
+<aside class="notes">
 <ul>
 <li>Mentionner que changer l’échelle <strong>n’affecte pas</strong> les IRR, mais la constante.</li>
 </ul>
@@ -1347,8 +1364,7 @@ height: 1px!important;
 width: 1px!important;
 overflow: hidden!important;
 display:block!important;
-}</style></aside></li>
-</ul>
+}</style></aside>
 </section>
 <section class="slide level2">
 
@@ -1397,7 +1413,14 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 <p><strong>Idée</strong> : on modélise un <strong>taux</strong> (décès / exposition). L’<strong>offset</strong> impose un coefficient de 1 sur <span class="math inline">\(\log(\text{exposition})\)</span> .</p>
 <aside class="notes">
-<p>Rappeler le choix de la catégorie de référence (premier niveau par défaut).</p>
+<p><strong>Catégorie de référence</strong> : premier niveau alphabétique → <code>cigarPipeOnly</code> (cigare/pipe seuls), <strong>pas</strong> les non-fumeurs ; âge : 40-44. Pour changer : <code>relevel(df$smoking_status, ref = &quot;no&quot;)</code>.</p>
+<p><strong>Q2 : DEV1 = 21,49</strong> pour <strong>24 df</strong> (écart au modèle saturé ; déviance ≈ df → bon ajustement, testé ensuite).</p>
+<p><strong>Q3 : effet de l’âge</strong>, facteur dominant. Coefficients tous positifs, p &lt; 0,001, IRR croissants (réf. 40-44, à tabac égal) :</p>
+<ul>
+<li>45-49 : × 1,74 · 60-64 : × 5,23 · <strong>80+ : × 17,2</strong> (IC 15,0–19,9)</li>
+<li>+30 à 50 % par classe quinquennale (+74 % pour la 1<sup>re</sup> marche).</li>
+<li>Gradient = exposition cumulée + latence du cancer.</li>
+</ul>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1438,20 +1461,20 @@ display:block!important;
 <span id="cb11-16"><a></a>  <span class="fu">gt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="rxewsdakce" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rxewsdakce table {
+<div id="roybizthlq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#roybizthlq table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#rxewsdakce thead, #rxewsdakce tbody, #rxewsdakce tfoot, #rxewsdakce tr, #rxewsdakce td, #rxewsdakce th {
+#roybizthlq thead, #roybizthlq tbody, #roybizthlq tfoot, #roybizthlq tr, #roybizthlq td, #roybizthlq th {
 border-style: none;
 }
-#rxewsdakce p {
+#roybizthlq p {
 margin: 0;
 padding: 0;
 }
-#rxewsdakce .gt_table {
+#roybizthlq .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -1476,11 +1499,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#rxewsdakce .gt_caption {
+#roybizthlq .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#rxewsdakce .gt_title {
+#roybizthlq .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -1491,7 +1514,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#rxewsdakce .gt_subtitle {
+#roybizthlq .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -1502,7 +1525,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#rxewsdakce .gt_heading {
+#roybizthlq .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -1513,12 +1536,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#rxewsdakce .gt_bottom_border {
+#roybizthlq .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#rxewsdakce .gt_col_headings {
+#roybizthlq .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -1532,7 +1555,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#rxewsdakce .gt_col_heading {
+#roybizthlq .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1551,7 +1574,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#rxewsdakce .gt_column_spanner_outer {
+#roybizthlq .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1562,13 +1585,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#rxewsdakce .gt_column_spanner_outer:first-child {
+#roybizthlq .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#rxewsdakce .gt_column_spanner_outer:last-child {
+#roybizthlq .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#rxewsdakce .gt_column_spanner {
+#roybizthlq .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -1579,10 +1602,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#rxewsdakce .gt_spanner_row {
+#roybizthlq .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#rxewsdakce .gt_group_heading {
+#roybizthlq .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1607,7 +1630,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#rxewsdakce .gt_empty_group_heading {
+#roybizthlq .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -1621,13 +1644,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#rxewsdakce .gt_from_md > :first-child {
+#roybizthlq .gt_from_md > :first-child {
 margin-top: 0;
 }
-#rxewsdakce .gt_from_md > :last-child {
+#roybizthlq .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#rxewsdakce .gt_row {
+#roybizthlq .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1645,7 +1668,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#rxewsdakce .gt_stub {
+#roybizthlq .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1657,7 +1680,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#rxewsdakce .gt_stub_row_group {
+#roybizthlq .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1670,13 +1693,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#rxewsdakce .gt_row_group_first td {
+#roybizthlq .gt_row_group_first td {
 border-top-width: 2px;
 }
-#rxewsdakce .gt_row_group_first th {
+#roybizthlq .gt_row_group_first th {
 border-top-width: 2px;
 }
-#rxewsdakce .gt_summary_row {
+#roybizthlq .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -1685,14 +1708,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#rxewsdakce .gt_first_summary_row {
+#roybizthlq .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#rxewsdakce .gt_first_summary_row.thick {
+#roybizthlq .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#rxewsdakce .gt_last_summary_row {
+#roybizthlq .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1701,7 +1724,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#rxewsdakce .gt_grand_summary_row {
+#roybizthlq .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -1710,7 +1733,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#rxewsdakce .gt_first_grand_summary_row {
+#roybizthlq .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1719,7 +1742,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#rxewsdakce .gt_last_grand_summary_row_top {
+#roybizthlq .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1728,10 +1751,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#rxewsdakce .gt_striped {
+#roybizthlq .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#rxewsdakce .gt_table_body {
+#roybizthlq .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -1739,7 +1762,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#rxewsdakce .gt_footnotes {
+#roybizthlq .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1752,7 +1775,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#rxewsdakce .gt_footnote {
+#roybizthlq .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -1760,7 +1783,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#rxewsdakce .gt_sourcenotes {
+#roybizthlq .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1773,64 +1796,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#rxewsdakce .gt_sourcenote {
+#roybizthlq .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#rxewsdakce .gt_left {
+#roybizthlq .gt_left {
 text-align: left;
 }
-#rxewsdakce .gt_center {
+#roybizthlq .gt_center {
 text-align: center;
 }
-#rxewsdakce .gt_right {
+#roybizthlq .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#rxewsdakce .gt_font_normal {
+#roybizthlq .gt_font_normal {
 font-weight: normal;
 }
-#rxewsdakce .gt_font_bold {
+#roybizthlq .gt_font_bold {
 font-weight: bold;
 }
-#rxewsdakce .gt_font_italic {
+#roybizthlq .gt_font_italic {
 font-style: italic;
 }
-#rxewsdakce .gt_super {
+#roybizthlq .gt_super {
 font-size: 65%;
 }
-#rxewsdakce .gt_footnote_marks {
+#roybizthlq .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#rxewsdakce .gt_asterisk {
+#roybizthlq .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#rxewsdakce .gt_indent_1 {
+#roybizthlq .gt_indent_1 {
 text-indent: 5px;
 }
-#rxewsdakce .gt_indent_2 {
+#roybizthlq .gt_indent_2 {
 text-indent: 10px;
 }
-#rxewsdakce .gt_indent_3 {
+#roybizthlq .gt_indent_3 {
 text-indent: 15px;
 }
-#rxewsdakce .gt_indent_4 {
+#roybizthlq .gt_indent_4 {
 text-indent: 20px;
 }
-#rxewsdakce .gt_indent_5 {
+#roybizthlq .gt_indent_5 {
 text-indent: 25px;
 }
-#rxewsdakce .katex-display {
+#roybizthlq .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#rxewsdakce div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#roybizthlq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -1864,10 +1887,17 @@ height: 0px !important;
 </div>
 </div>
 <aside class="notes">
+<p><strong>Résultats</strong> : déviance G² = 21,49 (p = 0,610) ; Pearson X² = 20,62 (p = 0,661), 24 df → <strong>on ne rejette pas H0</strong> : le modèle additif âge + tabac suffit (pas besoin de l’interaction âge × tabac).</p>
 <ul>
-<li><p>df = N − p (y c. intercept).</p></li>
-<li><p>Conditions χ² : <span class="math inline">\(\hat\mu\)</span> suffisamment grands (≈ ≥ 5).</p></li>
+<li>H0 : le modèle fait aussi bien que le saturé ; H1 : mal spécifié.</li>
+<li>Ici p <strong>élevée</strong> = rassurant (≠ « prouve » le modèle).</li>
 </ul>
+<p><strong>Q4/Q5 : pourquoi 24 df pour les deux ?</strong></p>
+<ul>
+<li>Même comparaison (observés <span class="math inline">\(y_i\)</span> vs ajustés <span class="math inline">\(\hat\mu_i\)</span>, même modèle), deux approximations du même χ²(N − p).</li>
+<li>N = 36 cellules (9 âges × 4 statuts) = paramètres du saturé (= modèle avec interaction) ; p = 12 (1 + 3 tabac + 8 âge) ; <strong>36 − 12 = 24</strong>.</li>
+</ul>
+<p><strong>Conditions χ²</strong> (<span class="math inline">\(\hat\mu \geq 5\)</span>) : seules <strong>2 cellules sur 36</strong> sont en dessous (min 3,84 : cigare/pipe 40-44 et 45-49) → OK.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1908,6 +1938,27 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 </div>
 <p><strong>Conclusion attendue</strong> : le <strong>statut tabagique</strong> améliore significativement l’ajustement.</p>
+<aside class="notes">
+<p><strong>Q6.</strong> Modèles emboîtés (mod0 = mod1 avec 3 coefficients tabac nuls). LR = DEV0 − DEV1 = 191,72 − 21,49 = <strong>170,24</strong>, χ²(3), p &lt; 0,001 → le tabac compte, même à âge égal. mod0 seul s’ajuste mal (191,72 pour 27 df).</p>
+<p>Le test dit <strong>si</strong>, pas <strong>dans quel sens</strong> → lire les IRR (réf. cigare/pipe) :</p>
+<ul>
+<li>cigarette seule × 1,45 (IC 1,34–1,56) ;</li>
+<li>cigarette + cigare/pipe × 1,19 (IC 1,10–1,27) ;</li>
+<li>non-fumeurs × 0,95, <strong>n.s.</strong> (p = 0,309).</li>
+<li>Vs non-fumeurs : cigarette seule 1,45 / 0,95 = <strong>× 1,52</strong> (+52 %).</li>
+</ul>
+<p>→ C’est la <strong>cigarette</strong> qui augmente le risque ; cigare/pipe seuls ≈ non-fumeurs.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section class="slide level2">
 
@@ -1932,6 +1983,22 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
   1             0              9              9  0</code></pre>
 </div>
 </div>
+<aside class="notes">
+<ul>
+<li>Vérifier le tableau : 1 pour <code>cigarretteOnly</code> et <code>cigarrettePlus</code>, 0 pour <code>no</code> et <code>cigarPipeOnly</code> (18 cellules chacun).</li>
+<li>Motif <code>&quot;cigarrette&quot;</code> = orthographe du fichier (deux <em>r</em>) : <code>&quot;cigarette&quot;</code> coderait tout le monde 0.</li>
+</ul>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section id="modèle-mod2" class="slide level2" data-number="10.1">
 <h2><span class="header-section-number">10.1</span> <strong>Modèle (mod2)</strong></h2>
@@ -1973,6 +2040,22 @@ AIC: 352.26
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
+<aside class="notes">
+<ul>
+<li>Fumeurs de cigarettes (seules ou non) : taux <strong>× 1,31</strong> vs les autres (IC 1,24–1,38), p &lt; 0,001.</li>
+<li>Mais <strong>mauvais ajustement</strong> : déviance 92,24 pour 26 df (p &lt; 0,001), contre 21,49 pour 24 df pour mod1 → le regroupement perd de l’information.</li>
+</ul>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section id="anova" class="slide level2" data-number="10.2">
 <h2><span class="header-section-number">10.2</span> Anova</h2>
@@ -2048,7 +2131,9 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </ul>
 <aside class="notes">
 <ul>
-<li>Commenter l’équilibre complexité (df) / gain d’ajustement.</li>
+<li>mod2 = mod1 avec <strong>2 contraintes</strong> (β<sub>cigOnly</sub> = β<sub>cigPlus</sub> et β<sub>no</sub> = 0) : 12 vs 10 paramètres.</li>
+<li>LR = 92,24 − 21,49 = <strong>70,75</strong>, χ²(2), p &lt; 0,001 → on <strong>rejette</strong> mod2 : 2 df de plus pour un gain d’ajustement énorme.</li>
+<li>La variable binaire est <strong>trop grossière</strong> : elle fusionne des groupes au risque différent.</li>
 </ul>
 <style type="text/css">
 span.MJX_Assistive_MathML {
@@ -2066,7 +2151,7 @@ display:block!important;
 
 </section></section>
 <section>
-<section id="irr-ic-95" class="title-slide slide level1 center" data-number="12">
+<section id="irr-ic-95" class="title-slide slide level1 center scrollable" data-number="12">
 <h1><span class="header-section-number">12</span> IRR &amp; IC 95%</h1>
 <div class="cell">
 <details class="code-fold">
@@ -2078,20 +2163,20 @@ display:block!important;
 <span id="cb22-5"><a></a>  <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">&quot;IRR (modèle 1) : exp(coef) avec IC 95%&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="mllahwkzrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mllahwkzrf table {
+<div id="fztvcsezdy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fztvcsezdy table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#mllahwkzrf thead, #mllahwkzrf tbody, #mllahwkzrf tfoot, #mllahwkzrf tr, #mllahwkzrf td, #mllahwkzrf th {
+#fztvcsezdy thead, #fztvcsezdy tbody, #fztvcsezdy tfoot, #fztvcsezdy tr, #fztvcsezdy td, #fztvcsezdy th {
 border-style: none;
 }
-#mllahwkzrf p {
+#fztvcsezdy p {
 margin: 0;
 padding: 0;
 }
-#mllahwkzrf .gt_table {
+#fztvcsezdy .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -2116,11 +2201,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#mllahwkzrf .gt_caption {
+#fztvcsezdy .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#mllahwkzrf .gt_title {
+#fztvcsezdy .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -2131,7 +2216,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#mllahwkzrf .gt_subtitle {
+#fztvcsezdy .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -2142,7 +2227,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#mllahwkzrf .gt_heading {
+#fztvcsezdy .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -2153,12 +2238,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mllahwkzrf .gt_bottom_border {
+#fztvcsezdy .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mllahwkzrf .gt_col_headings {
+#fztvcsezdy .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2172,7 +2257,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mllahwkzrf .gt_col_heading {
+#fztvcsezdy .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2191,7 +2276,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#mllahwkzrf .gt_column_spanner_outer {
+#fztvcsezdy .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2202,13 +2287,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#mllahwkzrf .gt_column_spanner_outer:first-child {
+#fztvcsezdy .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#mllahwkzrf .gt_column_spanner_outer:last-child {
+#fztvcsezdy .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#mllahwkzrf .gt_column_spanner {
+#fztvcsezdy .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -2219,10 +2304,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#mllahwkzrf .gt_spanner_row {
+#fztvcsezdy .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#mllahwkzrf .gt_group_heading {
+#fztvcsezdy .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2247,7 +2332,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#mllahwkzrf .gt_empty_group_heading {
+#fztvcsezdy .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -2261,13 +2346,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#mllahwkzrf .gt_from_md > :first-child {
+#fztvcsezdy .gt_from_md > :first-child {
 margin-top: 0;
 }
-#mllahwkzrf .gt_from_md > :last-child {
+#fztvcsezdy .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#mllahwkzrf .gt_row {
+#fztvcsezdy .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2285,7 +2370,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#mllahwkzrf .gt_stub {
+#fztvcsezdy .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2297,7 +2382,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mllahwkzrf .gt_stub_row_group {
+#fztvcsezdy .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2310,13 +2395,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#mllahwkzrf .gt_row_group_first td {
+#fztvcsezdy .gt_row_group_first td {
 border-top-width: 2px;
 }
-#mllahwkzrf .gt_row_group_first th {
+#fztvcsezdy .gt_row_group_first th {
 border-top-width: 2px;
 }
-#mllahwkzrf .gt_summary_row {
+#fztvcsezdy .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2325,14 +2410,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mllahwkzrf .gt_first_summary_row {
+#fztvcsezdy .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#mllahwkzrf .gt_first_summary_row.thick {
+#fztvcsezdy .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#mllahwkzrf .gt_last_summary_row {
+#fztvcsezdy .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2341,7 +2426,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mllahwkzrf .gt_grand_summary_row {
+#fztvcsezdy .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2350,7 +2435,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mllahwkzrf .gt_first_grand_summary_row {
+#fztvcsezdy .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2359,7 +2444,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#mllahwkzrf .gt_last_grand_summary_row_top {
+#fztvcsezdy .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2368,10 +2453,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#mllahwkzrf .gt_striped {
+#fztvcsezdy .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#mllahwkzrf .gt_table_body {
+#fztvcsezdy .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2379,7 +2464,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mllahwkzrf .gt_footnotes {
+#fztvcsezdy .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2392,7 +2477,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mllahwkzrf .gt_footnote {
+#fztvcsezdy .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -2400,7 +2485,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mllahwkzrf .gt_sourcenotes {
+#fztvcsezdy .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2413,64 +2498,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mllahwkzrf .gt_sourcenote {
+#fztvcsezdy .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mllahwkzrf .gt_left {
+#fztvcsezdy .gt_left {
 text-align: left;
 }
-#mllahwkzrf .gt_center {
+#fztvcsezdy .gt_center {
 text-align: center;
 }
-#mllahwkzrf .gt_right {
+#fztvcsezdy .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#mllahwkzrf .gt_font_normal {
+#fztvcsezdy .gt_font_normal {
 font-weight: normal;
 }
-#mllahwkzrf .gt_font_bold {
+#fztvcsezdy .gt_font_bold {
 font-weight: bold;
 }
-#mllahwkzrf .gt_font_italic {
+#fztvcsezdy .gt_font_italic {
 font-style: italic;
 }
-#mllahwkzrf .gt_super {
+#fztvcsezdy .gt_super {
 font-size: 65%;
 }
-#mllahwkzrf .gt_footnote_marks {
+#fztvcsezdy .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#mllahwkzrf .gt_asterisk {
+#fztvcsezdy .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#mllahwkzrf .gt_indent_1 {
+#fztvcsezdy .gt_indent_1 {
 text-indent: 5px;
 }
-#mllahwkzrf .gt_indent_2 {
+#fztvcsezdy .gt_indent_2 {
 text-indent: 10px;
 }
-#mllahwkzrf .gt_indent_3 {
+#fztvcsezdy .gt_indent_3 {
 text-indent: 15px;
 }
-#mllahwkzrf .gt_indent_4 {
+#fztvcsezdy .gt_indent_4 {
 text-indent: 20px;
 }
-#mllahwkzrf .gt_indent_5 {
+#fztvcsezdy .gt_indent_5 {
 text-indent: 25px;
 }
-#mllahwkzrf .katex-display {
+#fztvcsezdy .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#mllahwkzrf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#fztvcsezdy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -2580,6 +2665,26 @@ height: 0px !important;
 </div>
 </div>
 <p><strong>Lecture</strong> : <span class="math inline">\(IRR&gt;1\)</span> → taux ↑ vs référence ; <span class="math inline">\(IRR&lt;1\)</span> → taux ↓.</p>
+<aside class="notes">
+<p><strong>Q7 : le type de produit compte-t-il ? Oui.</strong> (réf. cigare/pipe, âge égal)</p>
+<ol type="1">
+<li><strong>Cigarette seule</strong> = le plus nocif : IRR 1,45 (× 1,52 vs non-fumeurs).</li>
+<li><strong>Cigare/pipe seuls ≈ non-fumeurs</strong> : IRR non-fumeurs 0,95, IC contient 1.</li>
+<li><strong>Mixtes</strong> (cigarette + cigare/pipe) : intermédiaire, IRR 1,19, IC disjoint de celui de la cigarette seule → sans doute moins de cigarettes fumées.</li>
+</ol>
+<p>→ D’où le rejet de mod2 : il fusionne cigarette seule et mixtes (risques différents) ; fusionner non-fumeurs et cigare/pipe serait, lui, acceptable.</p>
+<p>⚠️ Données observationnelles : associations ajustées sur l’âge, pas d’information sur l’intensité ou la durée de consommation.</p>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section class="slide level2">
 
@@ -2603,20 +2708,20 @@ height: 0px !important;
 <span id="cb23-11"><a></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">c</span>(exposure, y_obs, mu_hat), <span class="at">decimals =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="jxqzkaszto" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jxqzkaszto table {
+<div id="wlcrywoxmh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wlcrywoxmh table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#jxqzkaszto thead, #jxqzkaszto tbody, #jxqzkaszto tfoot, #jxqzkaszto tr, #jxqzkaszto td, #jxqzkaszto th {
+#wlcrywoxmh thead, #wlcrywoxmh tbody, #wlcrywoxmh tfoot, #wlcrywoxmh tr, #wlcrywoxmh td, #wlcrywoxmh th {
 border-style: none;
 }
-#jxqzkaszto p {
+#wlcrywoxmh p {
 margin: 0;
 padding: 0;
 }
-#jxqzkaszto .gt_table {
+#wlcrywoxmh .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -2641,11 +2746,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#jxqzkaszto .gt_caption {
+#wlcrywoxmh .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#jxqzkaszto .gt_title {
+#wlcrywoxmh .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -2656,7 +2761,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#jxqzkaszto .gt_subtitle {
+#wlcrywoxmh .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -2667,7 +2772,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#jxqzkaszto .gt_heading {
+#wlcrywoxmh .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -2678,12 +2783,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#jxqzkaszto .gt_bottom_border {
+#wlcrywoxmh .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jxqzkaszto .gt_col_headings {
+#wlcrywoxmh .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2697,7 +2802,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#jxqzkaszto .gt_col_heading {
+#wlcrywoxmh .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2716,7 +2821,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#jxqzkaszto .gt_column_spanner_outer {
+#wlcrywoxmh .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2727,13 +2832,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#jxqzkaszto .gt_column_spanner_outer:first-child {
+#wlcrywoxmh .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#jxqzkaszto .gt_column_spanner_outer:last-child {
+#wlcrywoxmh .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#jxqzkaszto .gt_column_spanner {
+#wlcrywoxmh .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -2744,10 +2849,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#jxqzkaszto .gt_spanner_row {
+#wlcrywoxmh .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#jxqzkaszto .gt_group_heading {
+#wlcrywoxmh .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2772,7 +2877,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#jxqzkaszto .gt_empty_group_heading {
+#wlcrywoxmh .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -2786,13 +2891,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#jxqzkaszto .gt_from_md > :first-child {
+#wlcrywoxmh .gt_from_md > :first-child {
 margin-top: 0;
 }
-#jxqzkaszto .gt_from_md > :last-child {
+#wlcrywoxmh .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#jxqzkaszto .gt_row {
+#wlcrywoxmh .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2810,7 +2915,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#jxqzkaszto .gt_stub {
+#wlcrywoxmh .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2822,7 +2927,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jxqzkaszto .gt_stub_row_group {
+#wlcrywoxmh .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2835,13 +2940,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#jxqzkaszto .gt_row_group_first td {
+#wlcrywoxmh .gt_row_group_first td {
 border-top-width: 2px;
 }
-#jxqzkaszto .gt_row_group_first th {
+#wlcrywoxmh .gt_row_group_first th {
 border-top-width: 2px;
 }
-#jxqzkaszto .gt_summary_row {
+#wlcrywoxmh .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2850,14 +2955,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jxqzkaszto .gt_first_summary_row {
+#wlcrywoxmh .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#jxqzkaszto .gt_first_summary_row.thick {
+#wlcrywoxmh .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#jxqzkaszto .gt_last_summary_row {
+#wlcrywoxmh .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2866,7 +2971,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jxqzkaszto .gt_grand_summary_row {
+#wlcrywoxmh .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2875,7 +2980,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jxqzkaszto .gt_first_grand_summary_row {
+#wlcrywoxmh .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2884,7 +2989,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#jxqzkaszto .gt_last_grand_summary_row_top {
+#wlcrywoxmh .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2893,10 +2998,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#jxqzkaszto .gt_striped {
+#wlcrywoxmh .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#jxqzkaszto .gt_table_body {
+#wlcrywoxmh .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2904,7 +3009,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#jxqzkaszto .gt_footnotes {
+#wlcrywoxmh .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2917,7 +3022,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#jxqzkaszto .gt_footnote {
+#wlcrywoxmh .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -2925,7 +3030,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jxqzkaszto .gt_sourcenotes {
+#wlcrywoxmh .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2938,64 +3043,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#jxqzkaszto .gt_sourcenote {
+#wlcrywoxmh .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#jxqzkaszto .gt_left {
+#wlcrywoxmh .gt_left {
 text-align: left;
 }
-#jxqzkaszto .gt_center {
+#wlcrywoxmh .gt_center {
 text-align: center;
 }
-#jxqzkaszto .gt_right {
+#wlcrywoxmh .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#jxqzkaszto .gt_font_normal {
+#wlcrywoxmh .gt_font_normal {
 font-weight: normal;
 }
-#jxqzkaszto .gt_font_bold {
+#wlcrywoxmh .gt_font_bold {
 font-weight: bold;
 }
-#jxqzkaszto .gt_font_italic {
+#wlcrywoxmh .gt_font_italic {
 font-style: italic;
 }
-#jxqzkaszto .gt_super {
+#wlcrywoxmh .gt_super {
 font-size: 65%;
 }
-#jxqzkaszto .gt_footnote_marks {
+#wlcrywoxmh .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#jxqzkaszto .gt_asterisk {
+#wlcrywoxmh .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#jxqzkaszto .gt_indent_1 {
+#wlcrywoxmh .gt_indent_1 {
 text-indent: 5px;
 }
-#jxqzkaszto .gt_indent_2 {
+#wlcrywoxmh .gt_indent_2 {
 text-indent: 10px;
 }
-#jxqzkaszto .gt_indent_3 {
+#wlcrywoxmh .gt_indent_3 {
 text-indent: 15px;
 }
-#jxqzkaszto .gt_indent_4 {
+#wlcrywoxmh .gt_indent_4 {
 text-indent: 20px;
 }
-#jxqzkaszto .gt_indent_5 {
+#wlcrywoxmh .gt_indent_5 {
 text-indent: 25px;
 }
-#jxqzkaszto .katex-display {
+#wlcrywoxmh .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#jxqzkaszto div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#wlcrywoxmh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -3269,6 +3374,22 @@ height: 0px !important;
 </div>
 </div>
 </div>
+<aside class="notes">
+<ul>
+<li><span class="math inline">\(\hat\mu\)</span> très proches des observés partout.</li>
+<li>Résidus de Pearson <span class="math inline">\((y - \hat\mu)/\sqrt{\hat\mu}\)</span> entre −2,00 et 1,57 : seule la cellule non-fumeurs 60-64 touche −2 (attendu par hasard sur 36 cellules) → pas d’écart systématique, cohérent avec les tests GOF.</li>
+</ul>
+<style type="text/css">
+span.MJX_Assistive_MathML {
+position:absolute!important;
+clip: rect(1px, 1px, 1px, 1px);
+padding: 1px 0 0 0!important;
+border: 0!important;
+height: 1px!important;
+width: 1px!important;
+overflow: hidden!important;
+display:block!important;
+}</style></aside>
 </section>
 <section class="slide level2">
 
@@ -3315,7 +3436,9 @@ height: 0px !important;
 </ul>
 <aside class="notes">
 <ul>
-<li>Rappeler l’impact sur <strong>SE</strong> et <strong>tests</strong>.</li>
+<li>Rapport de dispersion X²/df = <strong>0,86</strong> (p = 0,661) → <strong>pas de sur-dispersion</strong> ; Var(Y) = E(Y) compatible avec les données.</li>
+<li>SE et tests Poisson fiables : pas besoin de quasi-Poisson / NB ici.</li>
+<li>Rappeler l’impact sur <strong>SE</strong> et <strong>tests</strong> si sur-dispersion : SE sous-estimés → tests trop optimistes.</li>
 </ul>
 <style type="text/css">
 span.MJX_Assistive_MathML {

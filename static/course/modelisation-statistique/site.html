@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pierre Beaucoral">
-<meta name="description" content="Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.">
+<meta name="description" content="Index des TDs (Poisson, Logit, Multinomial/Ordinal, Survie) avec liens vers les supports et consignes.">
 
 <title>Modélisation statistique : Travaux Dirigés (M2) – modelisation statistique</title>
 <style>
@@ -4154,7 +4154,7 @@ vertical-align: -.125em;
   <li><a href="#bienvenue" id="toc-bienvenue" class="nav-link active" data-scroll-target="#bienvenue"><span class="header-section-number">1</span> Bienvenue</a>
   <ul class="collapse">
   <li><a href="#accès-rapide-aux-tds" id="toc-accès-rapide-aux-tds" class="nav-link" data-scroll-target="#accès-rapide-aux-tds"><span class="header-section-number">1.1</span> Accès rapide aux TDs</a></li>
-  <li><a href="#organisation-20252026" id="toc-organisation-20252026" class="nav-link" data-scroll-target="#organisation-20252026"><span class="header-section-number">1.2</span> Organisation (2025–2026)</a></li>
+  <li><a href="#organisation-20252026-et-20262027" id="toc-organisation-20252026-et-20262027" class="nav-link" data-scroll-target="#organisation-20252026-et-20262027"><span class="header-section-number">1.2</span> Organisation (2025–2026 et 2026–2027)</a></li>
   <li><a href="#données-et-rappel-des-contenus" id="toc-données-et-rappel-des-contenus" class="nav-link" data-scroll-target="#données-et-rappel-des-contenus"><span class="header-section-number">1.3</span> Données et rappel des contenus</a></li>
   </ul></li>
   </ul>
@@ -4166,12 +4166,12 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <div class="quarto-title-block"><div><h1 class="title">Modélisation statistique : Travaux Dirigés (M2)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-<p class="subtitle lead">Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable</p>
+<p class="subtitle lead">Années universitaires 2025–2026 et 2026–2027 • Parcours Économie de la santé &amp; Développement durable</p>
 </div>
 
 <div>
   <div class="description">
-    Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.
+    Index des TDs (Poisson, Logit, Multinomial/Ordinal, Survie) avec liens vers les supports et consignes.
   </div>
 </div>
 
@@ -4196,9 +4196,9 @@ vertical-align: -.125em;
 
 <section id="bienvenue" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Bienvenue</h1>
-<p>Ce site rassemble les <strong>trois TDs</strong> du module de <em>modélisation statistique</em> (M2).<br>
+<p>Ce site rassemble les <strong>quatre TDs</strong> du module de <em>modélisation statistique</em> (M2).<br>
 Les <strong>applications des TD</strong> ont été conçues par <a href="https://cerdi.uca.fr/version-francaise/unite/lequipe/annuaire/anne-viallefont#/">Anne Viallefont</a> (CERDI).<br>
-Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications Stata.</p>
+Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des indications R.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -4210,7 +4210,7 @@ Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des in
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Conservez une <strong>trace reproductible</strong> de vos commandes (do-file ou Quarto).</li>
+<li>Conservez une <strong>trace reproductible</strong> de vos commandes (script R ou Quarto).</li>
 <li><strong>Comparez</strong> systématiquement les modèles via tests d’ajustement (GOF, LR) et critères d’information (AIC/BIC).</li>
 </ul>
 </div>
@@ -4218,7 +4218,7 @@ Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des in
 <section id="accès-rapide-aux-tds" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="accès-rapide-aux-tds"><span class="header-section-number">1.1</span> Accès rapide aux TDs</h2>
 <div class="container-fluid">
-<div class="row row-cols-1 row-cols-md-3 g-3">
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3">
 <div class="col">
 <div class="card h-100">
 <section id="td-1-modèle-de-poisson" class="level4 card-body" data-number="1.1.0.1">
@@ -4246,12 +4246,21 @@ Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des in
 </section>
 </div>
 </div>
+<div class="col">
+<div class="card h-100">
+<section id="td-4-analyse-de-survie" class="level4 card-body" data-number="1.1.0.4">
+<h4 data-number="1.1.0.4" class="anchored" data-anchor-id="td-4-analyse-de-survie"><span class="header-section-number">1.1.0.4</span> TD 4 : Analyse de survie</h4>
+<p><strong>Durée des grèves</strong> : courbes de Kaplan-Meier, test du log-rank, modèle de <strong>Cox</strong> et modèle paramétrique de <strong>Weibull</strong>.</p>
+<p><a href="td4/enonce-td4.html" class="btn btn-primary">Ouvrir l’énoncé TD 4</a></p>
+</section>
+</div>
+</div>
 </div>
 </div>
 <hr>
 </section>
-<section id="organisation-20252026" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="organisation-20252026"><span class="header-section-number">1.2</span> Organisation (2025–2026)</h2>
+<section id="organisation-20252026-et-20262027" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="organisation-20252026-et-20262027"><span class="header-section-number">1.2</span> Organisation (2025–2026 et 2026–2027)</h2>
 <ul>
 <li><strong>Support et consignes</strong> : chaque page de TD précise les données, commandes clés et livrables attendus.<br>
 </li>
@@ -4272,7 +4281,7 @@ Note
 <p><strong>Ressources utiles</strong></p>
 <ul>
 <li><p>Révisions probabilité/GLM : notes de cours &amp; fiches méthodes.</p></li>
-<li><p>Bonnes pratiques : do-files commentés, tableaux lisibles, graphes annotés.</p></li>
+<li><p>Bonnes pratiques : scripts R commentés, tableaux lisibles, graphes annotés.</p></li>
 </ul>
 </div>
 </div>
@@ -4282,9 +4291,11 @@ Note
 <ul>
 <li><strong>TD 1 : Poisson (tabac &amp; cancer du poumon)</strong> : encodage des facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests, interprétation en <strong>ratios d’incidence</strong>.<br>
 </li>
-<li><strong>TD 2 : Logit (crédit)</strong> : recodage binaire de la variable dépendante, GOF groupé, <strong>lrtest</strong> entre modèles imbriqués, <strong>ROC/AUC</strong>, comparaison <strong>Logit/Probit</strong>, seuil optimal.<br>
+<li><strong>TD 2 : Logit (crédit)</strong> : recodage binaire de la variable dépendante, GOF groupé, <strong>test LR</strong> (<code>lrtest</code>) entre modèles imbriqués, <strong>ROC/AUC</strong>, comparaison <strong>Logit/Probit</strong>, seuil optimal.<br>
 </li>
-<li><strong>TD 3 : Multinomial/Ordinal (endomètre)</strong> : <strong>mlogit</strong> sur sous-types, prédictions et matrice de classification, <strong>ologit</strong> sur le grade, tests d’interactions, sélection par <strong>AIC</strong>.</li>
+<li><strong>TD 3 : Multinomial/Ordinal (endomètre)</strong> : <strong>logit multinomial</strong> (<code>nnet::multinom</code>) sur sous-types, prédictions et matrice de classification, <strong>logit ordonné</strong> (<code>MASS::polr</code>) sur le grade, tests d’interactions, sélection par <strong>AIC</strong>.<br>
+</li>
+<li><strong>TD 4 : Survie (durée des grèves)</strong> : données censurées, <strong>Kaplan-Meier</strong> et <strong>log-rank</strong>, vérification des risques proportionnels, modèle de <strong>Cox</strong> (<code>survival::coxph</code>), modèle de <strong>Weibull</strong> et interprétation économique.</li>
 </ul>
 <hr>
 
@@ -4748,8 +4759,8 @@ Note
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Code source</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Modélisation statistique : Travaux Dirigés (M2)&quot;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Année universitaire 2025–2026 • Parcours Économie de la santé &amp; Développement durable&quot;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Index des TDs (Poisson, Logit, Multinomial/Ordinal) avec liens vers les supports et consignes.&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Années universitaires 2025–2026 et 2026–2027 • Parcours Économie de la santé &amp; Développement durable&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Index des TDs (Poisson, Logit, Multinomial/Ordinal, Survie) avec liens vers les supports et consignes.&quot;</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> fr</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">page-layout:</span><span class="co"> full</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> false</span></span>
@@ -4777,18 +4788,18 @@ Note
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu"># Bienvenue</span></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Ce site rassemble les **trois TDs** du module de *modélisation</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Ce site rassemble les **quatre TDs** du module de *modélisation</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>statistique* (M2).\</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Les **applications des TD** ont été conçues par [Anne</span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Viallefont](https://cerdi.uca.fr/version-francaise/unite/lequipe/annuaire/anne-viallefont#/)</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>(CERDI).\</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Chaque page de TD contient l’énoncé, des rappels méthodologiques, et des</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>indications Stata.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>indications R.</span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Conseils généraux</span></span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Conservez une **trace reproductible** de vos commandes (do-file ou</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Conservez une **trace reproductible** de vos commandes (script R ou</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    Quarto).</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Comparez** systématiquement les modèles via tests d’ajustement</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    (GOF, LR) et critères d’information (AIC/BIC).</span>
@@ -4797,7 +4808,7 @@ Note
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Accès rapide aux TDs</span></span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>::::::::::::: container-fluid</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>:::::::::::: {.row .row-cols-1 .row-cols-md-3 .g-3}</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>:::::::::::: {.row .row-cols-1 .row-cols-md-2 .row-cols-xl-4 .g-3}</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>::::: col</span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>:::: {.card .h-100}</span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>::: card-body</span>
@@ -4837,43 +4848,60 @@ Note
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>::::</span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>:::::</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>::::::::::::</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>:::::::::::::</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organisation (2025–2026)</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Support et consignes** : chaque page de TD précise les données,</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    commandes clés et livrables attendus.\</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Logiciels** : R, si besoin ce référer à [ce</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    tutoriel](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    pour utiliser R.\</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Évaluation** : clarté des commentaires, qualité des comparaisons</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    de modèles, et interprétations **économétriques**.</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>**Ressources utiles**</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>::::: col</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>:::: {.card .h-100}</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>::: card-body</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="fu">#### TD 4 : Analyse de survie</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>**Durée des grèves** : courbes de Kaplan-Meier, test du log-rank,</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>modèle de **Cox** et modèle paramétrique de **Weibull**.</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Ouvrir l’énoncé TD 4</span><span class="co">](td4/enonce-td4.html)</span>{.btn .btn-primary}</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>:::::</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>::::::::::::</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>:::::::::::::</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Révisions probabilité/GLM : notes de cours &amp; fiches méthodes.</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organisation (2025–2026 et 2026–2027)</span></span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Bonnes pratiques : do-files commentés, tableaux lisibles, graphes</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    annotés.</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="fu">## Données et rappel des contenus</span></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 1 : Poisson (tabac &amp; cancer du poumon)** : encodage des</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>    facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests,</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    interprétation en **ratios d’incidence**.\</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 2 : Logit (crédit)** : recodage binaire de la variable</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>    dépendante, GOF groupé, **lrtest** entre modèles imbriqués,</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    **ROC/AUC**, comparaison **Logit/Probit**, seuil optimal.\</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 3 : Multinomial/Ordinal (endomètre)** : **mlogit** sur</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>    sous-types, prédictions et matrice de classification, **ologit** sur</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>    le grade, tests d’interactions, sélection par **AIC**.</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Support et consignes** : chaque page de TD précise les données,</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    commandes clés et livrables attendus.\</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Logiciels** : R, si besoin ce référer à [ce</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>    tutoriel](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html)</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    pour utiliser R.\</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Évaluation** : clarté des commentaires, qualité des comparaisons</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>    de modèles, et interprétations **économétriques**.</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>**Ressources utiles**</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Révisions probabilité/GLM : notes de cours &amp; fiches méthodes.</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Bonnes pratiques : scripts R commentés, tableaux lisibles, graphes</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>    annotés.</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Données et rappel des contenus</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 1 : Poisson (tabac &amp; cancer du poumon)** : encodage des</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>    facteurs, modèle log-linéaire, GOF (deviance/Pearson), LR tests,</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>    interprétation en **ratios d’incidence**.\</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 2 : Logit (crédit)** : recodage binaire de la variable</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>    dépendante, GOF groupé, **test LR** (<span class="in">`lrtest`</span>) entre modèles imbriqués,</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>    **ROC/AUC**, comparaison **Logit/Probit**, seuil optimal.\</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 3 : Multinomial/Ordinal (endomètre)** : **logit multinomial** (<span class="in">`nnet::multinom`</span>) sur</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>    sous-types, prédictions et matrice de classification, **logit ordonné** (<span class="in">`MASS::polr`</span>) sur</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    le grade, tests d’interactions, sélection par **AIC**.\</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**TD 4 : Survie (durée des grèves)** : données censurées,</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>    **Kaplan-Meier** et **log-rank**, vérification des risques</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>    proportionnels, modèle de **Cox** (<span class="in">`survival::coxph`</span>), modèle de</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>    **Weibull** et interprétation économique.</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span></code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

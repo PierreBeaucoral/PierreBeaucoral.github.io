@@ -6,6 +6,25 @@
 </div>
 
 <div class="wrap" style="padding-top:8px;padding-bottom:40px;">
+  {{- /* Academic years per course: front-matter `years` when a course is taught in several
+         years, else derived from .Date (September or later starts year Y–Y+1). */ -}}
+  {{- $yearsOf := dict -}}{{- $all := slice -}}
+  {{- range .Pages -}}
+    {{- $ys := .Params.years -}}
+    {{- if not $ys -}}
+      {{- $y := .Date.Year -}}{{- if lt (int .Date.Month) 9 -}}{{- $y = sub $y 1 -}}{{- end -}}
+      {{- $ys = slice (printf "%d–%d" $y (add $y 1)) -}}
+    {{- end -}}
+    {{- $yearsOf = merge $yearsOf (dict .File.ContentBaseName $ys) -}}
+    {{- $all = $all | append $ys -}}
+  {{- end -}}
+  {{- $all = sort (uniq $all) "value" "desc" -}}
+  {{ if gt (len $all) 1 }}
+  <div class="year-filter" role="group" aria-label="Filter courses by academic year" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+    <button type="button" class="pill" data-year="" aria-pressed="true">All years</button>
+    {{ range $all }}<button type="button" class="pill" data-year="{{ . }}" aria-pressed="false">{{ . }}</button>{{ end }}
+  </div>
+  {{ end }}
   <div class="rows">
     {{ range (sort .Pages "Date" "desc") }}
     {{- /* Link to an explicit external_link, else the course's static site.html when it
@@ -15,9 +34,10 @@
     {{- $href := .RelPermalink -}}{{- $ext := false -}}
     {{- with .Params.external_link -}}{{- $href = . -}}{{- $ext = true -}}
     {{- else -}}{{- if os.FileExists (printf "static/course/%s/site.html" $slug) -}}{{- $href = printf "/course/%s/site.html" $slug -}}{{- $ext = true -}}{{- end -}}{{- end -}}
-    <a class="" href="{{ $href }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }}>
+    {{- $ys := index $yearsOf $slug -}}
+    <a class="" href="{{ $href }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }} data-years="{{ delimit $ys "|" }}">
       <div class="row" style="grid-template-columns:150px 1fr;">
-        <div class="when" style="color:var(--forest2);">{{ dateFormat "2006" .Date }}</div>
+        <div class="when" style="color:var(--forest2);">{{ delimit $ys "<br>" | safeHTML }}</div>
         <div>
           <h3 style="margin-bottom:8px;">{{ .Title }}</h3>
           {{ with .Params.summary }}<p class="desc">{{ . }}</p>{{ end }}
@@ -35,4 +55,16 @@
     <a class="section-link" href="{{ "/course/" | relLangURL }}">All teaching →</a>
   </div>
 </div>
+  <script>
+    // Year filter: show only courses whose data-years contains the chosen year.
+    document.querySelectorAll('.year-filter [data-year]').forEach(function (b, _, all) {
+      b.addEventListener('click', function () {
+        var y = b.getAttribute('data-year');
+        all.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+        document.querySelectorAll('.rows [data-years]').forEach(function (a) {
+          a.hidden = y !== '' && a.getAttribute('data-years').split('|').indexOf(y) === -1;
+        });
+      });
+    });
+  </script>
 {{ end }}

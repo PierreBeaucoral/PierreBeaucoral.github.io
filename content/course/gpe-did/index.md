@@ -1,5 +1,6 @@
 ---
 title: "Introduction to Difference-in-Differences"
+role: ["Lecturer"]
 summary: "Master-level course on modern DiD methods (French)."
 date: "2026-01-10"
 authors: [admin]

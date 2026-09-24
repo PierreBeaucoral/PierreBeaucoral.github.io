@@ -1,5 +1,6 @@
 ---
 title: "Macroéconomie 1 : Les Politiques Économiques"
+role: ["Lecturer", "TA"]
 summary: "Cours magistral et TD (L2 AES – UCA, semestre 1) : fondements de la politique économique, marché du travail et politiques de l'emploi en France."
 date: "2026-09-01"
 # The course starts in September 2026; publishDate keeps the card visible now

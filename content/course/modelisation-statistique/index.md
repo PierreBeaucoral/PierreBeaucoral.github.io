@@ -1,5 +1,6 @@
 ---
 title: "Modélisation Statistique"
+role: ["TA"]
 summary: "Cours à destination des M2 Développement durable et économie de la santé"
 date: "2026-09-15"
 # Academic years taught (drives the year filter on /course/). Date = latest year, for sort order.

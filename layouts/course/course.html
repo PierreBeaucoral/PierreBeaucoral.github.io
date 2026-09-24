@@ -41,6 +41,7 @@
         <div>
           <h3 style="margin-bottom:8px;">{{ .Title }}</h3>
           {{ with .Params.summary }}<p class="desc">{{ . }}</p>{{ end }}
+          {{ with .Params.role }}<div style="display:flex;gap:6px;margin-top:10px;">{{ range . }}<span class="tag {{ if eq . "Lecturer" }}tag-clay{{ else }}tag-line{{ end }}">{{ . }}</span>{{ end }}</div>{{ end }}
         </div>
       </div>
     </a>

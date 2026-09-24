@@ -1,5 +1,6 @@
 ---
 title: "Introduction à l’économétrie appliquée"
+role: ["TA"]
 summary: "Cours de 30 heures (L3 École d’Économie – UCA) présentant les bases de l’économétrie : modèle linéaire, tests d’hypothèses, corrections et variables instrumentales."
 date: "2025-09-15"
 authors:

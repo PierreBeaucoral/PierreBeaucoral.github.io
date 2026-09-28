@@ -10,20 +10,8 @@
   <div class="app">
     <div class="preview">
       <div class="chrome"><i style="background:#D9534F;opacity:.5;"></i><i style="background:#E0A93C;opacity:.55;"></i><i style="background:#5FA463;opacity:.55;"></i><span class="url">github.com/PierreBeaucoral/claude-devtools-lite</span></div>
-      <div class="stage" style="display:flex;align-items:center;justify-content:center;overflow:hidden;">
-<pre class="mono" style="margin:0;font-size:11px;line-height:1.35;color:#333;">┌────────────┬───────────────────────────┬──────────────────┐
-│            │  SESSION                  │  TOKEN USE       │
-│  projects  │  prompts, thinking,       │  5h block, P90   │
-│  sessions  │  tool calls, diffs        │  limit, sparkline│
-│  search    │                           ├──────────────────┤
-│  memory    │                           │  PLAN / CONFIG   │
-│            ├───────────────────────────┤  checklist, what │
-│            │                           │  ~/.claude costs │
-│            │  TERMINAL                 ├──────────────────┤
-│            │  real claude CLI / shell  │  VIZ / FILES     │
-│            │  tabs, resume a session   │  charts, graphs, │
-│            │                           │  file explorer   │
-└────────────┴───────────────────────────┴──────────────────┘</pre>
+      <div class="stage" style="height:auto;">
+        <img src="/images/apps/claude-devtools-lite.jpg" alt="claude-devtools-lite showing a Claude Code session: project sidebar, context-window chart, timeline of prompts, tool calls and thinking blocks, token-use meter, plan pane and a knowledge-graph figure in the viz pane" loading="lazy" style="width:100%;display:block;">
         <a class="open-overlay" href="https://github.com/PierreBeaucoral/claude-devtools-lite" target="_blank" rel="noopener" aria-label="Open claude-devtools-lite on GitHub"></a>
       </div>
     </div>
@@ -32,7 +20,8 @@
         <span class="tag tag-ocean">● Open source</span><span class="mono" style="font-size:11px;color:var(--muted);">2026</span>
       </div>
       <h2>claude-devtools-lite</h2>
-      <p class="lede">A local, RStudio-style dashboard for Claude Code sessions. It reads the JSONL transcripts read-only and rebuilds what actually happened: prompts, thinking blocks, every tool call with its result, real diffs, context-window compaction, and token use against your own historical baseline. An embedded terminal resumes any session in one click, a live plan pane stays in sync with the agent, and a viz pane renders the figures it writes. One Python file and one HTML file, standard library only, on macOS, Linux and Windows.</p>
+      <p class="lede">An RStudio-style dashboard for Claude Code that runs on your own machine. When an AI agent cleans your data, runs your regressions or edits your paper, the terminal shows only a summary. This shows everything: every prompt, every command it ran with its output, the exact diff of every file it touched, its reasoning, and how many tokens it used.</p>
+      <p class="lede" style="margin-top:12px;">For researchers, that makes AI-assisted work auditable. You can trace a number in a table back to the command that produced it, check that an agent did not quietly change a sample restriction, and keep a record of the workflow for replication packages and method sections. Full-text search across sessions finds last month's analysis, and one click resumes it in the built-in terminal. A live plan pane tracks the agent's to-do list, and figures it writes appear in a preview pane where you can pin comments. It is one Python file and one HTML file, with no install beyond Python and no data leaving your computer. It runs on macOS, Linux and Windows.</p>
       <div class="techs">
         <span class="tag tag-line">Python stdlib</span><span class="tag tag-line">Vanilla JS</span><span class="tag tag-line">xterm.js</span><span class="tag tag-line">KaTeX</span><span class="tag tag-line">Claude Code</span>
       </div>

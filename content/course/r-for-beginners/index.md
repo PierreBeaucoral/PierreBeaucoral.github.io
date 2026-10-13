@@ -1,42 +1,61 @@
 ---
 title: "R programming for beginners"
 role: ["Lecturer"]
-summary: "This course is designed for those with no prior experience of data analysis. This 18-hour course on R covers loading datasets, performing basic statistics, and creating data visualizations. The course is divided into 6 3-hour sessions."
-
-authors: 
-tags:
+summary: "Introduction to R for complete beginners (Master GPE, CERDI / IHEDD): 6 sessions of 3 hours covering data import, manipulation, descriptive statistics, regression and visualisation, using World Bank WDI and WID data."
 date: '2024-09-10T00:00:00Z'
-
-
+authors:
+tags:
+  - Teaching
+  - R
+external_link: "https://pierrebeaucoral.github.io/r-for-beginners/"
 image:
-  caption:
-  focal_point: 
-
-links:
-  - icon: twitter
-    icon_pack: fab
-    name: Follow
-    url: https://twitter.com/PBeaucoral
-url_code: ''
-url_pdf: ''
-url_slides: ''
-url_video: ''
-
-# Slides (optional).
-#   Associate this project with Markdown slides.
-#   Simply enter your slide deck's filename without extension.
-#   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
-#   Otherwise, set `slides = ""`.
-slides: ""
+  caption: ""
+  focal_point: ""
 ---
 
-<div style="text-align: justify;">
+# R programming for beginners
 
-# Course outline
-This course is designed for those with no prior experience of data analysis. This 18-hour course on R covers loading datasets, performing basic statistics, and creating data visualizations. The course is divided into 6 3-hour sessions.
+This [course website](https://pierrebeaucoral.github.io/r-for-beginners/) accompanies the introductory R course taught
+in the **Master GPE (CERDI / IHEDD)**. It is designed for students with **no prior
+experience** of programming or data analysis: 6 sessions of 3 hours (18 hours in total).
 
-# Required files
+The running thread is a single question, *"Growth, health and inequality: what do the data
+say about developing countries?"*, explored with World Bank (WDI) and World Inequality
+Database (WID) data.
 
-Data required can be downloaded [here](https://pierrebeaucoral.github.io/course/r-for-beginners/Data.zip), course with code and explanation can be downloaded [here](https://pierrebeaucoral.github.io/course/r-for-beginners/CoursR.html). 
+---
 
-Also, few [slides](https://pierrebeaucoral.github.io/course/r-for-beginners/GPE_Graphiques.html) on how to make visualization in the case of GPE student.
+## Objectives
+
+By the end of the course, you will be able to:
+
+* **Work** comfortably in R and RStudio.
+* **Import, clean and combine** real-world datasets.
+* **Describe** data and estimate simple regressions.
+* **Communicate** results with clear figures, maps and reproducible Quarto reports.
+
+---
+
+## Sessions
+
+1. [Getting started with R and RStudio](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-1.html)
+2. [Importing and exporting data](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-2.html)
+3. [Data manipulation (dplyr, tidyr, joins)](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-3.html)
+4. [Descriptive statistics and regression](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-4.html)
+5. [Visualising with ggplot2 (and maps)](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-5.html)
+6. [Advanced visualisation and Quarto reports](https://pierrebeaucoral.github.io/r-for-beginners/seances/seance-6.html)
+
+**Dataviz workshop** (in French): [Atelier dataviz, une figure pour la note au ministre](https://pierrebeaucoral.github.io/r-for-beginners/slides/atelier-dataviz.html).
+
+See also the [resources page](https://pierrebeaucoral.github.io/r-for-beginners/resources.html) for references and data sources.
+
+---
+
+## Before the first session
+
+1. Install [R](https://cran.r-project.org/) and then [RStudio Desktop](https://posit.co/download/rstudio-desktop/).
+2. Download the [course data archive (data.zip)](https://pierrebeaucoral.github.io/r-for-beginners/data.zip) and unzip it in a folder you will use for the course.
+
+---
+
+*Last updated: October 2026.*

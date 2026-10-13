@@ -1,7 +1,7 @@
 ---
 title: "R programming for beginners"
 role: ["Lecturer"]
-summary: "Introduction to R for complete beginners (Master GPE, CERDI / IHEDD): 6 sessions of 3 hours covering data import, manipulation, descriptive statistics, regression and visualisation, using World Bank WDI and WID data."
+summary: "Introduction to R for complete beginners (Master GPE, CERDI / IHEDD): 6 illustrated sessions of 3 hours, from importing World Bank and WID data to regressions, maps and Quarto reports, with exercises, solutions and a dataviz workshop."
 date: '2024-09-10T00:00:00Z'
 authors:
 tags:
@@ -9,8 +9,8 @@ tags:
   - R
 external_link: "https://pierrebeaucoral.github.io/r-for-beginners/"
 image:
-  caption: ""
-  focal_point: ""
+  caption: "Richer countries live longer, with diminishing returns (World Bank WDI, 2019): the figure students learn to build in Session 5."
+  focal_point: "Center"
 ---
 
 # R programming for beginners
@@ -22,6 +22,10 @@ experience** of programming or data analysis: 6 sessions of 3 hours (18 hours in
 The running thread is a single question, *"Growth, health and inequality: what do the data
 say about developing countries?"*, explored with World Bank (WDI) and World Inequality
 Database (WID) data.
+
+Each session page mixes the R code with **charts of the results**, **diagrams** of the key
+concepts (the pipe, joins, reshaping, how a report is built), short **"Key idea"** and
+**"Common mistake"** boxes, and exercises with collapsible solutions.
 
 ---
 
@@ -58,4 +62,4 @@ See also the [resources page](https://pierrebeaucoral.github.io/r-for-beginners/
 
 ---
 
-*Last updated: October 2026.*
+*Last updated: 14 October 2026.*

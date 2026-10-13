@@ -10,7 +10,7 @@ tags:
 external_link: "https://pierrebeaucoral.github.io/r-for-beginners/"
 image:
   caption: "Richer countries live longer, with diminishing returns (World Bank WDI, 2019): the figure students learn to build in Session 5."
-  focal_point: "Center"
+  focal_point: ""
 ---
 
 # R programming for beginners

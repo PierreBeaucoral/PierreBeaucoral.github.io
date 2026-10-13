@@ -29,7 +29,7 @@
 
 {{ with .Resources.GetMatch "featured*" }}
 <div class="figure">
-  <div class="box">{{ $f := .Fill "1600x900 smart" }}<img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" style="width:100%;height:auto;"></div>
+  <div class="box">{{ $f := .Fill "1600x900 smart" }}<img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="{{ with $.Params.image }}{{ .caption }}{{ end }}" style="display:block;width:100%;max-width:600px;height:auto;margin:0 auto;"></div>
 </div>
 {{ end }}
 

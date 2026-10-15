@@ -8,7 +8,7 @@
 
   <div class="badges" style="margin:26px 0 12px;">
     {{ with .Params.status }}<span class="chip {{ if eq . "jmp" }}chip-jmp{{ else if eq . "rr" }}chip-rr{{ else if eq . "published" }}chip-published{{ else if eq . "wip" }}chip-wip{{ else }}chip-wp{{ end }}">{{ if eq . "wip" }}Work in progress{{ else if eq . "wp" }}Working paper{{ else }}{{ . | upper }}{{ end }}</span>{{ end }}
-    <span class="mono" style="font-size:11px;color:var(--muted);">{{ dateFormat "January 2006" .Date }}</span>
+    <span class="mono" style="font-size:12.5px;color:var(--muted);">{{ dateFormat "January 2006" .Date }}</span>
   </div>
 
   <h1>{{ .Title }}</h1>
@@ -40,7 +40,7 @@
 
 <section class="article" style="padding-top:48px;">
   {{ with .Params.abstract }}
-  <div class="mono" style="font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--clay);margin-bottom:18px;">Abstract</div>
+  <div class="mono" style="font-size:13px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Abstract</div>
   <div class="prose"><p>{{ . | markdownify }}</p></div>
   {{ end }}
   {{ with .Content }}<div class="prose" style="margin-top:18px;">{{ . }}</div>{{ end }}

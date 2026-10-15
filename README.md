@@ -112,5 +112,9 @@ you ship a new tool. `content/apps/_index.md` just makes the `/apps/` section ex
 ## 6. Colours & type (if you want to tweak)
 
 All in `static/css/site.css` under `:root`:
-`--paper #EEF0EA · --ink #1E231D · --forest #18241D · --forest2 #2E6048 · --clay #9C5234 · --ocean #2C5C70`.
+`--paper #EEF0EA · --ink #1E231D · --forest #18241D · --forest2 #2E6048 · --accent #7A3B5E (plum) · --ocean #2C5C70`.
+`--accent` marks actions and the JMP only (section labels are `--forest2`); on the dark
+hero use `--accent-on-dark #D69BBE`. The dot in `assets/media/icon.png` is the same plum.
+List rows set their date column with `style="--cols:140px 1fr"`, never an inline
+`grid-template-columns`, so the phone layout can collapse them.
 Fonts: Newsreader (headings), IBM Plex Sans (body), IBM Plex Mono (labels) via Google Fonts.

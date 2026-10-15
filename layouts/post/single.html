@@ -9,8 +9,8 @@
 </article>
 
 {{ with .Resources.GetMatch "featured*" }}
-<div class="figure" style="max-width:880px;margin:0 auto;padding:0 40px;">
-  <div class="box" style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 24px 50px -34px rgba(27,38,32,0.5);">
+<div class="figure">
+  <div class="box">
     {{ $f := .Fill "1600x900 smart" }}<img src="{{ $f.RelPermalink }}" width="{{ $f.Width }}" height="{{ $f.Height }}" alt="" style="width:100%;height:auto;">
   </div>
 </div>

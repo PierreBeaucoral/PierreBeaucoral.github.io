@@ -16,7 +16,7 @@
     <div class="rows">
       {{ range (sort .Pages "Date" "desc") }}
       <a href="{{ .RelPermalink }}">
-        <div class="row" style="grid-template-columns:150px 1fr;">
+        <div class="row" style="--cols:150px 1fr;">
           <div class="when" style="color:var(--muted);">{{ dateFormat "Jan 2006" .Date }}</div>
           <div><h3>{{ .Title }}</h3>{{ with .Params.summary }}<p class="desc">{{ . | plainify | truncate 200 }}</p>{{ end }}</div>
         </div>

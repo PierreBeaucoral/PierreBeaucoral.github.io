@@ -9,7 +9,7 @@
   <div class="rows">
     {{ range (sort .Pages "Date" "desc") }}
     {{- $url := .Params.link | default .Params.url_article -}}
-    <div class="row" style="grid-template-columns:170px 1fr;">
+    <div class="row" style="--cols:170px 1fr;">
       <div class="when" style="color:var(--ocean);">{{ dateFormat "Jan 2006" .Date }}</div>
       <div>
         <div class="badges">

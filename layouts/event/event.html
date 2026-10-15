@@ -8,8 +8,8 @@
 <div class="wrap" style="padding-top:8px;padding-bottom:40px;">
   <div class="rows">
     {{ range (sort .Pages "Date" "desc") }}
-    <div class="row" style="grid-template-columns:170px 1fr;">
-      <div class="when" style="color:var(--clay);">{{ dateFormat "Jan 2006" .Date }}</div>
+    <div class="row" style="--cols:170px 1fr;">
+      <div class="when" style="color:var(--accent);">{{ dateFormat "Jan 2006" .Date }}</div>
       <div>
         <h3 style="margin-bottom:6px;">{{ .Params.event | default .Title }}</h3>
         {{ with .Params.summary }}<p class="desc" style="margin-bottom:6px;">{{ . }}</p>{{ end }}

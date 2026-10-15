@@ -36,12 +36,12 @@
     {{- else -}}{{- if os.FileExists (printf "static/course/%s/site.html" $slug) -}}{{- $href = printf "/course/%s/site.html" $slug -}}{{- $ext = true -}}{{- end -}}{{- end -}}
     {{- $ys := index $yearsOf $slug -}}
     <a class="" href="{{ $href }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }} data-years="{{ delimit $ys "|" }}">
-      <div class="row" style="grid-template-columns:150px 1fr;">
+      <div class="row" style="--cols:150px 1fr;">
         <div class="when" style="color:var(--forest2);">{{ delimit $ys "<br>" | safeHTML }}</div>
         <div>
           <h3 style="margin-bottom:8px;">{{ .Title }}</h3>
           {{ with .Params.summary }}<p class="desc">{{ . }}</p>{{ end }}
-          {{ with .Params.role }}<div style="display:flex;gap:6px;margin-top:10px;">{{ range . }}<span class="tag {{ if eq . "Lecturer" }}tag-clay{{ else }}tag-line{{ end }}">{{ . }}</span>{{ end }}</div>{{ end }}
+          {{ with .Params.role }}<div style="display:flex;gap:6px;margin-top:10px;">{{ range . }}<span class="tag {{ if eq . "Lecturer" }}tag-accent{{ else }}tag-line{{ end }}">{{ . }}</span>{{ end }}</div>{{ end }}
         </div>
       </div>
     </a>

@@ -8,7 +8,6 @@
     <span class="chip chip-rr">R&amp;R</span>
     <span class="chip chip-wp">Working paper</span>
     <span class="chip chip-wip">Work in progress</span>
-    <span class="mono" style="font-size:11px;color:var(--muted);margin-left:6px;">↳ status &amp; homepage-pin set per paper</span>
   </div>
 </div>
 
@@ -27,7 +26,7 @@
   {{- end -}}
 {{- end -}}
 
-{{- $groups := slice (dict "k" "jmp" "label" "Job market paper" "color" "var(--clay)") (dict "k" "published" "label" "Published" "color" "var(--forest2)") (dict "k" "rr" "label" "Revise &amp; resubmit" "color" "var(--ocean)") (dict "k" "wp" "label" "Working papers" "color" "var(--muted)") (dict "k" "wip" "label" "Work in progress" "color" "var(--muted)") -}}
+{{- $groups := slice (dict "k" "jmp" "label" "Job market paper" "color" "var(--accent)") (dict "k" "published" "label" "Published" "color" "var(--forest2)") (dict "k" "rr" "label" "Revise &amp; resubmit" "color" "var(--ocean)") (dict "k" "wp" "label" "Working papers" "color" "var(--muted)") (dict "k" "wip" "label" "Work in progress" "color" "var(--muted)") -}}
 
 <div class="wrap" style="padding-top:40px;padding-bottom:48px;">
   {{ range $groups }}

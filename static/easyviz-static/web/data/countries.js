@@ -4,8 +4,9 @@
 // keeping it client-side means the country multi-select populates
 // instantly instead of waiting on a WB /country round-trip.
 //
-// Presets are the same editorial groups as the Streamlit EasyViz
-// `src/regions.py`. "All countries" is a sentinel that expands to
+// Presets: SSA, Low- & Middle-Income and LDCs follow the official
+// World Bank / UN classifications (sources dated inline); the others are
+// fixed memberships or editorial picks. "All countries" is a sentinel that expands to
 // the full COUNTRIES list at resolve time.
 
 export const COUNTRIES = [
@@ -105,26 +106,41 @@ export const PRESETS = {
     "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD",
     "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE",
   ],
+  // World Bank region SSF (all 48 economies), live /v2/country, Oct 2026.
   "Sub-Saharan Africa": [
-    "AGO", "BEN", "BWA", "BFA", "BDI", "CPV", "CMR", "CAF", "TCD", "COM",
-    "COD", "COG", "CIV", "GNQ", "ERI", "SWZ", "ETH", "GAB", "GMB", "GHA",
-    "GIN", "GNB", "KEN", "LSO", "LBR", "MDG", "MWI", "MLI", "MRT", "MUS",
-    "MOZ", "NAM", "NER", "NGA", "RWA", "STP", "SEN", "SYC", "SLE", "SOM",
-    "ZAF", "SSD", "SDN", "TZA", "TGO", "UGA", "ZMB", "ZWE",
+    "AGO", "BDI", "BEN", "BFA", "BWA", "CAF", "CIV", "CMR", "COD", "COG",
+    "COM", "CPV", "ERI", "ETH", "GAB", "GHA", "GIN", "GMB", "GNB", "GNQ",
+    "KEN", "LBR", "LSO", "MDG", "MLI", "MOZ", "MRT", "MUS", "MWI", "NAM",
+    "NER", "NGA", "RWA", "SDN", "SEN", "SLE", "SOM", "SSD", "STP", "SWZ",
+    "SYC", "TCD", "TGO", "TZA", "UGA", "ZAF", "ZMB", "ZWE",
   ],
+  // World Bank income groups LIC + LMC + UMC, FY27 classification
+  // (live /v2/country, Oct 2026). Reclassified every 1 July.
   "Low- & Middle-Income": [
-    "AGO", "BGD", "BEN", "BOL", "BFA", "KHM", "CMR", "COL", "CIV", "EGY",
-    "ETH", "GHA", "GTM", "HND", "IND", "IDN", "KEN", "KGZ", "LAO", "MDG",
-    "MWI", "MLI", "MRT", "MDA", "MNG", "MAR", "MMR", "NPL", "NIC", "NGA",
-    "PAK", "PHL", "RWA", "SEN", "LKA", "TZA", "TGO", "TUN", "UGA", "UZB",
-    "VNM", "ZMB", "ZWE",
+    "AFG", "AGO", "ALB", "ARG", "ARM", "AZE", "BDI", "BEN", "BFA", "BGD",
+    "BIH", "BLR", "BLZ", "BOL", "BRA", "BTN", "BWA", "CAF", "CHN", "CIV",
+    "CMR", "COD", "COG", "COL", "COM", "CPV", "CUB", "DJI", "DMA", "DOM",
+    "DZA", "ECU", "EGY", "ERI", "ETH", "FJI", "FSM", "GAB", "GEO", "GHA",
+    "GIN", "GMB", "GNB", "GNQ", "GRD", "GTM", "HND", "HTI", "IDN", "IND",
+    "IRN", "IRQ", "JAM", "JOR", "KAZ", "KEN", "KGZ", "KHM", "KIR", "LAO",
+    "LBN", "LBR", "LBY", "LCA", "LKA", "LSO", "MAR", "MDA", "MDG", "MDV",
+    "MEX", "MHL", "MKD", "MLI", "MMR", "MNE", "MNG", "MOZ", "MRT", "MUS",
+    "MWI", "MYS", "NAM", "NER", "NGA", "NIC", "NPL", "PAK", "PER", "PHL",
+    "PNG", "PRK", "PRY", "PSE", "RWA", "SDN", "SEN", "SLB", "SLE", "SLV",
+    "SOM", "SRB", "SSD", "STP", "SUR", "SWZ", "SYR", "TCD", "TGO", "THA",
+    "TJK", "TKM", "TLS", "TON", "TUN", "TUR", "TUV", "TZA", "UGA", "UKR",
+    "UZB", "VCT", "VEN", "VNM", "VUT", "WSM", "XKX", "YEM", "ZAF", "ZMB",
+    "ZWE",
   ],
+  // UN list of LDCs as of 19 Dec 2024 (44; Sao Tome and Principe graduated
+  // 13 Dec 2024). Bangladesh, Lao PDR and Nepal graduate 24 Nov 2026
+  // (A/RES/76/8) — drop BGD, LAO, NPL after that date.
   "LDCs (UN)": [
-    "AFG", "AGO", "BGD", "BEN", "BFA", "BDI", "KHM", "CAF", "TCD", "COM",
-    "COD", "DJI", "ERI", "ETH", "GMB", "GIN", "GNB", "HTI", "KIR", "LAO",
-    "LSO", "LBR", "MDG", "MWI", "MLI", "MRT", "MOZ", "MMR", "NPL", "NER",
-    "RWA", "STP", "SEN", "SLE", "SLB", "SOM", "SSD", "SDN", "TZA", "TLS",
-    "TGO", "TUV", "UGA", "YEM", "ZMB",
+    "AFG", "AGO", "BDI", "BEN", "BFA", "BGD", "CAF", "COD", "COM", "DJI",
+    "ERI", "ETH", "GIN", "GMB", "GNB", "HTI", "KHM", "KIR", "LAO", "LBR",
+    "LSO", "MDG", "MLI", "MMR", "MOZ", "MRT", "MWI", "NER", "NPL", "RWA",
+    "SDN", "SEN", "SLB", "SLE", "SOM", "SSD", "TCD", "TGO", "TLS", "TUV",
+    "TZA", "UGA", "YEM", "ZMB",
   ],
   "BRICS": ["BRA", "RUS", "IND", "CHN", "ZAF"],
   "G7":    ["CAN", "FRA", "DEU", "ITA", "JPN", "GBR", "USA"],

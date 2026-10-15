@@ -40,9 +40,9 @@ export const INDICATORS = [
   { id: "tax_revenue",       name: "Tax revenue (% of GDP)",                   category: "Economy", source: "wdi", code: "GC.TAX.TOTL.GD.ZS",   unit: "% of GDP",                 tags: ["tax", "government"] },
 
   // ── Poverty & Inequality ────────────────────────────────────────────────
-  { id: "poverty_215",       name: "Poverty headcount ratio at $3.00 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.DDAY",         unit: "% of population",          tags: ["poverty", "extreme"] },
-  { id: "poverty_365",       name: "Poverty headcount ratio at $4.20 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.LMIC",         unit: "% of population",          tags: ["poverty"] },
-  { id: "poverty_685",       name: "Poverty headcount ratio at $8.30 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.UMIC",         unit: "% of population",          tags: ["poverty"] },
+  { id: "poverty_300",       name: "Poverty headcount ratio at $3.00 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.DDAY",         unit: "% of population",          tags: ["poverty", "extreme"] },
+  { id: "poverty_420",       name: "Poverty headcount ratio at $4.20 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.LMIC",         unit: "% of population",          tags: ["poverty"] },
+  { id: "poverty_830",       name: "Poverty headcount ratio at $8.30 a day (2021 PPP) (% of population)",       category: "Poverty", source: "wdi", code: "SI.POV.UMIC",         unit: "% of population",          tags: ["poverty"] },
   { id: "gini",              name: "Gini index",                               category: "Poverty", source: "wdi", code: "SI.POV.GINI",         unit: "index",                    tags: ["inequality", "gini"] },
   { id: "income_top10",      name: "Income share held by highest 10%",         category: "Poverty", source: "wdi", code: "SI.DST.10TH.10",      unit: "% of income",              tags: ["inequality", "top decile"] },
   { id: "income_bottom20",   name: "Income share held by lowest 20%",          category: "Poverty", source: "wdi", code: "SI.DST.FRST.20",      unit: "% of income",              tags: ["inequality"] },
@@ -131,7 +131,18 @@ export const INDICATORS = [
 
 export const CATEGORIES = [...new Set(INDICATORS.map(r => r.category))].sort();
 
+// Retired ids → current ids, so old shared links and saved views still resolve.
+// Poverty lines moved from 2017 PPP ($2.15/$3.65/$6.85) to 2021 PPP in 2025.
+export const ID_ALIASES = {
+  poverty_215: "poverty_300",
+  poverty_365: "poverty_420",
+  poverty_685: "poverty_830",
+};
+
+export const canonicalId = (id) => ID_ALIASES[id] ?? id;
+
 export function byId(id) {
+  id = canonicalId(id);
   return INDICATORS.find(r => r.id === id) ?? null;
 }
 

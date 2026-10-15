@@ -162,7 +162,7 @@
 
   <script src="./config.js"></script>
   <script type="module">
-    import { INDICATORS, byId } from "./data/catalog.js";
+    import { INDICATORS, byId, canonicalId } from "./data/catalog.js";
     import { fetchSeries, END_YEAR } from "./js/wdi.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
     import { renderChoropleth } from "./js/map.js";
@@ -449,7 +449,7 @@
 
     // Bootstrap.
     (async () => {
-      const initialId = url.get("id") || "gdp_pc_ppp";
+      const initialId = canonicalId(url.get("id")) || "gdp_pc_ppp";
       if (initialId.startsWith("wdi_")) {
         try {
           const full = await loadFull();

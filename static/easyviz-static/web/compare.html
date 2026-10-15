@@ -186,7 +186,7 @@
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module">
-    import { INDICATORS, byId } from "./data/catalog.js";
+    import { INDICATORS, byId, canonicalId } from "./data/catalog.js";
     import { PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
     import { crossSection, gapminderPanel, fetchSeries, END_YEAR } from "./js/wdi.js";
     import { makeScatter, makeBubble, makeGapminder } from "./js/charts.js";
@@ -264,12 +264,12 @@
       }
     }
 
-    populate(aEl, url.get("a") || "gdp_pc_ppp");
-    populate(bEl, url.get("b") || "life_expectancy");
-    populate(sEl, url.get("size") || "population", { allowNone: true });
+    populate(aEl, canonicalId(url.get("a")) || "gdp_pc_ppp");
+    populate(bEl, canonicalId(url.get("b")) || "life_expectancy");
+    populate(sEl, canonicalId(url.get("size")) || "population", { allowNone: true });
     populate(corrIndsEl, null, { multi: true });
     // Preselect a reasonable starter set for the correlation tab.
-    const defaultCorr = (url.getList("corr").length ? url.getList("corr")
+    const defaultCorr = (url.getList("corr").length ? url.getList("corr").map(canonicalId)
       : ["gdp_pc_ppp", "life_expectancy", "u5_mortality", "gini", "co2_pc", "unemployment"]);
     for (const opt of corrIndsEl.options) if (defaultCorr.includes(opt.value)) opt.selected = true;
     enhanceMultiSelect(corrIndsEl, { noun: "indicator", placeholder: "Add an indicator…", max: 8 });

@@ -180,7 +180,7 @@
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module">
-    import { INDICATORS, byId } from "./data/catalog.js";
+    import { INDICATORS, byId, canonicalId } from "./data/catalog.js";
     import { COUNTRIES, ISO3_TO_NAME, PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
     import { fetchSeries, summaryStats, END_YEAR } from "./js/wdi.js";
     import { makeLine, makeBar } from "./js/charts.js";
@@ -572,7 +572,7 @@
     (async () => {
       populatePresets();
 
-      const initialId = url.get("id") || cfg.defaultIndicatorId || "gdp_pc_ppp";
+      const initialId = canonicalId(url.get("id")) || cfg.defaultIndicatorId || "gdp_pc_ppp";
       if (initialId.startsWith("wdi_")) {
         try {
           const full = await loadFull();

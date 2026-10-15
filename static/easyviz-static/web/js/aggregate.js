@@ -5,6 +5,8 @@
 // Numerical correctness is validated against R equivalents (see
 // README.md § "Cross-language validation").
 
+import { ISO3_TO_NAME } from "../data/countries.js";
+
 // ── Internal helpers ────────────────────────────────────────────────────
 
 function groupByCountry(rows) {
@@ -31,7 +33,7 @@ function mean(arr) {
   return arr.reduce((s, v) => s + v, 0) / arr.length;
 }
 
-function median(arr) {
+export function median(arr) {
   if (!arr.length) return NaN;
   const s = [...arr].sort((a, b) => a - b);
   const m = Math.floor(s.length / 2);
@@ -42,6 +44,13 @@ function median(arr) {
 //
 // Each method applies per-country (preserving the panel). Return rows
 // have the same schema; year metadata may shift (e.g. decade means).
+// Windows and lags are defined on calendar years, not row positions, so
+// gaps in a series never silently stretch the horizon: YoY needs the
+// value at year-1, CAGR the value at year-5, MA5 averages whatever is
+// observed in [year-2, year+2] (min 3 obs), decade means need ≥ 5 of
+// the 10 years.
+
+export const DECADE_MIN_OBS = 5;
 
 export function aggregateTime(rows, opts = {}) {
   const method = opts.method || "none";
@@ -52,17 +61,18 @@ export function aggregateTime(rows, opts = {}) {
 
   for (const [iso3, series] of byC) {
     const country = series[0].country;
+    const byYear = new Map(series.map(r => [r.year, r.value]));
 
     if (method === "ma5") {
-      // 5-year centered moving average (window = 5, min_periods = 3).
-      for (let i = 0; i < series.length; i++) {
-        const lo = Math.max(0, i - 2), hi = Math.min(series.length - 1, i + 2);
-        const window = series.slice(lo, hi + 1).map(r => r.value);
+      // 5-year centered moving average over years [y-2, y+2], min 3 obs.
+      for (const { year } of series) {
+        const window = [];
+        for (let y = year - 2; y <= year + 2; y++) if (byYear.has(y)) window.push(byYear.get(y));
         if (window.length < 3) continue;
-        out.push({ iso3, country, year: series[i].year, value: mean(window) });
+        out.push({ iso3, country, year, value: mean(window) });
       }
     } else if (method === "decade") {
-      // Decade means.
+      // Decade means (min 5 observed years per decade).
       const buckets = new Map();
       for (const r of series) {
         const dec = Math.floor(r.year / 10) * 10;
@@ -70,26 +80,24 @@ export function aggregateTime(rows, opts = {}) {
         buckets.get(dec).push(r.value);
       }
       for (const [dec, vals] of [...buckets.entries()].sort((a, b) => a[0] - b[0])) {
+        if (vals.length < DECADE_MIN_OBS) continue;
         out.push({ iso3, country, year: dec + 5, value: mean(vals) });
       }
     } else if (method === "yoy") {
-      // Year-on-year percent change.
-      for (let i = 1; i < series.length; i++) {
-        const prev = series[i - 1].value;
+      // Year-on-year percent change (requires the value at year - 1).
+      for (const { year, value } of series) {
+        const prev = byYear.get(year - 1);
         if (!Number.isFinite(prev) || prev === 0) continue;
-        out.push({
-          iso3, country,
-          year: series[i].year,
-          value: 100 * (series[i].value / prev - 1),
-        });
+        out.push({ iso3, country, year, value: 100 * (value / prev - 1) });
       }
     } else if (method === "cagr") {
-      // Rolling 5-year CAGR (%).
-      for (let i = 5; i < series.length; i++) {
-        const base = series[i - 5].value;
+      // Rolling 5-year CAGR (%), base = value at year - 5.
+      for (const { year, value } of series) {
+        const base = byYear.get(year - 5);
         if (!Number.isFinite(base) || base <= 0) continue;
-        const r = Math.pow(series[i].value / base, 1 / 5) - 1;
-        out.push({ iso3, country, year: series[i].year, value: 100 * r });
+        const r = Math.pow(value / base, 1 / 5) - 1;
+        if (!Number.isFinite(r)) continue; // negative end value
+        out.push({ iso3, country, year, value: 100 * r });
       }
     } else if (method === "index") {
       const baseYear = opts.baseYear ?? 2000;
@@ -133,16 +141,17 @@ export function aggregateEntities(rows, opts = {}) {
   );
 
   for (const [year, group] of [...byY.entries()].sort((a, b) => a[0] - b[0])) {
-    let value;
+    let value, n = group.length;
     if (method === "mean") value = mean(group.map(r => r.value));
     else if (method === "median") value = median(group.map(r => r.value));
     else if (method === "sum") value = group.reduce((s, r) => s + r.value, 0);
     else if (method === "pop_weighted" || method === "gdp_weighted") {
       let num = 0, den = 0;
+      n = 0;
       for (const r of group) {
         const w = wByKey.get(`${r.iso3}__${year}`);
         if (!Number.isFinite(w) || w <= 0) continue;
-        num += r.value * w; den += w;
+        num += r.value * w; den += w; n++;
       }
       if (den === 0) continue;
       value = num / den;
@@ -153,9 +162,30 @@ export function aggregateEntities(rows, opts = {}) {
       country: label,
       year,
       value,
+      n, // countries contributing this year
     });
   }
   return out;
+}
+
+// Balanced panel: keep only countries observed in every year of
+// [yearFrom, yearTo]. With `weights` (rows shaped like fetchSeries()),
+// a country-year also needs a finite, positive weight — the same rule
+// aggregateEntities() applies — so the weighted mean's sample is fixed.
+export function balancePanel(rows, { yearFrom, yearTo, weights = null }) {
+  const wOk = new Set();
+  if (weights) for (const w of weights)
+    if (Number.isFinite(w.value) && w.value > 0) wOk.add(`${w.iso3}__${w.year}`);
+  const span = yearTo - yearFrom + 1;
+  const keep = new Set();
+  for (const [iso3, series] of groupByCountry(rows)) {
+    const years = new Set(series
+      .filter(r => r.year >= yearFrom && r.year <= yearTo && Number.isFinite(r.value)
+                && (!weights || wOk.has(`${iso3}__${r.year}`)))
+      .map(r => r.year));
+    if (years.size === span) keep.add(iso3);
+  }
+  return rows.filter(r => keep.has(r.iso3) && r.year >= yearFrom && r.year <= yearTo);
 }
 
 // ── Missing-data diagnostics ───────────────────────────────────────────
@@ -178,10 +208,13 @@ export function diagnostics(rows, { yearFrom, yearTo, countries }) {
 
   const yearSpan = yearTo - yearFrom + 1;
   const gapsByCountry = [];
-  for (const [iso3, series] of byC) {
+  // Iterate the *selected* countries so zero-coverage ones are listed.
+  const isoList = (countries && countries.length) ? countries : [...isoSet];
+  for (const iso3 of isoList) {
+    const series = byC.get(iso3) || [];
     gapsByCountry.push({
       iso3,
-      country: series[0].country,
+      country: series[0]?.country ?? ISO3_TO_NAME[iso3] ?? iso3,
       n: series.length,
       coverage: series.length / yearSpan,
     });

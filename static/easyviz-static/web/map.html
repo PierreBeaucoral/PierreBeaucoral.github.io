@@ -4,127 +4,172 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EasyViz — choropleth map</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
-        <a href="./map.html" class="active">Map</a>
+        <a href="./map.html" aria-current="page">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <h1 id="map-title">World choropleth</h1>
-    <p class="lede" id="map-lede">Pick an indicator and a year. Hover a country for its value. Every map exports to CSV and copy-pasteable R (ggplot2 + sf + rnaturalearth).</p>
+  <main class="container bench">
+    <aside class="rail" aria-label="Map settings">
+      <h2 class="rail__title">Map settings</h2>
+      <div class="controls">
+        <div>
+          <label for="indicator">Indicator</label>
+          <select id="indicator"></select>
+        </div>
+        <div>
+          <label for="agg-mode">Period aggregation <span class="ev-help" data-help="Single year: show the value for the chosen year. Mean/median/sum/max/min: collapse the window to one value per country, dropping missing years (NAs) so sparse indicators fill more of the map.">i</span></label>
+          <select id="agg-mode">
+            <option value="single">Single year (no aggregation)</option>
+            <option value="mean">Mean over period</option>
+            <option value="median">Median over period</option>
+            <option value="sum">Cumulative sum over period</option>
+            <option value="max">Max over period</option>
+            <option value="min">Min over period</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="year" id="year-label-text">Year <span class="ev-help" data-help="Single-year mode: the value shown is for this year. Period-aggregation mode: this is the first year of the window.">i</span></label>
+            <input id="year" type="number" min="1960" max="2025" value="2020" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="year-to">Year to <span class="ev-help" data-help="End of the aggregation window (inclusive). Ignored in single-year mode.">i</span></label>
+            <input id="year-to" type="number" min="1960" max="2025" value="2024" inputmode="numeric" disabled>
+          </div>
+        </div>
+        <fieldset>
+          <legend>Latest data</legend>
+          <label class="check"><input id="latest" type="checkbox"> Use latest available year <span class="ev-help" data-help="Pick the most recent year with at least 100 country observations — avoids the sparse future partial releases.">i</span></label>
+        </fieldset>
+      </div>
 
-    <div class="controls">
-      <div class="span-2">
-        <label for="indicator">Indicator</label>
-        <select id="indicator"></select>
-      </div>
-      <div>
-        <label for="year" id="year-label-text">Year <span class="ev-help" data-help="Single-year mode: the value shown is for this year. Period-aggregation mode: this is the first year of the window.">ⓘ</span></label>
-        <input id="year" type="number" min="1960" max="2025" value="2020">
-      </div>
-      <div>
-        <label for="year-to">Year to <span class="ev-help" data-help="End of the aggregation window (inclusive). Ignored in single-year mode.">ⓘ</span></label>
-        <input id="year-to" type="number" min="1960" max="2025" value="2024" disabled>
-      </div>
-      <div>
-        <label for="agg-mode">Period aggregation <span class="ev-help" data-help="Single year: show the value for the chosen year. Mean/median/sum/max/min: collapse the window to one value per country, dropping missing years (NAs) so sparse indicators fill more of the map.">ⓘ</span></label>
-        <select id="agg-mode">
-          <option value="single">Single year (no aggregation)</option>
-          <option value="mean">Mean over period</option>
-          <option value="median">Median over period</option>
-          <option value="sum">Cumulative sum over period</option>
-          <option value="max">Max over period</option>
-          <option value="min">Min over period</option>
-        </select>
-      </div>
-      <div>
-        <label for="palette">Palette <span class="ev-help" data-help="Viridis family is perceptually uniform and colourblind-safe. Use diverging ramps (Red–Blue, Spectral…) when zero is a meaningful midpoint (e.g., growth rates).">ⓘ</span></label>
-        <select id="palette">
-          <optgroup label="Perceptually uniform">
-            <option value="viridis">Viridis</option>
-            <option value="plasma">Plasma</option>
-            <option value="magma">Magma</option>
-            <option value="inferno">Inferno</option>
-            <option value="cividis">Cividis (colourblind-safe)</option>
-            <option value="turbo">Turbo</option>
-          </optgroup>
-          <optgroup label="Single-hue (ColorBrewer)">
-            <option value="blues">Blues</option>
-            <option value="greens">Greens</option>
-            <option value="oranges">Oranges</option>
-            <option value="reds">Reds</option>
-            <option value="greys">Greys</option>
-          </optgroup>
-          <optgroup label="Diverging (ColorBrewer)">
-            <option value="rdbu">Red–Blue</option>
-            <option value="piyg">Pink–Green</option>
-            <option value="brbg">Brown–Teal</option>
-            <option value="spectral">Spectral</option>
-          </optgroup>
-        </select>
-      </div>
-      <div>
-        <label>Options</label>
-        <label class="check"><input id="log" type="checkbox"> Log scale <span class="ev-help" data-help="log₁₀ of the value before colour mapping. Use for right-skewed indicators (GDP, population, trade flows).">ⓘ</span></label>
-        <label class="check"><input id="reverse" type="checkbox"> Reverse palette <span class="ev-help" data-help="Flip the colour ramp so high values map to the low-value end (useful for indicators where 'more is worse', e.g., poverty rate).">ⓘ</span></label>
-        <label class="check"><input id="diverging" type="checkbox"> Diverging around centre <span class="ev-help" data-help="Centre the colour scale on the value in the 'Diverging centre' field — the midpoint gets the neutral colour; above and below diverge in opposite directions.">ⓘ</span></label>
-        <label class="check"><input id="latest" type="checkbox"> Use latest available year <span class="ev-help" data-help="Pick the most recent year with at least 100 country observations — avoids the sparse future partial releases.">ⓘ</span></label>
-      </div>
-      <div>
-        <label for="center">Diverging centre <span class="ev-help" data-help="Only used when 'Diverging around centre' is on. Typically 0 for growth rates, or the global mean for levels.">ⓘ</span></label>
-        <input id="center" type="number" step="any" value="0" placeholder="0">
-      </div>
-    </div>
+      <details class="advanced" id="advanced">
+        <summary>Colour scale</summary>
+        <div class="controls">
+          <div>
+            <label for="palette">Palette <span class="ev-help" data-help="Viridis family is perceptually uniform and colourblind-safe. Use diverging ramps (Red–Blue, Spectral…) when zero is a meaningful midpoint (e.g., growth rates).">i</span></label>
+            <select id="palette">
+              <optgroup label="Perceptually uniform">
+                <option value="viridis">Viridis</option>
+                <option value="plasma">Plasma</option>
+                <option value="magma">Magma</option>
+                <option value="inferno">Inferno</option>
+                <option value="cividis">Cividis (colourblind-safe)</option>
+                <option value="turbo">Turbo</option>
+              </optgroup>
+              <optgroup label="Single-hue (ColorBrewer)">
+                <option value="blues">Blues</option>
+                <option value="greens">Greens</option>
+                <option value="oranges">Oranges</option>
+                <option value="reds">Reds</option>
+                <option value="greys">Greys</option>
+              </optgroup>
+              <optgroup label="Diverging (ColorBrewer)">
+                <option value="rdbu">Red–Blue</option>
+                <option value="piyg">Pink–Green</option>
+                <option value="brbg">Brown–Teal</option>
+                <option value="spectral">Spectral</option>
+              </optgroup>
+            </select>
+          </div>
+          <div>
+            <label for="scale">Colour scale <span class="ev-help" data-help="Quantile: 7 classes with equal numbers of countries — robust to outliers. Linear: continuous ramp from min to max. Log: continuous ramp on log₁₀ values (positive data only). 'Diverging around centre' overrides to a centred linear scale.">i</span></label>
+            <select id="scale">
+              <option value="quantile">Quantile (7 classes)</option>
+              <option value="linear">Linear</option>
+              <option value="log">Log</option>
+            </select>
+          </div>
+          <fieldset>
+            <legend>Options</legend>
+            <label class="check"><input id="reverse" type="checkbox"> Reverse palette <span class="ev-help" data-help="Flip the colour ramp so high values map to the low-value end (useful for indicators where 'more is worse', e.g., poverty rate).">i</span></label>
+            <label class="check"><input id="diverging" type="checkbox"> Diverging around centre <span class="ev-help" data-help="Centre the colour scale on the value in the 'Diverging centre' field — the midpoint gets the neutral colour; above and below diverge in opposite directions.">i</span></label>
+          </fieldset>
+          <div>
+            <label for="center">Diverging centre <span class="ev-help" data-help="Only used when 'Diverging around centre' is on. Typically 0 for growth rates, or the global mean for levels.">i</span></label>
+            <input id="center" type="number" step="any" value="0" placeholder="0">
+          </div>
+        </div>
+      </details>
+    </aside>
 
-    <div class="year-slider">
-      <button id="year-prev">◀</button>
-      <input id="year-slider" type="range" min="1960" max="2025" step="1" value="2020">
-      <button id="year-play">▶ Play</button>
-      <div class="year-label" id="year-label">2020</div>
-    </div>
+    <section class="stage" aria-labelledby="map-title">
+      <header class="stage__head">
+        <h1 id="map-title">World choropleth</h1>
+        <p class="lede" id="map-lede">Pick an indicator and a year. Hover a country for its value.</p>
+      </header>
 
-    <div class="actions">
-      <button id="btn-download">Download CSV</button>
-      <button id="btn-svg">Download SVG</button>
-      <button id="btn-share">Copy share URL</button>
-      <button id="btn-save">Save view</button>
-      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
-    </div>
+      <div class="toolbar">
+        <div class="toolbar__group" role="group" aria-label="Export">
+          <span class="toolbar__label">Export</span>
+          <button class="btn btn--primary" id="btn-svg" type="button">SVG</button>
+          <button class="btn" id="btn-download" type="button">CSV</button>
+          <button class="btn" id="btn-code" type="button">R / Python</button>
+        </div>
+        <div class="toolbar__group" role="group" aria-label="Share">
+          <button class="btn btn--quiet" id="btn-share" type="button">Copy link</button>
+          <button class="btn btn--quiet" id="btn-save" type="button">Save view</button>
+        </div>
+      </div>
 
-    <div id="saved-views" class="saved-views"></div>
-    <div id="methodology" class="methodology" style="display:none;"></div>
-    <div id="status"></div>
+      <form class="inline-form" id="save-form" hidden>
+        <label for="save-name">Name this view</label>
+        <input id="save-name" type="text" autocomplete="off" maxlength="120">
+        <button class="btn btn--primary" type="submit">Save</button>
+        <button class="btn btn--quiet" type="button" data-cancel>Cancel</button>
+      </form>
+      <div id="saved-views" class="saved-views"></div>
 
-    <div class="map-wrap" id="map"></div>
-    <div class="caption" id="caption" style="margin-top:0.5rem;">Boundaries: Natural Earth via world-atlas · Data: World Bank WDI (live).</div>
+      <div class="year-slider">
+        <button class="btn" id="year-prev" type="button" aria-label="Previous year">◀</button>
+        <input id="year-slider" type="range" min="1960" max="2025" step="1" value="2020" aria-label="Map year">
+        <button class="btn" id="year-play" type="button">▶ Play</button>
+        <div class="year-label" id="year-label" aria-live="polite">2020</div>
+      </div>
+
+      <figure class="map-figure" style="margin:0;">
+        <div id="status" role="status" aria-live="polite"></div>
+        <div class="map-wrap" id="map"></div>
+        <figcaption class="caption" id="caption">Boundaries: Natural Earth via world-atlas · Data: World Bank WDI (live).</figcaption>
+      </figure>
+      <div id="methodology" class="methodology" style="display:none;"></div>
+    </section>
   </main>
 
-  <footer class="site">Map geometry: <a href="https://github.com/topojson/world-atlas">world-atlas</a> (Natural Earth, 110m).</footer>
+  <footer class="site">
+    <p>Map geometry: <a href="https://github.com/topojson/world-atlas">world-atlas</a> (Natural Earth, 1:110m), Equal Earth projection. Data: World Bank World Development Indicators, live API. Replication code uses <code>ggplot2</code> + <code>sf</code> + <code>rnaturalearth</code> in R and <code>geopandas</code> in Python.   <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
+  </footer>
 
   <script src="./config.js"></script>
   <script type="module">
     import { INDICATORS, byId } from "./data/catalog.js";
-    import { fetchSeries } from "./js/wdi.js";
+    import { fetchSeries, END_YEAR } from "./js/wdi.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
     import { renderChoropleth } from "./js/map.js";
-    import { loading, error, clear, initDarkMode, downloadCsv,
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml,
              showCodeModal, methodologyCaption,
-             initHelpIcons, downloadSvg, errorWithRetry } from "./js/ui.js";
+             initHelpIcons, downloadSvg, errorWithRetry,
+             bindSaveView, copyText } from "./js/ui.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
     import * as views from "./js/savedviews.js";
@@ -142,7 +187,9 @@
     const aggModeEl = document.getElementById("agg-mode");
     const sliderEl = document.getElementById("year-slider");
     const sliderLabel = document.getElementById("year-label");
-    const logEl = document.getElementById("log");
+    const scaleEl = document.getElementById("scale");
+    for (const el of [yearEl, yearToEl, sliderEl]) el.max = END_YEAR;
+    yearToEl.value = END_YEAR - 1;
     const paletteEl = document.getElementById("palette");
     const reverseEl = document.getElementById("reverse");
     const divergingEl = document.getElementById("diverging");
@@ -212,7 +259,8 @@
         indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
         year: lastYear,
         period,
-        log: logEl.checked,
+        scale: divergingEl.checked ? "linear" : scaleEl.value,
+        log: !divergingEl.checked && scaleEl.value === "log",
         palette: paletteEl.value,
         reverse: reverseEl.checked,
         diverging: divergingEl.checked,
@@ -260,11 +308,13 @@
           sliderEl.value = year; sliderLabel.textContent = `${yFrom}–${yTo}`;
         } else {
           if (latestEl.checked) {
-            const years = [...new Set(all.map(r => r.year))].sort((a, b) => b - a);
-            for (const y of years) {
-              const n = all.filter(r => r.year === y).length;
-              if (n >= 100) { year = y; break; }
-            }
+            // Latest year with ≥ 100 economies; else the best-covered year.
+            const nBy = new Map();
+            for (const r of all) nBy.set(r.year, (nBy.get(r.year) || 0) + 1);
+            const ranked = [...nBy].sort((a, b) => b[0] - a[0]);
+            const hit = ranked.find(([, n]) => n >= 100)
+              || ranked.reduce((best, e) => e[1] > best[1] ? e : best, ranked[0]);
+            if (hit) year = hit[0];
             yearEl.value = year;
           }
           lastYear = year;
@@ -276,7 +326,7 @@
         lastRows = slice;
 
         await renderChoropleth(mapEl, valByIso, {
-          title: row.name, unit: row.unit, log: logEl.checked,
+          title: row.name, unit: row.unit, scale: scaleEl.value,
           palette: paletteEl.value,
           reverse: reverseEl.checked,
           diverging: divergingEl.checked,
@@ -285,17 +335,21 @@
         clear(statusEl);
 
         document.getElementById("map-title").textContent = titleStr;
-        document.getElementById("map-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
+        const svg = mapEl.querySelector("svg");
+        if (svg) { svg.setAttribute("role", "img"); svg.setAttribute("aria-label", `Choropleth map: ${titleStr}. Download CSV for the values.`); }
+        document.getElementById("map-lede").textContent = `${row.category} · ${row.unit} · WDI ${row.code}`;
 
         const spec = buildSpec();
         methEl.style.display = "block";
-        methEl.innerHTML = `<strong>Methodology.</strong> ${methodologyCaption(spec)}`;
+        methEl.innerHTML = `<strong>Methodology.</strong> ${escapeHtml(methodologyCaption(spec, {}))}`;
+        document.title = `${row.name} map — EasyViz`;
 
         url.update({
           id, year,
           to: period ? yTo : null,
           agg: period ? aggModeEl.value : null,
-          log: logEl.checked, latest: period ? false : latestEl.checked,
+          scale: scaleEl.value !== "quantile" ? scaleEl.value : null,
+          log: null, latest: period ? false : latestEl.checked,
           palette: paletteEl.value,
           reverse: reverseEl.checked,
           diverging: divergingEl.checked,
@@ -310,7 +364,7 @@
     indEl.addEventListener("change", render);
     yearEl.addEventListener("change", () => { latestEl.checked = false; render(); });
     yearToEl.addEventListener("change", render);
-    logEl.addEventListener("change", render);
+    scaleEl.addEventListener("change", render);
     paletteEl.addEventListener("change", render);
     reverseEl.addEventListener("change", render);
     divergingEl.addEventListener("change", render);
@@ -361,14 +415,8 @@
       downloadSvg(svg, `${lastIndicator.id}_${lastYear}_map.svg`, { background: bg });
     });
 
-    document.getElementById("btn-share").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        const btn = document.getElementById("btn-share");
-        const prev = btn.textContent; btn.textContent = "✓ Copied";
-        setTimeout(() => { btn.textContent = prev; }, 1500);
-      } catch {}
-    });
+    document.getElementById("btn-share").addEventListener("click", (e) =>
+      copyText(e.currentTarget, window.location.href));
 
     document.getElementById("btn-code").addEventListener("click", () => {
       const spec = buildSpec();
@@ -376,13 +424,11 @@
       showCodeModal({ r: rCode(spec), python: pyCode(spec), filename: spec.filename });
     });
 
-    document.getElementById("btn-save").addEventListener("click", () => {
-      const spec = buildSpec();
-      if (!spec) return;
-      const name = prompt("Name this view:", `${spec.indicator.name} ${spec.year}`);
-      if (!name) return;
-      views.saveView("map", name, window.location.search);
-      renderSavedViews();
+    bindSaveView({
+      button: document.getElementById("btn-save"),
+      form: document.getElementById("save-form"),
+      defaultName: () => { const spec = buildSpec(); return spec ? `${spec.indicator.name} ${spec.year}` : null; },
+      onSave: (name) => { views.saveView("map", name, window.location.search); renderSavedViews(); },
     });
 
     function renderSavedViews() {
@@ -391,8 +437,8 @@
       if (!list.length) { box.innerHTML = ""; return; }
       box.innerHTML = list.map((v, i) =>
         `<span class="saved-view">
-           <a href="./map.html${v.query}">${v.name.replace(/[<>&]/g, "")}</a>
-           <button data-idx="${i}" title="Delete">✕</button>
+           <a href="./map.html${escapeHtml(v.query)}">${escapeHtml(v.name)}</a>
+           <button type="button" data-idx="${i}" aria-label="Delete saved view ${escapeHtml(v.name)}">×</button>
          </span>`).join("");
       box.querySelectorAll("button").forEach(b =>
         b.addEventListener("click", () => {
@@ -418,12 +464,16 @@
         yearToEl.disabled = !isPeriodMode();
         latestEl.disabled = isPeriodMode();
       }
-      if (url.getBool("log")) logEl.checked = true;
-      if (url.getBool("latest")) latestEl.checked = true;
+      // `log=1` is the pre-quantile URL vocabulary; keep old links working.
+      scaleEl.value = url.get("scale") || (url.getBool("log") ? "log" : "quantile");
+      // Default (no year in URL): latest year with ≥ 100 economies reporting.
+      if (url.getBool("latest") || (!url.get("year") && !url.get("agg"))) latestEl.checked = true;
       if (url.get("palette")) paletteEl.value = url.get("palette");
       if (url.getBool("reverse")) reverseEl.checked = true;
       if (url.getBool("diverging")) divergingEl.checked = true;
       if (url.get("center")) centerEl.value = url.get("center");
+      if ((url.get("palette") && url.get("palette") !== "viridis") || url.get("scale") || url.getBool("reverse") || url.getBool("diverging"))
+        document.getElementById("advanced").open = true;
       renderSavedViews();
       render();
     })();

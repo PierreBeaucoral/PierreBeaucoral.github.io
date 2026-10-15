@@ -4,166 +4,198 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EasyViz — compare</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
         <a href="./map.html">Map</a>
-        <a href="./compare.html" class="active">Compare</a>
+        <a href="./compare.html" aria-current="page">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <h1>Compare indicators</h1>
-    <p class="lede">Cross-section scatter, bubble with a size variable, OLS trend, Gapminder-style animation, and pairwise correlation matrix.</p>
-
-    <div class="controls">
-      <div>
-        <label for="ind-a">X-axis</label>
-        <select id="ind-a"></select>
-      </div>
-      <div>
-        <label for="ind-b">Y-axis</label>
-        <select id="ind-b"></select>
-      </div>
-      <div>
-        <label for="ind-size">Bubble size (for bubble/gapminder)</label>
-        <select id="ind-size"></select>
-      </div>
-      <div>
-        <label for="preset">Countries</label>
-        <select id="preset"></select>
-      </div>
-      <div>
-        <label for="year">Year (scatter/bubble/regression/corr)</label>
-        <input id="year" type="number" min="1960" max="2024" value="2020">
-      </div>
-      <div>
-        <label for="qual-palette">Series palette <span class="ev-help" data-help="Applies to scatter, bubble, regression, and gapminder. Okabe–Ito is colourblind-safe.">ⓘ</span></label>
-        <select id="qual-palette">
-          <option value="tableau10">Tableau 10 (default)</option>
-          <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
-          <option value="set1">ColorBrewer Set1</option>
-          <option value="set2">ColorBrewer Set2</option>
-          <option value="dark2">ColorBrewer Dark2</option>
-          <option value="pastel">ColorBrewer Pastel</option>
-          <option value="bright">Bright</option>
-        </select>
-      </div>
-      <div>
-        <label for="seq-palette">Correlation palette <span class="ev-help" data-help="Diverging ramps are centred at 0; sequential ramps span −1→+1. Red-Blue is the ggplot default.">ⓘ</span></label>
-        <select id="seq-palette">
-          <optgroup label="Diverging (recommended)">
-            <option value="rdbu" selected>Red–Blue</option>
-            <option value="piyg">Pink–Green</option>
-            <option value="brbg">Brown–Teal</option>
-            <option value="spectral">Spectral</option>
-          </optgroup>
-          <optgroup label="Sequential">
-            <option value="viridis">Viridis</option>
-            <option value="plasma">Plasma</option>
-            <option value="blues">Blues</option>
-            <option value="greys">Greys</option>
-          </optgroup>
-        </select>
-      </div>
-    </div>
-
-    <div class="tabs" role="tablist">
-      <button class="tab active" data-panel="tab-scatter">Scatter</button>
-      <button class="tab"        data-panel="tab-bubble">Bubble</button>
-      <button class="tab"        data-panel="tab-regression">Regression</button>
-      <button class="tab"        data-panel="tab-gapminder">Gapminder</button>
-      <button class="tab"        data-panel="tab-corr">Correlation matrix</button>
-    </div>
-
-    <div class="actions" id="code-actions" style="margin-top:0.5rem;">
-      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
-      <button id="btn-png">Download PNG</button>
-      <button id="btn-share">Copy share URL</button>
-    </div>
-
-    <div id="methodology" class="methodology" style="display:none;"></div>
-    <div id="status"></div>
-
-    <section class="tab-panel active" id="tab-scatter">
-      <div class="chart-card">
-        <div class="chart-wrap"><canvas id="chart-scatter"></canvas></div>
-        <div class="caption">Source: World Bank WDI.</div>
-      </div>
-    </section>
-
-    <section class="tab-panel" id="tab-bubble">
-      <div class="chart-card">
-        <div class="chart-wrap"><canvas id="chart-bubble"></canvas></div>
-        <div class="caption">Bubble size = third indicator.</div>
-      </div>
-    </section>
-
-    <section class="tab-panel" id="tab-regression">
-      <div id="fit-summary" class="info" style="display:none;"></div>
-      <div class="chart-card">
-        <div class="chart-wrap"><canvas id="chart-regression"></canvas></div>
-        <div class="caption">OLS fit on the cross-section.</div>
-      </div>
-    </section>
-
-    <section class="tab-panel" id="tab-gapminder">
-      <div class="year-slider">
-        <button id="gap-prev">◀</button>
-        <input id="gap-year" type="range" min="1960" max="2024" step="1" value="2020">
-        <button id="gap-play">▶ Play</button>
-        <div class="year-label" id="gap-year-label">2020</div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-wrap"><canvas id="chart-gapminder"></canvas></div>
-        <div class="caption">Move the slider or press Play to animate across years.</div>
-      </div>
-    </section>
-
-    <section class="tab-panel" id="tab-corr">
-      <div class="controls" style="margin-bottom:0.75rem;">
-        <div class="span-2">
-          <label for="corr-inds">Indicators (ctrl/cmd-click to select 3–8)</label>
-          <select id="corr-inds" multiple size="9"></select>
+  <main class="container bench">
+    <aside class="rail" aria-label="Comparison settings">
+      <h2 class="rail__title">Comparison settings</h2>
+      <div class="controls">
+        <div>
+          <label for="ind-a">X axis</label>
+          <select id="ind-a"></select>
         </div>
         <div>
-          <label for="corr-method">Method</label>
-          <select id="corr-method">
-            <option value="pearson">Pearson</option>
-            <option value="spearman">Spearman</option>
-          </select>
+          <label for="ind-b">Y axis</label>
+          <select id="ind-b"></select>
+        </div>
+        <div>
+          <label for="ind-size">Bubble size (bubble, Gapminder)</label>
+          <select id="ind-size"></select>
+        </div>
+        <div>
+          <label for="preset">Countries</label>
+          <select id="preset"></select>
+        </div>
+        <div>
+          <label for="year">Year (scatter, bubble, regression, correlation) <span class="ev-help" data-help="Defaults to the latest year in which at least 80% of the best-covered year's countries report both indicators. Type a year to pin it.">i</span></label>
+          <input id="year" type="number" min="1960" max="2024" value="2020" inputmode="numeric">
+        </div>
+        <fieldset>
+          <legend>Axes <span class="ev-help" data-help="Log axes for scatter, bubble, regression and gapminder. Non-positive values cannot be shown on a log axis and are dropped (the count is reported). With log axes the regression is fitted on natural logs, e.g. ln y on ln x = an elasticity.">i</span></legend>
+          <label class="check"><input id="log-x" type="checkbox"> Log X</label>
+          <label class="check"><input id="log-y" type="checkbox"> Log Y</label>
+        </fieldset>
+      </div>
+      <details class="advanced" id="advanced">
+        <summary>Palettes</summary>
+        <div class="controls">
+          <div>
+            <label for="qual-palette">Point colour <span class="ev-help" data-help="Hue for the country points in scatter, bubble, regression and Gapminder (one series, one hue). Okabe–Ito is colourblind-safe.">i</span></label>
+            <select id="qual-palette">
+              <option value="tableau10">Tableau 10 (default)</option>
+              <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
+              <option value="set1">ColorBrewer Set1</option>
+              <option value="set2">ColorBrewer Set2</option>
+              <option value="dark2">ColorBrewer Dark2</option>
+              <option value="pastel">ColorBrewer Pastel</option>
+              <option value="bright">Bright</option>
+            </select>
+          </div>
+          <div>
+            <label for="seq-palette">Correlation palette <span class="ev-help" data-help="Diverging ramps are centred at 0; sequential ramps span −1→+1. Red-Blue is the ggplot default.">i</span></label>
+            <select id="seq-palette">
+              <optgroup label="Diverging (recommended)">
+                <option value="rdbu" selected>Red–Blue</option>
+                <option value="piyg">Pink–Green</option>
+                <option value="brbg">Brown–Teal</option>
+                <option value="spectral">Spectral</option>
+              </optgroup>
+              <optgroup label="Sequential">
+                <option value="viridis">Viridis</option>
+                <option value="plasma">Plasma</option>
+                <option value="blues">Blues</option>
+                <option value="greys">Greys</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </details>
+    </aside>
+
+    <section class="stage" aria-labelledby="compare-title">
+      <header class="stage__head">
+        <h1 id="compare-title">Compare indicators</h1>
+        <p class="lede" id="compare-lede">Cross-section scatter, bubble, OLS fit, Gapminder animation and a correlation matrix.</p>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Comparison view">
+        <button class="tab active" type="button" role="tab" aria-selected="true" data-panel="tab-scatter">Scatter</button>
+        <button class="tab"        type="button" role="tab" aria-selected="false" data-panel="tab-bubble">Bubble</button>
+        <button class="tab"        type="button" role="tab" aria-selected="false" data-panel="tab-regression">Regression</button>
+        <button class="tab"        type="button" role="tab" aria-selected="false" data-panel="tab-gapminder">Gapminder</button>
+        <button class="tab"        type="button" role="tab" aria-selected="false" data-panel="tab-corr">Correlation matrix</button>
+      </div>
+
+      <div class="toolbar" id="code-actions">
+        <div class="toolbar__group" role="group" aria-label="Export">
+          <span class="toolbar__label">Export</span>
+          <button class="btn btn--primary" id="btn-png" type="button">PNG</button>
+          <button class="btn" id="btn-code" type="button">R / Python</button>
+        </div>
+        <div class="toolbar__group" role="group" aria-label="Share">
+          <button class="btn btn--quiet" id="btn-share" type="button">Copy link</button>
         </div>
       </div>
-      <div id="corr-output"></div>
+
+      <div class="panels">
+        <div id="status" role="status" aria-live="polite"></div>
+
+        <section class="tab-panel active" id="tab-scatter" role="tabpanel">
+          <figure class="chart-card" style="margin:0;">
+            <div class="chart-wrap"><canvas id="chart-scatter" role="img" aria-label="Scatter plot"></canvas></div>
+            <figcaption class="caption">One point per country. Source: World Bank WDI.</figcaption>
+          </figure>
+        </section>
+
+        <section class="tab-panel" id="tab-bubble" role="tabpanel">
+          <figure class="chart-card" style="margin:0;">
+            <div class="chart-wrap"><canvas id="chart-bubble" role="img" aria-label="Bubble chart"></canvas></div>
+            <figcaption class="caption">Bubble area scales with the size indicator. Source: World Bank WDI.</figcaption>
+          </figure>
+        </section>
+
+        <section class="tab-panel" id="tab-regression" role="tabpanel">
+          <div id="fit-summary" class="info" style="display:none;"></div>
+          <figure class="chart-card" style="margin:0;">
+            <div class="chart-wrap"><canvas id="chart-regression" role="img" aria-label="Regression scatter"></canvas></div>
+            <figcaption class="caption">OLS fit on the cross-section. Source: World Bank WDI.</figcaption>
+          </figure>
+        </section>
+
+        <section class="tab-panel" id="tab-gapminder" role="tabpanel">
+          <div class="year-slider">
+            <button class="btn" id="gap-prev" type="button" aria-label="Previous year">◀</button>
+            <input id="gap-year" type="range" min="1960" max="2024" step="1" value="2020" aria-label="Gapminder year">
+            <button class="btn" id="gap-play" type="button">▶ Play</button>
+            <div class="year-label" id="gap-year-label" aria-live="polite">2020</div>
+          </div>
+          <figure class="chart-card" style="margin:0;">
+            <div class="chart-wrap"><canvas id="chart-gapminder" role="img" aria-label="Gapminder bubble chart"></canvas></div>
+            <figcaption class="caption">Move the slider or press Play to step through years.</figcaption>
+          </figure>
+        </section>
+
+        <section class="tab-panel" id="tab-corr" role="tabpanel">
+          <div class="controls">
+            <div class="span-2">
+              <label for="corr-inds">Indicators (3–8)</label>
+              <select id="corr-inds" multiple size="9"></select>
+            </div>
+            <div>
+              <label for="corr-method">Method</label>
+              <select id="corr-method">
+                <option value="pearson">Pearson</option>
+                <option value="spearman">Spearman</option>
+              </select>
+            </div>
+          </div>
+          <div id="corr-output"></div>
+        </section>
+      </div>
+
+      <div id="methodology" class="methodology" style="display:none;"></div>
     </section>
   </main>
 
-  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js.</footer>
+  <footer class="site">
+    <p>Data: World Bank World Development Indicators, live API; regional and income aggregates excluded. Charts: Chart.js. OLS with HC1 robust standard errors. <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
+  </footer>
 
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module">
     import { INDICATORS, byId } from "./data/catalog.js";
     import { PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
-    import { crossSection, gapminderPanel, fetchSeries } from "./js/wdi.js";
+    import { crossSection, gapminderPanel, fetchSeries, END_YEAR } from "./js/wdi.js";
     import { makeScatter, makeBubble, makeGapminder } from "./js/charts.js";
     import { olsFit, fmtFit } from "./js/regression.js";
     import { corrMatrix } from "./js/aggregate.js";
-    import { loading, error, clear, initDarkMode,
+    import { loading, error, clear, initDarkMode, escapeHtml,
              showCodeModal, methodologyCaption,
-             initHelpIcons, downloadPng, errorWithRetry } from "./js/ui.js";
+             initHelpIcons, downloadPng, sourceNote, errorWithRetry,
+             enhanceMultiSelect, copyText } from "./js/ui.js";
     import { continuousColor } from "./js/palettes.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
@@ -188,6 +220,23 @@
     const corrOut = document.getElementById("corr-output");
     const qualPalEl = document.getElementById("qual-palette");
     const seqPalEl = document.getElementById("seq-palette");
+    const logXEl = document.getElementById("log-x");
+    const logYEl = document.getElementById("log-y");
+    yearEl.max = END_YEAR;
+    // Until the reader types a year, follow the data: the latest year with
+    // good joint coverage of X and Y (see pickDefaultYear).
+    let autoYear = !url.get("year");
+    if (autoYear) yearEl.value = END_YEAR - 2;
+    yearEl.addEventListener("change", () => { autoYear = false; });
+    document.getElementById("gap-year").max = END_YEAR;
+    logXEl.checked = url.getBool("logx");
+    logYEl.checked = url.getBool("logy");
+
+    // Log axes: drop points that cannot be drawn (x ≤ 0 or y ≤ 0).
+    function positive(pts) {
+      const kept = pts.filter(p => (!logXEl.checked || p.x > 0) && (!logYEl.checked || p.y > 0));
+      return { kept, dropped: pts.length - kept.length };
+    }
 
     const charts = {};
 
@@ -223,6 +272,7 @@
     const defaultCorr = (url.getList("corr").length ? url.getList("corr")
       : ["gdp_pc_ppp", "life_expectancy", "u5_mortality", "gini", "co2_pc", "unemployment"]);
     for (const opt of corrIndsEl.options) if (defaultCorr.includes(opt.value)) opt.selected = true;
+    enhanceMultiSelect(corrIndsEl, { noun: "indicator", placeholder: "Add an indicator…", max: 8 });
 
     presetEl.innerHTML = "";
     for (const n of [ALL_COUNTRIES_KEY, ...Object.keys(PRESETS)]) {
@@ -240,8 +290,9 @@
 
     const tabs = document.querySelectorAll(".tab");
     tabs.forEach(t => t.addEventListener("click", () => {
-      tabs.forEach(x => x.classList.remove("active"));
+      tabs.forEach(x => { x.classList.remove("active"); x.setAttribute("aria-selected", "false"); });
       t.classList.add("active");
+      t.setAttribute("aria-selected", "true");
       document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
       document.getElementById(t.dataset.panel).classList.add("active");
       render();
@@ -262,15 +313,18 @@
       const countries = presetEl.value === ALL_COUNTRIES_KEY ? null : iso3;
       const qualPalette = qualPalEl.value;
       const seqPalette  = seqPalEl.value;
+      const logX = logXEl.checked, logY = logYEl.checked;
 
       if (tab === "tab-scatter")
-        return { kind: "scatter", indicator: a, indicatorB: b, year, countries, qualPalette, filename: `${a?.id || "x"}_vs_${b?.id || "y"}` };
+        return { kind: "scatter", indicator: a, indicatorB: b, year, countries, qualPalette, logX, logY, filename: `${a?.id || "x"}_vs_${b?.id || "y"}` };
       if (tab === "tab-bubble")
-        return { kind: "bubble", indicator: a, indicatorB: b, indicatorSize: s, year, countries, qualPalette, filename: `bubble_${a?.id}_${b?.id}` };
+        return { kind: "bubble", indicator: a, indicatorB: b, indicatorSize: s, year, countries, qualPalette, logX, logY, filename: `bubble_${a?.id}_${b?.id}` };
       if (tab === "tab-regression")
-        return { kind: "regression", indicator: a, indicatorB: b, year, countries, qualPalette, filename: `ols_${a?.id}_${b?.id}` };
+        return { kind: "regression", indicator: a, indicatorB: b, year, countries, qualPalette, logX, logY, filename: `ols_${a?.id}_${b?.id}` };
       if (tab === "tab-gapminder")
-        return { kind: "gapminder", indicator: a, indicatorB: b, indicatorSize: s, years: [1990, 2024], countries, qualPalette, filename: `gapminder_${a?.id}_${b?.id}` };
+        return { kind: "gapminder", indicator: a, indicatorB: b, indicatorSize: s,
+                 years: charts.gapminder ? [charts.gapminder.years[0], charts.gapminder.years.at(-1)] : [1960, END_YEAR],
+                 countries, qualPalette, logX, logY, filename: `gapminder_${a?.id}_${b?.id}` };
       if (tab === "tab-corr") {
         const sel = [...corrIndsEl.selectedOptions].map(o => byId(o.value)).filter(Boolean);
         return { kind: "correlation", indicators: sel, year, countries, method: corrMethodEl.value, seqPalette, filename: `corr_${year}` };
@@ -278,7 +332,26 @@
       return null;
     }
 
+    // Latest year in which ≥ 80% of the best-covered year's countries
+    // report both X and Y (fetchSeries is cached, so this is free on
+    // re-render). The relative threshold works for any country preset.
+    async function pickDefaultYear() {
+      const a = byId(aEl.value), b = byId(bEl.value);
+      if (!a || !b) return;
+      const iso3 = presetEl.value === ALL_COUNTRIES_KEY ? [] : resolvePreset(presetEl.value);
+      const [ra, rb] = await Promise.all([fetchSeries(a.code, iso3), fetchSeries(b.code, iso3)]);
+      const hasA = new Set(ra.map(r => `${r.iso3}_${r.year}`));
+      const nBy = new Map();
+      for (const r of rb) if (hasA.has(`${r.iso3}_${r.year}`)) nBy.set(r.year, (nBy.get(r.year) || 0) + 1);
+      if (!nBy.size) return;
+      const maxN = Math.max(...nBy.values());
+      yearEl.value = Math.max(...[...nBy].filter(([, n]) => n >= 0.8 * maxN).map(([y]) => y));
+    }
+
     async function render() {
+      if (autoYear && activeTab() !== "tab-gapminder") {
+        try { await pickDefaultYear(); } catch { /* keep the current year */ }
+      }
       const spec = buildSpec();
       if (!spec) return;
       const { indicator: a, indicatorB: b, indicatorSize: s, year, countries } = spec;
@@ -292,49 +365,62 @@
         preset: presetEl.value,
         corr: tab === "tab-corr" ? [...corrIndsEl.selectedOptions].map(o => o.value) : null,
         corr_method: corrMethodEl.value,
+        logx: logXEl.checked, logy: logYEl.checked,
         qpal: qualPalEl.value === (cfg.defaultQualPalette || "tableau10") ? null : qualPalEl.value,
         cpal: seqPalEl.value === "rdbu" ? null : seqPalEl.value,
       });
 
-      methEl.style.display = "block";
-      methEl.innerHTML = `<strong>Methodology.</strong> ${methodologyCaption(spec)}`;
+      // Caption + notes come from ui.js once the data (and any log drops) are known.
+      let dropped;
+      const showMeth = () => {
+        methEl.style.display = "block";
+        methEl.innerHTML = `<strong>Methodology.</strong> ${escapeHtml(methodologyCaption(spec, { dropped }))}`;
+      };
+      showMeth();
 
       loading(statusEl, "Fetching indicators…");
       try {
         const qp = qualPalEl.value;
+        const axes = { xLog: logXEl.checked, yLog: logYEl.checked };
         if (tab === "tab-scatter") {
-          const pts = await crossSection(a.code, b.code, year, iso3);
+          const { kept: pts, dropped: d } = positive(await crossSection(a.code, b.code, year, iso3));
+          dropped = d;
           destroy("scatter");
-          charts.scatter = makeScatter(document.getElementById("chart-scatter"), pts, a, b, year, { palette: qp });
+          charts.scatter = makeScatter(document.getElementById("chart-scatter"), pts, a, b, year, { palette: qp, ...axes });
         } else if (tab === "tab-bubble") {
           if (!s) { clear(statusEl); error(statusEl, "Pick a size indicator for the bubble chart."); return; }
           const panel = await gapminderPanel(a.code, b.code, iso3, s.code);
-          const pts = panel.filter(p => p.year === year);
+          const { kept: pts, dropped: d } = positive(panel.filter(p => p.year === year));
+          dropped = d;
           if (!pts.length) { clear(statusEl); error(statusEl, `No data for ${year}. Try an earlier year.`); return; }
           destroy("bubble");
-          charts.bubble = makeBubble(document.getElementById("chart-bubble"), pts, a, b, s, year, { palette: qp });
+          charts.bubble = makeBubble(document.getElementById("chart-bubble"), pts, a, b, s, year, { palette: qp, ...axes });
         } else if (tab === "tab-regression") {
-          const pts = await crossSection(a.code, b.code, year, iso3);
-          const fit = olsFit(pts);
+          const { kept: pts, dropped: d } = positive(await crossSection(a.code, b.code, year, iso3));
+          dropped = d;
+          const fit = olsFit(pts, { logX: logXEl.checked, logY: logYEl.checked });
           fitEl.style.display = "block";
           fitEl.textContent = `OLS: ${fmtFit(fit)}`;
           destroy("regression");
-          charts.regression = makeScatter(document.getElementById("chart-regression"), pts, a, b, year, { fit, palette: qp });
+          charts.regression = makeScatter(document.getElementById("chart-regression"), pts, a, b, year, { fit, palette: qp, ...axes });
         } else if (tab === "tab-gapminder") {
-          const panel = await gapminderPanel(a.code, b.code, iso3, s?.code ?? null);
+          const { kept: panel, dropped: d } = positive(await gapminderPanel(a.code, b.code, iso3, s?.code ?? null));
+          dropped = d;
           if (!panel.length) { clear(statusEl); error(statusEl, "No overlapping data for the panel."); return; }
           destroy("gapminder");
           charts.gapminder = makeGapminder(
-            document.getElementById("chart-gapminder"), panel, a, b, s, { palette: qp }
+            document.getElementById("chart-gapminder"), panel, a, b, s, { palette: qp, ...axes }
           );
           const slider = document.getElementById("gap-year");
           const ys = charts.gapminder.years;
+          spec.years = [ys[0], ys[ys.length - 1]];
           slider.min = ys[0]; slider.max = ys[ys.length - 1]; slider.value = ys[ys.length - 1];
           document.getElementById("gap-year-label").textContent = slider.value;
           charts.gapminder.setYear(parseInt(slider.value, 10));
         } else if (tab === "tab-corr") {
           await renderCorrelation(spec, iso3);
         }
+        showMeth();
         clear(statusEl);
       } catch (e) {
         errorWithRetry(statusEl, e, render);
@@ -359,18 +445,20 @@
         `<tr><th>${labelFor(codes[i]).split(" ").slice(0,2).join(" ")}</th>${
           row.map((v, j) => {
             const color = corrColor(v);
-            return `<td class="${i === j ? 'diag' : ''}" style="${i===j ? '' : `background:${color}; color:${Math.abs(v)>0.5?'white':'inherit'};`}"
+            return `<td class="${i === j ? 'diag' : ''}" style="${i===j ? '' : `background:${color}; color:${Math.abs(v)>0.5?'var(--color-on-data-fill)':'var(--color-on-data-pale)'};`}"
               title="n=${ns[i][j]}">${Number.isFinite(v) ? v.toFixed(2) : "—"}</td>`;
           }).join("")
         }</tr>`).join("");
       corrOut.innerHTML = `
-        <p style="font-size:0.85rem; color: var(--fg-muted);">
+        <p class="chart-note">
           Pairwise ${spec.method} correlations, year ${spec.year}, across
           ${iso3.length ? iso3.length + " countries" : "all WDI economies"}.
-          Cell tooltip shows pairwise N.</p>
-        <table class="corr-table">
-          <thead>${head}</thead><tbody>${body}</tbody>
-        </table>
+          Hover or long-press a cell for its pairwise N.</p>
+        <div class="corr-scroll">
+          <table class="corr-table">
+            <thead>${head}</thead><tbody>${body}</tbody>
+          </table>
+        </div>
       `;
     }
 
@@ -380,7 +468,7 @@
       return continuousColor(t, seqPalEl.value);
     }
 
-    [aEl, bEl, sEl, presetEl, yearEl, corrMethodEl, qualPalEl, seqPalEl].forEach(el => el.addEventListener("change", render));
+    [aEl, bEl, sEl, presetEl, yearEl, corrMethodEl, qualPalEl, seqPalEl, logXEl, logYEl].forEach(el => el.addEventListener("change", render));
     corrIndsEl.addEventListener("change", render);
 
     // Gapminder slider + play.
@@ -434,18 +522,13 @@
       }
       const canvas = document.getElementById(canvasId);
       const spec = buildSpec();
-      const bg = getComputedStyle(document.body).backgroundColor || "#ffffff";
-      downloadPng(canvas, `${spec?.filename || "compare"}.png`, { background: bg });
+      const codes = [spec?.indicator?.code, spec?.indicatorB?.code, spec?.indicatorSize?.code];
+      const yr = tab === "tab-gapminder" ? document.getElementById("gap-year").value : spec?.year;
+      downloadPng(canvas, `${spec?.filename || "compare"}.png`, { note: sourceNote(codes, { extra: String(yr) }) });
     });
 
-    document.getElementById("btn-share").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        const btn = document.getElementById("btn-share");
-        const prev = btn.textContent; btn.textContent = "✓ Copied";
-        setTimeout(() => { btn.textContent = prev; }, 1500);
-      } catch {}
-    });
+    document.getElementById("btn-share").addEventListener("click", (e) =>
+      copyText(e.currentTarget, window.location.href));
 
     render();
   </script>

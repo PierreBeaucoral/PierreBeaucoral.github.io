@@ -75,16 +75,29 @@ function numToIso3(n) {
   return NUM_TO_ISO3[key] || NUM_TO_ISO3[String(n)] || null;
 }
 
-// Quantile breaks (k classes) for a value array.
-function quantileBreaks(values, k) {
+// Quantile breaks (k classes) for a value array: the k-1 interior cut
+// points, interpolated like R `quantile(type = 7)` / numpy's default so
+// the R / Python snippets reproduce the classes exactly. Ties can make
+// cut points coincide; those are de-duplicated (fewer classes).
+export const QUANTILE_K = 7;
+export function quantileBreaks(values, k = QUANTILE_K) {
   const sorted = [...values].filter(v => Number.isFinite(v)).sort((a, b) => a - b);
   if (!sorted.length) return [];
+  const q = (p) => {
+    const h = (sorted.length - 1) * p, lo = Math.floor(h);
+    return lo + 1 < sorted.length ? sorted[lo] + (h - lo) * (sorted[lo + 1] - sorted[lo]) : sorted[lo];
+  };
   const out = [];
-  for (let i = 1; i < k; i++) {
-    const idx = Math.floor((i / k) * sorted.length);
-    out.push(sorted[Math.min(idx, sorted.length - 1)]);
-  }
-  return out;
+  for (let i = 1; i < k; i++) out.push(q(i / k));
+  return [...new Set(out)].filter(b => b > sorted[0] && b < sorted[sorted.length - 1]);
+}
+
+// Class index of v given interior breaks — right-closed intervals
+// [min, b1], (b1, b2], …, like R `cut(..., include.lowest = TRUE)`.
+export function classOf(v, breaks) {
+  let i = 0;
+  while (i < breaks.length && v > breaks[i]) i++;
+  return i;
 }
 
 function logSafe(v) { return Math.log10(Math.max(v, 1e-12)); }
@@ -92,10 +105,51 @@ function logSafe(v) { return Math.log10(Math.max(v, 1e-12)); }
 import { SEQUENTIAL as PALETTES, continuousColor as colorRamp, seqKind } from "./palettes.js";
 export { SEQUENTIAL as PALETTES } from "./palettes.js";
 
-// Classic equirectangular projection (no D3 to keep bundle small).
-// We compute a simple linear mapping: [-180,180] → [0,w], [90,-90] → [0,h].
-function project([x, y], w, h) {
-  return [ (x + 180) / 360 * w, (90 - y) / 180 * h ];
+// Equal Earth projection (Šavrič, Patterson & Jenny 2018) — equal-area,
+// so country size on the map is proportional to land area. Closed-form,
+// no D3 needed. Returns unit coordinates; `project` scales to the SVG.
+const EE = { A1: 1.340264, A2: -0.081106, A3: 0.000893, A4: 0.003796, M: Math.sqrt(3) / 2 };
+function equalEarth(lon, lat) {
+  const lam = lon * Math.PI / 180, th = Math.asin(EE.M * Math.sin(lat * Math.PI / 180));
+  const t2 = th * th, t6 = t2 * t2 * t2;
+  const x = lam * Math.cos(th) / (EE.M * (EE.A1 + 3 * EE.A2 * t2 + t6 * (7 * EE.A3 + 9 * EE.A4 * t2)));
+  const y = th * (EE.A1 + EE.A2 * t2 + t6 * (EE.A3 + EE.A4 * t2));
+  return [x, y];
+}
+const EE_XMAX = equalEarth(180, 0)[0], EE_YMAX = equalEarth(0, 90)[1];
+
+function project([lon, lat], w, h) {
+  const s = w / (2 * EE_XMAX);
+  const [x, y] = equalEarth(lon, lat);
+  return [w / 2 + s * x, h / 2 - s * y];
+}
+
+// Densify long segments (e.g. edges running along the ±180° meridian
+// after the antimeridian split) so they follow Equal Earth's curved
+// boundary instead of cutting a straight chord.
+function densify(ring, maxDeg = 5) {
+  const out = [];
+  for (let i = 0; i < ring.length; i++) {
+    const a = ring[i];
+    out.push(a);
+    const b = ring[i + 1];
+    if (!b) continue;
+    const steps = Math.ceil(Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1])) / maxDeg);
+    for (let k = 1; k < steps; k++)
+      out.push([a[0] + (b[0] - a[0]) * k / steps, a[1] + (b[1] - a[1]) * k / steps]);
+  }
+  return out;
+}
+
+// Map outline (the "sphere"): the ±180° meridians joined at the flat poles.
+function outlinePath(w, h) {
+  const pts = [];
+  for (let lat = -90; lat <= 90; lat += 2) pts.push([180, lat]);
+  for (let lat = 90; lat >= -90; lat -= 2) pts.push([-180, lat]);
+  return pts.map((p, i) => {
+    const [x, y] = project(p, w, h);
+    return (i ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1);
+  }).join("") + "Z";
 }
 
 // Split a ring of [lon, lat] at antimeridian (±180°) crossings.
@@ -117,13 +171,16 @@ function splitAntimeridian(points) {
       const dx = nxt[0] - cur[0];
       if (dx > 180) {
         // Crossing westward through the antimeridian.
-        const t = (-180 - cur[0]) / (nxt[0] - 360 - cur[0]);
+        // Guard 0/0 when both vertices sit exactly on ±180° (NaN paths).
+        const den = nxt[0] - 360 - cur[0];
+        const t = den === 0 ? 0 : (-180 - cur[0]) / den;
         const yAt = cur[1] + t * (nxt[1] - cur[1]);
         out[out.length - 1].push([-180, yAt]);
         out.push([[180, yAt]]);
       } else if (dx < -180) {
         // Crossing eastward through the antimeridian.
-        const t = (180 - cur[0]) / (nxt[0] + 360 - cur[0]);
+        const den = nxt[0] + 360 - cur[0];
+        const t = den === 0 ? 0 : (180 - cur[0]) / den;
         const yAt = cur[1] + t * (nxt[1] - cur[1]);
         out[out.length - 1].push([180, yAt]);
         out.push([[-180, yAt]]);
@@ -184,7 +241,7 @@ function pathFor(geom, w, h, arcs) {
       // Decode to lon/lat first, then split at the antimeridian before
       // projecting to screen coords.
       const lonlat = r.map(transformPoint);
-      const subs = splitAntimeridian(lonlat);
+      const subs = splitAntimeridian(lonlat).map(r => densify(r));
       for (const sub of subs) {
         if (sub.length < 2) continue;
         for (let i = 0; i < sub.length; i++) {
@@ -220,13 +277,15 @@ function transformPoint([x, y]) {
 //
 // container: an HTMLElement (we inject SVG + legend + tooltip).
 // rowsByIso3: Map<iso3, value>
-// opts: { title, unit, log }
+// opts: { title, unit, scale: "quantile" | "linear" | "log", palette,
+//         reverse, diverging, center }. Diverging forces a continuous
+//         scale centred on `center`.
 export async function renderChoropleth(container, rowsByIso3, opts = {}) {
   const atlas = await loadAtlas();
   container.innerHTML = "";
   const tooltip = ensureTooltip(container);
 
-  const W = 980, H = 500;
+  const W = 980, H = Math.round(W * EE_YMAX / EE_XMAX);
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
@@ -235,10 +294,15 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
 
   setTransform(atlas.transform);
 
+  const outline = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  outline.setAttribute("d", outlinePath(W, H));
+  outline.classList.add("outline");
+  svg.appendChild(outline);
+
   const countries = atlas.objects.countries.geometries;
   const values = [...rowsByIso3.values()].filter(v => Number.isFinite(v));
   if (!values.length) {
-    container.innerHTML = `<p style="padding:1rem; color: var(--fg-muted);">No data for the chosen year.</p>`;
+    container.innerHTML = `<p style="padding:1rem; color: var(--color-muted);">No data for the chosen year.</p>`;
     return;
   }
 
@@ -248,6 +312,11 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
   const center = Number.isFinite(opts.center) ? opts.center : 0;
 
   const lo = Math.min(...values), hi = Math.max(...values);
+  const scale = diverging ? "linear" : (opts.scale || (opts.log ? "log" : "quantile"));
+  const useLog = scale === "log" && lo > 0;   // log needs strictly positive data
+  const breaks = scale === "quantile" ? quantileBreaks(values) : null;
+  const nClass = breaks ? breaks.length + 1 : 0;
+  const classT = (i) => nClass > 1 ? i / (nClass - 1) : 0.5;
   // For diverging palettes, re-centre 0→0.5 so the mid-hue marks the
   // reference value. Extend the symmetric range to the wider tail so
   // neither side saturates prematurely.
@@ -258,7 +327,8 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
       if (half === 0) return 0.5;
       return 0.5 + (v - center) / (2 * half);
     }
-    if (opts.log && lo > 0) {
+    if (breaks) return classT(classOf(v, breaks));
+    if (useLog) {
       const lloN = logSafe(lo), lhiN = logSafe(hi);
       if (lhiN === lloN) return 0.5;
       return (logSafe(v) - lloN) / (lhiN - lloN);
@@ -287,31 +357,38 @@ export async function renderChoropleth(container, rowsByIso3, opts = {}) {
       tooltip.style.top  = `${e.clientY - rect.top + 12}px`;
       tooltip.innerHTML = `<strong>${name}</strong>${iso3 ? ` (${iso3})` : ""}<br>
         ${val === undefined || !Number.isFinite(val) ? "— no data —"
-          : `${val.toLocaleString(undefined, { maximumFractionDigits: 2 })}${opts.unit ? " " + opts.unit : ""}`}`;
+          : `${val.toLocaleString("en-US", { maximumFractionDigits: 2 })}${opts.unit ? " " + opts.unit : ""}`}`;
     });
     path.addEventListener("mouseleave", () => { tooltip.style.opacity = "0"; });
     svg.appendChild(path);
   }
 
-  // Legend.
+  // Legend. Quantile: one swatch per class with the numeric cut points
+  // between them. Continuous: ramp with min / max (and centre if diverging).
   const legend = document.createElement("div");
   legend.className = "legend";
-  const stops = 8;
-  const swatches = [];
-  for (let i = 0; i < stops; i++) {
-    const t = i / (stops - 1);
-    swatches.push(`<span class="swatch" style="background:${colorRamp(t, palette, reverse)}"></span>`);
+  legend.style.flexWrap = "wrap";
+  const fmt = (v) => Number.isFinite(v)
+    ? v.toLocaleString("en-US", { maximumSignificantDigits: 3 }) : "—";
+  const sw = (t, title = "") => `<span class="swatch" title="${title}" style="background:${colorRamp(t, palette, reverse)}"></span>`;
+  let body, note;
+  if (breaks) {
+    const edges = [lo, ...breaks, hi];
+    body = edges.map((e, i) => `<span>${fmt(e)}</span>` +
+      (i < nClass ? sw(classT(i), `${fmt(edges[i])} – ${fmt(edges[i + 1])}`) : "")).join("");
+    note = `quantile classes (${nClass}, equal country counts)`;
+  } else {
+    const swatches = [];
+    for (let i = 0; i < 8; i++) swatches.push(sw(i / 7));
+    body = `<span>${fmt(diverging ? center - half : lo)}</span>
+      <span class="swatches">${swatches.join("")}</span>
+      <span>${fmt(diverging ? center + half : hi)}</span>`;
+    note = diverging ? `linear, centred at ${fmt(center)}`
+      : useLog ? "log scale"
+      : scale === "log" ? "linear (log needs positive values)" : "linear scale";
   }
-  const fmt = (v) => {
-    if (!Number.isFinite(v)) return "—";
-    return Math.abs(v) >= 1000 ? v.toFixed(0) : v.toFixed(2);
-  };
-  legend.innerHTML = `
-    <span>${fmt(lo)}</span>
-    <span class="swatches">${swatches.join("")}</span>
-    <span>${fmt(hi)}</span>
+  legend.innerHTML = `${body}
     ${opts.unit ? `<span style="margin-left:0.5rem;">${opts.unit}</span>` : ""}
-    ${opts.log ? `<span style="margin-left:0.5rem;">· log scale</span>` : ""}
-  `;
+    <span style="margin-left:0.5rem;">· ${note}</span>`;
   container.appendChild(legend);
 }

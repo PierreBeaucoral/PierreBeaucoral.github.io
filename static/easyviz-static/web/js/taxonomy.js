@@ -5,16 +5,16 @@
 // wants more (e.g. a very specific WDI code), this module fetches the
 // full /indicator feed and merges it into the search space.
 //
-// 20k+ rows at ~200 B each = ~4 MB. localStorage caps at ~5 MB in most
-// browsers, so we serialise to a compact form (id, name, code, source)
+// source=2 restricts the feed to WDI proper (~1,500 codes, ~300 KB) —
+// small enough for localStorage; we still store a compact form (id, name, code, source)
 // and gzip-via-JSON (browsers handle text compression at transport).
 // With a 7-day TTL this endpoint is hit maybe once a week per user.
 
-const LS_KEY = "easyviz:wdi-taxonomy:v1";
-const LS_TS_KEY = "easyviz:wdi-taxonomy:ts";
+const LS_KEY = "easyviz:wdi-taxonomy:v2";
+const LS_TS_KEY = "easyviz:wdi-taxonomy:v2:ts";
 const TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-const ENDPOINT = "https://api.worldbank.org/v2/indicator?format=json&per_page=25000&page=1";
+const ENDPOINT = "https://api.worldbank.org/v2/indicator?format=json&source=2&per_page=2000&page=1";
 
 export async function loadFull({ force = false } = {}) {
   const now = Date.now();

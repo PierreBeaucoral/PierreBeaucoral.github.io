@@ -1,0 +1,139 @@
+/* Hallmark · tokens · theme: Almanac (cool slate paper · ink-blue accent · roman serif display + engineering sans + tabular mono)
+ * axes: paper-band light (dark variant selected, not flipped) · display roman-serif · accent cool (hue 258)
+ * Every colour and font in style.css resolves to a token below. Chart.js reads
+ * the --color-* tokens at render time (js/charts.js), so the canvas follows them too.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ── Colour · light ─────────────────────────────────────────────── */
+  --color-paper:        oklch(97.6% 0.006 245);
+  --color-paper-2:      oklch(95.0% 0.008 245);   /* rail, sunken bands       */
+  --color-surface:      oklch(99.1% 0.004 245);   /* chart + map plate        */
+  --color-rule:         oklch(87.5% 0.010 245);   /* hairlines                */
+  --color-rule-strong:  oklch(60.0% 0.016 248);   /* input boundaries ≥ 3:1   */
+  --color-muted:        oklch(45.0% 0.016 250);   /* secondary text ≈ 7:1     */
+  --color-ink:          oklch(21.0% 0.018 255);
+  --color-ink-invert:   oklch(97.6% 0.006 245);   /* text on ink fill         */
+  --color-accent:       oklch(46.0% 0.135 258);   /* links, active, selection */
+  --color-accent-soft:  oklch(93.5% 0.026 258);
+  --color-focus:        oklch(55.0% 0.170 258);
+  --color-danger:       oklch(48.0% 0.165 28);
+  --color-danger-soft:  oklch(95.5% 0.025 28);
+  --color-backdrop:     oklch(20% 0.02 255 / 0.48);
+  --color-shadow:       oklch(20% 0.02 255 / 0.14);
+
+  /* chart-only roles (resolved to rgb by js/charts.js) */
+  --color-chart-grid:   oklch(91.5% 0.008 248);
+  --color-series-context: oklch(79.0% 0.012 250); /* de-emphasised series     */
+  --color-on-data-fill: oklch(98.5% 0.004 245);    /* text on saturated data cells, both themes */
+  --color-on-data-pale: oklch(21.0% 0.018 255);    /* text on pale data cells, both themes      */
+
+  /* ── Type ───────────────────────────────────────────────────────── */
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body:    "IBM Plex Sans", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* 1.25 scale on a 15px UI base (app density) */
+  --text-2xs: 0.75rem;     /* 12px — table cells, colophon      */
+  --text-xs:  0.8125rem;   /* 13px — labels, captions           */
+  --text-sm:  0.875rem;    /* 14px — controls                   */
+  --text-base: 0.9375rem;  /* 15px — body                       */
+  --text-md:  1.125rem;    /* 18px                              */
+  --text-lg:  1.40625rem;  /* 22.5px                            */
+  --text-xl:  clamp(1.375rem, 1.1rem + 0.9vw, 1.875rem);   /* tool H1 */
+  --text-display: clamp(1.875rem, 1.2rem + 2.6vw, 3.25rem); /* index H1 */
+
+  /* ── Space · 4pt ────────────────────────────────────────────────── */
+  --space-3xs: 0.125rem;  /*  2 */
+  --space-2xs: 0.25rem;   /*  4 */
+  --space-xs:  0.5rem;    /*  8 */
+  --space-sm:  0.75rem;   /* 12 */
+  --space-md:  1rem;      /* 16 */
+  --space-lg:  1.5rem;    /* 24 */
+  --space-xl:  2.5rem;    /* 40 */
+  --space-2xl: 4rem;      /* 64 */
+  --space-3xl: 6rem;      /* 96 */
+
+  /* ── Shape, rules, motion, layers ───────────────────────────────── */
+  --radius-input: 3px;
+  --radius-chip:  2px;
+  --rule-hair:    1px;
+  --rule-double:  3px;
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long:  420ms;
+
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-modal:    400;
+  --z-tooltip:  600;
+
+  --header-h: 3.25rem;
+  --rail-w:   19.5rem;
+}
+
+/* ── Colour · dark (selected steps, same hue anchor) ─────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper:        oklch(17.0% 0.012 255);
+  --color-paper-2:      oklch(20.0% 0.013 255);
+  --color-surface:      oklch(21.5% 0.014 255);
+  --color-rule:         oklch(31.0% 0.014 255);
+  --color-rule-strong:  oklch(52.0% 0.016 255);
+  --color-muted:        oklch(73.0% 0.012 250);
+  --color-ink:          oklch(93.5% 0.008 250);
+  --color-ink-invert:   oklch(17.0% 0.012 255);
+  --color-accent:       oklch(75.0% 0.105 258);
+  --color-accent-soft:  oklch(29.0% 0.050 258);
+  --color-focus:        oklch(74.0% 0.140 258);
+  --color-danger:       oklch(73.0% 0.135 28);
+  --color-danger-soft:  oklch(27.0% 0.050 28);
+  --color-backdrop:     oklch(8% 0.01 255 / 0.62);
+  --color-shadow:       oklch(5% 0.01 255 / 0.5);
+  --color-chart-grid:   oklch(27.5% 0.012 255);
+  --color-series-context: oklch(41.0% 0.012 255);
+}
+
+/* No-JS / pre-JS: follow the OS unless the reader picked light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-paper:        oklch(17.0% 0.012 255);
+    --color-paper-2:      oklch(20.0% 0.013 255);
+    --color-surface:      oklch(21.5% 0.014 255);
+    --color-rule:         oklch(31.0% 0.014 255);
+    --color-rule-strong:  oklch(52.0% 0.016 255);
+    --color-muted:        oklch(73.0% 0.012 250);
+    --color-ink:          oklch(93.5% 0.008 250);
+    --color-ink-invert:   oklch(17.0% 0.012 255);
+    --color-accent:       oklch(75.0% 0.105 258);
+    --color-accent-soft:  oklch(29.0% 0.050 258);
+    --color-focus:        oklch(74.0% 0.140 258);
+    --color-danger:       oklch(73.0% 0.135 28);
+    --color-danger-soft:  oklch(27.0% 0.050 28);
+    --color-backdrop:     oklch(8% 0.01 255 / 0.62);
+    --color-shadow:       oklch(5% 0.01 255 / 0.5);
+    --color-chart-grid:   oklch(27.5% 0.012 255);
+    --color-series-context: oklch(41.0% 0.012 255);
+  }
+}
+
+/* Print: always the light plate, whatever the screen theme. */
+@media print {
+  :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+    color-scheme: light;
+    --color-paper:   oklch(99.6% 0.004 245);
+    --color-surface: oklch(99.6% 0.004 245);
+    --color-paper-2: oklch(97% 0.004 245);
+    --color-rule:    oklch(80% 0.008 245);
+    --color-muted:   oklch(35% 0.012 250);
+    --color-ink:     oklch(15% 0.012 255);
+  }
+}

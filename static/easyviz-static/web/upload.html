@@ -4,22 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EasyViz — upload your data</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
         <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
-        <a href="./upload.html" class="active">Upload</a>
+        <a href="./upload.html" aria-current="page">Upload</a>
         <a href="./conflict.html">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
@@ -30,17 +34,17 @@
 
     <div class="dropzone" id="dropzone">
       <p class="primary">Drop a file here</p>
-      <p>or <label style="color:var(--accent); cursor:pointer; text-decoration: underline;">click to browse<input id="file" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" style="display:none;"></label></p>
+      <p>or <label class="browse">click to browse<input id="file" class="visually-hidden" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls"></label></p>
       <p>Accepted: .csv .tsv .xlsx .xls</p>
     </div>
 
-    <div id="status"></div>
+    <div id="status" role="status" aria-live="polite"></div>
     <div id="step-detect" style="display:none;"></div>
     <div id="chart-section" style="display:none;">
       <h2>Chart the normalised data</h2>
       <div class="actions">
-        <button id="btn-download">Download normalised CSV</button>
-        <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+        <button class="btn" type="button" id="btn-download">Download normalised CSV</button>
+        <button class="btn" type="button" id="btn-code">R / Python code</button>
       </div>
       <div id="upload-methodology" class="methodology"></div>
       <div class="chart-card">
@@ -49,7 +53,9 @@
     </div>
   </main>
 
-  <footer class="site">All parsing happens locally in the browser. Your file never leaves your machine.</footer>
+  <footer class="site">
+    <p>All parsing happens locally in the browser — your file never leaves your machine. Spreadsheets read with <a href="https://www.papaparse.com">PapaParse</a> and <a href="https://sheetjs.com">SheetJS</a>; charts with Chart.js.   <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
+  </footer>
 
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>

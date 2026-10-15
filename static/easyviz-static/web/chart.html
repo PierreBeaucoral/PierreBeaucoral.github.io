@@ -4,156 +4,192 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EasyViz — chart</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
         <a href="./index.html">Search</a>
-        <a href="./chart.html" class="active">Chart</a>
+        <a href="./chart.html" aria-current="page">Chart</a>
         <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <h1 id="chart-title">Time-series chart</h1>
-    <p class="lede" id="chart-lede">Pick an indicator, select countries, choose a chart type and transformation.</p>
+  <main class="container bench">
+    <aside class="rail" aria-label="Chart settings">
+      <h2 class="rail__title">Chart settings</h2>
+      <div class="controls">
+        <div>
+          <label for="indicator">Indicator</label>
+          <select id="indicator"></select>
+        </div>
 
-    <div class="controls">
-      <div class="span-2">
-        <label for="indicator">Indicator</label>
-        <select id="indicator"></select>
+        <div>
+          <label for="preset">Country set</label>
+          <select id="preset"></select>
+        </div>
+
+        <div>
+          <label for="countries">Countries</label>
+          <select id="countries" multiple size="10"></select>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="year-from">From</label>
+            <input id="year-from" type="number" min="1960" max="2025" value="1990" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="year-to">To</label>
+            <input id="year-to" type="number" min="1960" max="2025" value="2024" inputmode="numeric">
+          </div>
+        </div>
+
+        <div>
+          <label for="chart-type">Chart type</label>
+          <select id="chart-type">
+            <option value="line">Line</option>
+            <option value="area">Area</option>
+            <option value="bar">Bar (latest year)</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend>Display</legend>
+          <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y) <span class="ev-help" data-help="Plot the Y axis on a log₁₀ scale. Use when the indicator spans several orders of magnitude (e.g., GDP, population).">i</span></label>
+        </fieldset>
       </div>
 
-      <div>
-        <label for="preset">Preset</label>
-        <select id="preset"></select>
+      <details class="advanced" id="advanced">
+        <summary>Transforms &amp; aggregation</summary>
+        <div class="controls">
+          <div>
+            <label for="transform">Temporal transform <span class="ev-help" data-help="Reshapes the series over time. MA5 smooths noise; decade means collapse to ten-year windows; YoY and CAGR express growth; index rescales to a reference year.">i</span></label>
+            <select id="transform">
+              <option value="none">None (raw values)</option>
+              <option value="ma5">5-year moving average</option>
+              <option value="decade">Decade means</option>
+              <option value="yoy">Year-on-year % change</option>
+              <option value="cagr">Rolling 5-year CAGR (%)</option>
+              <option value="index">Index (base year = 100)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="base-year">Index base year <span class="ev-help" data-help="Only used for the 'Index' transform. The value in this year becomes 100 for each country; other years are rescaled proportionally.">i</span></label>
+            <input id="base-year" type="number" min="1960" max="2025" value="2000" inputmode="numeric" disabled>
+          </div>
+
+          <div>
+            <label for="entity-agg">Aggregate selected countries <span class="ev-help" data-help="Collapses many countries into a single series. Population- or GDP-weighted means reflect the region's overall path; unweighted mean treats every country equally.">i</span></label>
+            <select id="entity-agg">
+              <option value="none">Keep individual series</option>
+              <option value="mean">Unweighted mean</option>
+              <option value="median">Median</option>
+              <option value="sum">Sum</option>
+              <option value="pop_weighted">Population-weighted mean</option>
+              <option value="gdp_weighted">GDP-weighted mean</option>
+            </select>
+          </div>
+
+          <fieldset>
+            <legend>Sample</legend>
+            <label class="check"><input id="overlay-agg" type="checkbox"> Overlay aggregate on series <span class="ev-help" data-help="Keep individual country lines and draw the chosen aggregate on top for comparison.">i</span></label>
+            <label class="check"><input id="balanced" type="checkbox"> Balanced panel only <span class="ev-help" data-help="Keep only countries with a value in every year of the window (and a weight, for weighted means). Stops countries entering or leaving the sample from creating spurious trends in the aggregate.">i</span></label>
+          </fieldset>
+
+          <div>
+            <label for="palette">Colour palette <span class="ev-help" data-help="Hues for the coloured series. Okabe–Ito is the colourblind-safe choice. With more countries than hues, a few series are coloured and the rest are grey. The choice propagates into the exported R and Python code.">i</span></label>
+            <select id="palette">
+              <option value="tableau10">Tableau 10 (default)</option>
+              <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
+              <option value="set1">ColorBrewer Set1</option>
+              <option value="set2">ColorBrewer Set2</option>
+              <option value="dark2">ColorBrewer Dark2</option>
+              <option value="pastel">ColorBrewer Pastel</option>
+              <option value="bright">Bright</option>
+            </select>
+          </div>
+        </div>
+      </details>
+    </aside>
+
+    <section class="stage" aria-labelledby="chart-title">
+      <header class="stage__head">
+        <h1 id="chart-title">Time-series chart</h1>
+        <p class="lede" id="chart-lede">Pick an indicator and countries.</p>
+      </header>
+
+      <div class="toolbar">
+        <div class="toolbar__group" role="group" aria-label="Export">
+          <span class="toolbar__label">Export</span>
+          <button class="btn btn--primary" id="btn-png" type="button">PNG</button>
+          <button class="btn" id="btn-download" type="button">CSV</button>
+          <button class="btn" id="btn-code" type="button">R / Python</button>
+          <button class="btn" id="btn-cite" type="button">Cite</button>
+        </div>
+        <div class="toolbar__group" role="group" aria-label="Share">
+          <button class="btn btn--quiet" id="btn-share" type="button">Copy link</button>
+          <button class="btn btn--quiet" id="btn-save" type="button">Save view</button>
+        </div>
       </div>
 
-      <div>
-        <label for="chart-type">Chart type</label>
-        <select id="chart-type">
-          <option value="line">Line</option>
-          <option value="area">Area</option>
-          <option value="bar">Bar (latest year)</option>
-        </select>
-      </div>
+      <form class="inline-form" id="save-form" hidden>
+        <label for="save-name">Name this view</label>
+        <input id="save-name" type="text" autocomplete="off" maxlength="120">
+        <button class="btn btn--primary" type="submit">Save</button>
+        <button class="btn btn--quiet" type="button" data-cancel>Cancel</button>
+      </form>
+      <div id="saved-views" class="saved-views"></div>
+      <div id="citation-box"></div>
 
-      <div>
-        <label for="year-from">Year from</label>
-        <input id="year-from" type="number" min="1960" max="2025" value="1990">
-      </div>
+      <figure class="chart-card" style="margin:0;">
+        <div id="status" role="status" aria-live="polite"></div>
+        <div class="chart-wrap"><canvas id="chart" role="img" aria-label="Time-series chart"></canvas></div>
+        <figcaption class="caption" id="caption">Source: World Bank WDI.</figcaption>
+      </figure>
+      <p class="chart-note" id="chart-note"></p>
 
-      <div>
-        <label for="year-to">Year to</label>
-        <input id="year-to" type="number" min="1960" max="2025" value="2024">
-      </div>
+      <div id="stats" class="stats-grid" style="display:none;"></div>
+      <div id="methodology" class="methodology" style="display:none;"></div>
 
-      <div>
-        <label for="transform">Temporal transform <span class="ev-help" data-help="Reshapes the series over time. MA5 smooths noise; decade means collapse to ten-year windows; YoY and CAGR express growth; index rescales to a reference year.">ⓘ</span></label>
-        <select id="transform">
-          <option value="none">— none (raw) —</option>
-          <option value="ma5">5-year moving average</option>
-          <option value="decade">Decade means</option>
-          <option value="yoy">Year-on-year % change</option>
-          <option value="cagr">Rolling 5-year CAGR (%)</option>
-          <option value="index">Index (base year = 100)</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="base-year">Index base year <span class="ev-help" data-help="Only used for 'Index' transform. The value in this year becomes 100 for each country; other years are rescaled proportionally.">ⓘ</span></label>
-        <input id="base-year" type="number" min="1960" max="2025" value="2000" disabled>
-      </div>
-
-      <div>
-        <label for="entity-agg">Aggregate selected countries <span class="ev-help" data-help="Collapses many countries into a single series. Population- or GDP-weighted means reflect the region's overall path; unweighted mean treats every country equally.">ⓘ</span></label>
-        <select id="entity-agg">
-          <option value="none">— keep individual series —</option>
-          <option value="mean">Unweighted mean</option>
-          <option value="median">Median</option>
-          <option value="sum">Sum</option>
-          <option value="pop_weighted">Population-weighted mean</option>
-          <option value="gdp_weighted">GDP-weighted mean</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Options</label>
-        <label class="check"><input id="log-scale" type="checkbox"> Log scale (Y) <span class="ev-help" data-help="Plot the Y axis on a log₁₀ scale. Use when the indicator spans several orders of magnitude (e.g., GDP, population).">ⓘ</span></label>
-        <label class="check"><input id="overlay-agg" type="checkbox"> Overlay aggregate on series <span class="ev-help" data-help="Keep individual country lines and draw the chosen aggregate on top for comparison.">ⓘ</span></label>
-      </div>
-
-      <div>
-        <label for="palette">Colour palette <span class="ev-help" data-help="One hue per country. Okabe–Ito is the colourblind-safe default. The choice propagates into the exported R and Python code.">ⓘ</span></label>
-        <select id="palette">
-          <option value="tableau10">Tableau 10 (default)</option>
-          <option value="okabeito">Okabe–Ito (colourblind-safe)</option>
-          <option value="set1">ColorBrewer Set1</option>
-          <option value="set2">ColorBrewer Set2</option>
-          <option value="dark2">ColorBrewer Dark2</option>
-          <option value="pastel">ColorBrewer Pastel</option>
-          <option value="bright">Bright</option>
-        </select>
-      </div>
-
-      <div class="span-2">
-        <label for="countries">Countries (ctrl/cmd-click to multi-select)</label>
-        <select id="countries" multiple size="10"></select>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="primary" id="btn-update">Update chart</button>
-      <button id="btn-download">Download CSV</button>
-      <button id="btn-png">Download PNG</button>
-      <button id="btn-share">Copy share URL</button>
-      <button id="btn-save">Save view</button>
-      <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
-      <button id="btn-cite">Cite</button>
-    </div>
-
-    <div id="saved-views" class="saved-views"></div>
-    <div id="citation-box"></div>
-    <div id="methodology" class="methodology" style="display:none;"></div>
-
-    <div id="status"></div>
-    <div id="stats" class="stats-grid" style="display:none;"></div>
-
-    <details class="diagnostics" id="diagnostics" style="display:none;">
-      <summary>Missing-data diagnostics (coverage &amp; gaps)</summary>
-      <div id="diag-body"></div>
-    </details>
-
-    <div class="chart-card">
-      <div class="chart-wrap"><canvas id="chart"></canvas></div>
-      <div class="caption" id="caption">Source: World Bank WDI.</div>
-    </div>
+      <details class="diagnostics" id="diagnostics" style="display:none;">
+        <summary>Missing-data diagnostics (coverage &amp; gaps)</summary>
+        <div id="diag-body"></div>
+      </details>
+    </section>
   </main>
 
-  <footer class="site">Data: World Bank WDI (live) · Charts: Chart.js · R code uses the <code>WDI</code> + <code>tidyverse</code> packages.</footer>
+  <footer class="site">
+    <p>Data: World Bank World Development Indicators, live API. Charts: Chart.js. Replication code uses the <code>WDI</code> + <code>tidyverse</code> packages in R and <code>wbdata</code> + <code>pandas</code> in Python. <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
+  </footer>
 
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script type="module">
     import { INDICATORS, byId } from "./data/catalog.js";
     import { COUNTRIES, ISO3_TO_NAME, PRESETS, ALL_COUNTRIES_KEY, resolvePreset } from "./data/countries.js";
-    import { fetchSeries, summaryStats } from "./js/wdi.js";
+    import { fetchSeries, summaryStats, END_YEAR } from "./js/wdi.js";
     import { makeLine, makeBar } from "./js/charts.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
-    import { loading, error, clear, initDarkMode, downloadCsv,
-             showCodeModal, methodologyCaption, citations,
-             initHelpIcons, downloadPng, errorWithRetry } from "./js/ui.js";
-    import { aggregateTime, aggregateEntities, diagnostics } from "./js/aggregate.js";
+    import { loading, error, clear, initDarkMode, downloadCsv, escapeHtml,
+             showCodeModal, methodologyCaption, citations, fmtNum, fmtInt,
+             initHelpIcons, downloadPng, sourceNote, errorWithRetry,
+             enhanceMultiSelect, bindSaveView, copyText } from "./js/ui.js";
+    import { aggregateTime, aggregateEntities, diagnostics, balancePanel } from "./js/aggregate.js";
     import { rCode, pyCode } from "./js/codegen.js";
     import * as url from "./js/urlstate.js";
     import * as views from "./js/savedviews.js";
@@ -177,12 +213,14 @@
     const baseEl = document.getElementById("base-year");
     const aggEl = document.getElementById("entity-agg");
     const overlayEl = document.getElementById("overlay-agg");
+    const balEl = document.getElementById("balanced");
     const paletteEl = document.getElementById("palette");
     const statusEl = document.getElementById("status");
     const statsEl = document.getElementById("stats");
     const methEl = document.getElementById("methodology");
     const diagEl = document.getElementById("diagnostics");
     const diagBody = document.getElementById("diag-body");
+    const noteEl = document.getElementById("chart-note");
     const canvas = document.getElementById("chart");
 
     let currentChart = null;
@@ -191,6 +229,16 @@
     let lastShownRows = null;
     let lastIndicator = null;
     let lastSpec = null;
+    // Series the reader chose to colour (iso3), used when there are more
+    // countries than palette hues. Empty → top/bottom by latest value.
+    let userHl = url.getList("hl");
+
+    // Year bounds follow the clock; "Year to" tracks the latest year with
+    // data until the user (or a shared URL) pins it.
+    for (const el of [yFromEl, yToEl, baseEl]) el.max = END_YEAR;
+    yToEl.value = END_YEAR - 1;
+    let autoYearTo = !url.getIntPair("years");
+    yToEl.addEventListener("change", () => { autoYearTo = false; });
 
     tfEl.addEventListener("change", () => {
       baseEl.disabled = tfEl.value !== "index";
@@ -244,6 +292,7 @@
     presetEl.addEventListener("change", () => {
       const iso3 = resolvePreset(presetEl.value);
       populateCountries(iso3);
+      render();
     });
 
     // ── Spec builder + render ─────────────────────────────────────
@@ -264,7 +313,7 @@
       if (!lastIndicator) return null;
       const iso3 = selectedCountries();
       const yFrom = parseInt(yFromEl.value, 10) || 1960;
-      const yTo = parseInt(yToEl.value, 10) || 2025;
+      const yTo = parseInt(yToEl.value, 10) || END_YEAR;
       return {
         kind: "timeseries",
         indicator: { code: lastIndicator.code, name: lastIndicator.name, unit: lastIndicator.unit, id: lastIndicator.id },
@@ -274,9 +323,25 @@
         log: logEl.checked,
         transform: currentTransform(),
         entityAgg: currentEntityAgg(),
+        balanced: balEl.checked,
         qualPalette: paletteEl.value,
         filename: lastIndicator.id,
       };
+    }
+
+    function onPick(iso) {
+      const base = userHl.length ? userHl : (currentChart?.$ev?.highlighted || []);
+      const cap = currentChart?.$ev?.cap ?? 8;
+      userHl = base.includes(iso) ? base.filter(k => k !== iso) : [...base, iso].slice(-cap);
+      render();
+    }
+
+    function describeEmphasis(ev) {
+      if (!ev || !ev.focus) return "";
+      const names = ev.highlighted.map(k => ISO3_TO_NAME[k] || k);
+      const who = userHl.length ? "your picks" : "the highest and lowest by latest value";
+      return `Colour marks ${names.length} of ${ev.total} countries (${who}); the rest are grey — hover a grey line to identify it, ` +
+        `click any line to add or remove its colour.`;
     }
 
     async function render() {
@@ -285,15 +350,30 @@
       if (!row) { error(statusEl, "Unknown indicator"); return; }
 
       const iso3 = selectedCountries();
-      const yFrom = parseInt(yFromEl.value, 10) || 1960;
-      const yTo = parseInt(yToEl.value, 10) || 2025;
 
       loading(statusEl, `Fetching ${row.name}…`);
       try {
         const rowsAll = await fetchSeries(row.code, iso3);
-        const rawFiltered = rowsAll.filter(r => r.year >= yFrom && r.year <= yTo);
+        if (autoYearTo && rowsAll.length) yToEl.value = Math.max(...rowsAll.map(r => r.year));
+        const yFrom = parseInt(yFromEl.value, 10) || 1960;
+        const yTo = parseInt(yToEl.value, 10) || END_YEAR;
+        const windowRows = rowsAll.filter(r => r.year >= yFrom && r.year <= yTo);
+
+        // Weights are needed before balancing (a weighted balanced panel
+        // also requires the weight in every year).
+        const ea = currentEntityAgg();
+        let weights = null;
+        if (ea?.method === "pop_weighted")
+          weights = await fetchSeries("SP.POP.TOTL", iso3);
+        else if (ea?.method === "gdp_weighted")
+          weights = await fetchSeries("NY.GDP.MKTP.CD", iso3);
+        const rawFiltered = balEl.checked
+          ? balancePanel(windowRows, { yearFrom: yFrom, yearTo: yTo, weights })
+          : windowRows;
         if (!rawFiltered.length) {
-          clear(statusEl); error(statusEl, "No data returned for this selection.");
+          clear(statusEl); error(statusEl, balEl.checked && windowRows.length
+            ? `No country has data in every year ${yFrom}–${yTo}. Narrow the window or untick "Balanced panel only".`
+            : "No data returned for this selection.");
           statsEl.style.display = "none"; methEl.style.display = "none";
           diagEl.style.display = "none";
           return;
@@ -304,16 +384,10 @@
         // Temporal transform.
         const transformed = aggregateTime(rawFiltered, currentTransform());
 
-        // Entity aggregation (optional weights fetch).
-        const ea = currentEntityAgg();
+        // Entity aggregation (weights fetched above).
         let finalRows = transformed;
         let aggregateRows = null;
         if (ea) {
-          let weights = null;
-          if (ea.method === "pop_weighted")
-            weights = await fetchSeries("SP.POP.TOTL", iso3);
-          else if (ea.method === "gdp_weighted")
-            weights = await fetchSeries("NY.GDP.MKTP.CD", iso3);
           aggregateRows = aggregateEntities(transformed, { method: ea.method, weights });
           if (overlayEl.checked) finalRows = [...transformed, ...aggregateRows];
           else finalRows = aggregateRows;
@@ -328,38 +402,45 @@
             yLog: logEl.checked,
             fill: typeEl.value === "area",
             palette: paletteEl.value,
+            highlight: userHl,
+            onPick,
           });
         }
+        noteEl.textContent = typeEl.value === "bar" ? "" : describeEmphasis(currentChart.$ev);
+        const nSeries = new Set(finalRows.map(r => r.country)).size;
+        canvas.setAttribute("aria-label",
+          `${typeEl.value === "bar" ? "Bar" : "Line"} chart of ${row.name}, ${yFrom}–${yTo}, ${nSeries} series. Download CSV for the values.`);
 
-        // Summary stats.
-        const stats = summaryStats(finalRows);
+        // Summary stats: cross-country distribution in the latest year
+        // of the (transformed) country series — aggregate rows excluded.
+        const stats = summaryStats(transformed);
         if (stats) {
           statsEl.style.display = "grid";
-          const fmt = (v) => typeof v === "number"
-            ? (Math.abs(v) >= 1000 ? v.toFixed(0) : v.toFixed(2))
-            : String(v);
+          const yl = tfEl.value === "decade" ? `${stats.year - 5}s` : stats.year;
           statsEl.innerHTML = `
-            <div class="stat"><div class="k">N</div><div class="v">${stats.n.toLocaleString()}</div></div>
-            <div class="stat"><div class="k">Min</div><div class="v">${fmt(stats.min)}</div></div>
-            <div class="stat"><div class="k">Max</div><div class="v">${fmt(stats.max)}</div></div>
-            <div class="stat"><div class="k">Mean</div><div class="v">${fmt(stats.mean)}</div></div>
-            <div class="stat"><div class="k">Median</div><div class="v">${fmt(stats.median)}</div></div>
-            <div class="stat"><div class="k">Years</div><div class="v">${stats.year_min}–${stats.year_max}</div></div>
+            <div class="stat"><div class="k">Countries, ${yl}</div><div class="v">${fmtInt(stats.n)}</div></div>
+            <div class="stat"><div class="k">Min, ${yl}</div><div class="v">${fmtNum(stats.min)}</div></div>
+            <div class="stat"><div class="k">Median, ${yl}</div><div class="v">${fmtNum(stats.median)}</div></div>
+            <div class="stat"><div class="k">Mean, ${yl}</div><div class="v">${fmtNum(stats.mean)}</div></div>
+            <div class="stat"><div class="k">Max, ${yl}</div><div class="v">${fmtNum(stats.max)}</div></div>
+            <div class="stat"><div class="k">Window</div><div class="v">${yFrom}–${yTo}</div></div>
           `;
         } else statsEl.style.display = "none";
 
-        // Diagnostics.
-        const diag = diagnostics(rawFiltered, { yearFrom: yFrom, yearTo: yTo, countries: iso3 });
+        // Diagnostics (on the unbalanced window, to show what was dropped).
+        const diag = diagnostics(windowRows, { yearFrom: yFrom, yearTo: yTo, countries: iso3 });
         if (diag) {
           diagEl.style.display = "block";
           renderDiagnostics(diag);
         } else diagEl.style.display = "none";
 
-        // Methodology caption.
+        // Methodology caption (notes built in ui.js from data facts).
         lastSpec = buildSpec();
-        const caption = methodologyCaption(lastSpec);
         methEl.style.display = "block";
-        methEl.innerHTML = `<strong>Methodology.</strong> ${caption}`;
+        methEl.innerHTML = `<strong>Methodology.</strong> ${escapeHtml(methodologyCaption(lastSpec, {
+          nCountries: new Set(rawFiltered.map(r => r.iso3)).size,
+          aggNs: aggregateRows?.length ? aggregateRows.map(r => r.n) : [],
+        }))}`;
 
         clear(statusEl);
 
@@ -375,11 +456,14 @@
           base: tfEl.value === "index" ? baseEl.value : null,
           agg: aggEl.value !== "none" ? aggEl.value : null,
           overlay: overlayEl.checked,
+          bal: balEl.checked,
           qpal: paletteEl.value !== "tableau10" ? paletteEl.value : null,
+          hl: userHl.length ? userHl : null,
         });
 
         document.getElementById("chart-title").textContent = row.name;
-        document.getElementById("chart-lede").textContent = `${row.category} · ${row.unit} · WB code ${row.code}`;
+        document.getElementById("chart-lede").textContent = `${row.category} · ${row.unit} · WDI ${row.code}`;
+        document.title = `${row.name} — EasyViz`;
       } catch (e) {
         errorWithRetry(statusEl, e, render);
       }
@@ -391,13 +475,13 @@
         `<tr><td>${c.year}</td><td>${c.n}/${diag.nCountries}</td>
          <td><span class="cov-bar"><span style="width:${(c.coverage*100).toFixed(0)}%"></span></span></td></tr>`).join("");
       const gapRows = worstCountries.map(c =>
-        `<tr><td>${c.country}</td><td>${c.n}/${diag.yearSpan}</td>
+        `<tr><td>${escapeHtml(c.country)}</td><td>${c.n}/${diag.yearSpan}</td>
          <td>${(c.coverage*100).toFixed(0)}%</td></tr>`).join("");
       diagBody.innerHTML = `
-        <p>${diag.totalN.toLocaleString()} observations of ${diag.totalPossible.toLocaleString()} possible
+        <p>${fmtInt(diag.totalN)} observations of ${fmtInt(diag.totalPossible)} possible
           (${((100*diag.totalN/diag.totalPossible) || 0).toFixed(0)}% coverage over
           ${diag.nCountries} countries × ${diag.yearSpan} years).</p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="diag-grid">
           <div>
             <strong>Coverage by year</strong>
             <table><thead><tr><th>Year</th><th>N</th><th></th></tr></thead>
@@ -411,10 +495,9 @@
         </div>`;
     }
 
-    // ── Event wiring ──────────────────────────────────────────────
+    // ── Event wiring (every control re-renders on change) ─────────
 
-    document.getElementById("btn-update").addEventListener("click", render);
-    indEl.addEventListener("change", render);
+    indEl.addEventListener("change", () => { userHl = []; render(); });
     typeEl.addEventListener("change", render);
     logEl.addEventListener("change", render);
     countriesEl.addEventListener("change", render);
@@ -424,6 +507,7 @@
     baseEl.addEventListener("change", render);
     aggEl.addEventListener("change", render);
     overlayEl.addEventListener("change", render);
+    balEl.addEventListener("change", render);
     paletteEl.addEventListener("change", render);
 
     document.getElementById("btn-download").addEventListener("click", () => {
@@ -433,18 +517,11 @@
 
     document.getElementById("btn-png").addEventListener("click", () => {
       if (!lastIndicator) return;
-      downloadPng(canvas, `${lastIndicator.id}.png`);
+      downloadPng(canvas, `${lastIndicator.id}.png`, { note: sourceNote(lastIndicator.code) });
     });
 
-    document.getElementById("btn-share").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        const btn = document.getElementById("btn-share");
-        const prev = btn.textContent;
-        btn.textContent = "✓ Copied";
-        setTimeout(() => { btn.textContent = prev; }, 1500);
-      } catch {}
-    });
+    document.getElementById("btn-share").addEventListener("click", (e) =>
+      copyText(e.currentTarget, window.location.href));
 
     document.getElementById("btn-code").addEventListener("click", () => {
       const spec = buildSpec();
@@ -462,18 +539,16 @@
       const c = citations(spec);
       const box = document.getElementById("citation-box");
       box.innerHTML = `
-        <div class="methodology"><strong>APA:</strong> ${c.apa}</div>
-        <pre class="citation">${c.bibtex}</pre>
+        <div class="methodology"><strong>APA.</strong> ${escapeHtml(c.apa)}</div>
+        <pre class="citation">${escapeHtml(c.bibtex)}</pre>
       `;
     });
 
-    document.getElementById("btn-save").addEventListener("click", () => {
-      const spec = buildSpec();
-      if (!spec) return;
-      const name = prompt("Name this view:", spec.indicator.name);
-      if (!name) return;
-      views.saveView("chart", name, window.location.search);
-      renderSavedViews();
+    bindSaveView({
+      button: document.getElementById("btn-save"),
+      form: document.getElementById("save-form"),
+      defaultName: () => buildSpec()?.indicator.name ?? null,
+      onSave: (name) => { views.saveView("chart", name, window.location.search); renderSavedViews(); },
     });
 
     function renderSavedViews() {
@@ -482,8 +557,8 @@
       if (!list.length) { box.innerHTML = ""; return; }
       box.innerHTML = list.map((v, i) =>
         `<span class="saved-view">
-           <a href="./chart.html${v.query}">${v.name.replace(/[<>&]/g, "")}</a>
-           <button data-idx="${i}" title="Delete">✕</button>
+           <a href="./chart.html${escapeHtml(v.query)}">${escapeHtml(v.name)}</a>
+           <button type="button" data-idx="${i}" aria-label="Delete saved view ${escapeHtml(v.name)}">×</button>
          </span>`).join("");
       box.querySelectorAll("button").forEach(b =>
         b.addEventListener("click", () => {
@@ -514,6 +589,7 @@
         presetEl.value = preset;
         populateCountries(resolvePreset(preset));
       }
+      enhanceMultiSelect(countriesEl, { noun: "country", nouns: "countries", placeholder: "Add a country…" });
 
       const yrs = url.getIntPair("years");
       if (yrs) { yFromEl.value = yrs[0]; yToEl.value = yrs[1]; }
@@ -523,8 +599,12 @@
       const base = url.get("base"); if (base) baseEl.value = base;
       const agg = url.get("agg"); if (agg) aggEl.value = agg;
       if (url.getBool("overlay")) overlayEl.checked = true;
+      if (url.getBool("bal")) balEl.checked = true;
       const qpal = url.get("qpal") || cfg.defaultQualPalette;
       if (qpal) paletteEl.value = qpal;
+      // Open the advanced block when a shared link uses any of it.
+      if (tf || agg || url.getBool("overlay") || url.getBool("bal") || url.get("qpal"))
+        document.getElementById("advanced").open = true;
 
       renderSavedViews();
       render();

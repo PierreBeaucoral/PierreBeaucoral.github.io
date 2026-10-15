@@ -7,7 +7,28 @@
 // endpoints instead (for devs who want the in-memory cache). Falls back
 // silently to direct WB calls.
 
+import { COUNTRIES } from "../data/countries.js";
+import { median } from "./aggregate.js";
+
 const WB_BASE = "https://api.worldbank.org/v2";
+
+// Last calendar year we ask the API for. Derived from the clock so new
+// WDI releases show up without a code change.
+export const END_YEAR = new Date().getFullYear();
+
+// ISO3 set of real economies (WB regional / income aggregates such as
+// "World" or "High income" carry region.id === "NA"). Fetched once per
+// session; falls back to the frozen COUNTRIES roster if the call fails.
+let _economies = null;
+export function economies() {
+  if (!_economies) {
+    _economies = fetch(`${WB_BASE}/country?format=json&per_page=400`)
+      .then(r => r.ok ? r.json() : Promise.reject(new Error(String(r.status))))
+      .then(p => new Set(p[1].filter(c => c.region?.id !== "NA").map(c => c.id)))
+      .catch(() => new Set(COUNTRIES.map(([iso]) => iso)));
+  }
+  return _economies;
+}
 
 // Per-session in-memory cache so re-selecting the same indicator is
 // instant. Not persisted to localStorage — keeps the page lightweight.
@@ -19,8 +40,8 @@ export async function fetchSeries(code, iso3List = [], { signal } = {}) {
   if (_cache.has(key)) return _cache.get(key);
 
   const url = `${WB_BASE}/country/${iso3}/indicator/${code}` +
-              `?format=json&per_page=20000&date=1960:2025`;
-  const r = await fetch(url, { signal });
+              `?format=json&per_page=20000&date=1960:${END_YEAR}`;
+  const [r, econ] = await Promise.all([fetch(url, { signal }), economies()]);
   if (!r.ok) throw new Error(`World Bank API returned ${r.status}`);
   const payload = await r.json();
   if (!Array.isArray(payload) || payload.length < 2 || !payload[1]) {
@@ -32,8 +53,10 @@ export async function fetchSeries(code, iso3List = [], { signal } = {}) {
     if (rec.value === null || rec.value === undefined) continue;
     const year = parseInt(rec.date, 10);
     if (Number.isNaN(year)) continue;
+    const iso3 = rec.countryiso3code || (rec.country?.id ?? "");
+    if (!econ.has(iso3)) continue; // drop aggregates ("World", "High income", …)
     rows.push({
-      iso3:    rec.countryiso3code || (rec.country?.id ?? ""),
+      iso3,
       country: rec.country?.value ?? rec.countryiso3code,
       year,
       value:   Number(rec.value),
@@ -89,21 +112,21 @@ export async function gapminderPanel(codeX, codeY, iso3List = [], sizeCode = nul
   return out.sort((a, b) => a.year - b.year);
 }
 
-// Summary statistics for the sidebar on the chart page.
+// Summary statistics for the stat tiles on the chart page: a single
+// cross-section — every country's value in the latest year of `rows`
+// (synthetic "AGG" aggregate rows excluded), not a pooled country-year
+// sample, so N / mean / median have a clean interpretation.
 export function summaryStats(rows) {
-  if (!rows.length) return null;
-  const values = rows.map(r => r.value).filter(v => Number.isFinite(v));
-  if (!values.length) return null;
-  values.sort((a, b) => a - b);
-  const mean = values.reduce((s, v) => s + v, 0) / values.length;
-  const median = values[Math.floor(values.length / 2)];
+  const cs = rows.filter(r => r.iso3 !== "AGG" && Number.isFinite(r.value));
+  if (!cs.length) return null;
+  const year = Math.max(...cs.map(r => r.year));
+  const values = cs.filter(r => r.year === year).map(r => r.value);
   return {
+    year,
     n: values.length,
-    min:  values[0],
-    max:  values[values.length - 1],
-    mean,
-    median,
-    year_min: Math.min(...rows.map(r => r.year)),
-    year_max: Math.max(...rows.map(r => r.year)),
+    min:  Math.min(...values),
+    max:  Math.max(...values),
+    mean: values.reduce((s, v) => s + v, 0) / values.length,
+    median: median(values),
   };
 }

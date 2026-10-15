@@ -3,77 +3,82 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EasyViz — explore World Development Indicators</title>
-  <meta name="description" content="Fuzzy-search 100+ World Bank WDI indicators, plot time-series and cross-sections, upload your own CSV — all static, all in the browser.">
+  <title>EasyViz — search World Development Indicators</title>
+  <meta name="description" content="Search World Bank WDI indicators, chart long-run series, map and compare countries, and export a citeable figure with R and Python replication code — all static, all in the browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
-        <a href="./index.html" class="active">Search</a>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
+        <a href="./index.html" aria-current="page">Search</a>
         <a href="./chart.html">Chart</a>
         <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
         <a href="./conflict.html">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <h1>Explore World Development Indicators</h1>
-    <p class="lede">
-      Search 100+ curated World Bank series — or flip on the full WDI taxonomy
-      (~20,000 codes) — then chart long-run trajectories, compare cross-sections,
-      or upload your own CSV. Runs entirely in the browser.
-    </p>
-
-    <nav class="landing-tiles" aria-label="Starting points">
-      <a class="landing-tile" href="./chart.html">
-        <div class="tile-head"><span class="tile-icon">📈</span> Chart</div>
-        <div class="tile-desc">Time-series for one indicator across your chosen countries. Log-scale, transforms, aggregates, replication code.</div>
-      </a>
-      <a class="landing-tile" href="./map.html">
-        <div class="tile-head"><span class="tile-icon">🗺</span> Map</div>
-        <div class="tile-desc">Global choropleth with 15 palettes, diverging-around-centre option, and animation across years.</div>
-      </a>
-      <a class="landing-tile" href="./compare.html">
-        <div class="tile-head"><span class="tile-icon">⚖︎</span> Compare</div>
-        <div class="tile-desc">Scatter, bubble, OLS regression, Gapminder animation, and pairwise correlation matrix on two or more indicators.</div>
-      </a>
-      <a class="landing-tile" href="./upload.html">
-        <div class="tile-head"><span class="tile-icon">⤴</span> Upload</div>
-        <div class="tile-desc">Bring your own CSV or Excel file. Long or wide layouts auto-detected.</div>
-      </a>
-    </nav>
-
-    <input id="search" class="search-box" type="search"
-           placeholder="Try: gdp · life expectancy · co2 · poverty · inflation · forest · internet…"
-           autofocus autocomplete="off" data-search>
-
-    <div class="pills" id="category-pills"></div>
-    <div class="pills">
-      <button class="pill" data-q="gdp">GDP</button>
-      <button class="pill" data-q="life expectancy">Life expectancy</button>
-      <button class="pill" data-q="co2 climate">Climate</button>
-      <button class="pill" data-q="poverty inequality gini">Poverty</button>
-      <button class="pill" data-q="literacy education">Education</button>
-      <button class="pill" data-q="internet mobile">ICT</button>
-      <button class="pill ghost" id="toggle-full">↻ Load full WDI taxonomy</button>
+    <div class="index-head">
+      <h1>Find an indicator, then chart it.</h1>
+      <p class="lede" id="index-lede">A curated index of World Bank development series — open one to get the chart, its source caption, a citation and R / Python code that reproduces it.</p>
+      <div class="search-row">
+        <label class="visually-hidden" for="search">Search indicators</label>
+        <input id="search" class="search-box" type="search"
+               placeholder="GDP, child mortality, CO2, Gini…"
+               autofocus autocomplete="off" spellcheck="false" data-search>
+        <div class="search-hint">
+          <span class="kbd-hint">Press <kbd>/</kbd> to search from anywhere on the page.</span>
+          <span class="try" aria-label="Example searches">Try
+            <button class="pill" type="button" data-q="gdp">GDP</button>
+            <button class="pill" type="button" data-q="life expectancy">life expectancy</button>
+            <button class="pill" type="button" data-q="co2 climate">climate</button>
+            <button class="pill" type="button" data-q="poverty inequality gini">poverty</button>
+            <button class="pill" type="button" data-q="literacy education">education</button>
+            <button class="pill" type="button" data-q="internet mobile">ICT</button>
+          </span>
+        </div>
+      </div>
     </div>
 
-    <div id="status"></div>
-    <div id="results"></div>
+    <div class="index-layout">
+      <aside class="facets" aria-labelledby="facets-title">
+        <h2 id="facets-title">Categories</h2>
+        <div class="facet-list" id="category-pills"></div>
+        <div class="taxonomy">
+          <button class="pill ghost" type="button" id="toggle-full">Search the full WDI taxonomy</button>
+          <p>Adds every World Bank WDI code (about 1,500) to the search; cached for a week.</p>
+        </div>
+      </aside>
+
+      <section aria-labelledby="results-title">
+        <div class="results-head">
+          <h2 id="results-title">Indicators</h2>
+          <span class="count" id="results-count" aria-live="polite"></span>
+        </div>
+        <div id="status" role="status" aria-live="polite"></div>
+        <div id="results"></div>
+        <p class="entry-points">
+          Working with your own series? <a href="./upload.html">Upload a CSV or Excel file</a>,
+          or <a href="./conflict.html">aggregate event-level conflict data</a> to country-years.
+        </p>
+      </section>
+    </div>
   </main>
 
   <footer class="site">
-    Data: World Bank WDI (live) · Search: <a href="https://fusejs.io">Fuse.js</a> · Charts: <a href="https://www.chartjs.org">Chart.js</a>.
-    <a href="https://github.com/PierreBeaucoral/EasyViz">Source</a>.
+    <p>Data: World Bank World Development Indicators, fetched live from api.worldbank.org. Search: <a href="https://fusejs.io">Fuse.js</a>. Charts: <a href="https://www.chartjs.org">Chart.js</a>. Runs entirely in the browser; nothing is stored server-side. <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
   </footer>
 
   <script src="./config.js"></script>
@@ -81,7 +86,7 @@
   <script type="module">
     import { INDICATORS, CATEGORIES } from "./data/catalog.js";
     import { makeIndex, search } from "./js/fuzzy.js";
-    import { debounce, escapeHtml, error, loading, clear, initDarkMode, initSearchHotkey } from "./js/ui.js";
+    import { debounce, escapeHtml, error, loading, clear, initDarkMode, initSearchHotkey, fmtInt } from "./js/ui.js";
     import { loadFull, mergeCatalogs } from "./js/taxonomy.js";
 
     initDarkMode();
@@ -98,14 +103,20 @@
     const statusEl = document.getElementById("status");
     const searchEl = document.getElementById("search");
     const pillsEl = document.getElementById("category-pills");
+    const countEl = document.getElementById("results-count");
+    const SHOWN = 80;
 
-    // Populate category pills (all + per-category).
+    // Category facets (all + per-category), with real counts.
     function renderCategoryPills() {
       pillsEl.innerHTML = "";
-      const makePill = (label, cat) => {
+      const counts = new Map();
+      for (const r of state.catalog) counts.set(r.category, (counts.get(r.category) || 0) + 1);
+      const makePill = (label, cat, n) => {
         const b = document.createElement("button");
+        b.type = "button";
         b.className = "pill ghost" + (state.category === cat ? " active" : "");
-        b.textContent = label;
+        b.setAttribute("aria-pressed", state.category === cat ? "true" : "false");
+        b.innerHTML = `<span>${escapeHtml(label)}</span><span class="n">${fmtInt(n)}</span>`;
         b.addEventListener("click", () => {
           state.category = cat;
           renderCategoryPills();
@@ -113,8 +124,8 @@
         });
         pillsEl.appendChild(b);
       };
-      makePill("All categories", null);
-      for (const c of [...new Set(state.catalog.map(r => r.category))].sort()) makePill(c, c);
+      makePill("All categories", null, state.catalog.length);
+      for (const c of [...counts.keys()].sort()) makePill(c, c, counts.get(c));
     }
     renderCategoryPills();
 
@@ -122,22 +133,25 @@
       const q = searchEl.value.trim();
       let rows = q ? search(state.fuse, q, 200) : state.catalog;
       if (state.category) rows = rows.filter(r => r.category === state.category);
+      countEl.textContent = rows.length > SHOWN
+        ? `${SHOWN} of ${fmtInt(rows.length)}`
+        : `${fmtInt(rows.length)} ${rows.length === 1 ? "indicator" : "indicators"}`;
       if (!rows.length) {
-        resultsEl.innerHTML = "<p>No indicators matched.</p>";
+        resultsEl.innerHTML = `<p class="results-empty">No indicator matches “${escapeHtml(q)}”${state.category ? ` in ${escapeHtml(state.category)}` : ""}. Try a broader word, or search the full WDI taxonomy.</p>`;
         return;
       }
       const ul = document.createElement("ul");
       ul.className = "results";
-      for (const r of rows.slice(0, 80)) {
+      for (const r of rows.slice(0, SHOWN)) {
         const li = document.createElement("li");
+        const id = encodeURIComponent(r.id);
         li.innerHTML = `
-          <span class="category">${escapeHtml(r.category)}</span>
-          <span class="name">${escapeHtml(r.name)}</span>
-          <div class="meta">${escapeHtml(r.unit || "—")} · <code>${escapeHtml(r.code)}</code></div>
+          <a class="row" href="./chart.html?id=${id}">
+            <span class="name">${escapeHtml(r.name)}</span>
+            <span class="meta"><span>${escapeHtml(r.category)}</span><span>${escapeHtml(r.unit || "—")}</span><code>${escapeHtml(r.code)}</code></span>
+          </a>
+          <span class="alt"><a href="./map.html?id=${id}" aria-label="Map ${escapeHtml(r.name)}">Map</a></span>
         `;
-        li.addEventListener("click", () => {
-          window.location.href = `./chart.html?id=${encodeURIComponent(r.id)}`;
-        });
         ul.appendChild(li);
       }
       resultsEl.innerHTML = "";
@@ -146,25 +160,24 @@
 
     searchEl.addEventListener("input", debounce(render, 120));
     document.querySelectorAll(".pill[data-q]").forEach(p => {
-      p.addEventListener("click", () => { searchEl.value = p.dataset.q; render(); });
+      p.addEventListener("click", () => { searchEl.value = p.dataset.q; render(); searchEl.focus(); });
     });
 
     document.getElementById("toggle-full").addEventListener("click", async (e) => {
-      e.target.disabled = true;
-      loading(statusEl, "Loading full WDI taxonomy (~20k indicators)…");
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      loading(statusEl, "Loading the full WDI taxonomy (about 1,500 indicators)…");
       try {
         const full = await loadFull();
         state.catalog = mergeCatalogs(INDICATORS, full);
         state.fuse = makeIndex(state.catalog);
         clear(statusEl);
-        e.target.textContent = `✓ Full taxonomy loaded (${state.catalog.length.toLocaleString()} indicators)`;
-        e.target.classList.remove("ghost");
-        e.target.classList.add("active");
+        btn.textContent = `Full taxonomy loaded (${fmtInt(state.catalog.length)})`;
         renderCategoryPills();
         render();
       } catch (err) {
         error(statusEl, err.message);
-        e.target.disabled = false;
+        btn.disabled = false;
       }
     });
 

@@ -4,22 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EasyViz — conflict data</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%231d2430'/%3E%3Cpath d='M6 23l6-7 5 3 9-11' fill='none' stroke='%23eef1f5' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600&amp;display=swap">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="site">
-    <div class="container">
-      <span class="brand"><a href="./index.html">EasyViz</a></span>
-      <nav>
+    <div class="masthead">
+      <a class="brand" href="./index.html"><span class="brand__name">EasyViz</span><span class="brand__sub">World Development Indicators</span></a>
+      <nav class="site-nav" aria-label="Tools">
         <a href="./index.html">Search</a>
         <a href="./chart.html">Chart</a>
         <a href="./map.html">Map</a>
         <a href="./compare.html">Compare</a>
         <a href="./upload.html">Upload</a>
-        <a href="./conflict.html" class="active">Conflict</a>
+        <a href="./conflict.html" aria-current="page">Conflict</a>
       </nav>
-      <div class="tools">
-        <button class="icon" data-action="toggle-dark" title="Toggle dark mode">◐</button>
+      <div class="masthead__tools">
+        <button class="icon-btn" type="button" data-action="toggle-dark" aria-label="Switch to dark mode" title="Switch to dark mode">◐</button>
       </div>
     </div>
   </header>
@@ -32,34 +36,36 @@
       <strong>Note.</strong> UCDP's public API now requires an access token, and HDX's CDN
       restricts CORS to its own origin — so a pure-static site can't fetch them live.
       Two options:
-      <ul style="margin:0.5rem 0 0; padding-left:1.25rem;">
+      <ul>
         <li><strong>Download the CSV from <a href="https://ucdp.uu.se/downloads/">UCDP</a> or <a href="https://data.humdata.org/">HDX</a></strong> and drop it below.</li>
         <li><strong>Self-host the FastAPI backend</strong> (see <code>api/</code> in the repo) and add an auth-equipped UCDP proxy route. Then point <code>config.js → proxyBase</code> at it.</li>
       </ul>
     </div>
 
-    <div class="dropzone" id="dropzone" style="margin-top: 1.25rem;">
+    <div class="dropzone" id="dropzone">
       <p class="primary">Drop a conflict CSV here</p>
-      <p>or <label style="color:var(--accent); cursor:pointer; text-decoration: underline;">click to browse<input id="file" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" style="display:none;"></label></p>
+      <p>or <label class="browse">click to browse<input id="file" class="visually-hidden" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls"></label></p>
       <p>Works with UCDP GED exports (columns <code>country</code>, <code>year</code>, <code>best</code>) or any similar structure.</p>
     </div>
 
-    <div id="status"></div>
+    <div id="status" role="status" aria-live="polite"></div>
     <div id="config" style="display:none;"></div>
     <div id="chart-section" style="display:none;">
       <div class="chart-card">
         <div class="chart-wrap"><canvas id="chart"></canvas></div>
         <div class="caption" id="caption"></div>
       </div>
-      <div class="actions" style="margin-top: 0.75rem;">
-        <button id="btn-download">Download aggregated CSV</button>
-        <button class="code-btn" id="btn-code">⟨/⟩ Show R / Python code</button>
+      <div class="actions">
+        <button class="btn" type="button" id="btn-download">Download aggregated CSV</button>
+        <button class="btn" type="button" id="btn-code">R / Python code</button>
       </div>
       <div id="conflict-methodology" class="methodology"></div>
     </div>
   </main>
 
-  <footer class="site">All file parsing happens locally. Nothing is uploaded.</footer>
+  <footer class="site">
+    <p>All file parsing happens locally — nothing is uploaded. Event data: UCDP GED or HDX exports supplied by you. Charts: Chart.js.   <a href="https://github.com/PierreBeaucoral/EasyViz">Source code</a>.</p>
+  </footer>
 
   <script src="./config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>

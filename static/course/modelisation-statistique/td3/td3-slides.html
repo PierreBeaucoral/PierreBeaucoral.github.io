@@ -1078,32 +1078,31 @@ Pierre Beaucoral
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#/objectifs-du-td" id="/toc-objectifs-du-td"><span class="header-section-number">1</span> Objectifs du TD</a></li>
-<li><a href="#/packages-utilisés" id="/toc-packages-utilisés"><span class="header-section-number">2</span> Packages utilisés</a></li>
-<li><a href="#/corrections-après-la-séance" id="/toc-corrections-après-la-séance"><span class="header-section-number">3</span> Corrections après la séance</a></li>
+<li><a href="#/mise-en-place" id="/toc-mise-en-place"><span class="header-section-number">1</span> Mise en place</a></li>
 </ul>
 </nav>
 </section>
-<section id="objectifs-du-td" class="slide level2" data-number="1">
-<h2><span class="header-section-number">1</span> Objectifs du TD</h2>
+<section>
+<section id="mise-en-place" class="title-slide slide level1 center" data-number="1">
+<h1><span class="header-section-number">1</span> Mise en place</h1>
+
+</section>
+<section id="objectifs-du-td" class="slide level2" data-number="1.1">
+<h2><span class="header-section-number">1.1</span> Objectifs du TD</h2>
 <ul>
 <li>Manipuler un <strong>modèle logit multinomial nominal</strong> (<code>SUBTYPE</code>).</li>
 <li>Manipuler un <strong>modèle logit ordinal</strong> (<code>GRADE</code>).</li>
 <li>Savoir :
 <ul>
-<li>préparer les données (codage en facteurs / variables ordinales) ;</li>
+<li>préparer les données (facteurs, facteur ordonné, échantillon commun) ;</li>
 <li>estimer, simplifier et interpréter un modèle ;</li>
-<li>tester :
-<ul>
-<li>l’ajustement (Hosmer–Lemeshow multinomial) ;</li>
-<li>des interactions via test de rapport de vraisemblance (LR).</li>
-</ul></li>
+<li>tester l’ajustement (Hosmer–Lemeshow multinomial), des interactions (tests LR) et l’hypothèse des cotes proportionnelles.</li>
 </ul></li>
 </ul>
 <p>Données : <em>cancer.dta</em> (<a href="data/cancer.dta" download="cancer.dta">télécharger</a>) (288 femmes avec cancer de l’endomètre).</p>
 </section>
-<section id="packages-utilisés" class="slide level2" data-number="2">
-<h2><span class="header-section-number">2</span> Packages utilisés</h2>
+<section id="packages-utilisés" class="slide level2" data-number="1.2">
+<h2><span class="header-section-number">1.2</span> Packages utilisés</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1111,23 +1110,43 @@ Pierre Beaucoral
 <span id="cb1-2"><a></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-3"><a></a><span class="fu">library</span>(haven)</span>
 <span id="cb1-4"><a></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-5"><a></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-6"><a></a><span class="fu">library</span>(gt)</span>
-<span id="cb1-7"><a></a><span class="fu">library</span>(nnet)            <span class="co"># multinom (logit multinomial nominal)</span></span>
-<span id="cb1-8"><a></a><span class="fu">library</span>(generalhoslem)   <span class="co"># logitgof : test de Hosmer–Lemeshow multinomial</span></span>
-<span id="cb1-9"><a></a><span class="fu">library</span>(MASS)            <span class="co"># polr : logit ordinal</span></span>
+<span id="cb1-5"><a></a><span class="fu">library</span>(nnet)            <span class="co"># multinom : logit multinomial nominal</span></span>
+<span id="cb1-6"><a></a><span class="fu">library</span>(generalhoslem)   <span class="co"># logitgof : test de Hosmer–Lemeshow multinomial</span></span>
+<span id="cb1-7"><a></a><span class="fu">library</span>(MASS)            <span class="co"># polr : logit ordinal ; stepAIC</span></span>
+<span id="cb1-8"><a></a><span class="co"># Le package ordinal (clm, nominal_test) est appelé avec ordinal::</span></span>
+<span id="cb1-9"><a></a><span class="co"># sans library(), car il masquerait dplyr::slice().</span></span>
 <span id="cb1-10"><a></a></span>
-<span id="cb1-11"><a></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-11"><a></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
+<span id="cb1-12"><a></a></span>
+<span id="cb1-13"><a></a><span class="co"># Petits outils pour écrire les nombres « à la française » dans le texte</span></span>
+<span id="cb1-14"><a></a>fr  <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">d =</span> <span class="dv">2</span>) <span class="fu">formatC</span>(x, <span class="at">format =</span> <span class="st">&quot;f&quot;</span>, <span class="at">digits =</span> d, <span class="at">decimal.mark =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb1-15"><a></a>fp  <span class="ot">&lt;-</span> <span class="cf">function</span>(p) <span class="fu">ifelse</span>(p <span class="sc">&lt;</span> <span class="fl">0.001</span>, <span class="st">&quot;&lt; 0,001&quot;</span>, <span class="fu">paste</span>(<span class="st">&quot;=&quot;</span>, <span class="fu">fr</span>(p, <span class="dv">3</span>)))</span>
+<span id="cb1-16"><a></a>pct <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">d =</span> <span class="dv">1</span>) <span class="fu">paste0</span>(<span class="fu">fr</span>(<span class="dv">100</span> <span class="sc">*</span> x, d), <span class="st">&quot; %&quot;</span>)</span>
+<span id="cb1-17"><a></a></span>
+<span id="cb1-18"><a></a><span class="co"># Affichage d&#39;un tableau : arrondi et p-values lisibles (« &lt;0.001 »)</span></span>
+<span id="cb1-19"><a></a>kbl <span class="ot">&lt;-</span> <span class="cf">function</span>(d, <span class="at">digits =</span> <span class="dv">3</span>) {</span>
+<span id="cb1-20"><a></a>  d <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(d, dplyr<span class="sc">::</span><span class="fu">across</span>(dplyr<span class="sc">::</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">&quot;p.value&quot;</span>, <span class="st">&quot;p_value&quot;</span>)),</span>
+<span id="cb1-21"><a></a>                                      <span class="sc">~</span> <span class="fu">format.pval</span>(.x, <span class="at">digits =</span> <span class="dv">3</span>, <span class="at">eps =</span> <span class="fl">0.001</span>)))</span>
+<span id="cb1-22"><a></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(d, <span class="at">digits =</span> digits)</span>
+<span id="cb1-23"><a></a>}</span>
+<span id="cb1-24"><a></a></span>
+<span id="cb1-25"><a></a><span class="co"># Test du rapport de vraisemblance entre deux modèles emboîtés :</span></span>
+<span id="cb1-26"><a></a><span class="co"># LR = différence des déviances, ddl = différence du nombre de paramètres</span></span>
+<span id="cb1-27"><a></a>lr_test <span class="ot">&lt;-</span> <span class="cf">function</span>(reduit, complet) {</span>
+<span id="cb1-28"><a></a>  stat <span class="ot">&lt;-</span> <span class="fu">deviance</span>(reduit) <span class="sc">-</span> <span class="fu">deviance</span>(complet)</span>
+<span id="cb1-29"><a></a>  ddl  <span class="ot">&lt;-</span> complet<span class="sc">$</span>edf <span class="sc">-</span> reduit<span class="sc">$</span>edf</span>
+<span id="cb1-30"><a></a>  <span class="fu">c</span>(<span class="at">stat =</span> stat, <span class="at">ddl =</span> ddl, <span class="at">p =</span> <span class="fu">pchisq</span>(stat, ddl, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb1-31"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="corrections-après-la-séance" class="slide level2" data-number="3">
-<h2><span class="header-section-number">3</span> Corrections après la séance</h2>
+<section id="corrections-après-la-séance" class="slide level2 unnumbered">
+<h2>Corrections après la séance</h2>
 <p>La correction détaillée (code, sorties R et interprétations) sera mise en ligne <strong>après la séance de TD</strong>.</p>
-<p>En attendant, travaillez à partir de l’<strong>énoncé</strong> (menu du TD → « Énoncé (questions seulement) »).</p>
+<p>En attendant, travaillez à partir de l’<strong>énoncé</strong> (<a href="enonce-td3.html">énoncé complet</a>) ; données : <a href="data/cancer.dta" download="cancer.dta">cancer.dta</a>.</p>
 
 
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

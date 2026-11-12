@@ -1,7 +1,7 @@
 ---
-title: "No plan, No Aid? The effects of National Adaptation Plan implementation on received Adaptation Aid"
+title: "Do National Adaptation Plans Attract Adaptation Finance? Evidence from the Composition of Aid"
 summary: >
- “No Plan, No Aid?” examines whether implementing a National Adaptation Plan (NAP) increases a country’s climate adaptation finance. Through a novel theoretical model and a robust Double Machine Learning (DML) approach, the authors find that NAP adoption does send mixed signals—reducing perceived vulnerability while boosting perceived capacity. Crucially, they find that while traditional econometric models show no impact or even a negative one, modern methods reveal a significant positive effect on adaptation aid.
+  Do National Adaptation Plans (NAPs) mobilize additional development finance, or redirect existing finance toward adaptation? Combining NAP adoption dates with OECD CRS commitments for 145 recipient countries over 2009–2024 and a staggered difference-in-differences design (Callaway & Sant'Anna 2021), we find that for the 2021–2024 adopters, NAP adoption raises the adaptation share of commitments by 2.65 percentage points (from 6.03%) and adaptation-marked commitments by up to about 35% (an upper bound), with no detectable change in total commitments. NAPs change the composition rather than the size of recipient aid envelopes.
 
 authors:
   - admin

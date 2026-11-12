@@ -29,8 +29,8 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 </table>
 
 ---
-## Development Goals, Emissions Costs?
-**Climate and development finance vis-à-vis local CO₂ emissions** 
+## Development Goals, Environmental Costs?
+**Evidence from geocoded climate and non-climate finance** 
 *Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*
 
 ### Big picture
@@ -94,53 +94,47 @@ Why it matters (preliminary insights):
 
 ---
 
-### 3. *No Plan, No Aid? The effects of National Adaptation Plan implementation on received adaptation aid*  
+### 3. *Do National Adaptation Plans Attract Adaptation Finance? Evidence from the composition of aid*  
 
-With [Sebastien Marchand](https://pierrebeaucoral.github.io/authors/smarchand/) and [Michael Goujon](https://pierrebeaucoral.github.io/authors/mgoujon/). Here we study whether **adopting a National Adaptation Plan (NAP)** helps countries **attract more adaptation finance**.
+With [Sebastien Marchand](https://pierrebeaucoral.github.io/authors/smarchand/) and [Michael Goujon](https://pierrebeaucoral.github.io/authors/mgoujon/). Here we study whether **adopting a National Adaptation Plan (NAP)** mobilizes additional development finance, or redirects existing finance toward adaptation. [Project page](https://pierrebeaucoral.github.io/NAP/)
 
 What we do (theory):
 
-- Build a simple **recipient–donor model** in which a NAP sends a **signal**:
-  - higher institutional capacity (countries look better able to use funds).
-- Show how donors might optimally **reallocate climate aid** across countries in response to this signal, trading off need and merit.
+- Build a simple **recipient–donor allocation model** in which a NAP signals **adaptation-planning capacity** (the *merit* side of the need–merit dilemma), while leaving climate hazard and exposure unchanged.
+- Separate a **composition channel** (the adaptation share within a country's envelope) from an **envelope channel** (the total allocated to the country).
 
 What we do (empirics):
 
-- Use differences in **NAP adoption timing** to run a **staggered DiD** at the country level.
-- Combine detailed adaptation-aid data from the OECD CRS with NAP information.
-- Break down results by **donor type** (bilateral vs. multilateral) and **recipient characteristics**.
+- Link NAP submission dates (UNFCCC) to OECD CRS commitments for **145 recipient countries, 2009–2024**.
+- Run a **staggered DiD** (Callaway & Sant'Anna 2021) on the 2021–2024 adoption cohorts, with heterogeneity by **donor type** and **baseline capacity**.
 
-Why it matters:
+What we find:
 
-- The chapter asks whether NAPs work as **effective “signals” in climate diplomacy**:
-  - Do they help countries secure more adaptation aid?
-  - Under which conditions and from which donors?
-- It speaks directly to debates on whether **planning requirements** are a fair and efficient way to allocate climate finance.
+- NAP adoption raises the **adaptation share** of commitments by **2.65 pp** (from 6.03%) and adaptation-marked commitments by about **35%** (an upper bound), with **no detectable change in total commitments**.
+- The response runs through **official donors**, DAC bilateral and multilateral.
+- A NAP steers the finance a country already receives rather than unlocking additional finance, which matters for countries that cannot yet produce one.
 
 ---
 
-### 4. *Scaling Down Climate Finance Justice*  *(exploratory)*
+### 4. *Subnational allocation of geolocated bilateral adaptation projects: a global analysis, 2010–2020*
 
-This exploratory project with [Paul Vernus](https://pierrebeaucoral.github.io/authors/pvernus/) is about **seeing where need and money meet—or don’t—on the map**.
+With [Paul Vernus](https://pierrebeaucoral.github.io/authors/pvernus/). Climate agreements pledge support to countries "particularly vulnerable" to climate change, but say nothing about how the finance is to be allocated **within** them. We ask whom bilateral adaptation finance prioritizes inside recipient countries.
 
 What we do:
 
-- Build a harmonised **ADM2-level panel** combining:
-  - Physical Vulnerability to Climate Change Index (PVCCI) to assess exposure to physical shocks,
-  - subnational HDI from Global Data Lab,
-  - WorldPop population data, and
-  - geocoded, ClimateFinanceBERT-tagged **adaptation projects** aggregated to ADM2.
-- Develop a set of visual description:
-  - To highlight where large vulnerable populations live.
-  - **Inequality decompositions** (within vs. between countries) of subnational vulnerability.
-  - Show both where adaptation finance appears at all (coverage) and where per-capita amounts are highest (intensity).
+- Geolocate adaptation-related projects committed over **2010–2020 by 19 bilateral donors** in the **29,099 second-level administrative regions** of the 152 Non-Annex I Parties (GODAD).
+- Link each region to its **physical hazard** (coastal, dryland, heat), **population**, **human development** (subnational HDI) and the **political status of its ethnic groups** (Ethnic Power Relations).
+- Test three principles drawn from the treaties and the climate-justice literature: projects should follow **hazard**, and at high hazard should treat **poorer** and **politically excluded** regions equally or give them priority.
+
+What we find:
+
+- Most people at high hazard live **outside the LDCs and SIDS**, and geolocated projects reach only 9% of regions.
+- Within countries, projects go more often to regions at high **coastal** hazard, but not to regions at high dryland or heat hazard.
+- At high hazard, poorer regions and regions with less political power receive projects **about as often** as other regions of their country: **no evidence of priority**.
 
 Why it matters:
 
-- The goal is a **decision-oriented dashboard** answering questions like:
-  - Are adaptation funds reaching the most vulnerable areas?
-  - How does this vary with human development and population?
-- At this stage, it is **descriptive by design**: a proof of concept and a baseline for future econometric work on **targeting, fairness, and mandate alignment** in climate finance.
+- As Parties track adaptation under the Paris Agreement, tracking finance within countries requires project documents to record **where projects are implemented**.
 
 ---
 

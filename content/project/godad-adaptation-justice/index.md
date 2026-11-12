@@ -1,12 +1,15 @@
 ---
-title: "Scaling down climate adaptation finance justice: how cosmopolitan allocation ideals withstand sovereign realities at the subnational level"
+title: "Subnational allocation of geolocated bilateral adaptation projects: a global analysis, 2010–2020"
 summary: >
-  Joint work with Paul Vernus on how the justice ideals embedded in global climate
-  governance play out when adaptation finance is allocated within countries. Using
-  geocoded adaptation finance across tens of thousands of subnational units worldwide
-  (2000–2022), the project contrasts cosmopolitan allocation principles with the
-  sovereign realities that shape where funding actually lands. Work in progress —
-  presented at the CERDI doctoral seminar (March 2026).
+  Joint work with Paul Vernus on whom bilateral adaptation finance prioritizes within the
+  countries that receive it. We geolocate adaptation-related projects committed over
+  2010–2020 by 19 bilateral donors in the 29,099 second-level administrative regions of the
+  152 Non-Annex I Parties, and test three principles from the treaties and the climate
+  justice literature: hazard, socioeconomic status and political power. Within countries,
+  projects go more often to regions at high coastal hazard, but not to regions at high
+  dryland or heat hazard. At high hazard, poorer regions and regions with less political
+  power receive projects about as often as other regions of their country: we find no
+  evidence of priority.
 
 authors:
   - admin

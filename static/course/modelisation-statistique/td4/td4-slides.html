@@ -1128,10 +1128,8 @@ Pierre Beaucoral
 <li><a href="#/exercice-1-correspondance-entre-codages-du-cycle" id="/toc-exercice-1-correspondance-entre-codages-du-cycle">Exercice 1 – Correspondance entre codages du cycle</a></li>
 <li><a href="#/exercice-2-corrélations-entre-variables-explicatives" id="/toc-exercice-2-corrélations-entre-variables-explicatives">Exercice 2 – Corrélations entre variables explicatives</a></li>
 <li><a href="#/exercice-3-courbes-de-survie-brutes" id="/toc-exercice-3-courbes-de-survie-brutes">Exercice 3 – Courbes de survie brutes</a></li>
-<li><a href="#/exercice-3-figure-à-commenter" id="/toc-exercice-3-figure-à-commenter">Exercice 3 – Figure à commenter</a></li>
 <li><a href="#/exercice-4-test-du-log-rank" id="/toc-exercice-4-test-du-log-rank">Exercice 4 – Test du log-rank</a></li>
 <li><a href="#/exercice-5-vérification-graphique-de-lhypothèse-de-risques-proportionnels" id="/toc-exercice-5-vérification-graphique-de-lhypothèse-de-risques-proportionnels">Exercice 5 – Vérification graphique de l’hypothèse de risques proportionnels</a></li>
-<li><a href="#/exercice-5-figure-à-commenter" id="/toc-exercice-5-figure-à-commenter">Exercice 5 – Figure à commenter</a></li>
 <li><a href="#/corrections-après-la-séance" id="/toc-corrections-après-la-séance">Corrections après la séance</a></li>
 </ul></li>
 </ul>
@@ -1363,7 +1361,6 @@ Probabilité que la grève soit encore en cours à la date <span class="math inl
 </details>
 </div>
 <ul>
-<li>Le test compare les courbes de survie des <span class="math inline">\(G\)</span> groupes sous <span class="math inline">\(H_0\)</span> : même fonction de survie dans tous les groupes.</li>
 <li>Sous <span class="math inline">\(H_0\)</span>, la statistique suit approximativement une loi du <span class="math inline">\(\chi^2\)</span> à <span class="math inline">\(G - 1\)</span> degrés de liberté ; on rejette <span class="math inline">\(H_0\)</span> au seuil de 5 % si la p-valeur est inférieure à 0,05.</li>
 <li>L’interprétation de cette sortie est l’objet de l’exercice 4.</li>
 </ul>
@@ -1642,21 +1639,6 @@ Si les risques sont proportionnels, les courbes devraient être à peu près <st
 <p>Commencez par créer l’objet de survie avec <code>Surv(time, status)</code>, puis estimez un Kaplan–Meier par groupe avec <code>survfit(Surv_obj ~ uoutput_q, data = …)</code>. Utilisez ensuite <code>plot()</code> pour tracer les courbes et <code>legend()</code> pour afficher les trois niveaux de choc.</p>
 </blockquote>
 </section>
-<section id="exercice-3-figure-à-commenter" class="slide level2 unnumbered">
-<h2>Exercice 3 – Figure à commenter</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>km_enonce <span class="ot">&lt;-</span> <span class="fu">survfit</span>(S_strikes <span class="sc">~</span> uoutput_q, <span class="at">data =</span> strikes)</span>
-<span id="cb19-2"><a></a>cols_enonce <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>)   <span class="co"># faible, moyen, fort</span></span>
-<span id="cb19-3"><a></a><span class="fu">plot</span>(km_enonce, <span class="at">col =</span> cols_enonce, <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
-<span id="cb19-4"><a></a>     <span class="at">xlab =</span> <span class="st">&quot;Durée de grève (jours)&quot;</span>,</span>
-<span id="cb19-5"><a></a>     <span class="at">ylab =</span> <span class="st">&quot;Probabilité que la grève soit en cours&quot;</span>)</span>
-<span id="cb19-6"><a></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">levels</span>(strikes<span class="sc">$</span>uoutput_q),</span>
-<span id="cb19-7"><a></a>       <span class="at">col =</span> cols_enonce, <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-</section>
 <section id="exercice-4-test-du-log-rank" class="slide level2 unnumbered scrollable">
 <h2>Exercice 4 – Test du log-rank</h2>
 <p>On souhaite tester l’effet global de <code>uoutput_q</code> sur la durée de grève à l’aide d’un <strong>test du log-rank</strong>.</p>
@@ -1681,22 +1663,6 @@ Si les risques sont proportionnels, les courbes devraient être à peu près <st
 <blockquote>
 <p>Utilisez <code>ggsurvplot()</code> du package <strong>survminer</strong> en lui passant un objet <code>survfit(Surv(...) ~ uoutput_q, ...)</code> et l’argument <code>fun = &quot;cloglog&quot;</code> pour obtenir les courbes de <span class="math inline">\(\log(-\log(\hat S(t)))\)</span> par groupe, puis regardez si elles sont à peu près parallèles.</p>
 </blockquote>
-</section>
-<section id="exercice-5-figure-à-commenter" class="slide level2 unnumbered">
-<h2>Exercice 5 – Figure à commenter</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">&quot;survminer&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb20-2"><a></a>  <span class="fu">ggsurvplot</span>(km_enonce, <span class="at">data =</span> strikes, <span class="at">fun =</span> <span class="st">&quot;cloglog&quot;</span>,</span>
-<span id="cb20-3"><a></a>             <span class="at">palette =</span> cols_enonce, <span class="at">linetype =</span> <span class="st">&quot;strata&quot;</span>,</span>
-<span id="cb20-4"><a></a>             <span class="at">legend.title =</span> <span class="st">&quot;Choc d&#39;activité&quot;</span>,</span>
-<span id="cb20-5"><a></a>             <span class="at">legend.labs  =</span> <span class="fu">levels</span>(strikes<span class="sc">$</span>uoutput_q),</span>
-<span id="cb20-6"><a></a>             <span class="at">xlab =</span> <span class="st">&quot;Durée de grève (jours, échelle logarithmique)&quot;</span>,</span>
-<span id="cb20-7"><a></a>             <span class="at">ylab =</span> <span class="st">&quot;log(-log(S(t)))&quot;</span>)</span>
-<span id="cb20-8"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 </section>
 <section id="corrections-après-la-séance" class="slide level2 unnumbered">
 <h2>Corrections après la séance</h2>

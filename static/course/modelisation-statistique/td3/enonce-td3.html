@@ -4345,7 +4345,7 @@ window.Quarto = {
 <p>Un <strong>modèle de régression multinomiale</strong> est un modèle Logit ou Probit dans lequel la variable à expliquer <span class="math inline">\(Y\)</span> est une variable qualitative à <span class="math inline">\(k &gt; 2\)</span> modalités. Cette variable peut être qualitative <strong>nominale</strong> ou <strong>ordinale</strong>.</p>
 <section id="cas-dune-variable-expliquée-nominale" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="cas-dune-variable-expliquée-nominale"><span class="header-section-number">1.1</span> Cas d’une variable expliquée nominale</h3>
-<p>Dans le cas d’une variable expliquée <strong>nominale</strong>, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des <em>pseudo-côtes</em>, c’est-à-dire :</p>
+<p>Dans le cas d’une variable expliquée <strong>nominale</strong>, on prend n’importe quelle modalité comme modalité de référence (modalité 0), et on estime des <em>pseudo-cotes</em>, c’est-à-dire :</p>
 <ul>
 <li><span class="math inline">\(\displaystyle \frac{\Pr(Y = 1)}{\Pr(Y = 0)}\)</span><br>
 </li>
@@ -4388,12 +4388,13 @@ y_i^* = X_i B + \varepsilon_i
 <li>les seuils <span class="math inline">\(c_g\)</span> (<span class="math inline">\(g = 1, \dots, k - 1\)</span>).</li>
 </ul>
 <p>On prédit alors l’appartenance de chaque individu à chaque classe par les formules :</p>
-<p><span class="math display">\[\Pr(Y_i = 0) = \Phi(c_1 - X_i B)\]</span></p>
-<p><span class="math display">\[\Pr(Y_i = g) = \Phi(c_g - X_i B) - \Phi(c_{g-1} - X_i B)\]</span></p>
+<p><span class="math display">\[\Pr(Y_i = 1) = \Phi(c_1 - X_i B)\]</span></p>
+<p><span class="math display">\[\Pr(Y_i = g) = \Phi(c_g - X_i B) - \Phi(c_{g-1} - X_i B) \quad (g = 2, \dots, k-1)\]</span></p>
+<p><span class="math display">\[\Pr(Y_i = k) = 1 - \Phi(c_{k-1} - X_i B)\]</span></p>
 <p>où <span class="math inline">\(\Phi\)</span> est :</p>
 <ul>
-<li>la fonction de répartition d’une loi gaussienne centrée réduite dans le cas du <strong>modèle Probit multivarié</strong> ;</li>
-<li>l’inverse de la fonction Logit dans le cas du <strong>Logit multivarié</strong>.</li>
+<li>la fonction de répartition d’une loi gaussienne centrée réduite dans le cas du <strong>modèle Probit ordonné</strong> ;</li>
+<li>l’inverse de la fonction Logit dans le cas du <strong>Logit ordonné</strong>.</li>
 </ul>
 </section>
 </section>
@@ -5060,7 +5061,7 @@ On va donc tester l’apport de certaines <strong>interactions</strong> en compa
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Dans le cas d&#39;une variable expliquée **nominale**, on prend n&#39;importe</span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>quelle modalité comme modalité de référence (modalité 0), et on estime</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>des *pseudo-côtes*, c’est-à-dire :</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>des *pseudo-cotes*, c’est-à-dire :</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$\displaystyle \frac{\Pr(Y = 1)}{\Pr(Y = 0)}$\</span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>$\displaystyle \frac{\Pr(Y = 2)}{\Pr(Y = 0)}$\</span>
@@ -5114,212 +5115,214 @@ On va donc tester l’apport de certaines <strong>interactions</strong> en compa
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>On prédit alors l&#39;appartenance de chaque individu à chaque classe par</span>
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>les formules :</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y_i = 0) = \Phi(c_1 - X_i B)$$</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y_i = 1) = \Phi(c_1 - X_i B)$$</span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y_i = g) = \Phi(c_g - X_i B) - \Phi(c_{g-1} - X_i B)$$</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y_i = g) = \Phi(c_g - X_i B) - \Phi(c_{g-1} - X_i B) \quad (g = 2, \dots, k-1)$$</span>
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>où $\Phi$ est :</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>$$\Pr(Y_i = k) = 1 - \Phi(c_{k-1} - X_i B)$$</span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la fonction de répartition d&#39;une loi gaussienne centrée réduite dans</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    le cas du **modèle Probit multivarié** ;</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>l&#39;inverse de la fonction Logit dans le cas du **Logit multivarié**.</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Présentation de l&#39;étude et des données</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>où $\Phi$ est :</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>la fonction de répartition d&#39;une loi gaussienne centrée réduite dans</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    le cas du **modèle Probit ordonné** ;</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>l&#39;inverse de la fonction Logit dans le cas du **Logit ordonné**.</span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>Les données étudiées proviennent de *Hill et al.* (1995) et sont</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>288 femmes avec un cancer de l’endomètre participent à l’étude.</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Présentation de l&#39;étude et des données</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>Les données étudiées proviennent de *Hill et al.* (1995) et sont</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>utilisées comme exemple dans l’ouvrage de Kleinbaum et Klein.</span>
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dictionnaire des variables</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>288 femmes avec un cancer de l’endomètre participent à l’étude.</span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ID** : identifiant individuel.</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**GRADE** : variable ordinale indiquant le stade de la tumeur</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : bien différenciée</span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : modérément différenciée</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>2 : peu différenciée</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**RACE** : variable indicatrice à deux modalités</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : peau noire</span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : peau blanche</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ESTROGEN** : variable indicatrice à deux modalités</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : la femme a déjà pris des œstrogènes</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : sinon</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**SUBTYPE** : variable qualitative à trois modalités codant le</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>    sous-type de tissu cancéreux</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : Adénocarcinome</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : Adenosquamous</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>2 : Autre</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**AGE** : âge recodé en deux classes</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : 50–64 ans</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : 65–79 ans</span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**SMK** : variable binaire indiquant le statut tabagique au moment</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>    de l’étude</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : fumeuse</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : non-fumeuse</span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="fu">### Références</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dictionnaire des variables</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ID** : identifiant individuel.</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**GRADE** : variable ordinale indiquant le stade de la tumeur</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : bien différenciée</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : modérément différenciée</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>2 : peu différenciée</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**RACE** : variable indicatrice à deux modalités</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : peau noire</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : peau blanche</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**ESTROGEN** : variable indicatrice à deux modalités</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : la femme a déjà pris des œstrogènes</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : sinon</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**SUBTYPE** : variable qualitative à trois modalités codant le</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    sous-type de tissu cancéreux</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : Adénocarcinome</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : Adenosquamous</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>2 : Autre</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**AGE** : âge recodé en deux classes</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : 50–64 ans</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : 65–79 ans</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**SMK** : variable binaire indiquant le statut tabagique au moment</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>    de l’étude</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>1 : fumeuse</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>0 : non-fumeuse</span>
 <span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Hill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J.,</span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>    Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>    Harlan, L.C., *Racial differences in tumor grade among women with</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>    endometrial cancer*, Gynecol. Oncol. 56: 154–163, 1995.</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>David G. Kleinbaum, Mitchel Klein, *Logistic Regression – A</span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>    Self‐Learning Text*, Third Edition, Springer, 2010.</span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="fu">### Références</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Hill, H.A., Coates, R.J., Austin, H., Correa, P., Robboy, S.J.,</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>    Chen, V., Click, L.A., Barrett, R.J., Boyce, J.G., Kotz, H.L., and</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    Harlan, L.C., *Racial differences in tumor grade among women with</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>    endometrial cancer*, Gynecol. Oncol. 56: 154–163, 1995.</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>David G. Kleinbaum, Mitchel Klein, *Logistic Regression – A</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>    Self‐Learning Text*, Third Edition, Springer, 2010.</span>
 <span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="fu">## Import des données</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>Ouvrir R et importer les données (<span class="in">`cancer.dta`</span></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">télécharger</span><span class="co">](data/cancer.dta)</span>{download=&quot;cancer.dta&quot;}) ; utiliser le package</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="in">`haven`</span>).</span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="fu">## Import des données</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>Ouvrir R et importer les données (<span class="in">`cancer.dta`</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>(<span class="co">[</span><span class="ot">télécharger</span><span class="co">](data/cancer.dta)</span>{download=&quot;cancer.dta&quot;}) ; utiliser le package</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="in">`haven`</span>).</span>
 <span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modèle multinomial pour expliquer la variable `SUBTYPE`</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>Les variables explicatives sont : <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SMK`</span> et <span class="in">`AGE`</span>.</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modèle multinomial pour expliquer la variable `SUBTYPE`</span></span>
 <span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Estimation du premier modèle**</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>Les variables explicatives sont : <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SMK`</span> et <span class="in">`AGE`</span>.</span>
 <span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>    Appliquer un premier modèle de régression logit multinomiale prenant</span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>    en compte les effets des quatre variables explicatives (commande R :</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>    <span class="in">`nnet`</span>).</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Sauvegarde des résultats**</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Estimation du premier modèle**</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>    Appliquer un premier modèle de régression logit multinomiale prenant</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>    en compte les effets des quatre variables explicatives (commande R :</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>    <span class="in">`nnet`</span>).</span>
 <span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>    Sauvegarder les résultats du modèle ajusté.</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Sauvegarde des résultats**</span>
 <span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Valeurs prédites et distribution**</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>    Sauvegarder les résultats du modèle ajusté.</span>
 <span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>    Générer les valeurs prédites.\</span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>    Observer et expliquer la répartition de ces données (commande R :</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>    <span class="in">`predict`</span>).</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Test d’ajustement du modèle**</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Valeurs prédites et distribution**</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>    Générer les valeurs prédites.\</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    Observer et expliquer la répartition de ces données (commande R :</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>    <span class="in">`predict`</span>).</span>
 <span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>    Tester l’ajustement de ce modèle aux données (commande R :</span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>    <span class="in">`generalhoslem`</span>), en réduisant le nombre de groupes jusqu’à ce que</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    le test soit applicable.</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Expliquer ce qui se passe.</span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Le modèle est-il ajusté aux données ?</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**Simplification du modèle**</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Test d’ajustement du modèle**</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    Tester l’ajustement de ce modèle aux données (commande R :</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>    <span class="in">`generalhoslem`</span>), en réduisant le nombre de groupes jusqu’à ce que</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>    le test soit applicable.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Expliquer ce qui se passe.</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Le modèle est-il ajusté aux données ?</span>
 <span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>    Essayer de simplifier ce modèle, en se basant sur des tests de</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>    **rapport de vraisemblance** entre modèles emboîtés.</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Combien de degrés de liberté sont appliqués à chaque test ?</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Quel modèle est finalement choisi ?</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**Interprétation**</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**Simplification du modèle**</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>    Essayer de simplifier ce modèle, en se basant sur des tests de</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>    **rapport de vraisemblance** entre modèles emboîtés.</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Combien de degrés de liberté sont appliqués à chaque test ?</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Quel modèle est finalement choisi ?</span>
 <span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>    Interpréter les résultats du **modèle final**.</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**Interprétation**</span>
 <span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>**Tableau de contingence des individus bien et mal classés**</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>    Interpréter les résultats du **modèle final**.</span>
 <span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>    a.  Tabuler la variable <span class="in">`SUBTYPE`</span> pour constater qu’il y a :</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>**Tableau de contingence des individus bien et mal classés**</span>
 <span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="in">        -   186 adénocarcinomes</span></span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="in">        -   45 adenosquames</span></span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="in">        -   57 autres cas</span></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>    b.  Tabuler les valeurs prédites dans <span class="in">`cancer_sub`</span> et construire une</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>        nouvelle variable <span class="in">`pred_subtype`</span> prenant la valeur 0 pour les</span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>        186 (environ) individus avec les plus grandes valeurs de</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cancer_sub`</span>.</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>    c.  Établir le tableau de contingence des variables <span class="in">`subtype_f`</span> et</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>        <span class="in">`pred_subtype`</span>, et calculer la **proportion de cas mal</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>        prédits**.</span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>    a.  Tabuler la variable <span class="in">`SUBTYPE`</span> pour constater qu’il y a :</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="in">        -   186 adénocarcinomes</span></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a><span class="in">        -   45 adenosquames</span></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="in">        -   57 autres cas</span></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>    b.  Tabuler les valeurs prédites dans <span class="in">`cancer_sub`</span> et construire une</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>        nouvelle variable <span class="in">`pred_subtype`</span> prenant la valeur 0 pour les</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>        186 (environ) individus avec les plus grandes valeurs de</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>        <span class="in">`cancer_sub`</span>.</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>    c.  Établir le tableau de contingence des variables <span class="in">`subtype_f`</span> et</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>        <span class="in">`pred_subtype`</span>, et calculer la **proportion de cas mal</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>        prédits**.</span>
 <span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## B. Modèle multinomial ordonné pour expliquer la variable `GRADE`</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>Le stade de la tumeur dépend des variables précédentes mais aussi du</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>type de cancer.</span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="ss">8.  </span>**Modèle ordonné de base**</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## B. Modèle multinomial ordonné pour expliquer la variable `GRADE`</span></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>Le stade de la tumeur dépend des variables précédentes mais aussi du</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>type de cancer.</span>
 <span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>    Ajuster un modèle de régression multinomiale ordonnée, avec comme</span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>    variables explicatives <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SUBTYPE`</span>, <span class="in">`AGE`</span> et <span class="in">`SMK`</span></span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>    (commande R : <span class="in">`polr()`</span> (MASS) ).</span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; Attention : il faut bien utiliser la variable </span><span class="in">`grade_ord`</span><span class="at">.</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="ss">8.  </span>**Modèle ordonné de base**</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>    Ajuster un modèle de régression multinomiale ordonnée, avec comme</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>    variables explicatives <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SUBTYPE`</span>, <span class="in">`AGE`</span> et <span class="in">`SMK`</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>    (commande R : <span class="in">`polr()`</span> (MASS) ).</span>
 <span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="ss">9.  </span>**Test d’ajustement via interactions (en R)**</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; Attention : il faut bien utiliser la variable </span><span class="in">`grade_ord`</span><span class="at">.</span></span>
 <span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>    R, comme Stata, ne fournit pas de test d’ajustement global « clé en</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>    main » pour les modèles logit/probit ordonnés.\</span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>    On va donc tester l’apport de certaines **interactions** en</span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>    comparant des modèles **emboîtés** au moyen de **tests de rapport de</span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>    vraisemblance** (Likelihood Ratio, LR).</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>    On utilise pour cela la fonction <span class="in">`polr()`</span> du package <span class="in">`MASS`</span>, qui</span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>    permet d’estimer un modèle logit ordinal.</span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>**Modèle de base (rappel de la question 8)**</span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Ajuster dans R un premier modèle de régression multinomiale</span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>            ordonnée avec <span class="in">`GRADE`</span> comme variable expliquée et les</span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>            variables explicatives : <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SUBTYPE`</span>,</span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>            <span class="in">`AGE`</span> et <span class="in">`SMK`</span>.</span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>On utilisera la fonction <span class="in">`polr()`</span> du package <span class="in">`MASS`</span> (modèle</span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>            noté par exemple <span class="in">`mod_base`</span>).</span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>**Ajout de l’interaction `ESTROGEN × SUBTYPE`**</span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Ajuster un deuxième modèle ordinal contenant **tous les</span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>            effets simples** et, en plus, l’effet de l’**interaction**</span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>            entre <span class="in">`ESTROGEN`</span> et <span class="in">`SUBTYPE`</span>.</span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>En R, on peut écrire cette interaction sous la forme</span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>            <span class="in">`ESTROGEN * SUBTYPE`</span>, qui inclut automatiquement les effets</span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>            simples et le terme d’interaction.</span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Noter ce modèle, par exemple, <span class="in">`mod_int_ES`</span>.</span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a><span class="ss">    3.  </span>**Test de rapport de vraisemblance entre les deux modèles**</span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Comparer <span class="in">`mod_base`</span> et <span class="in">`mod_int_ES`</span> à l’aide d’un **test de</span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>            rapport de vraisemblance** (LR test) via la fonction</span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>            <span class="in">`anova(mod_base, mod_int_ES)`</span> dans R.\</span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Interpréter :</span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>la statistique de test (χ²),</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>le nombre de degrés de liberté (lié au nombre de</span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>                paramètres supplémentaires dans le modèle avec</span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>                interaction),</span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>la p-value.</span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Conclure : l’interaction <span class="in">`ESTROGEN × SUBTYPE`</span></span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>            améliore-t-elle significativement le modèle ? Faut-il la</span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>            conserver dans le modèle final ?</span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ss">    4.  </span>**Autres interactions possibles**</span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Répéter la même démarche avec **une ou deux autres</span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>            interactions** en effets simples, par exemple :</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`ESTROGEN × AGE`</span> ;</span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`SUBTYPE × AGE`</span> ;</span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>ou toute autre interaction jugée pertinente.\</span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Pour chaque nouvelle interaction :</span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="ss">            1.  </span>Ajuster le modèle étendu (par exemple <span class="in">`mod_int_EAGE`</span>,</span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>                <span class="in">`mod_int_SAGE`</span>, etc.) ;</span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a><span class="ss">            2.  </span>Comparer ce modèle au modèle de base <span class="in">`mod_base`</span> au moyen</span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>                d’un **test LR** via <span class="in">`anova()`</span> ;</span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a><span class="ss">            3.  </span>Discuter de l’intérêt de conserver ou non l’interaction</span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>                dans le modèle au vu de la p-value et, éventuellement,</span>
-<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>                du critère **AIC**.</span>
-<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a><span class="ss">    5.  </span>**Discussion**</span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>À partir de ces tests, proposer un modèle ordinal «</span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>            raisonnable » :</span>
-<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>suffisamment souple pour capter les effets importants ;\</span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>mais pas trop complexe (principe de parcimonie).\</span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Discuter brièvement des limites de ce type de « test</span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>            d’ajustement via interactions » pour juger de la qualité</span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>            globale du modèle.</span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>**Sélection de modèle par AIC**</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="ss">9.  </span>**Test d’ajustement via interactions (en R)**</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>    R, comme Stata, ne fournit pas de test d’ajustement global « clé en</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>    main » pour les modèles logit/probit ordonnés.\</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>    On va donc tester l’apport de certaines **interactions** en</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>    comparant des modèles **emboîtés** au moyen de **tests de rapport de</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>    vraisemblance** (Likelihood Ratio, LR).</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>    On utilise pour cela la fonction <span class="in">`polr()`</span> du package <span class="in">`MASS`</span>, qui</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>    permet d’estimer un modèle logit ordinal.</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>**Modèle de base (rappel de la question 8)**</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Ajuster dans R un premier modèle de régression multinomiale</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>            ordonnée avec <span class="in">`GRADE`</span> comme variable expliquée et les</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>            variables explicatives : <span class="in">`RACE`</span>, <span class="in">`ESTROGEN`</span>, <span class="in">`SUBTYPE`</span>,</span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>            <span class="in">`AGE`</span> et <span class="in">`SMK`</span>.</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>On utilisera la fonction <span class="in">`polr()`</span> du package <span class="in">`MASS`</span> (modèle</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>            noté par exemple <span class="in">`mod_base`</span>).</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>**Ajout de l’interaction `ESTROGEN × SUBTYPE`**</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Ajuster un deuxième modèle ordinal contenant **tous les</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>            effets simples** et, en plus, l’effet de l’**interaction**</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>            entre <span class="in">`ESTROGEN`</span> et <span class="in">`SUBTYPE`</span>.</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>En R, on peut écrire cette interaction sous la forme</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>            <span class="in">`ESTROGEN * SUBTYPE`</span>, qui inclut automatiquement les effets</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>            simples et le terme d’interaction.</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Noter ce modèle, par exemple, <span class="in">`mod_int_ES`</span>.</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="ss">    3.  </span>**Test de rapport de vraisemblance entre les deux modèles**</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Comparer <span class="in">`mod_base`</span> et <span class="in">`mod_int_ES`</span> à l’aide d’un **test de</span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>            rapport de vraisemblance** (LR test) via la fonction</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>            <span class="in">`anova(mod_base, mod_int_ES)`</span> dans R.\</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Interpréter :</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>la statistique de test (χ²),</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>le nombre de degrés de liberté (lié au nombre de</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>                paramètres supplémentaires dans le modèle avec</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>                interaction),</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>la p-value.</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Conclure : l’interaction <span class="in">`ESTROGEN × SUBTYPE`</span></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>            améliore-t-elle significativement le modèle ? Faut-il la</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>            conserver dans le modèle final ?</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">    4.  </span>**Autres interactions possibles**</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Répéter la même démarche avec **une ou deux autres</span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>            interactions** en effets simples, par exemple :</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`ESTROGEN × AGE`</span> ;</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span><span class="in">`SUBTYPE × AGE`</span> ;</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>ou toute autre interaction jugée pertinente.\</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Pour chaque nouvelle interaction :</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a><span class="ss">            1.  </span>Ajuster le modèle étendu (par exemple <span class="in">`mod_int_EAGE`</span>,</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>                <span class="in">`mod_int_SAGE`</span>, etc.) ;</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a><span class="ss">            2.  </span>Comparer ce modèle au modèle de base <span class="in">`mod_base`</span> au moyen</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>                d’un **test LR** via <span class="in">`anova()`</span> ;</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a><span class="ss">            3.  </span>Discuter de l’intérêt de conserver ou non l’interaction</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>                dans le modèle au vu de la p-value et, éventuellement,</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>                du critère **AIC**.</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a><span class="ss">    5.  </span>**Discussion**</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>À partir de ces tests, proposer un modèle ordinal «</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>            raisonnable » :</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>suffisamment souple pour capter les effets importants ;\</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a><span class="ss">            -   </span>mais pas trop complexe (principe de parcimonie).\</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a><span class="ss">        -   </span>Discuter brièvement des limites de ce type de « test</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>            d’ajustement via interactions » pour juger de la qualité</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>            globale du modèle.</span>
 <span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>    En utilisant le critère **AIC**, rechercher un modèle plus simple</span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>    permettant de prédire le stade de la tumeur selon son type.</span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>**Modèle final et interprétation**</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>**Sélection de modèle par AIC**</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>    En utilisant le critère **AIC**, rechercher un modèle plus simple</span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>    permettant de prédire le stade de la tumeur selon son type.</span>
 <span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Quel **modèle final** choisit-on ?</span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Interpréter les résultats de ce modèle.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>**Modèle final et interprétation**</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Quel **modèle final** choisit-on ?</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a><span class="ss">    -   </span>Interpréter les résultats de ce modèle.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

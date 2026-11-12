@@ -4406,7 +4406,7 @@ window.Quarto = {
 </ol>
 <p><em>Indication R :</em></p>
 <blockquote class="blockquote">
-<p>utiliser la commande <code>corr()</code></p>
+<p>utiliser la commande <code>cor()</code></p>
 </blockquote>
 </section>
 <section id="exercice-3-courbes-de-survie-brutes" class="level2" data-number="2.3">
@@ -4431,7 +4431,7 @@ window.Quarto = {
 </ol>
 <p><em>Indication R :</em></p>
 <blockquote class="blockquote">
-<p>Utilisez la fonction <code>survdiff(Surv(time, status) ~ uoutput_q, data = ...)</code> pour réaliser le test du log-rank. La sortie vous donne la statistique de type <span class="math inline">\(chi^2\)</span> , les degrés de liberté et la p-valeur, à interpréter pour conclure au seuil de 5 %.</p>
+<p>Utilisez la fonction <code>survdiff(Surv(time, status) ~ uoutput_q, data = ...)</code> pour réaliser le test du log-rank. La sortie vous donne la statistique de type <span class="math inline">\(\chi^2\)</span>, les degrés de liberté et la p-valeur, à interpréter pour conclure au seuil de 5 %.</p>
 </blockquote>
 </section>
 <section id="exercice-5-vérification-graphique-de-lhypothèse-de-risques-proportionnels" class="level2" data-number="2.5">
@@ -4458,7 +4458,7 @@ window.Quarto = {
 </ul>
 <ol type="1">
 <li><p>Écrire l’équation du modèle sous la forme :</p>
-<p><span class="math inline">\(h_i(t) = h_0(t),\exp\big( \beta_1 uoutput_i + \beta_2 uoutput_{q,i} \big)\)</span></p></li>
+<p><span class="math inline">\(h_i(t) = h_0(t)\,\exp\big( \beta_1\, \text{uoutput}_i + \beta_2\, \text{uoutput\_q\_num}_i \big)\)</span></p></li>
 <li><p>Estimer ce modèle dans R.</p></li>
 <li><p>Interpréter le <strong>hazard ratio</strong> associé à <code>uoutput</code>.</p></li>
 <li><p>Calculer le <strong>critère AIC</strong> du modèle et le noter pour comparaison.</p></li>
@@ -4474,7 +4474,7 @@ window.Quarto = {
 <p><code>cox_cat &lt;- coxph(S_strikes ~ uoutput_q, data = strikes)</code></p>
 <ol type="1">
 <li><p>Écrire l’équation du modèle :</p>
-<p><span class="math inline">\(h_i(t) = h_0(t),\exp\big( \beta2,\mathbb{1}{uoutput{q,i} = \text{Choc moyen}} + \beta3,\mathbb{1}{uoutput{q,i} = \text{Choc fort}} \big).\)</span></p></li>
+<p><span class="math inline">\(h_i(t) = h_0(t)\,\exp\big( \beta_2\, \mathbb{1}\{\text{uoutput\_q}_i = \text{Choc moyen}\} + \beta_3\, \mathbb{1}\{\text{uoutput\_q}_i = \text{Choc fort}\} \big).\)</span></p></li>
 <li><p>À partir de <code>summary(cox_cat)</code>, dire s’il existe une <strong>différence significative</strong> de durée de grève entre au moins deux niveaux de choc.</p></li>
 <li><p>Comparer la <strong>déviance</strong> <span class="math inline">\((-2\log L)\)</span> de ce modèle à celle du modèle précédent.</p></li>
 </ol>
@@ -5099,7 +5099,7 @@ window.Quarto = {
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>*Indication R :*</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; utiliser la commande </span><span class="in">`corr()`</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; utiliser la commande </span><span class="in">`cor()`</span></span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercice 3 – Courbes de survie brutes</span></span>
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
@@ -5133,7 +5133,7 @@ window.Quarto = {
 <span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Utilisez la fonction</span></span>
 <span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="in">`survdiff(Surv(time, status) ~ uoutput_q, data = ...)`</span><span class="at"> pour réaliser</span></span>
 <span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; le test du log-rank. La sortie vous donne la statistique de type</span></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; $chi^2$ , les degrés de liberté et la p-valeur, à interpréter pour</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; $\chi^2$, les degrés de liberté et la p-valeur, à interpréter pour</span></span>
 <span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; conclure au seuil de 5 %.</span></span>
 <span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## Exercice 5 – Vérification graphique de l&#39;hypothèse de risques proportionnels</span></span>
@@ -5164,7 +5164,7 @@ window.Quarto = {
 <span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Écrire l&#39;équation du modèle sous la forme :</span>
 <span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>    $h_i(t) = h_0(t),\exp\big( \beta_1 uoutput_i + \beta_2 uoutput_{q,i} \big)$</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>    $h_i(t) = h_0(t)\,\exp\big( \beta_1\, \text{uoutput}_i + \beta_2\, \text{uoutput<span class="sc">\_</span>q<span class="sc">\_</span>num}_i \big)$</span>
 <span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Estimer ce modèle dans R.</span>
 <span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
@@ -5189,7 +5189,7 @@ window.Quarto = {
 <span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Écrire l&#39;équation du modèle :</span>
 <span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>    $h_i(t) = h_0(t),\exp\big( \beta2,\mathbb{1}{uoutput{q,i} = \text{Choc moyen}} + \beta3,\mathbb{1}{uoutput{q,i} = \text{Choc fort}} \big).$</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>    $h_i(t) = h_0(t)\,\exp\big( \beta_2\, \mathbb{1}<span class="sc">\{</span>\text{uoutput<span class="sc">\_</span>q}_i = \text{Choc moyen}<span class="sc">\}</span> + \beta_3\, \mathbb{1}<span class="sc">\{</span>\text{uoutput<span class="sc">\_</span>q}_i = \text{Choc fort}<span class="sc">\}</span> \big).$</span>
 <span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>À partir de <span class="in">`summary(cox_cat)`</span>, dire s&#39;il existe une **différence</span>
 <span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>    significative** de durée de grève entre au moins deux niveaux de</span>

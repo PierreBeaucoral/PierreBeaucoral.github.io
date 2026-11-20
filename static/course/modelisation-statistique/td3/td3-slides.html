@@ -1079,6 +1079,9 @@ Pierre Beaucoral
 <h2 id="toc-title">Table of contents</h2>
 <ul>
 <li><a href="#/mise-en-place" id="/toc-mise-en-place"><span class="header-section-number">1</span> Mise en place</a></li>
+<li><a href="#/a.-modèle-multinomial-pour-expliquer-subtype" id="/toc-a.-modèle-multinomial-pour-expliquer-subtype"><span class="header-section-number">2</span> A. Modèle multinomial pour expliquer SUBTYPE</a></li>
+<li><a href="#/b.-modèle-ordinal-pour-expliquer-grade" id="/toc-b.-modèle-ordinal-pour-expliquer-grade"><span class="header-section-number">3</span> B. Modèle ordinal pour expliquer GRADE</a></li>
+<li><a href="#/conclusion" id="/toc-conclusion"><span class="header-section-number">4</span> Conclusion</a></li>
 </ul>
 </nav>
 </section>
@@ -1140,10 +1143,2085 @@ Pierre Beaucoral
 </details>
 </div>
 </section>
-<section id="corrections-après-la-séance" class="slide level2 unnumbered">
-<h2>Corrections après la séance</h2>
-<p>La correction détaillée (code, sorties R et interprétations) sera mise en ligne <strong>après la séance de TD</strong>.</p>
-<p>En attendant, travaillez à partir de l’<strong>énoncé</strong> (<a href="enonce-td3.html">énoncé complet</a>) ; données : <a href="data/cancer.dta" download="cancer.dta">cancer.dta</a>.</p>
+<section id="import-et-recodage" class="slide level2" data-number="1.3">
+<h2><span class="header-section-number">1.3</span> Import et recodage</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>cancer_raw <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;./data/cancer.dta&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a></a>  <span class="fu">clean_names</span>()</span>
+<span id="cb2-3"><a></a></span>
+<span id="cb2-4"><a></a>cancer <span class="ot">&lt;-</span> cancer_raw <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-6"><a></a>    <span class="at">subtype_f  =</span> <span class="fu">as_factor</span>(subtype),</span>
+<span id="cb2-7"><a></a>    <span class="at">race_f     =</span> <span class="fu">as_factor</span>(race),</span>
+<span id="cb2-8"><a></a>    <span class="at">estrogen_f =</span> <span class="fu">as_factor</span>(estrogen),</span>
+<span id="cb2-9"><a></a>    <span class="at">age_f      =</span> <span class="fu">as_factor</span>(age),</span>
+<span id="cb2-10"><a></a>    <span class="at">smk_f      =</span> <span class="fu">as_factor</span>(smoking),</span>
+<span id="cb2-11"><a></a>    <span class="co"># facteur ORDONNÉ pour le modèle ordinal :</span></span>
+<span id="cb2-12"><a></a>    <span class="co"># bien différencié &lt; moyennement différencié &lt; peu différencié</span></span>
+<span id="cb2-13"><a></a>    <span class="at">grade_ord  =</span> <span class="fu">as_factor</span>(grade, <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-14"><a></a>  )</span>
+<span id="cb2-15"><a></a></span>
+<span id="cb2-16"><a></a><span class="fu">levels</span>(cancer<span class="sc">$</span>subtype_f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;adenocarcinomous&quot; &quot;adenosquamous&quot;    &quot;other&quot;           </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">levels</span>(cancer<span class="sc">$</span>grade_ord)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;bien différencié&quot;        &quot;moyennement différencié&quot;
+[3] &quot;peu différencié&quot;        </code></pre>
+</div>
+</div>
+<ul>
+<li><code>as_factor()</code> garde l’ordre des codes Stata : le code 0 devient la <strong>référence</strong> (adénocarcinome, peau blanche, sans œstrogènes, 50–64 ans, non-fumeuse).</li>
+<li><code>grade_ord</code> est <strong>ordonné</strong> : c’est ce qu’attend <code>polr()</code>.</li>
+<li>« moyennement différencié » (fichier) = « modérément différenciée » (dictionnaire) : même modalité, code 1.</li>
+</ul>
+</section>
+<section id="un-seul-échantillon-pour-tous-les-modèles" class="slide level2" data-number="1.4">
+<h2><span class="header-section-number">1.4</span> Un seul échantillon pour tous les modèles</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>cancer <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(subtype_f, race_f, estrogen_f, age_f, smk_f, grade_ord) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(.x))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  subtype_f race_f estrogen_f age_f smk_f grade_ord
+      &lt;int&gt;  &lt;int&gt;      &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;
+1         0      0          2     0     0         0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a>cancer_cc <span class="ot">&lt;-</span> cancer <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a></a>  <span class="fu">drop_na</span>(subtype_f, race_f, estrogen_f, age_f, smk_f, grade_ord)</span>
+<span id="cb8-3"><a></a><span class="fu">nrow</span>(cancer_cc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 286</code></pre>
+</div>
+</div>
+<ul>
+<li><code>ESTROGEN</code> a 2 valeurs manquantes : R les retire en silence, mais seulement dans les modèles qui contiennent <code>ESTROGEN</code>.</li>
+<li>Sans précaution, on comparerait des modèles estimés sur 286 et 288 femmes : tests LR et AIC n’auraient plus de sens.</li>
+<li>On utilise donc <code>cancer_cc</code> (286 femmes) partout, parties A et B.</li>
+</ul>
+</section></section>
+<section>
+<section id="a.-modèle-multinomial-pour-expliquer-subtype" class="title-slide slide level1 center" data-number="2">
+<h1><span class="header-section-number">2</span> A. Modèle multinomial pour expliquer SUBTYPE</h1>
+
+</section>
+<section id="q1-estimation-du-premier-modèle" class="slide level2" data-number="2.1">
+<h2><span class="header-section-number">2.1</span> Q1 : estimation du premier modèle</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a>mod_sub_full <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb10-2"><a></a>  subtype_f <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> smk_f <span class="sc">+</span> age_f,</span>
+<span id="cb10-3"><a></a>  <span class="at">data =</span> cancer_cc</span>
+<span id="cb10-4"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># weights:  18 (10 variable)
+initial  value 314.203115 
+iter  10 value 247.216796
+final  value 246.965190 
+converged</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="fu">summary</span>(mod_sub_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+multinom(formula = subtype_f ~ race_f + estrogen_f + smk_f + 
+    age_f, data = cancer_cc)
+
+Coefficients:
+              (Intercept) race_fnoire estrogen_ftook oestrogen treatment
+adenosquamous   -1.775326  -0.2151038                        -0.72813726
+other           -1.266281   0.1201888                        -0.05867755
+               smk_fyes age_f65-79
+adenosquamous  0.889793  0.9780758
+other         -1.793171  0.2865677
+
+Std. Errors:
+              (Intercept) race_fnoire estrogen_ftook oestrogen treatment
+adenosquamous   0.4471631   0.4127306                          0.3777940
+other           0.3779403   0.3762200                          0.3425219
+               smk_fyes age_f65-79
+adenosquamous 0.5257988  0.4117731
+other         1.0467384  0.3285697
+
+Residual Deviance: 493.9304 
+AIC: 513.9304 </code></pre>
+</div>
+</div>
+</section>
+<section id="q1-deux-équations-face-à-ladénocarcinome" class="slide level2" data-number="2.2">
+<h2><span class="header-section-number">2.2</span> Q1 : deux équations face à l’adénocarcinome</h2>
+<p><span class="math display">\[
+\ln \frac{\Pr(\text{SUBTYPE} = g)}{\Pr(\text{SUBTYPE} = \text{adéno.})}
+= \beta_{g0} + \beta_{g,\text{race}}\,\text{RACE}
++ \beta_{g,\text{estr}}\,\text{ESTROGEN}
++ \beta_{g,\text{smk}}\,\text{SMK} + \beta_{g,\text{age}}\,\text{AGE}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(g \in\)</span> {adenosquamous, other} : 2 équations × 5 coefficients = 10 paramètres (<code># weights: 18 (10 variable)</code>).</li>
+<li><code>initial value 314.203</code> <span class="math inline">\(= n \ln 3\)</span> (les 3 sous-types équiprobables) ; <code>final value</code> <span class="math inline">\(= -\ln L\)</span>, la déviance vaut le double (493,93).</li>
+<li><code>Coefficients</code> sont sur l’échelle <strong>log</strong> : <span class="math inline">\(\beta &gt; 0\)</span> augmente <span class="math inline">\(\Pr(g)/\Pr(\text{adéno.})\)</span>.</li>
+</ul>
+</section>
+<section id="q1-lire-les-rrr" class="slide level2" data-number="2.3">
+<h2><span class="header-section-number">2.3</span> Q1 : lire les RRR</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>res_sub_full <span class="ot">&lt;-</span> <span class="fu">tidy</span>(mod_sub_full, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a></a><span class="fu">kbl</span>(res_sub_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 33%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">y.level</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: left;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.169</td>
+<td style="text-align: right;">0.447</td>
+<td style="text-align: right;">-3.970</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.407</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">race_fnoire</td>
+<td style="text-align: right;">0.806</td>
+<td style="text-align: right;">0.413</td>
+<td style="text-align: right;">-0.521</td>
+<td style="text-align: left;">0.6022</td>
+<td style="text-align: right;">0.359</td>
+<td style="text-align: right;">1.811</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">estrogen_ftook oestrogen treatment</td>
+<td style="text-align: right;">0.483</td>
+<td style="text-align: right;">0.378</td>
+<td style="text-align: right;">-1.927</td>
+<td style="text-align: left;">0.0539</td>
+<td style="text-align: right;">0.230</td>
+<td style="text-align: right;">1.012</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">smk_fyes</td>
+<td style="text-align: right;">2.435</td>
+<td style="text-align: right;">0.526</td>
+<td style="text-align: right;">1.692</td>
+<td style="text-align: left;">0.0906</td>
+<td style="text-align: right;">0.869</td>
+<td style="text-align: right;">6.823</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">age_f65-79</td>
+<td style="text-align: right;">2.659</td>
+<td style="text-align: right;">0.412</td>
+<td style="text-align: right;">2.375</td>
+<td style="text-align: left;">0.0175</td>
+<td style="text-align: right;">1.187</td>
+<td style="text-align: right;">5.960</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">0.378</td>
+<td style="text-align: right;">-3.350</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: right;">0.134</td>
+<td style="text-align: right;">0.591</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">race_fnoire</td>
+<td style="text-align: right;">1.128</td>
+<td style="text-align: right;">0.376</td>
+<td style="text-align: right;">0.319</td>
+<td style="text-align: left;">0.7494</td>
+<td style="text-align: right;">0.539</td>
+<td style="text-align: right;">2.357</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">estrogen_ftook oestrogen treatment</td>
+<td style="text-align: right;">0.943</td>
+<td style="text-align: right;">0.343</td>
+<td style="text-align: right;">-0.171</td>
+<td style="text-align: left;">0.8640</td>
+<td style="text-align: right;">0.482</td>
+<td style="text-align: right;">1.845</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">smk_fyes</td>
+<td style="text-align: right;">0.166</td>
+<td style="text-align: right;">1.047</td>
+<td style="text-align: right;">-1.713</td>
+<td style="text-align: left;">0.0867</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">1.295</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">age_f65-79</td>
+<td style="text-align: right;">1.332</td>
+<td style="text-align: right;">0.329</td>
+<td style="text-align: right;">0.872</td>
+<td style="text-align: left;">0.3831</td>
+<td style="text-align: right;">0.699</td>
+<td style="text-align: right;">2.536</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>fmt_rrr <span class="ot">&lt;-</span> <span class="cf">function</span>(res, niveau, terme) {</span>
+<span id="cb15-2"><a></a>  r <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(res, y.level <span class="sc">==</span> niveau, term <span class="sc">==</span> terme)</span>
+<span id="cb15-3"><a></a>  <span class="fu">paste0</span>(<span class="fu">fr</span>(r<span class="sc">$</span>estimate), <span class="st">&quot; [&quot;</span>, <span class="fu">fr</span>(r<span class="sc">$</span>conf.low), <span class="st">&quot; ; &quot;</span>, <span class="fu">fr</span>(r<span class="sc">$</span>conf.high),</span>
+<span id="cb15-4"><a></a>         <span class="st">&quot;], p &quot;</span>, <span class="fu">fp</span>(r<span class="sc">$</span>p.value))</span>
+<span id="cb15-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li><code>estimate</code> <span class="math inline">\(= e^{\hat\beta}\)</span> : <strong>RRR</strong>, facteur multiplicatif de la pseudo-cote ; <code>conf.low</code>/<code>conf.high</code> : IC 95 %.</li>
+<li>Piège : <code>std.error</code> reste sur l’échelle <strong>log</strong>.</li>
+<li><code>(Intercept)</code> : pseudo-cote du profil de référence.</li>
+</ul>
+</section>
+<section id="q1-leffet-du-tabagisme-nest-pas-significatif" class="slide level2" data-number="2.4">
+<h2><span class="header-section-number">2.4</span> Q1 : l’effet du tabagisme n’est pas significatif</h2>
+<ul>
+<li>Fumeuses, adenosquamous vs adéno. : RRR = 2,43 [0,87 ; 6,82], p = 0,091.</li>
+<li>L’IC contient 1 : <strong>non significatif</strong> à 5 %.</li>
+<li>Un RRR n’est pas un rapport de <strong>probabilités</strong> : <span class="math inline">\(\Pr(\text{adéno.})\)</span> change aussi (voir Q6).</li>
+</ul>
+</section>
+<section id="q2-sauvegarder-affecter-à-un-objet" class="slide level2" data-number="2.5">
+<h2><span class="header-section-number">2.5</span> Q2 : sauvegarder = affecter à un objet</h2>
+<ul>
+<li><code>mod_sub_full &lt;- multinom(...)</code> : l’équivalent de <code>estimates store</code> (Stata).</li>
+<li>L’objet garde coefficients, variance, déviance, nombre de paramètres (<code>$edf</code>) : <code>anova()</code> en aura besoin (Q5).</li>
+<li>Pour le garder d’une session à l’autre :</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">saveRDS</span>(mod_sub_full, <span class="st">&quot;mod_sub_full.rds&quot;</span>)</span>
+<span id="cb16-2"><a></a>mod_sub_full <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;mod_sub_full.rds&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q3-valeurs-prédites" class="slide level2" data-number="2.6">
+<h2><span class="header-section-number">2.6</span> Q3 : valeurs prédites</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>phat_sub <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod_sub_full, <span class="at">type =</span> <span class="st">&quot;probs&quot;</span>)  <span class="co"># matrice 286 x 3</span></span>
+<span id="cb17-2"><a></a><span class="fu">head</span>(phat_sub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  adenocarcinomous adenosquamous      other
+1        0.6852096     0.2826449 0.03214548
+2        0.7420517     0.0607007 0.19724761
+3        0.5476498     0.2467524 0.20559787
+4        0.5476498     0.2467524 0.20559787
+5        0.7420517     0.0607007 0.19724761
+6        0.6363103     0.1384208 0.22526893</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>phat_sub_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(phat_sub)</span>
+<span id="cb19-2"><a></a><span class="fu">names</span>(phat_sub_tbl) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;p_&quot;</span>, <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>subtype_f))</span>
+<span id="cb19-3"><a></a>cancer_sub <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(cancer_cc, phat_sub_tbl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li>Modèle estimé sur <code>cancer_cc</code> : 286 lignes, qui se recollent aux données sans décalage.</li>
+</ul>
+</section>
+<section id="q3-peu-de-valeurs-distinctes" class="slide level2" data-number="2.7">
+<h2><span class="header-section-number">2.7</span> Q3 : peu de valeurs distinctes</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a>cancer_sub <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a></a>  <span class="fu">count</span>(race_f, estrogen_f, smk_f, age_f,</span>
+<span id="cb20-3"><a></a>        p_adenocarcinomous, p_adenosquamous, p_other,</span>
+<span id="cb20-4"><a></a>        <span class="at">name =</span> <span class="st">&quot;effectif&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(p_adenocarcinomous)) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a></a>  <span class="fu">kbl</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 25%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 19%">
+<col style="width: 16%">
+<col style="width: 8%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">race_f</th>
+<th style="text-align: left;">estrogen_f</th>
+<th style="text-align: left;">smk_f</th>
+<th style="text-align: left;">age_f</th>
+<th style="text-align: right;">p_adenocarcinomous</th>
+<th style="text-align: right;">p_adenosquamous</th>
+<th style="text-align: right;">p_other</th>
+<th style="text-align: right;">effectif</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.826</td>
+<td style="text-align: right;">0.133</td>
+<td style="text-align: right;">0.041</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.804</td>
+<td style="text-align: right;">0.160</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.742</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.197</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.732</td>
+<td style="text-align: right;">0.048</td>
+<td style="text-align: right;">0.219</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.722</td>
+<td style="text-align: right;">0.240</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.689</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.194</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.688</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">0.219</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">50-64</td>
+<td style="text-align: right;">0.685</td>
+<td style="text-align: right;">0.283</td>
+<td style="text-align: right;">0.032</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.636</td>
+<td style="text-align: right;">0.138</td>
+<td style="text-align: right;">0.225</td>
+<td style="text-align: right;">83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.635</td>
+<td style="text-align: right;">0.111</td>
+<td style="text-align: right;">0.254</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.630</td>
+<td style="text-align: right;">0.333</td>
+<td style="text-align: right;">0.037</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.560</td>
+<td style="text-align: right;">0.203</td>
+<td style="text-align: right;">0.237</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.548</td>
+<td style="text-align: right;">0.247</td>
+<td style="text-align: right;">0.206</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.511</td>
+<td style="text-align: right;">0.452</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">yes</td>
+<td style="text-align: left;">65-79</td>
+<td style="text-align: right;">0.463</td>
+<td style="text-align: right;">0.508</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>4 variables binaires : au plus 16 profils ; 15 sont observés. Beaucoup d’<em>ex aequo</em>.</li>
+</ul>
+</section>
+<section id="q3-moyennes-fréquences-et-ladénocarcinome-domine" class="slide level2" data-number="2.8">
+<h2><span class="header-section-number">2.8</span> Q3 : moyennes = fréquences, et l’adénocarcinome domine</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">colMeans</span>(phat_sub)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>adenocarcinomous    adenosquamous            other 
+       0.6433555        0.1573435        0.1993010 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a><span class="fu">prop.table</span>(<span class="fu">table</span>(cancer_cc<span class="sc">$</span>subtype_f))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+adenocarcinomous    adenosquamous            other 
+       0.6433566        0.1573427        0.1993007 </code></pre>
+</div>
+</div>
+<ul>
+<li>Moyennes des probabilités prédites = fréquences observées : propriété du maximum de vraisemblance <strong>avec constante</strong>.</li>
+<li><span class="math inline">\(\hat P(\text{adéno.})\)</span> va de 0,463 à 0,826 : c’est la plus grande probabilité pour toutes les femmes sauf 2.</li>
+</ul>
+</section>
+<section id="q4-le-test-de-hosmerlemeshow-multinomial" class="slide level2 scrollable" data-number="2.9">
+<h2><span class="header-section-number">2.9</span> Q4 : le test de Hosmer–Lemeshow multinomial</h2>
+<ol type="1">
+<li>Trier selon <span class="math inline">\(1 - \hat P(\text{référence})\)</span>, former <span class="math inline">\(g\)</span> groupes.</li>
+<li>Comparer effectifs <strong>observés</strong> et <strong>attendus</strong> par groupe et sous-type.</li>
+<li><span class="math inline">\(\sum (O - E)^2 / E \sim \chi^2\big((G - 2)(k - 1)\big)\)</span>, <span class="math inline">\(G\)</span> = groupes réellement formés, <span class="math inline">\(k = 3\)</span>.</li>
+</ol>
+<p><span class="math inline">\(H_0\)</span> : le modèle est bien ajusté.</p>
+</section>
+<section id="q4-avec-g-10-deux-avertissements" class="slide level2" data-number="2.10">
+<h2><span class="header-section-number">2.10</span> Q4 : avec g = 10, deux avertissements</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>y_num   <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cancer_sub<span class="sc">$</span>subtype_f)   <span class="co"># 1, 2, 3</span></span>
+<span id="cb25-2"><a></a>exp_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(phat_sub)</span>
+<span id="cb25-3"><a></a></span>
+<span id="cb25-4"><a></a>gof_10 <span class="ot">&lt;-</span> <span class="fu">logitgof</span>(<span class="at">obs =</span> y_num, <span class="at">exp =</span> exp_mat, <span class="at">g =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in logitgof(obs = y_num, exp = exp_mat, g = 10): At least one cell in
+the expected frequencies table is &lt; 1. Chi-square approximation may be
+incorrect.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in logitgof(obs = y_num, exp = exp_mat, g = 10): Not possible to
+compute 10 rows. There might be too few observations.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a>gof_10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Hosmer and Lemeshow test (multinomial model)
+
+data:  y_num, exp_mat
+X-squared = 4.0727, df = 10, p-value = 0.944</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a>gof_10<span class="sc">$</span>expected</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       cutyhats y_adenocarcinomous y_adenosquamous     y_other
+1 [0.174,0.258]          38.634722       4.2343943  8.13088360
+2 (0.258,0.268]           5.857673       0.3864259  1.75590117
+3 (0.268,0.312]          29.766126       5.2490013  7.98487229
+4 (0.312,0.364]          55.554590      12.6195066 18.82590299
+5  (0.364,0.44]          29.199989      10.4320998 11.36791085
+6  (0.44,0.452]          23.548940      10.6103521  8.84070821
+7 (0.452,0.537]           1.437645       1.4684474  0.09390753</code></pre>
+</div>
+</div>
+</section>
+<section id="q4-ce-qui-se-passe" class="slide level2" data-number="2.11">
+<h2><span class="header-section-number">2.11</span> Q4 : ce qui se passe</h2>
+<ul>
+<li><code>Not possible to compute 10 rows</code> : seulement 15 valeurs distinctes, des bornes de déciles coïncident ; seuls 7 groupes, d’où <span class="math inline">\((7 - 2)(3 - 1) = 10\)</span> ddl.</li>
+<li><code>expected frequencies ... &lt; 1</code> : plus petit effectif attendu 0,09. L’approximation <span class="math inline">\(\chi^2\)</span> ne tient plus : p-value non fiable.</li>
+</ul>
+</section>
+<section id="q4-on-réduit-g-jusquà-ce-que-le-test-soit-applicable" class="slide level2" data-number="2.12">
+<h2><span class="header-section-number">2.12</span> Q4 : on réduit g jusqu’à ce que le test soit applicable</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a>hl_g <span class="ot">&lt;-</span> <span class="cf">function</span>(g) {</span>
+<span id="cb32-2"><a></a>  n_warn <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb32-3"><a></a>  out <span class="ot">&lt;-</span> <span class="fu">withCallingHandlers</span>(</span>
+<span id="cb32-4"><a></a>    <span class="fu">logitgof</span>(y_num, exp_mat, <span class="at">g =</span> g),</span>
+<span id="cb32-5"><a></a>    <span class="at">warning =</span> <span class="cf">function</span>(w) {</span>
+<span id="cb32-6"><a></a>      n_warn <span class="ot">&lt;&lt;-</span> n_warn <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb32-7"><a></a>      <span class="fu">invokeRestart</span>(<span class="st">&quot;muffleWarning&quot;</span>)</span>
+<span id="cb32-8"><a></a>    }</span>
+<span id="cb32-9"><a></a>  )</span>
+<span id="cb32-10"><a></a>  <span class="fu">tibble</span>(</span>
+<span id="cb32-11"><a></a>    <span class="at">g_demande      =</span> g,</span>
+<span id="cb32-12"><a></a>    <span class="at">groupes        =</span> <span class="fu">nrow</span>(out<span class="sc">$</span>expected),</span>
+<span id="cb32-13"><a></a>    <span class="at">ddl            =</span> <span class="fu">unname</span>(out<span class="sc">$</span>parameter),</span>
+<span id="cb32-14"><a></a>    <span class="at">stat           =</span> <span class="fu">unname</span>(out<span class="sc">$</span>statistic),</span>
+<span id="cb32-15"><a></a>    <span class="at">p_value        =</span> out<span class="sc">$</span>p.value,</span>
+<span id="cb32-16"><a></a>    <span class="at">min_attendu    =</span> <span class="fu">min</span>(<span class="fu">as.matrix</span>(out<span class="sc">$</span>expected[, <span class="sc">-</span><span class="dv">1</span>])),</span>
+<span id="cb32-17"><a></a>    <span class="at">avertissements =</span> n_warn</span>
+<span id="cb32-18"><a></a>  )</span>
+<span id="cb32-19"><a></a>}</span>
+<span id="cb32-20"><a></a></span>
+<span id="cb32-21"><a></a>hl_tab <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">4</span>, hl_g)</span>
+<span id="cb32-22"><a></a>hl_tab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 7
+  g_demande groupes   ddl  stat p_value min_attendu avertissements
+      &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;
+1        10       7    10  4.07  0.944       0.0939              2
+2         9       8    12 16.5   0.170       0.0939              2
+3         8       6     8  2.63  0.955       0.0939              2
+4         7       6     8  2.63  0.955       0.0939              2
+5         6       6     8 15.7   0.0474      0.557               1
+6         5       4     4  2.01  0.735       4.62                1
+7         4       4     4  1.69  0.792       8.27                0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>hl4 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(hl_tab, g_demande <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb34-2"><a></a>hl6 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(hl_tab, g_demande <span class="sc">==</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q4-aucun-défaut-dajustement-détecté" class="slide level2" data-number="2.13">
+<h2><span class="header-section-number">2.13</span> Q4 : aucun défaut d’ajustement détecté</h2>
+<ul>
+<li><span class="math inline">\(g =\)</span> 7 et 8 : mêmes groupes, même statistique (<em>ex aequo</em>).</li>
+<li><span class="math inline">\(g = 6\)</span> donne p = 0,047, mais avec des effectifs attendus &lt; 1 : à ne pas interpréter.</li>
+<li><span class="math inline">\(g = 4\)</span> : seul cas <strong>sans avertissement</strong> (effectifs attendus <span class="math inline">\(\geq\)</span> 8,3) : <span class="math inline">\(\chi^2 =\)</span> 1,69, 4 ddl, p = 0,792.</li>
+<li>On ne rejette pas <span class="math inline">\(H_0\)</span>. Précautions : fixer <span class="math inline">\(g\)</span> à l’avance, faible puissance, et bien ajusté ne veut pas dire bien classé (Q7).</li>
+</ul>
+</section>
+<section id="q5-le-test-du-rapport-de-vraisemblance" class="slide level2" data-number="2.14">
+<h2><span class="header-section-number">2.14</span> Q5 : le test du rapport de vraisemblance</h2>
+<p><span class="math display">\[
+LR = D_{\text{réduit}} - D_{\text{complet}}
+\sim \chi^2(\text{paramètres supprimés}) \text{ sous } H_0
+\]</span></p>
+<ul>
+<li>Modèles <strong>emboîtés</strong>, sur le <strong>même échantillon</strong>.</li>
+<li>Retirer une variable à <span class="math inline">\(q\)</span> modalités supprime <span class="math inline">\((k - 1)(q - 1)\)</span> paramètres : ici <span class="math inline">\((3 - 1)(2 - 1) =\)</span> <strong>2 ddl</strong> par variable.</li>
+<li>Démarche : retirer chaque variable du modèle complet, puis tester conjointement les variables non significatives.</li>
+</ul>
+</section>
+<section id="q5-retirer-smk" class="slide level2" data-number="2.15">
+<h2><span class="header-section-number">2.15</span> Q5 : retirer SMK ?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>mod_sub_nosmk <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> age_f,</span>
+<span id="cb35-2"><a></a>                          <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb35-3"><a></a>mod_sub_noage <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> smk_f,</span>
+<span id="cb35-4"><a></a>                          <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb35-5"><a></a>mod_sub_norace <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> estrogen_f <span class="sc">+</span> smk_f <span class="sc">+</span> age_f,</span>
+<span id="cb35-6"><a></a>                           <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb35-7"><a></a>mod_sub_noestro <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> race_f <span class="sc">+</span> smk_f <span class="sc">+</span> age_f,</span>
+<span id="cb35-8"><a></a>                            <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb35-9"><a></a></span>
+<span id="cb35-10"><a></a><span class="fu">anova</span>(mod_sub_nosmk, mod_sub_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of Multinomial Models
+
+Response: subtype_f
+                                Model Resid. df Resid. Dev   Test    Df
+1         race_f + estrogen_f + age_f       564   502.9360             
+2 race_f + estrogen_f + smk_f + age_f       562   493.9304 1 vs 2     2
+  LR stat.    Pr(Chi)
+1                    
+2 9.005622 0.01107781</code></pre>
+</div>
+</div>
+<ul>
+<li><code>Resid. df</code> : <span class="math inline">\(286 \times 2 - 8 = 564\)</span> et <span class="math inline">\(572 - 10 = 562\)</span>.</li>
+<li><code>LR stat.</code> = 502,94 − 493,93 = 9,01, 2 ddl.</li>
+</ul>
+</section>
+<section id="q5-on-garde-smk-et-age-on-retire-race-et-estrogen" class="slide level2" data-number="2.16">
+<h2><span class="header-section-number">2.16</span> Q5 : on garde SMK et AGE, on retire RACE et ESTROGEN</h2>
+<p>Les trois autres tests se lisent de la même façon ; <code>lr_test()</code> les résume :</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>lr_recap <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb37-2"><a></a>  <span class="at">variable_retiree =</span> <span class="fu">c</span>(<span class="st">&quot;SMK&quot;</span>, <span class="st">&quot;AGE&quot;</span>, <span class="st">&quot;RACE&quot;</span>, <span class="st">&quot;ESTROGEN&quot;</span>),</span>
+<span id="cb37-3"><a></a>  <span class="at">modele =</span> <span class="fu">list</span>(mod_sub_nosmk, mod_sub_noage, mod_sub_norace, mod_sub_noestro)</span>
+<span id="cb37-4"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb37-5"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-6"><a></a>    <span class="at">LR  =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(.x, mod_sub_full)[<span class="st">&quot;stat&quot;</span>]),</span>
+<span id="cb37-7"><a></a>    <span class="at">ddl =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(.x, mod_sub_full)[<span class="st">&quot;ddl&quot;</span>]),</span>
+<span id="cb37-8"><a></a>    <span class="at">p_value =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(.x, mod_sub_full)[<span class="st">&quot;p&quot;</span>]),</span>
+<span id="cb37-9"><a></a>    <span class="at">AIC_sans_la_variable =</span> <span class="fu">map_dbl</span>(modele, AIC)</span>
+<span id="cb37-10"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-11"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>modele)</span>
+<span id="cb37-12"><a></a></span>
+<span id="cb37-13"><a></a><span class="fu">kbl</span>(lr_recap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable_retiree</th>
+<th style="text-align: right;">LR</th>
+<th style="text-align: right;">ddl</th>
+<th style="text-align: left;">p_value</th>
+<th style="text-align: right;">AIC_sans_la_variable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SMK</td>
+<td style="text-align: right;">9.006</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.0111</td>
+<td style="text-align: right;">518.936</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AGE</td>
+<td style="text-align: right;">6.454</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.0397</td>
+<td style="text-align: right;">516.384</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RACE</td>
+<td style="text-align: right;">0.475</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.7887</td>
+<td style="text-align: right;">510.405</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ESTROGEN</td>
+<td style="text-align: right;">3.800</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.1496</td>
+<td style="text-align: right;">513.730</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a>lr <span class="ot">&lt;-</span> <span class="cf">function</span>(v) dplyr<span class="sc">::</span><span class="fu">filter</span>(lr_recap, variable_retiree <span class="sc">==</span> v)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ul>
+<li>SMK p = 0,011, AGE p = 0,040 : gardées.</li>
+<li>RACE p = 0,789, ESTROGEN p = 0,150 : retirables.</li>
+<li>AIC du modèle complet : 513,93.</li>
+</ul>
+</section>
+<section id="q5-test-conjoint-à-4-ddl" class="slide level2" data-number="2.17">
+<h2><span class="header-section-number">2.17</span> Q5 : test conjoint à 4 ddl</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>mod_sub_final <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> smk_f <span class="sc">+</span> age_f,</span>
+<span id="cb39-2"><a></a>                          <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb39-3"><a></a></span>
+<span id="cb39-4"><a></a>lr_joint <span class="ot">&lt;-</span> <span class="fu">lr_test</span>(mod_sub_final, mod_sub_full)   <span class="co"># RACE + ESTROGEN, 4 ddl</span></span>
+<span id="cb39-5"><a></a></span>
+<span id="cb39-6"><a></a>mod_sub_age <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> age_f, <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb39-7"><a></a>mod_sub_smk <span class="ot">&lt;-</span> <span class="fu">multinom</span>(subtype_f <span class="sc">~</span> smk_f, <span class="at">data =</span> cancer_cc, <span class="at">trace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb39-8"><a></a>lr_smk_final <span class="ot">&lt;-</span> <span class="fu">lr_test</span>(mod_sub_age, mod_sub_final)</span>
+<span id="cb39-9"><a></a>lr_age_final <span class="ot">&lt;-</span> <span class="fu">lr_test</span>(mod_sub_smk, mod_sub_final)</span>
+<span id="cb39-10"><a></a><span class="fu">round</span>(<span class="fu">rbind</span>(<span class="st">`</span><span class="at">RACE + ESTROGEN (vs complet)</span><span class="st">`</span> <span class="ot">=</span> lr_joint,</span>
+<span id="cb39-11"><a></a>            <span class="st">`</span><span class="at">SMK (vs AGE + SMK)</span><span class="st">`</span> <span class="ot">=</span> lr_smk_final,</span>
+<span id="cb39-12"><a></a>            <span class="st">`</span><span class="at">AGE (vs AGE + SMK)</span><span class="st">`</span> <span class="ot">=</span> lr_age_final), <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                              stat ddl     p
+RACE + ESTROGEN (vs complet) 4.061   4 0.398
+SMK (vs AGE + SMK)           8.834   2 0.012
+AGE (vs AGE + SMK)           6.815   2 0.033</code></pre>
+</div>
+</div>
+</section>
+<section id="q5-modèle-choisi-subtype-age-smk" class="slide level2" data-number="2.18">
+<h2><span class="header-section-number">2.18</span> Q5 : modèle choisi, SUBTYPE ~ AGE + SMK</h2>
+<ul>
+<li>RACE + ESTROGEN ensemble : LR = 4,06, 4 ddl, p = 0,398 → retirées.</li>
+<li>Dans le modèle réduit, SMK (p = 0,012) et AGE (p = 0,033) restent utiles. AIC : 513,93 → 509,99.</li>
+<li><strong>Modèle choisi : <code>SUBTYPE ~ AGE + SMK</code>.</strong></li>
+</ul>
+</section>
+<section id="q6-le-modèle-final" class="slide level2" data-number="2.19">
+<h2><span class="header-section-number">2.19</span> Q6 : le modèle final</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>res_sub_final <span class="ot">&lt;-</span> <span class="fu">tidy</span>(mod_sub_final, <span class="at">exponentiate =</span> <span class="cn">TRUE</span>, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb41-2"><a></a><span class="fu">kbl</span>(res_sub_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">y.level</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: left;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.112</td>
+<td style="text-align: right;">0.373</td>
+<td style="text-align: right;">-5.876</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">0.232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">smk_fyes</td>
+<td style="text-align: right;">2.343</td>
+<td style="text-align: right;">0.520</td>
+<td style="text-align: right;">1.638</td>
+<td style="text-align: left;">0.1015</td>
+<td style="text-align: right;">0.846</td>
+<td style="text-align: right;">6.491</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: left;">age_f65-79</td>
+<td style="text-align: right;">2.712</td>
+<td style="text-align: right;">0.409</td>
+<td style="text-align: right;">2.440</td>
+<td style="text-align: left;">0.0147</td>
+<td style="text-align: right;">1.217</td>
+<td style="text-align: right;">6.045</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.283</td>
+<td style="text-align: right;">0.271</td>
+<td style="text-align: right;">-4.663</td>
+<td style="text-align: left;">&lt;0.001</td>
+<td style="text-align: right;">0.166</td>
+<td style="text-align: right;">0.481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">smk_fyes</td>
+<td style="text-align: right;">0.166</td>
+<td style="text-align: right;">1.046</td>
+<td style="text-align: right;">-1.717</td>
+<td style="text-align: left;">0.0861</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">1.290</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">other</td>
+<td style="text-align: left;">age_f65-79</td>
+<td style="text-align: right;">1.329</td>
+<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.868</td>
+<td style="text-align: left;">0.3855</td>
+<td style="text-align: right;">0.699</td>
+<td style="text-align: right;">2.527</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a><span class="fu">table</span>(cancer_cc<span class="sc">$</span>subtype_f, cancer_cc<span class="sc">$</span>smk_f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  
+                    no yes
+  adenocarcinomous 164  20
+  adenosquamous     38   7
+  other             56   1</code></pre>
+</div>
+</div>
+</section>
+<section id="q6-lâge-augmente-la-part-des-adenosquamous" class="slide level2" data-number="2.20">
+<h2><span class="header-section-number">2.20</span> Q6 : l’âge augmente la part des adenosquamous</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>adenosquamous vs adéno.</th>
+<th>other vs adéno.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Constante</td>
+<td>0,11 [0,05 ; 0,23], p &lt; 0,001</td>
+<td>0,28 [0,17 ; 0,48], p &lt; 0,001</td>
+</tr>
+<tr class="even">
+<td>65–79 ans</td>
+<td>2,71 [1,22 ; 6,04], p = 0,015</td>
+<td>1,33 [0,70 ; 2,53], p = 0,385</td>
+</tr>
+<tr class="odd">
+<td>Fumeuse</td>
+<td>2,34 [0,85 ; 6,49], p = 0,101</td>
+<td>0,17 [0,02 ; 1,29], p = 0,086</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Constantes : pseudo-cotes de la non-fumeuse de 50–64 ans.</li>
+<li>Âge : pseudo-cote d’adenosquamous × 2,7 (significatif) ; pas d’effet significatif sur « other ».</li>
+</ul>
+</section>
+<section id="q6-tabagisme-wald-non-significatif-mais-lr-significatif" class="slide level2" data-number="2.21">
+<h2><span class="header-section-number">2.21</span> Q6 : tabagisme, Wald non significatif mais LR significatif</h2>
+<ul>
+<li>Sur 28 fumeuses, 1 seule « other » : RRR très mal estimé (écart-type 1,05).</li>
+<li>Un par un (Wald), les deux RRR du tabagisme sont non significatifs.</li>
+<li>Le test LR teste les deux ensemble et rejette leur nullité (p = 0,012) : ensemble, ils décrivent une répartition différente des sous-types.</li>
+<li>Cellule presque vide : se fier au test LR.</li>
+</ul>
+</section>
+<section id="q6-un-rrr-nest-pas-un-rapport-de-probabilités" class="slide level2" data-number="2.22">
+<h2><span class="header-section-number">2.22</span> Q6 : un RRR n’est pas un rapport de probabilités</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a>profils <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">age_f =</span> <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>age_f),</span>
+<span id="cb44-2"><a></a>                       <span class="at">smk_f =</span> <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>smk_f))</span>
+<span id="cb44-3"><a></a>prob_profils <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(profils,</span>
+<span id="cb44-4"><a></a>                          <span class="fu">as_tibble</span>(<span class="fu">predict</span>(mod_sub_final, profils, <span class="at">type =</span> <span class="st">&quot;probs&quot;</span>)))</span>
+<span id="cb44-5"><a></a>prob_profils</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  age_f smk_f adenocarcinomous adenosquamous  other
+  &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;
+1 50-64 no               0.717        0.0800 0.203 
+2 50-64 yes              0.764        0.200  0.0359
+3 65-79 no               0.596        0.180  0.224 
+4 65-79 yes              0.564        0.400  0.0352</code></pre>
+</div>
+</div>
+<ul>
+<li>Non-fumeuse : <span class="math inline">\(\hat P(\text{adenosquamous})\)</span> 0,080 → 0,180, rapport 2,25 ≠ RRR 2,71.</li>
+<li>Ce sont des <strong>associations</strong> (étude observationnelle).</li>
+</ul>
+</section>
+<section id="q7-a-186-adénocarcinomes-sur-288-184-sur-286" class="slide level2" data-number="2.23">
+<h2><span class="header-section-number">2.23</span> Q7 (a) : 186 adénocarcinomes sur 288, 184 sur 286</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a><span class="fu">count</span>(cancer, subtype_f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  subtype_f            n
+  &lt;fct&gt;            &lt;int&gt;
+1 adenocarcinomous   186
+2 adenosquamous       45
+3 other               57</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="fu">count</span>(cancer_cc, subtype_f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  subtype_f            n
+  &lt;fct&gt;            &lt;int&gt;
+1 adenocarcinomous   184
+2 adenosquamous       45
+3 other               57</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="fu">table</span>(cancer<span class="sc">$</span>subtype_f, <span class="at">manquant_estrogen =</span> <span class="fu">is.na</span>(cancer<span class="sc">$</span>estrogen_f))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  manquant_estrogen
+                   FALSE TRUE
+  adenocarcinomous   184    2
+  adenosquamous       45    0
+  other               57    0</code></pre>
+</div>
+</div>
+<ul>
+<li>Les 2 femmes sans <code>ESTROGEN</code> ont un adénocarcinome.</li>
+</ul>
+</section>
+<section id="q7-b-la-règle-du-quota-de-lénoncé" class="slide level2" data-number="2.24">
+<h2><span class="header-section-number">2.24</span> Q7 (b) : la règle du quota de l’énoncé</h2>
+<ul>
+<li>Prédire « adénocarcinome » pour les femmes aux plus grandes <span class="math inline">\(\hat P(\text{adéno.})\)</span>, autant que d’adénocarcinomes observés.</li>
+<li>Toute la Q7 utilise les prédictions de <code>cancer_sub</code> (modèle complet, Q3).</li>
+<li>Hors quota : le plus probable des deux autres sous-types (notre règle ; l’énoncé ne dit rien).</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a>n_adeno <span class="ot">&lt;-</span> <span class="fu">sum</span>(cancer_sub<span class="sc">$</span>subtype_f <span class="sc">==</span> <span class="st">&quot;adenocarcinomous&quot;</span>)</span>
+<span id="cb52-2"><a></a>seuil <span class="ot">&lt;-</span> <span class="fu">sort</span>(cancer_sub<span class="sc">$</span>p_adenocarcinomous, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[n_adeno]</span>
+<span id="cb52-3"><a></a></span>
+<span id="cb52-4"><a></a>cancer_sub <span class="ot">&lt;-</span> cancer_sub <span class="sc">|&gt;</span></span>
+<span id="cb52-5"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb52-6"><a></a>    <span class="at">pred_subtype =</span> <span class="fu">case_when</span>(</span>
+<span id="cb52-7"><a></a>      p_adenocarcinomous <span class="sc">&gt;=</span> seuil       <span class="sc">~</span> <span class="st">&quot;adenocarcinomous&quot;</span>,</span>
+<span id="cb52-8"><a></a>      p_adenosquamous    <span class="sc">&gt;=</span> p_other     <span class="sc">~</span> <span class="st">&quot;adenosquamous&quot;</span>,</span>
+<span id="cb52-9"><a></a>      <span class="cn">TRUE</span>                              <span class="sc">~</span> <span class="st">&quot;other&quot;</span></span>
+<span id="cb52-10"><a></a>    ),</span>
+<span id="cb52-11"><a></a>    <span class="at">pred_subtype =</span> <span class="fu">factor</span>(pred_subtype, <span class="at">levels =</span> <span class="fu">levels</span>(subtype_f))</span>
+<span id="cb52-12"><a></a>  )</span>
+<span id="cb52-13"><a></a></span>
+<span id="cb52-14"><a></a><span class="fu">count</span>(cancer_sub, pred_subtype)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  pred_subtype         n
+  &lt;fct&gt;            &lt;int&gt;
+1 adenocarcinomous   189
+2 adenosquamous       50
+3 other               47</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a>n_au_dessus <span class="ot">&lt;-</span> <span class="fu">sum</span>(cancer_sub<span class="sc">$</span>p_adenocarcinomous <span class="sc">&gt;</span> seuil)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q7-b-pourquoi-environ-186" class="slide level2" data-number="2.25">
+<h2><span class="header-section-number">2.25</span> Q7 (b) : pourquoi « environ » 186</h2>
+<ul>
+<li>Seulement 15 valeurs de <span class="math inline">\(\hat P(\text{adéno.})\)</span>.</li>
+<li>Le seuil (0,6363) tombe dans un groupe d’<em>ex aequo</em> : on peut prédire 106 ou 189 adénocarcinomes.</li>
+<li>On retient 189, le nombre réalisable le plus proche de 184.</li>
+</ul>
+</section>
+<section id="q7-c-tableau-de-contingence" class="slide level2" data-number="2.26">
+<h2><span class="header-section-number">2.26</span> Q7 (c) : tableau de contingence</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a>tab_quota <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Observe =</span> cancer_sub<span class="sc">$</span>subtype_f,</span>
+<span id="cb55-2"><a></a>                   <span class="at">Predit  =</span> cancer_sub<span class="sc">$</span>pred_subtype)</span>
+<span id="cb55-3"><a></a>tab_quota</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Predit
+Observe            adenocarcinomous adenosquamous other
+  adenocarcinomous              132            28    24
+  adenosquamous                  20            15    10
+  other                          37             7    13</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>err_binaire <span class="ot">&lt;-</span> <span class="fu">mean</span>((cancer_sub<span class="sc">$</span>pred_subtype <span class="sc">!=</span> <span class="st">&quot;adenocarcinomous&quot;</span>) <span class="sc">!=</span></span>
+<span id="cb57-2"><a></a>                    (cancer_sub<span class="sc">$</span>subtype_f    <span class="sc">!=</span> <span class="st">&quot;adenocarcinomous&quot;</span>))</span>
+<span id="cb57-3"><a></a>err_quota <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(tab_quota)) <span class="sc">/</span> <span class="fu">sum</span>(tab_quota)</span>
+<span id="cb57-4"><a></a><span class="fu">c</span>(<span class="at">erreur_adeno_ou_non =</span> err_binaire, <span class="at">erreur_3_sous_types =</span> err_quota)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>erreur_adeno_ou_non erreur_3_sous_types 
+          0.3811189           0.4405594 </code></pre>
+</div>
+</div>
+</section>
+<section id="q7-c-deux-taux-derreur" class="slide level2" data-number="2.27">
+<h2><span class="header-section-number">2.27</span> Q7 (c) : deux taux d’erreur</h2>
+<ul>
+<li>Fixé par l’énoncé (adénocarcinome ou non) : <strong>38,1 %</strong> de mal prédits.</li>
+<li>Sur les trois sous-types : 44,1 %, mais ce chiffre dépend de notre règle hors quota.</li>
+</ul>
+</section>
+<section id="q7-points-de-comparaison-même-modèle" class="slide level2" data-number="2.28">
+<h2><span class="header-section-number">2.28</span> Q7 : points de comparaison, même modèle</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>err_naive <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(cancer_sub<span class="sc">$</span>subtype_f <span class="sc">==</span> <span class="st">&quot;adenocarcinomous&quot;</span>)</span>
+<span id="cb59-2"><a></a></span>
+<span id="cb59-3"><a></a>pred_max <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">colnames</span>(phat_sub)[<span class="fu">max.col</span>(phat_sub, <span class="at">ties.method =</span> <span class="st">&quot;first&quot;</span>)],</span>
+<span id="cb59-4"><a></a>                   <span class="at">levels =</span> <span class="fu">levels</span>(cancer_sub<span class="sc">$</span>subtype_f))</span>
+<span id="cb59-5"><a></a><span class="fu">table</span>(<span class="at">Observe =</span> cancer_sub<span class="sc">$</span>subtype_f, <span class="at">Predit =</span> pred_max)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  Predit
+Observe            adenocarcinomous adenosquamous other
+  adenocarcinomous              184             0     0
+  adenosquamous                  43             2     0
+  other                          57             0     0</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a></a>err_max <span class="ot">&lt;-</span> <span class="fu">mean</span>(pred_max <span class="sc">!=</span> cancer_sub<span class="sc">$</span>subtype_f)</span>
+<span id="cb61-2"><a></a></span>
+<span id="cb61-3"><a></a><span class="fu">c</span>(<span class="at">naive =</span> err_naive, <span class="at">proba_max =</span> err_max)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    naive proba_max 
+0.3566434 0.3496503 </code></pre>
+</div>
+</div>
+</section>
+<section id="q7-le-quota-se-trompe-plus-que-la-règle-naïve" class="slide level2" data-number="2.29">
+<h2><span class="header-section-number">2.29</span> Q7 : le quota se trompe plus que la règle naïve</h2>
+<ul>
+<li>Règle naïve (tout en adénocarcinome) : 102/286 = 35,7 %.</li>
+<li>Probabilité maximale : 2 adenosquamous prédits seulement, 35,0 % d’erreur.</li>
+<li>Le quota force des prédictions minoritaires, au prix de plus d’erreurs.</li>
+<li>Bien ajusté (Q4) ≠ bien classé : les variables ne séparent pas les sous-types.</li>
+</ul>
+</section></section>
+<section>
+<section id="b.-modèle-ordinal-pour-expliquer-grade" class="title-slide slide level1 center" data-number="3">
+<h1><span class="header-section-number">3</span> B. Modèle ordinal pour expliquer GRADE</h1>
+
+</section>
+<section id="q8-modèle-ordonné-de-base" class="slide level2" data-number="3.1">
+<h2><span class="header-section-number">3.1</span> Q8 : modèle ordonné de base</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a></a>mod_base <span class="ot">&lt;-</span> <span class="fu">polr</span>(</span>
+<span id="cb63-2"><a></a>  grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> subtype_f <span class="sc">+</span> age_f <span class="sc">+</span> smk_f,</span>
+<span id="cb63-3"><a></a>  <span class="at">data =</span> cancer_cc,</span>
+<span id="cb63-4"><a></a>  <span class="at">Hess =</span> <span class="cn">TRUE</span>     <span class="co"># garde la hessienne : summary() n&#39;a pas à ré-estimer</span></span>
+<span id="cb63-5"><a></a>)</span>
+<span id="cb63-6"><a></a></span>
+<span id="cb63-7"><a></a><span class="fu">summary</span>(mod_base)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+polr(formula = grade_ord ~ race_f + estrogen_f + subtype_f + 
+    age_f + smk_f, data = cancer_cc, Hess = TRUE)
+
+Coefficients:
+                                      Value Std. Error  t value
+race_fnoire                         0.59764     0.2790  2.14222
+estrogen_ftook oestrogen treatment -0.61411     0.2549 -2.40904
+subtype_fadenosquamous              1.78110     0.3252  5.47653
+subtype_fother                      0.07823     0.2991  0.26153
+age_f65-79                          0.13110     0.2486  0.52742
+smk_fyes                            0.01358     0.3992  0.03401
+
+Intercepts:
+                                         Value   Std. Error t value
+bien différencié|moyennement différencié -0.0205  0.2890    -0.0708
+moyennement différencié|peu différencié   1.9682  0.3196     6.1589
+
+Residual Deviance: 540.4501 
+AIC: 556.4501 </code></pre>
+</div>
+</div>
+</section>
+<section id="q8-β-0-pousse-vers-les-grades-élevés" class="slide level2" data-number="3.2">
+<h2><span class="header-section-number">3.2</span> Q8 : β &gt; 0 pousse vers les grades élevés</h2>
+<p><span class="math display">\[
+\operatorname{logit} \Pr(\text{GRADE} \le j \mid x) = \zeta_j - x&#39;\beta ,
+\quad j = 1, 2
+\]</span></p>
+<ul>
+<li>Même convention que l’énoncé (<span class="math inline">\(\Phi(c_g - X_i B)\)</span>) et que Stata <code>ologit</code>.</li>
+<li><code>t value</code> est en fait un <span class="math inline">\(z\)</span> ; pas de p-value affichée.</li>
+<li><code>Intercepts</code> = seuils <span class="math inline">\(\hat\zeta_1, \hat\zeta_2\)</span> : profil de référence.</li>
+</ul>
+</section>
+<section id="q8-or-ic-et-p-values" class="slide level2" data-number="3.3">
+<h2><span class="header-section-number">3.3</span> Q8 : OR, IC et p-values</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a></a>tab_or <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb65-2"><a></a>  ct <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">summary</span>(m))[<span class="fu">names</span>(<span class="fu">coef</span>(m)), , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb65-3"><a></a>  ic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(m))</span>
+<span id="cb65-4"><a></a>  <span class="fu">tibble</span>(<span class="at">terme   =</span> <span class="fu">names</span>(<span class="fu">coef</span>(m)),</span>
+<span id="cb65-5"><a></a>         <span class="at">coef    =</span> ct[, <span class="st">&quot;Value&quot;</span>],</span>
+<span id="cb65-6"><a></a>         <span class="at">OR      =</span> <span class="fu">exp</span>(ct[, <span class="st">&quot;Value&quot;</span>]),</span>
+<span id="cb65-7"><a></a>         <span class="at">IC_bas  =</span> ic[, <span class="dv">1</span>],</span>
+<span id="cb65-8"><a></a>         <span class="at">IC_haut =</span> ic[, <span class="dv">2</span>],</span>
+<span id="cb65-9"><a></a>         <span class="at">z       =</span> ct[, <span class="st">&quot;t value&quot;</span>],</span>
+<span id="cb65-10"><a></a>         <span class="at">p_value =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(<span class="sc">-</span><span class="fu">abs</span>(ct[, <span class="st">&quot;t value&quot;</span>])))</span>
+<span id="cb65-11"><a></a>}</span>
+<span id="cb65-12"><a></a>or_base <span class="ot">&lt;-</span> <span class="fu">tab_or</span>(mod_base)</span>
+<span id="cb65-13"><a></a><span class="fu">kbl</span>(or_base)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">terme</th>
+<th style="text-align: right;">coef</th>
+<th style="text-align: right;">OR</th>
+<th style="text-align: right;">IC_bas</th>
+<th style="text-align: right;">IC_haut</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: left;">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">race_fnoire</td>
+<td style="text-align: right;">0.598</td>
+<td style="text-align: right;">1.818</td>
+<td style="text-align: right;">1.053</td>
+<td style="text-align: right;">3.150</td>
+<td style="text-align: right;">2.142</td>
+<td style="text-align: left;">0.0322</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">estrogen_ftook oestrogen treatment</td>
+<td style="text-align: right;">-0.614</td>
+<td style="text-align: right;">0.541</td>
+<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.891</td>
+<td style="text-align: right;">-2.409</td>
+<td style="text-align: left;">0.0160</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">subtype_fadenosquamous</td>
+<td style="text-align: right;">1.781</td>
+<td style="text-align: right;">5.936</td>
+<td style="text-align: right;">3.165</td>
+<td style="text-align: right;">11.356</td>
+<td style="text-align: right;">5.477</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subtype_fother</td>
+<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">1.081</td>
+<td style="text-align: right;">0.598</td>
+<td style="text-align: right;">1.937</td>
+<td style="text-align: right;">0.262</td>
+<td style="text-align: left;">0.7937</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">age_f65-79</td>
+<td style="text-align: right;">0.131</td>
+<td style="text-align: right;">1.140</td>
+<td style="text-align: right;">0.701</td>
+<td style="text-align: right;">1.860</td>
+<td style="text-align: right;">0.527</td>
+<td style="text-align: left;">0.5979</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">smk_fyes</td>
+<td style="text-align: right;">0.014</td>
+<td style="text-align: right;">1.014</td>
+<td style="text-align: right;">0.458</td>
+<td style="text-align: right;">2.206</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: left;">0.9729</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a>z_base <span class="ot">&lt;-</span> <span class="fu">unname</span>(mod_base<span class="sc">$</span>zeta)</span>
+<span id="cb66-2"><a></a><span class="fu">c</span>(<span class="at">bien =</span> <span class="fu">plogis</span>(z_base[<span class="dv">1</span>]),</span>
+<span id="cb66-3"><a></a>  <span class="at">moyennement =</span> <span class="fu">plogis</span>(z_base[<span class="dv">2</span>]) <span class="sc">-</span> <span class="fu">plogis</span>(z_base[<span class="dv">1</span>]),</span>
+<span id="cb66-4"><a></a>  <span class="at">peu =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">plogis</span>(z_base[<span class="dv">2</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       bien moyennement         peu 
+  0.4948836   0.3825320   0.1225844 </code></pre>
+</div>
+</div>
+</section>
+<section id="q8-race-œstrogènes-et-adenosquamous-significatifs" class="slide level2" data-number="3.4">
+<h2><span class="header-section-number">3.4</span> Q8 : race, œstrogènes et adenosquamous significatifs</h2>
+<ul>
+<li>Significatifs : race (p = 0,032), œstrogènes (p = 0,016), adenosquamous (p &lt; 0,001).</li>
+<li>Profil de référence : 0,495 / 0,383 / 0,123.</li>
+</ul>
+</section>
+<section id="q8-tester-les-cotes-proportionnelles" class="slide level2" data-number="3.5">
+<h2><span class="header-section-number">3.5</span> Q8 : tester les cotes proportionnelles</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a>clm_base <span class="ot">&lt;-</span> ordinal<span class="sc">::</span><span class="fu">clm</span>(</span>
+<span id="cb68-2"><a></a>  grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> subtype_f <span class="sc">+</span> age_f <span class="sc">+</span> smk_f,</span>
+<span id="cb68-3"><a></a>  <span class="at">data =</span> cancer_cc</span>
+<span id="cb68-4"><a></a>)</span>
+<span id="cb68-5"><a></a>nt_base <span class="ot">&lt;-</span> ordinal<span class="sc">::</span><span class="fu">nominal_test</span>(clm_base)</span>
+<span id="cb68-6"><a></a>nt_base</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tests of nominal effects
+
+formula: grade_ord ~ race_f + estrogen_f + subtype_f + age_f + smk_f
+           Df  logLik    AIC     LRT  Pr(&gt;Chi)    
+&lt;none&gt;        -270.23 556.45                      
+race_f      1 -270.22 558.43  0.0177 0.8940802    
+estrogen_f  1 -269.93 557.86  0.5909 0.4420655    
+subtype_f   2 -262.89 545.77 14.6784 0.0006496 ***
+age_f       1 -269.66 557.33  1.1245 0.2889547    
+smk_f       1 -269.94 557.88  0.5690 0.4506652    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a><span class="fu">table</span>(cancer_cc<span class="sc">$</span>subtype_f, cancer_cc<span class="sc">$</span>grade_ord)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  
+                   bien différencié moyennement différencié peu différencié
+  adenocarcinomous               99                      58              27
+  adenosquamous                   1                      27              17
+  other                          28                      20               9</code></pre>
+</div>
+</div>
+</section>
+<section id="q8-les-cotes-proportionnelles-sont-rejetées-pour-subtype" class="slide level2" data-number="3.6">
+<h2><span class="header-section-number">3.6</span> Q8 : les cotes proportionnelles sont rejetées pour SUBTYPE</h2>
+<ul>
+<li>Un seul OR par variable pour les deux seuils : hypothèse à tester (<code>nominal_test</code> ; <code>brant::brant()</code> propose un test analogue, version de Wald).</li>
+<li>Rejet pour le sous-type : LRT = 14,68, 2 ddl, p &lt; 0,001 ; 1 seul adenosquamous bien différencié sur 45.</li>
+</ul>
+</section>
+<section id="q9.1-à-9.3-ajouter-estrogen-subtype" class="slide level2" data-number="3.7">
+<h2><span class="header-section-number">3.7</span> Q9.1 à 9.3 : ajouter ESTROGEN × SUBTYPE</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a></a>mod_int_ES <span class="ot">&lt;-</span> <span class="fu">polr</span>(</span>
+<span id="cb72-2"><a></a>  grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">*</span> subtype_f <span class="sc">+</span> age_f <span class="sc">+</span> smk_f,</span>
+<span id="cb72-3"><a></a>  <span class="at">data =</span> cancer_cc,</span>
+<span id="cb72-4"><a></a>  <span class="at">Hess =</span> <span class="cn">TRUE</span></span>
+<span id="cb72-5"><a></a>)</span>
+<span id="cb72-6"><a></a></span>
+<span id="cb72-7"><a></a><span class="fu">anova</span>(mod_base, mod_int_ES)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: grade_ord
+                                            Model Resid. df Resid. Dev   Test
+1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       
+2 race_f + estrogen_f * subtype_f + age_f + smk_f       276   537.5181 1 vs 2
+     Df LR stat.   Pr(Chi)
+1                         
+2     2 2.932012 0.2308457</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a></a><span class="fu">c</span>(<span class="at">AIC_base =</span> <span class="fu">AIC</span>(mod_base), <span class="at">AIC_int_ES =</span> <span class="fu">AIC</span>(mod_int_ES))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  AIC_base AIC_int_ES 
+  556.4501   557.5181 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a></a>lr_es <span class="ot">&lt;-</span> <span class="fu">lr_test</span>(mod_base, mod_int_ES)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q9.3-linteraction-estrogen-subtype-napporte-rien" class="slide level2" data-number="3.8">
+<h2><span class="header-section-number">3.8</span> Q9.3 : l’interaction ESTROGEN × SUBTYPE n’apporte rien</h2>
+<ul>
+<li><code>mod_base</code> (Q8) : 8 paramètres, <code>Resid. df</code> = 286 − 8 = 278.</li>
+<li><span class="math inline">\((2 - 1)(3 - 1) =\)</span> <strong>2 ddl</strong> ; <span class="math inline">\(\chi^2 =\)</span> 2,93, p = 0,231 ; AIC 556,45 → 557,52 : on ne la garde pas.</li>
+</ul>
+</section>
+<section id="q9.4-deux-autres-interactions" class="slide level2" data-number="3.9">
+<h2><span class="header-section-number">3.9</span> Q9.4 : deux autres interactions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a></a>mod_int_EAGE <span class="ot">&lt;-</span> <span class="fu">polr</span>(</span>
+<span id="cb77-2"><a></a>  grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">*</span> age_f <span class="sc">+</span> subtype_f <span class="sc">+</span> smk_f,</span>
+<span id="cb77-3"><a></a>  <span class="at">data =</span> cancer_cc, <span class="at">Hess =</span> <span class="cn">TRUE</span></span>
+<span id="cb77-4"><a></a>)</span>
+<span id="cb77-5"><a></a>mod_int_SAGE <span class="ot">&lt;-</span> <span class="fu">polr</span>(</span>
+<span id="cb77-6"><a></a>  grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> subtype_f <span class="sc">*</span> age_f <span class="sc">+</span> smk_f,</span>
+<span id="cb77-7"><a></a>  <span class="at">data =</span> cancer_cc, <span class="at">Hess =</span> <span class="cn">TRUE</span></span>
+<span id="cb77-8"><a></a>)</span>
+<span id="cb77-9"><a></a></span>
+<span id="cb77-10"><a></a><span class="fu">anova</span>(mod_base, mod_int_EAGE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: grade_ord
+                                            Model Resid. df Resid. Dev   Test
+1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       
+2 race_f + estrogen_f * age_f + subtype_f + smk_f       277   539.2085 1 vs 2
+     Df LR stat.   Pr(Chi)
+1                         
+2     1 1.241621 0.2651588</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a><span class="fu">anova</span>(mod_base, mod_int_SAGE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: grade_ord
+                                            Model Resid. df Resid. Dev   Test
+1 race_f + estrogen_f + subtype_f + age_f + smk_f       278   540.4501       
+2 race_f + estrogen_f + subtype_f * age_f + smk_f       276   538.9157 1 vs 2
+     Df LR stat.   Pr(Chi)
+1                         
+2     2 1.534397 0.4643119</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a></a>int_recap <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb81-2"><a></a>  <span class="at">interaction =</span> <span class="fu">c</span>(<span class="st">&quot;ESTROGEN x SUBTYPE&quot;</span>, <span class="st">&quot;ESTROGEN x AGE&quot;</span>, <span class="st">&quot;SUBTYPE x AGE&quot;</span>),</span>
+<span id="cb81-3"><a></a>  <span class="at">modele =</span> <span class="fu">list</span>(mod_int_ES, mod_int_EAGE, mod_int_SAGE)</span>
+<span id="cb81-4"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb81-5"><a></a>  <span class="fu">mutate</span>(</span>
+<span id="cb81-6"><a></a>    <span class="at">chi2    =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(mod_base, .x)[<span class="st">&quot;stat&quot;</span>]),</span>
+<span id="cb81-7"><a></a>    <span class="at">ddl     =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(mod_base, .x)[<span class="st">&quot;ddl&quot;</span>]),</span>
+<span id="cb81-8"><a></a>    <span class="at">p_value =</span> <span class="fu">map_dbl</span>(modele, <span class="sc">~</span> <span class="fu">lr_test</span>(mod_base, .x)[<span class="st">&quot;p&quot;</span>]),</span>
+<span id="cb81-9"><a></a>    <span class="at">AIC     =</span> <span class="fu">map_dbl</span>(modele, AIC)</span>
+<span id="cb81-10"><a></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb81-11"><a></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>modele)</span>
+<span id="cb81-12"><a></a><span class="fu">kbl</span>(int_recap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">interaction</th>
+<th style="text-align: right;">chi2</th>
+<th style="text-align: right;">ddl</th>
+<th style="text-align: left;">p_value</th>
+<th style="text-align: right;">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ESTROGEN x SUBTYPE</td>
+<td style="text-align: right;">2.932</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.231</td>
+<td style="text-align: right;">557.518</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ESTROGEN x AGE</td>
+<td style="text-align: right;">1.242</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">0.265</td>
+<td style="text-align: right;">557.208</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SUBTYPE x AGE</td>
+<td style="text-align: right;">1.534</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">0.464</td>
+<td style="text-align: right;">558.916</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="q9.4-aucune-interaction-nest-conservée" class="slide level2" data-number="3.10">
+<h2><span class="header-section-number">3.10</span> Q9.4 : aucune interaction n’est conservée</h2>
+<ul>
+<li>ESTROGEN × AGE : 1 ddl, p = 0,265 ; SUBTYPE × AGE : 2 ddl, p = 0,464.</li>
+<li>Toutes augmentent l’AIC : aucune n’est conservée.</li>
+</ul>
+</section>
+<section id="q9.5-un-modèle-sans-interaction-et-les-limites-du-test" class="slide level2" data-number="3.11">
+<h2><span class="header-section-number">3.11</span> Q9.5 : un modèle sans interaction, et les limites du test</h2>
+<ul>
+<li><strong>Modèle raisonnable</strong> : le modèle de base sans interaction, à simplifier (Q10).</li>
+<li><strong>Limites</strong> :
+<ul>
+<li>ne détecte que les défauts <strong>testés</strong> : pas un test global ;</li>
+<li>peu de puissance : petites cellules (par ex. 18 adenosquamous sous œstrogènes) ;</li>
+<li><strong>tests multiples</strong> : risque d’erreur au-delà de 5 % ;</li>
+<li>ne teste pas les <strong>cotes proportionnelles</strong>, pourtant rejetées pour le sous-type (Q8).</li>
+</ul></li>
+</ul>
+</section>
+<section id="q10-stepaic-retire-le-tabagisme-puis-lâge" class="slide level2" data-number="3.12">
+<h2><span class="header-section-number">3.12</span> Q10 : stepAIC retire le tabagisme puis l’âge</h2>
+<p>AIC <span class="math inline">\(= -2 \ln L + 2p\)</span> : on garde le plus petit.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a></a>mod_aic <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(mod_base, <span class="at">direction =</span> <span class="st">&quot;backward&quot;</span>, <span class="at">trace =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=556.45
+grade_ord ~ race_f + estrogen_f + subtype_f + age_f + smk_f
+
+             Df    AIC
+- smk_f       1 554.45
+- age_f       1 554.73
+&lt;none&gt;          556.45
+- race_f      1 559.05
+- estrogen_f  1 560.26
+- subtype_f   2 585.25
+
+Step:  AIC=554.45
+grade_ord ~ race_f + estrogen_f + subtype_f + age_f
+
+             Df    AIC
+- age_f       1 552.74
+&lt;none&gt;          554.45
+- race_f      1 557.06
+- estrogen_f  1 558.26
+- subtype_f   2 583.88
+
+Step:  AIC=552.74
+grade_ord ~ race_f + estrogen_f + subtype_f
+
+             Df    AIC
+&lt;none&gt;          552.74
+- race_f      1 555.25
+- estrogen_f  1 556.64
+- subtype_f   2 583.21</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a><span class="fu">attr</span>(<span class="fu">terms</span>(mod_aic), <span class="st">&quot;term.labels&quot;</span>)   <span class="co"># variables retenues</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;race_f&quot;     &quot;estrogen_f&quot; &quot;subtype_f&quot; </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a></a><span class="fu">coef</span>(<span class="fu">summary</span>(mod_aic))[<span class="st">&quot;subtype_fother&quot;</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Value Std. Error    t value 
+0.09284509 0.29642083 0.31322053 </code></pre>
+</div>
+</div>
+<ul>
+<li>Coefficient de « other » : 0,093 (<span class="math inline">\(z =\)</span> 0,31) : ne se distingue pas significativement des adénocarcinomes.</li>
+</ul>
+</section>
+<section id="q10-regrouper-adénocarcinome-et-other" class="slide level2" data-number="3.13">
+<h2><span class="header-section-number">3.13</span> Q10 : regrouper adénocarcinome et « other »</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a></a>cancer_cc <span class="ot">&lt;-</span> cancer_cc <span class="sc">|&gt;</span></span>
+<span id="cb88-2"><a></a>  <span class="fu">mutate</span>(<span class="at">adenosq =</span> <span class="fu">factor</span>(subtype_f <span class="sc">==</span> <span class="st">&quot;adenosquamous&quot;</span>,</span>
+<span id="cb88-3"><a></a>                          <span class="at">levels =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb88-4"><a></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;adeno. ou autre&quot;</span>, <span class="st">&quot;adenosquamous&quot;</span>)))</span>
+<span id="cb88-5"><a></a></span>
+<span id="cb88-6"><a></a>mod_final <span class="ot">&lt;-</span> <span class="fu">polr</span>(grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> adenosq,</span>
+<span id="cb88-7"><a></a>                  <span class="at">data =</span> cancer_cc, <span class="at">Hess =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-8"><a></a></span>
+<span id="cb88-9"><a></a><span class="fu">anova</span>(mod_final, mod_aic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Likelihood ratio tests of ordinal regression models
+
+Response: grade_ord
+                            Model Resid. df Resid. Dev   Test    Df   LR stat.
+1   race_f + estrogen_f + adenosq       281   540.8366                        
+2 race_f + estrogen_f + subtype_f       280   540.7388 1 vs 2     1 0.09784371
+    Pr(Chi)
+1          
+2 0.7544328</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a></a>lr_grp <span class="ot">&lt;-</span> <span class="fu">lr_test</span>(mod_final, mod_aic)</span>
+<span id="cb90-2"><a></a></span>
+<span id="cb90-3"><a></a><span class="fu">tibble</span>(</span>
+<span id="cb90-4"><a></a>  <span class="at">modele =</span> <span class="fu">c</span>(<span class="st">&quot;base (5 variables)&quot;</span>, <span class="st">&quot;- SMK&quot;</span>, <span class="st">&quot;- SMK - AGE (stepAIC)&quot;</span>,</span>
+<span id="cb90-5"><a></a>             <span class="st">&quot;SUBTYPE regroupé (final)&quot;</span>),</span>
+<span id="cb90-6"><a></a>  <span class="at">AIC =</span> <span class="fu">c</span>(<span class="fu">AIC</span>(mod_base),</span>
+<span id="cb90-7"><a></a>          <span class="fu">AIC</span>(<span class="fu">update</span>(mod_base, . <span class="sc">~</span> . <span class="sc">-</span> smk_f)),</span>
+<span id="cb90-8"><a></a>          <span class="fu">AIC</span>(mod_aic),</span>
+<span id="cb90-9"><a></a>          <span class="fu">AIC</span>(mod_final))</span>
+<span id="cb90-10"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb90-11"><a></a>  <span class="fu">kbl</span>(<span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">modele</th>
+<th style="text-align: right;">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">base (5 variables)</td>
+<td style="text-align: right;">556.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">- SMK</td>
+<td style="text-align: right;">554.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">- SMK - AGE (stepAIC)</td>
+<td style="text-align: right;">552.74</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SUBTYPE regroupé (final)</td>
+<td style="text-align: right;">550.84</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="q10-le-regroupement-fait-encore-baisser-laic" class="slide level2" data-number="3.14">
+<h2><span class="header-section-number">3.14</span> Q10 : le regroupement fait encore baisser l’AIC</h2>
+<ul>
+<li>Regroupement non rejeté (p = 0,754), AIC 552,74 → 550,84.</li>
+<li>Gain de 1,90 ≈ les 2 points de pénalité d’un paramètre retiré : plus simple, pas meilleur.</li>
+<li>Suggéré par les données après sélection : p-values optimistes.</li>
+</ul>
+</section>
+<section id="q11-le-modèle-final" class="slide level2" data-number="3.15">
+<h2><span class="header-section-number">3.15</span> Q11 : le modèle final</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a></a><span class="fu">summary</span>(mod_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+polr(formula = grade_ord ~ race_f + estrogen_f + adenosq, data = cancer_cc, 
+    Hess = TRUE)
+
+Coefficients:
+                                     Value Std. Error t value
+race_fnoire                         0.5942     0.2782   2.136
+estrogen_ftook oestrogen treatment -0.6215     0.2543  -2.444
+adenosqadenosquamous                1.7795     0.3122   5.700
+
+Intercepts:
+                                         Value   Std. Error t value
+bien différencié|moyennement différencié -0.1233  0.2274    -0.5423
+moyennement différencié|peu différencié   1.8623  0.2611     7.1317
+
+Residual Deviance: 540.8366 
+AIC: 550.8366 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a></a>or_final <span class="ot">&lt;-</span> <span class="fu">tab_or</span>(mod_final)</span>
+<span id="cb93-2"><a></a><span class="fu">kbl</span>(or_final)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 44%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">terme</th>
+<th style="text-align: right;">coef</th>
+<th style="text-align: right;">OR</th>
+<th style="text-align: right;">IC_bas</th>
+<th style="text-align: right;">IC_haut</th>
+<th style="text-align: right;">z</th>
+<th style="text-align: left;">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">race_fnoire</td>
+<td style="text-align: right;">0.594</td>
+<td style="text-align: right;">1.812</td>
+<td style="text-align: right;">1.051</td>
+<td style="text-align: right;">3.134</td>
+<td style="text-align: right;">2.136</td>
+<td style="text-align: left;">0.0327</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">estrogen_ftook oestrogen treatment</td>
+<td style="text-align: right;">-0.622</td>
+<td style="text-align: right;">0.537</td>
+<td style="text-align: right;">0.326</td>
+<td style="text-align: right;">0.884</td>
+<td style="text-align: right;">-2.444</td>
+<td style="text-align: left;">0.0145</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">adenosqadenosquamous</td>
+<td style="text-align: right;">1.780</td>
+<td style="text-align: right;">5.927</td>
+<td style="text-align: right;">3.242</td>
+<td style="text-align: right;">11.055</td>
+<td style="text-align: right;">5.700</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a></a>fmt_or <span class="ot">&lt;-</span> <span class="cf">function</span>(i) <span class="fu">paste0</span>(<span class="fu">fr</span>(or_final<span class="sc">$</span>OR[i]), <span class="st">&quot; [&quot;</span>, <span class="fu">fr</span>(or_final<span class="sc">$</span>IC_bas[i]),</span>
+<span id="cb94-2"><a></a>                             <span class="st">&quot; ; &quot;</span>, <span class="fu">fr</span>(or_final<span class="sc">$</span>IC_haut[i]), <span class="st">&quot;], p &quot;</span>,</span>
+<span id="cb94-3"><a></a>                             <span class="fu">fp</span>(or_final<span class="sc">$</span>p_value[i]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q11-race-œstrogènes-et-adenosquamous" class="slide level2" data-number="3.16">
+<h2><span class="header-section-number">3.16</span> Q11 : race, œstrogènes et adenosquamous</h2>
+<p>OR &gt; 1 = cotes plus élevées d’un grade <strong>plus élevé</strong> (tumeur moins différenciée), à chaque seuil.</p>
+<ul>
+<li>Peau noire : OR = 1,81 [1,05 ; 3,13], p = 0,033 ; l’écart persiste après ajustement sur le sous-type et les œstrogènes.</li>
+<li>Œstrogènes : OR = 0,54 [0,33 ; 0,88], p = 0,015, cotes réduites d’environ 46 %.</li>
+<li>Adenosquamous : OR = 5,93 [3,24 ; 11,05], p &lt; 0,001.</li>
+</ul>
+</section>
+<section id="q11-les-cotes-proportionnelles-restent-rejetées-pour-ladenosquamous" class="slide level2" data-number="3.17">
+<h2><span class="header-section-number">3.17</span> Q11 : les cotes proportionnelles restent rejetées pour l’adenosquamous</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a></a>clm_final <span class="ot">&lt;-</span> ordinal<span class="sc">::</span><span class="fu">clm</span>(grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f <span class="sc">+</span> adenosq,</span>
+<span id="cb95-2"><a></a>                          <span class="at">data =</span> cancer_cc)</span>
+<span id="cb95-3"><a></a>nt_final <span class="ot">&lt;-</span> ordinal<span class="sc">::</span><span class="fu">nominal_test</span>(clm_final)</span>
+<span id="cb95-4"><a></a>nt_final</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tests of nominal effects
+
+formula: grade_ord ~ race_f + estrogen_f + adenosq
+           Df  logLik    AIC     LRT  Pr(&gt;Chi)    
+&lt;none&gt;        -270.42 550.84                      
+race_f      1 -270.40 552.81  0.0261 0.8717274    
+estrogen_f  1 -270.14 552.28  0.5592 0.4545873    
+adenosq     1 -263.18 538.35 14.4864 0.0001412 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a></a>est_sq <span class="ot">&lt;-</span> cancer_cc<span class="sc">$</span>adenosq <span class="sc">==</span> <span class="st">&quot;adenosquamous&quot;</span></span>
+<span id="cb97-2"><a></a>p_final <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod_final, <span class="at">type =</span> <span class="st">&quot;probs&quot;</span>)</span>
+<span id="cb97-3"><a></a><span class="fu">c</span>(<span class="at">attendus =</span> <span class="fu">sum</span>(p_final[est_sq, <span class="st">&quot;bien différencié&quot;</span>]),</span>
+<span id="cb97-4"><a></a>  <span class="at">observes =</span> <span class="fu">sum</span>(cancer_cc<span class="sc">$</span>grade_ord[est_sq] <span class="sc">==</span> <span class="st">&quot;bien différencié&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>attendus observes 
+6.594716 1.000000 </code></pre>
+</div>
+</div>
+</section>
+<section id="q11-lor-de-ladenosquamous-est-un-compromis" class="slide level2" data-number="3.18">
+<h2><span class="header-section-number">3.18</span> Q11 : l’OR de l’adenosquamous est un compromis</h2>
+<ul>
+<li>Test : p &lt; 0,001.</li>
+<li>Adenosquamous bien différenciés : environ 6,6 attendus, 1 observé.</li>
+<li>L’OR unique de 5,93 est un compromis entre un effet fort au premier seuil et un effet modéré au second.</li>
+</ul>
+</section>
+<section id="q11-pourquoi-garder-polr-malgré-un-aic-plus-élevé" class="slide level2" data-number="3.19">
+<h2><span class="header-section-number">3.19</span> Q11 : pourquoi garder polr() malgré un AIC plus élevé</h2>
+<ul>
+<li>Le modèle partiellement proportionnel (slide suivante) a un AIC plus faible.</li>
+<li>On garde <code>polr()</code> : c’est le modèle demandé par l’énoncé, et un seul OR par variable se lit facilement.</li>
+<li>Race et œstrogènes : hypothèse non rejetée, mêmes conclusions dans les deux modèles.</li>
+<li>Adenosquamous : lire l’effet dans le modèle partiel.</li>
+</ul>
+</section>
+<section id="q11-pour-aller-plus-loin-cotes-partiellement-proportionnelles" class="slide level2" data-number="3.20">
+<h2><span class="header-section-number">3.20</span> Q11 : pour aller plus loin, cotes partiellement proportionnelles</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a></a>clm_partiel <span class="ot">&lt;-</span> ordinal<span class="sc">::</span><span class="fu">clm</span>(grade_ord <span class="sc">~</span> race_f <span class="sc">+</span> estrogen_f,</span>
+<span id="cb99-2"><a></a>                            <span class="at">nominal =</span> <span class="sc">~</span> adenosq, <span class="at">data =</span> cancer_cc)</span>
+<span id="cb99-3"><a></a><span class="fu">summary</span>(clm_partiel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>formula: grade_ord ~ race_f + estrogen_f
+nominal: ~adenosq
+data:    cancer_cc
+
+ link  threshold nobs logLik  AIC    niter max.grad cond.H 
+ logit flexible  286  -263.18 538.35 7(0)  1.88e-11 9.7e+01
+
+Coefficients:
+                                   Estimate Std. Error z value Pr(&gt;|z|)  
+race_fnoire                          0.6028     0.2777   2.171   0.0300 *
+estrogen_ftook oestrogen treatment  -0.5988     0.2590  -2.312   0.0208 *
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Threshold coefficients:
+                                                              Estimate
+bien différencié|moyennement différencié.(Intercept)          -0.04746
+moyennement différencié|peu différencié.(Intercept)            1.66878
+bien différencié|moyennement différencié.adenosqadenosquamous -3.88241
+moyennement différencié|peu différencié.adenosqadenosquamous  -1.21893
+                                                              Std. Error
+bien différencié|moyennement différencié.(Intercept)             0.22940
+moyennement différencié|peu différencié.(Intercept)              0.25873
+bien différencié|moyennement différencié.adenosqadenosquamous    1.02211
+moyennement différencié|peu différencié.adenosqadenosquamous     0.36458
+                                                              z value
+bien différencié|moyennement différencié.(Intercept)           -0.207
+moyennement différencié|peu différencié.(Intercept)             6.450
+bien différencié|moyennement différencié.adenosqadenosquamous  -3.798
+moyennement différencié|peu différencié.adenosqadenosquamous   -3.343</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a></a>th <span class="ot">&lt;-</span> <span class="fu">coef</span>(clm_partiel)</span>
+<span id="cb101-2"><a></a>or_seuil1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>th[<span class="st">&quot;bien différencié|moyennement différencié.adenosqadenosquamous&quot;</span>])</span>
+<span id="cb101-3"><a></a>or_seuil2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>th[<span class="st">&quot;moyennement différencié|peu différencié.adenosqadenosquamous&quot;</span>])</span>
+<span id="cb101-4"><a></a><span class="fu">c</span>(<span class="at">OR_seuil1 =</span> <span class="fu">unname</span>(or_seuil1), <span class="at">OR_seuil2 =</span> <span class="fu">unname</span>(or_seuil2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>OR_seuil1 OR_seuil2 
+48.541095  3.383582 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a></a>nm1 <span class="ot">&lt;-</span> <span class="st">&quot;bien différencié|moyennement différencié.adenosqadenosquamous&quot;</span></span>
+<span id="cb103-2"><a></a>se1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">vcov</span>(clm_partiel)[nm1, nm1])</span>
+<span id="cb103-3"><a></a>ic_seuil1 <span class="ot">&lt;-</span> <span class="fu">unname</span>(<span class="fu">exp</span>(<span class="sc">-</span>(th[nm1] <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>) <span class="sc">*</span> se1)))</span>
+<span id="cb103-4"><a></a>ic_seuil1   <span class="co"># IC de Wald à 95 % de l&#39;OR au premier seuil</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   6.547696 359.857546</code></pre>
+</div>
+</div>
+</section>
+<section id="q11-un-effet-plus-fort-au-premier-seuil-mais-très-imprécis" class="slide level2" data-number="3.21">
+<h2><span class="header-section-number">3.21</span> Q11 : un effet plus fort au premier seuil, mais très imprécis</h2>
+<ul>
+<li>OR ≈ 49 au premier seuil (IC 95 % ≈ [6,5 ; 360], une seule tumeur bien différenciée), 3,4 au second.</li>
+<li>AIC 538,35 contre 550,84.</li>
+<li>Race et œstrogènes presque inchangés.</li>
+</ul>
+</section>
+<section id="q11-en-probabilités" class="slide level2" data-number="3.22">
+<h2><span class="header-section-number">3.22</span> Q11 : en probabilités</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a></a>profils_g <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">race_f     =</span> <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>race_f),</span>
+<span id="cb105-2"><a></a>                         <span class="at">estrogen_f =</span> <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>estrogen_f),</span>
+<span id="cb105-3"><a></a>                         <span class="at">adenosq    =</span> <span class="fu">levels</span>(cancer_cc<span class="sc">$</span>adenosq))</span>
+<span id="cb105-4"><a></a>prob_grade <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(profils_g,</span>
+<span id="cb105-5"><a></a>                        <span class="fu">as_tibble</span>(<span class="fu">predict</span>(mod_final, profils_g, <span class="at">type =</span> <span class="st">&quot;probs&quot;</span>)))</span>
+<span id="cb105-6"><a></a><span class="fu">kbl</span>(prob_grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 23%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 22%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">race_f</th>
+<th style="text-align: left;">estrogen_f</th>
+<th style="text-align: left;">adenosq</th>
+<th style="text-align: right;">bien différencié</th>
+<th style="text-align: right;">moyennement différencié</th>
+<th style="text-align: right;">peu différencié</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">adeno. ou autre</td>
+<td style="text-align: right;">0.469</td>
+<td style="text-align: right;">0.396</td>
+<td style="text-align: right;">0.134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: right;">0.130</td>
+<td style="text-align: right;">0.391</td>
+<td style="text-align: right;">0.479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">adeno. ou autre</td>
+<td style="text-align: right;">0.622</td>
+<td style="text-align: right;">0.301</td>
+<td style="text-align: right;">0.077</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">blanche</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: right;">0.217</td>
+<td style="text-align: right;">0.452</td>
+<td style="text-align: right;">0.331</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">adeno. ou autre</td>
+<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.452</td>
+<td style="text-align: right;">0.220</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">never took oestrogen</td>
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">0.299</td>
+<td style="text-align: right;">0.625</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">adeno. ou autre</td>
+<td style="text-align: right;">0.476</td>
+<td style="text-align: right;">0.393</td>
+<td style="text-align: right;">0.131</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">noire</td>
+<td style="text-align: left;">took oestrogen treatment</td>
+<td style="text-align: left;">adenosquamous</td>
+<td style="text-align: right;">0.133</td>
+<td style="text-align: right;">0.395</td>
+<td style="text-align: right;">0.473</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a></a>pg <span class="ot">&lt;-</span> <span class="cf">function</span>(r, e, a) dplyr<span class="sc">::</span><span class="fu">filter</span>(prob_grade, race_f <span class="sc">==</span> r, estrogen_f <span class="sc">==</span> e, adenosq <span class="sc">==</span> a)</span>
+<span id="cb106-2"><a></a>ref    <span class="ot">&lt;-</span> <span class="fu">pg</span>(<span class="st">&quot;blanche&quot;</span>, <span class="st">&quot;never took oestrogen&quot;</span>, <span class="st">&quot;adeno. ou autre&quot;</span>)</span>
+<span id="cb106-3"><a></a>ref_sq <span class="ot">&lt;-</span> <span class="fu">pg</span>(<span class="st">&quot;blanche&quot;</span>, <span class="st">&quot;never took oestrogen&quot;</span>, <span class="st">&quot;adenosquamous&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="q11-pour-ladenosquamous-lire-les-probabilités-du-modèle-partiel" class="slide level2" data-number="3.23">
+<h2><span class="header-section-number">3.23</span> Q11 : pour l’adenosquamous, lire les probabilités du modèle partiel</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a></a>prob_partiel <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(profils_g,</span>
+<span id="cb107-2"><a></a>                          <span class="fu">as_tibble</span>(<span class="fu">predict</span>(clm_partiel, <span class="at">newdata =</span> profils_g,</span>
+<span id="cb107-3"><a></a>                                            <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)<span class="sc">$</span>fit))</span>
+<span id="cb107-4"><a></a>pp_ref    <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(prob_partiel, race_f <span class="sc">==</span> <span class="st">&quot;blanche&quot;</span>,</span>
+<span id="cb107-5"><a></a>                           estrogen_f <span class="sc">==</span> <span class="st">&quot;never took oestrogen&quot;</span>,</span>
+<span id="cb107-6"><a></a>                           adenosq <span class="sc">==</span> <span class="st">&quot;adeno. ou autre&quot;</span>)</span>
+<span id="cb107-7"><a></a>pp_ref_sq <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(prob_partiel, race_f <span class="sc">==</span> <span class="st">&quot;blanche&quot;</span>,</span>
+<span id="cb107-8"><a></a>                           estrogen_f <span class="sc">==</span> <span class="st">&quot;never took oestrogen&quot;</span>,</span>
+<span id="cb107-9"><a></a>                           adenosq <span class="sc">==</span> <span class="st">&quot;adenosquamous&quot;</span>)</span>
+<span id="cb107-10"><a></a>est_sq_obs <span class="ot">&lt;-</span> cancer_cc<span class="sc">$</span>grade_ord[cancer_cc<span class="sc">$</span>adenosq <span class="sc">==</span> <span class="st">&quot;adenosquamous&quot;</span>]</span>
+<span id="cb107-11"><a></a><span class="fu">bind_rows</span>(<span class="at">polr =</span> ref_sq[, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">partiel =</span> pp_ref_sq[, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">.id =</span> <span class="st">&quot;modele&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  modele  `bien différencié` `moyennement différencié` `peu différencié`
+  &lt;chr&gt;                &lt;dbl&gt;                     &lt;dbl&gt;             &lt;dbl&gt;
+1 polr                0.130                      0.391             0.479
+2 partiel             0.0193                     0.591             0.389</code></pre>
+</div>
+</div>
+<ul>
+<li>Femme blanche sans œstrogènes, modèle partiel : P(peu différenciée) 0,159 → 0,389 si adenosquamous ; P(bien) 0,488 → 0,019.</li>
+<li><code>polr()</code> surestime les deux extrêmes (0,130 et 0,479).</li>
+<li>Observé : 17/45 = 0,38 peu différenciés, 1 bien différencié.</li>
+</ul>
+</section>
+<section id="q11-conclusion" class="slide level2" data-number="3.24">
+<h2><span class="header-section-number">3.24</span> Q11 : conclusion</h2>
+<ul>
+<li>Grade plus élevé chez les femmes noires et pour les adenosquamous, plus faible après prise d’œstrogènes.</li>
+<li>Âge et tabagisme : rien une fois ces variables prises en compte.</li>
+<li>Associations, pas effets causaux (étude observationnelle).</li>
+</ul>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center" data-number="4">
+<h1><span class="header-section-number">4</span> Conclusion</h1>
+
+</section>
+<section id="à-retenir" class="slide level2" data-number="4.1">
+<h2><span class="header-section-number">4.1</span> À retenir</h2>
+<ul>
+<li>Nominal : chaque modalité face à la <strong>référence</strong>, via des RRR ; un RRR n’est pas un rapport de probabilités.</li>
+<li>Tests LR : modèles emboîtés ; LR et AIC : toujours le <strong>même échantillon</strong>.</li>
+<li>Bien ajusté ≠ bien classé : comparer à la règle naïve.</li>
+<li>Ordinal : un seul coefficient pour tous les seuils, c’est une hypothèse à <strong>tester</strong>.</li>
+</ul>
 
 
 </section></section>

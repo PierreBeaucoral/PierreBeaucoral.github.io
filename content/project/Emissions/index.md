@@ -13,6 +13,7 @@ date: '2025-12-11'
 
 # Publication stage (surfaces this project on the Publications page)
 status: jmp
+url_pdf: 'https://drive.proton.me/urls/R8AMVCG800#lZca0H9bjWuQ'
 
 image:
   caption: Created with assistance of nano banana

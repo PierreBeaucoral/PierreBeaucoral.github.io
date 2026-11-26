@@ -31,7 +31,8 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 ---
 ## Development Goals, Environmental Costs?
 **Evidence from geocoded climate and non-climate finance** 
-*Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*
+*Pierre Beaucoral (CERDI, Université Clermont Auvergne, CNRS, IRD)*  
+**Job market paper** · [Read the paper (PDF) ↗](https://drive.proton.me/urls/R8AMVCG800#lZca0H9bjWuQ)
 
 ### Big picture
 Economic development has historically been accompanied by higher CO₂ emissions. Expanding energy systems, transport networks, and cities has delivered large welfare gains—often at substantial carbon cost. A central question for climate policy is whether this development–emissions link can be credibly loosened in the coming decades, especially in low- and middle-income countries where infrastructure and urban growth remain urgent. This project asks: **is development necessarily carbon-intensive, or can it be financed and built in ways that raise living standards without proportionally increasing emissions?**

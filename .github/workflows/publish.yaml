@@ -54,6 +54,20 @@ jobs:
           HUGO_ENV: production
         run: hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
+      # Course sites under static/course/ are shipped verbatim and bypass the
+      # Hugo templates, so the GTM snippet is injected into the built copies
+      # (sources untouched). ID read from params.yaml; redirects and Quarto
+      # site_libs are skipped.
+      - name: Inject Google Tag Manager into course pages
+        run: |
+          GTM_ID=$(grep -oP "google_tag_manager: '\K[^']+" config/_default/params.yaml)
+          [ -n "$GTM_ID" ] || exit 0
+          export SNIP="<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','$GTM_ID');</script>"
+          find public/course -name '*.html' -not -path '*/site_libs/*' -print0 \
+            | xargs -0 grep -L -e "$GTM_ID" -e 'http-equiv="refresh"' \
+            | xargs -r perl -0pi -e 's/<head>/<head>$ENV{SNIP}/'
+          echo "Tagged: $(grep -rl "$GTM_ID" public/course | wc -l) course pages"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

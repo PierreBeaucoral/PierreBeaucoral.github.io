@@ -5,6 +5,7 @@
   {{ partial "head.html" . }}
 </head>
 <body>
+  {{ with and hugo.IsProduction site.Params.marketing.analytics.google_tag_manager }}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ . }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>{{ end }}
   <a class="skip-link" href="#main">Skip to content</a>
   {{ partial "site-header.html" . }}
   <main id="main" tabindex="-1">

@@ -33,7 +33,7 @@ marketing:
   analytics:
     google_analytics: ''
     baidu_tongji: ''
-    google_tag_manager: ''
+    google_tag_manager: 'GTM-M27JJH29'
     microsoft_clarity: ''
     # Privacy-respecting alternative. Uncomment and set your Plausible domain
     # after registering at https://plausible.io (or self-hosting).

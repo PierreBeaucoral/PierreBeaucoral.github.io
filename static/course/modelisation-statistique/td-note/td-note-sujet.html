@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Pierre Beaucoral">
-<meta name="description" content="Sujet : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)">
+<meta name="description" content="Sujet blanc (entraînement) : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)">
 
-<title>TD noté : modèles de comptage, de choix discrets et de durée (R) – modelisation statistique</title>
+<title>Sujet blanc du TD noté : modèles de comptage, de choix discrets et de durée (R) – modelisation statistique</title>
 <style>
 
 code{white-space: pre-wrap;}
@@ -4276,7 +4276,7 @@ window.Quarto = {
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="../td-note/td-note-sujet.html" aria-current="page"> 
-<span class="menu-text">TD noté</span></a>
+<span class="menu-text">TD noté (sujet blanc)</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -4317,13 +4317,13 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">TD noté : modèles de comptage, de choix discrets et de durée (R)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Sujet blanc du TD noté : modèles de comptage, de choix discrets et de durée (R)</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Année universitaire 2026–2027 • Parcours Économie de la santé &amp; Développement durable</p>
 </div>
 
 <div>
   <div class="description">
-    Sujet : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)
+    Sujet blanc (entraînement) : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)
   </div>
 </div>
 
@@ -4349,6 +4349,7 @@ window.Quarto = {
 <section id="modalités" class="level1">
 <h1>Modalités</h1>
 <ul>
+<li><strong>Sujet blanc</strong> : ce sujet sert d’entraînement au TD noté. Il reproduit le format et la durée de l’épreuve.</li>
 <li><strong>Durée : 3 heures.</strong> Travail individuel sur machine, sous R.</li>
 <li><strong>Documents autorisés</strong> : supports des TD 1 à 4 et aide de R.</li>
 <li><strong>Rendu</strong> : un fichier <code>.qmd</code> (ou un script <code>.R</code> commenté) et sa sortie HTML ou PDF, nommés <code>NOM_Prenom</code>. Chaque réponse doit contenir le <strong>code</strong>, la <strong>sortie utile</strong> et une <strong>interprétation rédigée</strong> : une sortie sans commentaire ne rapporte pas de points.</li>
@@ -5032,9 +5033,9 @@ window.Quarto = {
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Code source</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;TD noté : modèles de comptage, de choix discrets et de durée (R)&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Sujet blanc du TD noté : modèles de comptage, de choix discrets et de durée (R)&quot;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Année universitaire 2026–2027 • Parcours Économie de la santé &amp; Développement durable&quot;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Sujet : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> &quot;Sujet blanc (entraînement) : TD 1 à 3 (Poisson, logit/probit, multinomial et ordonné) + bonus TD 4 (survie)&quot;</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Pierre Beaucoral&quot;</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> fr</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
@@ -5064,286 +5065,288 @@ window.Quarto = {
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="fu"># Modalités</span></span>
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Durée : 3 heures.** Travail individuel sur machine, sous R.</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Documents autorisés** : supports des TD 1 à 4 et aide de R.</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Rendu** : un fichier <span class="in">`.qmd`</span> (ou un script <span class="in">`.R`</span> commenté) et sa</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    sortie HTML ou PDF, nommés <span class="in">`NOM_Prenom`</span>. Chaque réponse doit</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    contenir le **code**, la **sortie utile** et une **interprétation</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    rédigée** : une sortie sans commentaire ne rapporte pas de points.</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Barème** : 20 points (parties A, B, C) + **bonus de 4 points**</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    (partie D). La note finale est plafonnée à 20. Le barème de chaque</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    question est indiqué entre crochets.</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Seuil de significativité : 5 %, sauf mention contraire.</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>Toutes les données sont **réelles** et ont fait l&#39;objet de publications.</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>Elles sont fournies par des packages R : aucun fichier à télécharger.</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="fu"># Mise en place</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Sujet blanc** : ce sujet sert d&#39;entraînement au TD noté. Il</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    reproduit le format et la durée de l&#39;épreuve.</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Durée : 3 heures.** Travail individuel sur machine, sous R.</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Documents autorisés** : supports des TD 1 à 4 et aide de R.</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Rendu** : un fichier <span class="in">`.qmd`</span> (ou un script <span class="in">`.R`</span> commenté) et sa</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    sortie HTML ou PDF, nommés <span class="in">`NOM_Prenom`</span>. Chaque réponse doit</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    contenir le **code**, la **sortie utile** et une **interprétation</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    rédigée** : une sortie sans commentaire ne rapporte pas de points.</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Barème** : 20 points (parties A, B, C) + **bonus de 4 points**</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    (partie D). La note finale est plafonnée à 20. Le barème de chaque</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    question est indiqué entre crochets.</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Seuil de significativité : 5 %, sauf mention contraire.</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>Toutes les données sont **réelles** et ont fait l&#39;objet de publications.</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>Elles sont fournies par des packages R : aucun fichier à télécharger.</span>
 <span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>Exécuter ce bloc en début de fichier. Les packages utilisés (AER,</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>MASS, nnet, ordinal, ResourceSelection, pROC, survival,</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>survminer) sont installés sur les machines ; ne pas appeler</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="in">`install.packages()`</span> dans le script.</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)               <span class="co"># NMES1988</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)              <span class="co"># glm.nb, polr</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)              <span class="co"># multinom</span></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ordinal)           <span class="co"># clm, nominal_test</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ResourceSelection) <span class="co"># hoslem.test</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)              <span class="co"># roc, auc</span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)          <span class="co"># Surv, survfit, coxph, survreg, colon</span></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)         <span class="co"># ggsurvplot (partie D)</span></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Parties A, B et C : enquête NMES 1988</span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;NMES1988&quot;</span>, <span class="at">package =</span> <span class="st">&quot;AER&quot;</span>)</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>nmes <span class="ot">&lt;-</span> NMES1988</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="co"># santé perçue : modalité de référence = &quot;average&quot; (la plus fréquente)</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>nmes<span class="sc">$</span>health <span class="ot">&lt;-</span> <span class="fu">factor</span>(nmes<span class="sc">$</span>health, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;average&quot;</span>, <span class="st">&quot;poor&quot;</span>, <span class="st">&quot;excellent&quot;</span>))</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Partie D (bonus) : essai cancer du côlon, une ligne par patient (décès)</span></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>colon_d <span class="ot">&lt;-</span> <span class="fu">subset</span>(survival<span class="sc">::</span>colon, etype <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(nodes))</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="fu"># Les données</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="fu"># Mise en place</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>Exécuter ce bloc en début de fichier. Les packages utilisés (AER,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>MASS, nnet, ordinal, ResourceSelection, pROC, survival,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>survminer) sont installés sur les machines ; ne pas appeler</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="in">`install.packages()`</span> dans le script.</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AER)               <span class="co"># NMES1988</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)              <span class="co"># glm.nb, polr</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)              <span class="co"># multinom</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ordinal)           <span class="co"># clm, nominal_test</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ResourceSelection) <span class="co"># hoslem.test</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)              <span class="co"># roc, auc</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)          <span class="co"># Surv, survfit, coxph, survreg, colon</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)         <span class="co"># ggsurvplot (partie D)</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Parties A, B et C : enquête NMES 1988</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;NMES1988&quot;</span>, <span class="at">package =</span> <span class="st">&quot;AER&quot;</span>)</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>nmes <span class="ot">&lt;-</span> NMES1988</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="co"># santé perçue : modalité de référence = &quot;average&quot; (la plus fréquente)</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>nmes<span class="sc">$</span>health <span class="ot">&lt;-</span> <span class="fu">factor</span>(nmes<span class="sc">$</span>health, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;average&quot;</span>, <span class="st">&quot;poor&quot;</span>, <span class="st">&quot;excellent&quot;</span>))</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Partie D (bonus) : essai cancer du côlon, une ligne par patient (décès)</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>colon_d <span class="ot">&lt;-</span> <span class="fu">subset</span>(survival<span class="sc">::</span>colon, etype <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(nodes))</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Enquête NMES 1988 (parties A, B et C)</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="fu"># Les données</span></span>
 <span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>Deb, P. et Trivedi, P. K. (1997), « Demand for medical care by the</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>elderly: a finite mixture approach », *Journal of Applied Econometrics*,</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>12(3), 313–336. Échantillon de 4 406 Américains de 66 ans et plus, tous</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>couverts par **Medicare** (assurance publique de base), issus de la</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>*National Medical Expenditure Survey* (1987–1988).</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable    <span class="pp">|</span> Définition                                                          <span class="pp">|</span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------------------|-----------------------------------------------------|</span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`visits`</span>    <span class="pp">|</span> nombre de consultations chez un médecin, en cabinet, sur l&#39;année    <span class="pp">|</span></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`hospital`</span>  <span class="pp">|</span> nombre de séjours à l&#39;hôpital sur l&#39;année                           <span class="pp">|</span></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`health`</span>    <span class="pp">|</span> santé perçue : <span class="in">`poor`</span>, <span class="in">`average`</span>, <span class="in">`excellent`</span>                       <span class="pp">|</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`chronic`</span>   <span class="pp">|</span> nombre de maladies chroniques                                       <span class="pp">|</span></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`adl`</span>       <span class="pp">|</span> limitation dans les activités de la vie quotidienne (<span class="in">`limited`</span>) ou non (<span class="in">`normal`</span>) <span class="pp">|</span></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`age`</span>       <span class="pp">|</span> âge **divisé par 10** (7,3 = 73 ans)                                <span class="pp">|</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`gender`</span>    <span class="pp">|</span> sexe (<span class="in">`female`</span>, <span class="in">`male`</span>)                                             <span class="pp">|</span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`afam`</span>      <span class="pp">|</span> afro-américain (<span class="in">`yes`</span>/<span class="in">`no`</span>)                                         <span class="pp">|</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`school`</span>    <span class="pp">|</span> nombre d&#39;années d&#39;études                                            <span class="pp">|</span></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`income`</span>    <span class="pp">|</span> revenu familial, en dizaines de milliers de dollars                 <span class="pp">|</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`insurance`</span> <span class="pp">|</span> couverture par une assurance **privée complémentaire** (<span class="in">`yes`</span>/<span class="in">`no`</span>) <span class="pp">|</span></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`medicaid`</span>  <span class="pp">|</span> couverture par **Medicaid** (assurance publique des ménages pauvres) <span class="pp">|</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Essai cancer du côlon (partie D, bonus)</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## Enquête NMES 1988 (parties A, B et C)</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>Deb, P. et Trivedi, P. K. (1997), « Demand for medical care by the</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>elderly: a finite mixture approach », *Journal of Applied Econometrics*,</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>12(3), 313–336. Échantillon de 4 406 Américains de 66 ans et plus, tous</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>couverts par **Medicare** (assurance publique de base), issus de la</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>*National Medical Expenditure Survey* (1987–1988).</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable    <span class="pp">|</span> Définition                                                          <span class="pp">|</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------------------|-----------------------------------------------------|</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`visits`</span>    <span class="pp">|</span> nombre de consultations chez un médecin, en cabinet, sur l&#39;année    <span class="pp">|</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`hospital`</span>  <span class="pp">|</span> nombre de séjours à l&#39;hôpital sur l&#39;année                           <span class="pp">|</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`health`</span>    <span class="pp">|</span> santé perçue : <span class="in">`poor`</span>, <span class="in">`average`</span>, <span class="in">`excellent`</span>                       <span class="pp">|</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`chronic`</span>   <span class="pp">|</span> nombre de maladies chroniques                                       <span class="pp">|</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`adl`</span>       <span class="pp">|</span> limitation dans les activités de la vie quotidienne (<span class="in">`limited`</span>) ou non (<span class="in">`normal`</span>) <span class="pp">|</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`age`</span>       <span class="pp">|</span> âge **divisé par 10** (7,3 = 73 ans)                                <span class="pp">|</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`gender`</span>    <span class="pp">|</span> sexe (<span class="in">`female`</span>, <span class="in">`male`</span>)                                             <span class="pp">|</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`afam`</span>      <span class="pp">|</span> afro-américain (<span class="in">`yes`</span>/<span class="in">`no`</span>)                                         <span class="pp">|</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`school`</span>    <span class="pp">|</span> nombre d&#39;années d&#39;études                                            <span class="pp">|</span></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`income`</span>    <span class="pp">|</span> revenu familial, en dizaines de milliers de dollars                 <span class="pp">|</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`insurance`</span> <span class="pp">|</span> couverture par une assurance **privée complémentaire** (<span class="in">`yes`</span>/<span class="in">`no`</span>) <span class="pp">|</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`medicaid`</span>  <span class="pp">|</span> couverture par **Medicaid** (assurance publique des ménages pauvres) <span class="pp">|</span></span>
 <span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>Essai randomisé du North Central Cancer Treatment Group : après</span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>l&#39;ablation d&#39;un cancer du côlon, les patients reçoivent une simple</span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>surveillance (<span class="in">`Obs`</span>), du lévamisole (<span class="in">`Lev`</span>) ou du lévamisole associé au</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>5-fluorouracile (<span class="in">`Lev+5FU`</span>). Moertel, C. G. et al. (1990),</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>« Levamisole and fluorouracil for adjuvant therapy of resected colon</span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>carcinoma », *New England Journal of Medicine*, 322(6), 352–358 ;</span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>rapport final : Moertel et al. (1995), *Annals of Internal Medicine*,</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>122(5), 321–326.</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable   <span class="pp">|</span> Définition                                                         <span class="pp">|</span></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|--------------------------------------------------------|</span></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`rx`</span>       <span class="pp">|</span> bras de traitement : <span class="in">`Obs`</span>, <span class="in">`Lev`</span>, <span class="in">`Lev+5FU`</span>                       <span class="pp">|</span></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`time`</span>     <span class="pp">|</span> jours entre l&#39;inclusion et le décès ou la fin du suivi             <span class="pp">|</span></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`status`</span>   <span class="pp">|</span> 1 = décès observé, 0 = censure                                     <span class="pp">|</span></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`nodes`</span>    <span class="pp">|</span> nombre de ganglions lymphatiques envahis                           <span class="pp">|</span></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`extent`</span>   <span class="pp">|</span> extension locale de la tumeur (1 = sous-muqueuse … 4 = organes contigus) <span class="pp">|</span></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`age`</span>      <span class="pp">|</span> âge en années                                                      <span class="pp">|</span></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`sex`</span>      <span class="pp">|</span> 1 = homme, 0 = femme                                               <span class="pp">|</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie A : Modèles de comptage (TD 1) \[7 points\]</span></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Essai cancer du côlon (partie D, bonus)</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>Essai randomisé du North Central Cancer Treatment Group : après</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>l&#39;ablation d&#39;un cancer du côlon, les patients reçoivent une simple</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>surveillance (<span class="in">`Obs`</span>), du lévamisole (<span class="in">`Lev`</span>) ou du lévamisole associé au</span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>5-fluorouracile (<span class="in">`Lev+5FU`</span>). Moertel, C. G. et al. (1990),</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>« Levamisole and fluorouracil for adjuvant therapy of resected colon</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>carcinoma », *New England Journal of Medicine*, 322(6), 352–358 ;</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>rapport final : Moertel et al. (1995), *Annals of Internal Medicine*,</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>122(5), 321–326.</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Variable   <span class="pp">|</span> Définition                                                         <span class="pp">|</span></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|--------------------------------------------------------|</span></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`rx`</span>       <span class="pp">|</span> bras de traitement : <span class="in">`Obs`</span>, <span class="in">`Lev`</span>, <span class="in">`Lev+5FU`</span>                       <span class="pp">|</span></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`time`</span>     <span class="pp">|</span> jours entre l&#39;inclusion et le décès ou la fin du suivi             <span class="pp">|</span></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`status`</span>   <span class="pp">|</span> 1 = décès observé, 0 = censure                                     <span class="pp">|</span></span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`nodes`</span>    <span class="pp">|</span> nombre de ganglions lymphatiques envahis                           <span class="pp">|</span></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`extent`</span>   <span class="pp">|</span> extension locale de la tumeur (1 = sous-muqueuse … 4 = organes contigus) <span class="pp">|</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`age`</span>      <span class="pp">|</span> âge en années                                                      <span class="pp">|</span></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`sex`</span>      <span class="pp">|</span> 1 = homme, 0 = femme                                               <span class="pp">|</span></span>
 <span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## A.1 Données agrégées et offset \[3 points\]</span></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie A : Modèles de comptage (TD 1) \[7 points\]</span></span>
 <span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>Comme au TD 1, on commence par des données **agrégées**. On regroupe</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>les 4 406 personnes en cellules définies par la santé perçue, la</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>limitation fonctionnelle, l&#39;assurance complémentaire et le sexe :</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="fu">cbind</span>(visits, <span class="at">n =</span> <span class="dv">1</span>) <span class="sc">~</span> health <span class="sc">+</span> adl <span class="sc">+</span> insurance <span class="sc">+</span> gender,</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> nmes, <span class="at">FUN =</span> sum)</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>Dans <span class="in">`cells`</span>, chaque ligne est une cellule : <span class="in">`visits`</span> est le nombre</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>**total** de consultations de la cellule et <span class="in">`n`</span> son effectif, c&#39;est-à-dire</span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>son nombre de personnes-années d&#39;observation (chacun est suivi un an).</span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>**A1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Combien y a-t-il de cellules ? Calculer, pour chaque</span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>cellule, le nombre moyen de consultations par personne. Pourquoi ne</span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>peut-on pas comparer directement les totaux <span class="in">`visits`</span> entre cellules ?</span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>**A2.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster le modèle de Poisson de <span class="in">`visits`</span> sur <span class="in">`health`</span>,</span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a><span class="in">`adl`</span>, <span class="in">`insurance`</span> et <span class="in">`gender`</span>, avec l&#39;offset approprié.</span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Écrire l&#39;équation du modèle et expliquer le rôle de l&#39;offset.</span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Calculer le ratio de taux (IRR) associé à <span class="in">`insurance`</span>, avec son</span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>    intervalle de confiance à 95 %, et l&#39;interpréter.</span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>**A3.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester l&#39;ajustement du modèle par la déviance et par la</span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>statistique de Pearson. Justifier les degrés de liberté et vérifier les</span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>conditions d&#39;application du test du $\chi^2$. Conclure, et en déduire</span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>le paramètre de dispersion $\hat\phi$ (statistique de Pearson / ddl).</span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>Quelle conséquence le résultat a-t-il sur les écarts-types de A2 ?</span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>**A4.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Ajuster le même modèle de Poisson (mêmes quatre</span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>variables) sur les **données individuelles** <span class="in">`nmes`</span>, sans offset.</span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>Comparer coefficients et écarts-types avec ceux de A2. Expliquer.</span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## A.2 Données individuelles : sur-dispersion et binomiale négative \[4 points\]</span></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## A.1 Données agrégées et offset \[3 points\]</span></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>Comme au TD 1, on commence par des données **agrégées**. On regroupe</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>les 4 406 personnes en cellules définies par la santé perçue, la</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>limitation fonctionnelle, l&#39;assurance complémentaire et le sexe :</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(<span class="fu">cbind</span>(visits, <span class="at">n =</span> <span class="dv">1</span>) <span class="sc">~</span> health <span class="sc">+</span> adl <span class="sc">+</span> insurance <span class="sc">+</span> gender,</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> nmes, <span class="at">FUN =</span> sum)</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>Dans <span class="in">`cells`</span>, chaque ligne est une cellule : <span class="in">`visits`</span> est le nombre</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>**total** de consultations de la cellule et <span class="in">`n`</span> son effectif, c&#39;est-à-dire</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>son nombre de personnes-années d&#39;observation (chacun est suivi un an).</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>**A1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Combien y a-t-il de cellules ? Calculer, pour chaque</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>cellule, le nombre moyen de consultations par personne. Pourquoi ne</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>peut-on pas comparer directement les totaux <span class="in">`visits`</span> entre cellules ?</span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>**A2.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster le modèle de Poisson de <span class="in">`visits`</span> sur <span class="in">`health`</span>,</span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="in">`adl`</span>, <span class="in">`insurance`</span> et <span class="in">`gender`</span>, avec l&#39;offset approprié.</span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Écrire l&#39;équation du modèle et expliquer le rôle de l&#39;offset.</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Calculer le ratio de taux (IRR) associé à <span class="in">`insurance`</span>, avec son</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>    intervalle de confiance à 95 %, et l&#39;interpréter.</span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>**A3.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester l&#39;ajustement du modèle par la déviance et par la</span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>statistique de Pearson. Justifier les degrés de liberté et vérifier les</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>conditions d&#39;application du test du $\chi^2$. Conclure, et en déduire</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>le paramètre de dispersion $\hat\phi$ (statistique de Pearson / ddl).</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>Quelle conséquence le résultat a-t-il sur les écarts-types de A2 ?</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>**A4.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Ajuster le même modèle de Poisson (mêmes quatre</span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>variables) sur les **données individuelles** <span class="in">`nmes`</span>, sans offset.</span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>Comparer coefficients et écarts-types avec ceux de A2. Expliquer.</span>
 <span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>**A5.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Décrire la variable <span class="in">`visits`</span> (moyenne, variance, part</span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>de zéros). Pourquoi n&#39;a-t-on pas besoin d&#39;offset sur les données</span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>individuelles, contrairement à la partie A.1 ?</span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>**A6.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle de Poisson de <span class="in">`visits`</span> sur <span class="in">`health`</span>,</span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a><span class="in">`chronic`</span>, <span class="in">`adl`</span>, <span class="in">`age`</span>, <span class="in">`gender`</span>, <span class="in">`school`</span>, <span class="in">`income`</span>, <span class="in">`insurance`</span> et</span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a><span class="in">`medicaid`</span>. Calculer la statistique de Pearson rapportée à ses degrés</span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>de liberté et conclure. Ajuster le même modèle en **binomiale</span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a>négative** (<span class="in">`glm.nb`</span> du package MASS) et préciser le rôle de son</span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>paramètre $\theta$. Comparer les deux modèles : AIC, et nombre de zéros</span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>prédits contre nombre de zéros observés.</span>
-<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a>*Indication :* le nombre de zéros prédits est</span>
-<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a>$\sum_i \hat P(Y_i = 0)$, soit <span class="in">`sum(dpois(0, fitted(m_pois)))`</span> pour</span>
-<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>le Poisson et <span class="in">`sum(dnbinom(0, mu = fitted(m_nb), size = m_nb$theta))`</span></span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a>pour la binomiale négative. Le test du rapport de vraisemblance entre</span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a>deux binomiales négatives emboîtées se fait avec <span class="in">`anova(m_nb0, m_nb)`</span>.</span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>**A7.** <span class="sc">\[</span>1<span class="sc">\]</span> La variable <span class="in">`age`</span> est-elle significative dans le modèle de</span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a>Poisson ? Et dans la binomiale négative ? Expliquer la différence. Par</span>
-<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>un test du rapport de vraisemblance dans la binomiale négative, tester</span>
-<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>l&#39;effet global de <span class="in">`health`</span> (préciser les degrés de liberté).</span>
-<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>**A8.** <span class="sc">\[</span>1,5<span class="sc">\]</span> À partir du modèle retenu, calculer et interpréter</span>
-<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>l&#39;IRR associé à <span class="in">`insurance`</span>, avec son intervalle de confiance à 95 %.</span>
-<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>Un économiste y voit la preuve d&#39;un **aléa moral** (les assurés</span>
-<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>consomment plus de soins *parce qu&#39;ils* sont mieux couverts). Discuter</span>
-<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>cette interprétation.</span>
-<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie B : Régression logistique (TD 2) \[7 points\]</span></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## A.2 Données individuelles : sur-dispersion et binomiale négative \[4 points\]</span></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>**A5.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Décrire la variable <span class="in">`visits`</span> (moyenne, variance, part</span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>de zéros). Pourquoi n&#39;a-t-on pas besoin d&#39;offset sur les données</span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>individuelles, contrairement à la partie A.1 ?</span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>**A6.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle de Poisson de <span class="in">`visits`</span> sur <span class="in">`health`</span>,</span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a><span class="in">`chronic`</span>, <span class="in">`adl`</span>, <span class="in">`age`</span>, <span class="in">`gender`</span>, <span class="in">`school`</span>, <span class="in">`income`</span>, <span class="in">`insurance`</span> et</span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a><span class="in">`medicaid`</span>. Calculer la statistique de Pearson rapportée à ses degrés</span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>de liberté et conclure. Ajuster le même modèle en **binomiale</span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>négative** (<span class="in">`glm.nb`</span> du package MASS) et préciser le rôle de son</span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>paramètre $\theta$. Comparer les deux modèles : AIC, et nombre de zéros</span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a>prédits contre nombre de zéros observés.</span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>*Indication :* le nombre de zéros prédits est</span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a>$\sum_i \hat P(Y_i = 0)$, soit <span class="in">`sum(dpois(0, fitted(m_pois)))`</span> pour</span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a>le Poisson et <span class="in">`sum(dnbinom(0, mu = fitted(m_nb), size = m_nb$theta))`</span></span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a>pour la binomiale négative. Le test du rapport de vraisemblance entre</span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>deux binomiales négatives emboîtées se fait avec <span class="in">`anova(m_nb0, m_nb)`</span>.</span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>**A7.** <span class="sc">\[</span>1<span class="sc">\]</span> La variable <span class="in">`age`</span> est-elle significative dans le modèle de</span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>Poisson ? Et dans la binomiale négative ? Expliquer la différence. Par</span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>un test du rapport de vraisemblance dans la binomiale négative, tester</span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a>l&#39;effet global de <span class="in">`health`</span> (préciser les degrés de liberté).</span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>**A8.** <span class="sc">\[</span>1,5<span class="sc">\]</span> À partir du modèle retenu, calculer et interpréter</span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>l&#39;IRR associé à <span class="in">`insurance`</span>, avec son intervalle de confiance à 95 %.</span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a>Un économiste y voit la preuve d&#39;un **aléa moral** (les assurés</span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>consomment plus de soins *parce qu&#39;ils* sont mieux couverts). Discuter</span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a>cette interprétation.</span>
 <span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>On étudie la probabilité d&#39;avoir été hospitalisé au moins une fois dans</span>
-<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>l&#39;année.</span>
-<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>**B1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Créer la variable binaire <span class="in">`hosp`</span> (= 1 si <span class="in">`hospital`</span> <span class="sc">\&gt;</span></span>
-<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>0, 0 sinon) et donner sa fréquence.</span>
-<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>**B2.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle logit de <span class="in">`hosp`</span> sur les **mêmes neuf</span>
-<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a>variables explicatives** qu&#39;en A6. Écrire l&#39;équation du modèle.</span>
-<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>**B3.** <span class="sc">\[</span>1<span class="sc">\]</span> Interpréter en rapports de cotes (odds ratios) les effets</span>
-<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>de <span class="in">`chronic`</span>, <span class="in">`adl`</span> et <span class="in">`health`</span>. Comparer l&#39;effet de <span class="in">`insurance`</span> sur la</span>
-<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>probabilité d&#39;hospitalisation à son effet sur le nombre de</span>
-<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>consultations (A8). Proposer une explication économique.</span>
-<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>**B4.** <span class="sc">\[</span>1<span class="sc">\]</span></span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie B : Régression logistique (TD 2) \[7 points\]</span></span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>On étudie la probabilité d&#39;avoir été hospitalisé au moins une fois dans</span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>l&#39;année.</span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>**B1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Créer la variable binaire <span class="in">`hosp`</span> (= 1 si <span class="in">`hospital`</span> <span class="sc">\&gt;</span></span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>0, 0 sinon) et donner sa fréquence.</span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>**B2.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle logit de <span class="in">`hosp`</span> sur les **mêmes neuf</span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>variables explicatives** qu&#39;en A6. Écrire l&#39;équation du modèle.</span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>**B3.** <span class="sc">\[</span>1<span class="sc">\]</span> Interpréter en rapports de cotes (odds ratios) les effets</span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>de <span class="in">`chronic`</span>, <span class="in">`adl`</span> et <span class="in">`health`</span>. Comparer l&#39;effet de <span class="in">`insurance`</span> sur la</span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>probabilité d&#39;hospitalisation à son effet sur le nombre de</span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>consultations (A8). Proposer une explication économique.</span>
 <span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a>a.  Retirer la variable la moins significative. Vérifier que la p-value</span>
-<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>    du test du rapport de vraisemblance entre les deux modèles est</span>
-<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>    proche de celle du test de Wald du coefficient retiré.</span>
-<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>b.  Tester par un **seul** test du rapport de vraisemblance la nullité</span>
-<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a>    conjointe des coefficients de <span class="in">`school`</span>, <span class="in">`income`</span>, <span class="in">`insurance`</span> et</span>
-<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>    <span class="in">`medicaid`</span> dans le modèle de B2. Combien de degrés de liberté ?</span>
-<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>    Quel modèle retient-on ?</span>
-<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>**B5.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Tester l&#39;ajustement du modèle retenu en B4 par le test</span>
-<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>de Hosmer–Lemeshow, en faisant varier le nombre de groupes <span class="in">`g`</span> (5, 10,</span>
-<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>15). Conclure. Proposer une modification de la spécification</span>
-<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>de <span class="in">`chronic`</span>, la tester (test LR et Hosmer–Lemeshow) et conclure.</span>
-<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>**B6.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Avec le modèle final de B5 :</span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a>**B4.** <span class="sc">\[</span>1<span class="sc">\]</span></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>a.  Retirer la variable la moins significative. Vérifier que la p-value</span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>    du test du rapport de vraisemblance entre les deux modèles est</span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a>    proche de celle du test de Wald du coefficient retiré.</span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a>b.  Tester par un **seul** test du rapport de vraisemblance la nullité</span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a>    conjointe des coefficients de <span class="in">`school`</span>, <span class="in">`income`</span>, <span class="in">`insurance`</span> et</span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>    <span class="in">`medicaid`</span> dans le modèle de B2. Combien de degrés de liberté ?</span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>    Quel modèle retient-on ?</span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>**B5.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Tester l&#39;ajustement du modèle retenu en B4 par le test</span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>de Hosmer–Lemeshow, en faisant varier le nombre de groupes <span class="in">`g`</span> (5, 10,</span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>15). Conclure. Proposer une modification de la spécification</span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>de <span class="in">`chronic`</span>, la tester (test LR et Hosmer–Lemeshow) et conclure.</span>
 <span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>a.  Établir le tableau des individus bien et mal classés avec un seuil</span>
-<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>    de 0,5. Calculer le taux d&#39;erreur, la sensibilité et la</span>
-<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>    spécificité. Commenter.</span>
-<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a>b.  Refaire le tableau avec un seuil égal à la fréquence observée de</span>
-<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a>    <span class="in">`hosp`</span>. Commenter le changement.</span>
-<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>c.  Tracer la courbe ROC et donner l&#39;aire sous la courbe (AUC).</span>
-<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>**B7.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Réestimer le modèle final en probit. Comparer les</span>
-<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>coefficients des deux modèles (rapport logit/probit) et les</span>
-<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>conclusions.</span>
-<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie C : santé perçue, modèles ordonné et multinomial (TD 3) \[6 points\]</span></span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>**B6.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Avec le modèle final de B5 :</span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>a.  Établir le tableau des individus bien et mal classés avec un seuil</span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a>    de 0,5. Calculer le taux d&#39;erreur, la sensibilité et la</span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a>    spécificité. Commenter.</span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>b.  Refaire le tableau avec un seuil égal à la fréquence observée de</span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>    <span class="in">`hosp`</span>. Commenter le changement.</span>
+<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>c.  Tracer la courbe ROC et donner l&#39;aire sous la courbe (AUC).</span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>**B7.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Réestimer le modèle final en probit. Comparer les</span>
+<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>coefficients des deux modèles (rapport logit/probit) et les</span>
+<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a>conclusions.</span>
 <span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>On cherche à expliquer la santé perçue <span class="in">`health`</span> (<span class="in">`poor`</span> <span class="sc">\&lt;</span> <span class="in">`average`</span> <span class="sc">\&lt;</span></span>
-<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a><span class="in">`excellent`</span>).</span>
-<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>**C1.** \[0,5\] Créer une version **ordonnée** de <span class="in">`health`</span>, nommée</span>
-<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a><span class="in">`health_o`</span>, avec l&#39;ordre <span class="in">`poor`</span> <span class="sc">\&lt;</span> <span class="in">`average`</span> <span class="sc">\&lt;</span> <span class="in">`excellent`</span>, et donner</span>
-<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>sa distribution. Pourquoi un modèle ordonné est-il ici naturel ?</span>
-<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>**C2.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Ajuster un logit ordonné (<span class="in">`polr`</span>) de <span class="in">`health_o`</span> sur</span>
-<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a><span class="in">`chronic`</span>, <span class="in">`adl`</span>, <span class="in">`age`</span>, <span class="in">`gender`</span>, <span class="in">`school`</span>, <span class="in">`income`</span> et <span class="in">`afam`</span>.</span>
-<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Écrire le modèle (variable latente et seuils).</span>
-<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interpréter le signe des coefficients de <span class="in">`chronic`</span> et <span class="in">`adl`</span>.</span>
-<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interpréter l&#39;odds ratio de <span class="in">`school`</span>.</span>
-<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>**C3.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester par un test du rapport de vraisemblance la nullité</span>
-<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>conjointe des coefficients de <span class="in">`age`</span> et <span class="in">`gender`</span> (préciser les degrés de</span>
-<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>liberté). Quel modèle retient-on ?</span>
-<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>**C4.** \[1\] Avec le modèle retenu en C3, calculer **à la main** (à</span>
-<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>partir des coefficients et des seuils) les probabilités des trois</span>
-<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>modalités de santé pour une personne non afro-américaine, avec 2</span>
-<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>maladies chroniques, sans limitation (<span class="in">`adl = normal`</span>), 12 années</span>
-<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>d&#39;études et un revenu familial de 25 000 dollars (si votre modèle</span>
-<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>conserve <span class="in">`age`</span> et <span class="in">`gender`</span>, prendre une femme de 74 ans). Vérifier avec</span>
-<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a><span class="in">`predict()`</span>.</span>
-<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>**C5.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester l&#39;hypothèse des cotes proportionnelles variable par</span>
-<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>variable avec <span class="in">`ordinal::nominal_test()`</span> appliquée au modèle de C3</span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>réestimé avec <span class="in">`ordinal::clm()`</span>. Conclure, et indiquer quelle</span>
-<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>conséquence en tirer pour la modélisation.</span>
-<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>**C6.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un logit multinomial (<span class="in">`multinom`</span>) avec les mêmes</span>
-<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>variables qu&#39;en C3.</span>
-<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Combien de paramètres compte chacun des deux modèles (ordonné et</span>
-<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a>    multinomial) ?</span>
-<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Peut-on les comparer par un test du rapport de vraisemblance ?</span>
-<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>    Comparer leurs AIC.</span>
-<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Relier ce résultat à celui de C5.</span>
-<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie D (bonus) : Survie dans un essai thérapeutique (TD 4) \[4 points\]</span></span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie C : santé perçue, modèles ordonné et multinomial (TD 3) \[6 points\]</span></span>
+<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>On cherche à expliquer la santé perçue <span class="in">`health`</span> (<span class="in">`poor`</span> <span class="sc">\&lt;</span> <span class="in">`average`</span> <span class="sc">\&lt;</span></span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a><span class="in">`excellent`</span>).</span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>**C1.** \[0,5\] Créer une version **ordonnée** de <span class="in">`health`</span>, nommée</span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a><span class="in">`health_o`</span>, avec l&#39;ordre <span class="in">`poor`</span> <span class="sc">\&lt;</span> <span class="in">`average`</span> <span class="sc">\&lt;</span> <span class="in">`excellent`</span>, et donner</span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>sa distribution. Pourquoi un modèle ordonné est-il ici naturel ?</span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>**C2.** <span class="sc">\[</span>1,5<span class="sc">\]</span> Ajuster un logit ordonné (<span class="in">`polr`</span>) de <span class="in">`health_o`</span> sur</span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a><span class="in">`chronic`</span>, <span class="in">`adl`</span>, <span class="in">`age`</span>, <span class="in">`gender`</span>, <span class="in">`school`</span>, <span class="in">`income`</span> et <span class="in">`afam`</span>.</span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Écrire le modèle (variable latente et seuils).</span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interpréter le signe des coefficients de <span class="in">`chronic`</span> et <span class="in">`adl`</span>.</span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interpréter l&#39;odds ratio de <span class="in">`school`</span>.</span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>**C3.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester par un test du rapport de vraisemblance la nullité</span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>conjointe des coefficients de <span class="in">`age`</span> et <span class="in">`gender`</span> (préciser les degrés de</span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>liberté). Quel modèle retient-on ?</span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>**C4.** \[1\] Avec le modèle retenu en C3, calculer **à la main** (à</span>
+<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>partir des coefficients et des seuils) les probabilités des trois</span>
+<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>modalités de santé pour une personne non afro-américaine, avec 2</span>
+<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>maladies chroniques, sans limitation (<span class="in">`adl = normal`</span>), 12 années</span>
+<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>d&#39;études et un revenu familial de 25 000 dollars (si votre modèle</span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>conserve <span class="in">`age`</span> et <span class="in">`gender`</span>, prendre une femme de 74 ans). Vérifier avec</span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a><span class="in">`predict()`</span>.</span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>**C5.** <span class="sc">\[</span>1<span class="sc">\]</span> Tester l&#39;hypothèse des cotes proportionnelles variable par</span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>variable avec <span class="in">`ordinal::nominal_test()`</span> appliquée au modèle de C3</span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>réestimé avec <span class="in">`ordinal::clm()`</span>. Conclure, et indiquer quelle</span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>conséquence en tirer pour la modélisation.</span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>**C6.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un logit multinomial (<span class="in">`multinom`</span>) avec les mêmes</span>
+<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>variables qu&#39;en C3.</span>
+<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Combien de paramètres compte chacun des deux modèles (ordonné et</span>
+<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>    multinomial) ?</span>
+<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Peut-on les comparer par un test du rapport de vraisemblance ?</span>
+<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>    Comparer leurs AIC.</span>
+<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Relier ce résultat à celui de C5.</span>
 <span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>On utilise <span class="in">`colon_d`</span> (décès ; patients dont <span class="in">`nodes`</span> est renseigné).</span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a><span class="fu"># Partie D (bonus) : Survie dans un essai thérapeutique (TD 4) \[4 points\]</span></span>
 <span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>**D1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Créer l&#39;objet de survie avec la fonction <span class="in">`Surv()`</span> du</span>
-<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>package <span class="in">`survival`</span> :</span>
-<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>S_col <span class="ot">&lt;-</span> <span class="fu">Surv</span>(colon_d<span class="sc">$</span>time, colon_d<span class="sc">$</span>status)</span>
-<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>Le premier argument est</span>
-<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>la durée observée (en jours) ; le second est l&#39;indicateur d&#39;événement</span>
-<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>(1 = décès observé, 0 = durée censurée). Afficher quelques valeurs de</span>
-<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a><span class="in">`S_col`</span> : les durées censurées sont suivies d&#39;un « + ». Quelle</span>
-<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>proportion des patients est censurée ? D&#39;où vient la censure dans un</span>
-<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a>essai thérapeutique ?</span>
-<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a>**D2.** <span class="sc">\[</span>1<span class="sc">\]</span> Tracer les courbes de Kaplan–Meier par bras de</span>
-<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>traitement et donner les survies estimées à 5 ans (1 826 jours).</span>
-<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>Réaliser un test du log-rank : écrire $H_0$ et $H_1$, donner la</span>
-<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>statistique, ses degrés de liberté et la p-value, et conclure.</span>
-<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>**D3.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle de Cox avec <span class="in">`rx`</span>, <span class="in">`nodes`</span>, <span class="in">`extent`</span>,</span>
-<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a><span class="in">`age`</span> et <span class="in">`sex`</span>. Interpréter le hazard ratio (rapport des risques</span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>instantanés) de <span class="in">`Lev+5FU`</span> avec son intervalle de confiance. Le</span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>traitement étant tiré au sort, pourquoi ajuster quand même sur des</span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>caractéristiques des patients ? Donner au moins deux raisons.</span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>**D4.** <span class="sc">\[</span>1<span class="sc">\]</span> Vérifier l&#39;hypothèse des risques proportionnels</span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>graphiquement (courbes $\log(-\log \hat S(t))$ par bras) et par</span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a><span class="in">`cox.zph()`</span>. Conclure.</span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>**D5.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Ajuster un modèle de Weibull (<span class="in">`survreg`</span>) avec les mêmes</span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>variables. Interpréter le coefficient de <span class="in">`Lev+5FU`</span> en rapport de durées</span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>et en déduire le hazard ratio implicite. Peut-on comparer l&#39;AIC de ce</span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>modèle à celui du modèle de Cox ?</span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>On utilise <span class="in">`colon_d`</span> (décès ; patients dont <span class="in">`nodes`</span> est renseigné).</span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>**D1.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Créer l&#39;objet de survie avec la fonction <span class="in">`Surv()`</span> du</span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>package <span class="in">`survival`</span> :</span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>S_col <span class="ot">&lt;-</span> <span class="fu">Surv</span>(colon_d<span class="sc">$</span>time, colon_d<span class="sc">$</span>status)</span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a>Le premier argument est</span>
+<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>la durée observée (en jours) ; le second est l&#39;indicateur d&#39;événement</span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>(1 = décès observé, 0 = durée censurée). Afficher quelques valeurs de</span>
+<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a><span class="in">`S_col`</span> : les durées censurées sont suivies d&#39;un « + ». Quelle</span>
+<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a>proportion des patients est censurée ? D&#39;où vient la censure dans un</span>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a>essai thérapeutique ?</span>
+<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>**D2.** <span class="sc">\[</span>1<span class="sc">\]</span> Tracer les courbes de Kaplan–Meier par bras de</span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a>traitement et donner les survies estimées à 5 ans (1 826 jours).</span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>Réaliser un test du log-rank : écrire $H_0$ et $H_1$, donner la</span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>statistique, ses degrés de liberté et la p-value, et conclure.</span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>**D3.** <span class="sc">\[</span>1<span class="sc">\]</span> Ajuster un modèle de Cox avec <span class="in">`rx`</span>, <span class="in">`nodes`</span>, <span class="in">`extent`</span>,</span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a><span class="in">`age`</span> et <span class="in">`sex`</span>. Interpréter le hazard ratio (rapport des risques</span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>instantanés) de <span class="in">`Lev+5FU`</span> avec son intervalle de confiance. Le</span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>traitement étant tiré au sort, pourquoi ajuster quand même sur des</span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>caractéristiques des patients ? Donner au moins deux raisons.</span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>**D4.** <span class="sc">\[</span>1<span class="sc">\]</span> Vérifier l&#39;hypothèse des risques proportionnels</span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>graphiquement (courbes $\log(-\log \hat S(t))$ par bras) et par</span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a><span class="in">`cox.zph()`</span>. Conclure.</span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>**D5.** <span class="sc">\[</span>0,5<span class="sc">\]</span> Ajuster un modèle de Weibull (<span class="in">`survreg`</span>) avec les mêmes</span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>variables. Interpréter le coefficient de <span class="in">`Lev+5FU`</span> en rapport de durées</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>et en déduire le hazard ratio implicite. Peut-on comparer l&#39;AIC de ce</span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>modèle à celui du modèle de Cox ?</span>
 </code></pre></div><button title="Copier vers le presse-papier" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -1,7 +1,7 @@
 ---
 title: "Development Goals, Environmental Costs? Evidence from Geocoded Climate and Non-Climate Finance"
 summary: >
-  The global challenge of climate change is increasingly a place-based development challenge: investments that raise living standards also shape long-run emissions through energy systems, infrastructure, and urban form. This paper uses climate and non-climate development finance as a global laboratory to test whether development gains can be decoupled from CO2 emissions. I compile a global ADM2-level panel (2000–2022) linking geocoded aid project portfolios to local CO₂ emissions (EDGAR) and night-time lights (VIIRS). Climate-oriented portfolios are associated with small average declines in emissions—stronger where cumulative climate finance is large—while non-climate development finance systematically increases local emissions in the medium run. Night-time lights suggest expanding economic activity in mid-brightness regions, with muted effects in already bright places even as emissions rise. The results imply that meeting climate goals will require not only scaling climate finance but also greening mainstream development spending.
+  Population growth and rising living standards in developing countries are increasing demand for energy and infrastructure, with lasting consequences for the environment. Does development finance expand local activity, and at what cost for the environment? How does climate finance differ? I answer both for the same projects, linking geocoded finance from multilateral and bilateral donors to night-time lights, emissions and land cover, and comparing districts that receive projects with districts whose first project comes later. Development finance without a climate label expands activity measured by night-time lights. This gain holds with standard errors clustered by first-level region, while the estimated 8.4 percent rise in CO₂ is less certain: it largely reflects national totals that the emissions inventory assigns to districts. Climate finance has no detectable average effect on log CO₂, and what it changes depends on what it funds. In the main estimates, sustainable land use cuts CO₂ with no detectable change in activity. Adaptation lowers methane and forest loss, but also activity. No set of projects robustly lowers combined emissions (CO₂, methane and forest carbon) while raising measured activity. A climate label alone therefore does not predict a project's activity and environmental effects, so both must be measured for the same projects.
 tags:
 - Ongoing work
 - Climate finance
@@ -9,6 +9,8 @@ tags:
 - CO2 emissions
 - Causal inference
 - Machine learning
+- Night-time lights
+- Methane
 date: '2025-12-11'
 
 # Publication stage (surfaces this project on the Publications page)

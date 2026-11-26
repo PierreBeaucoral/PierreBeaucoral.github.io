@@ -35,22 +35,27 @@ Across projects, I focus on how **climate-labelled vs. non-climate finance** and
 **Job market paper** · [Read the paper (PDF) ↗](https://drive.proton.me/urls/R8AMVCG800#lZca0H9bjWuQ)
 
 ### Big picture
-Economic development has historically been accompanied by higher CO₂ emissions. Expanding energy systems, transport networks, and cities has delivered large welfare gains—often at substantial carbon cost. A central question for climate policy is whether this development–emissions link can be credibly loosened in the coming decades, especially in low- and middle-income countries where infrastructure and urban growth remain urgent. This project asks: **is development necessarily carbon-intensive, or can it be financed and built in ways that raise living standards without proportionally increasing emissions?**
+Population growth and rising living standards in developing countries are increasing demand for energy and infrastructure, with lasting consequences for the environment. Development finance is expected to raise activity where it lands *and* to move recipients toward lower-carbon production, so judging it requires both outcomes, measured for the same projects. The paper asks: **does development finance expand local activity, at what cost for the environment, and how does climate finance differ?**
 
 ### What I do
-I study how the **composition of development finance**—climate-oriented vs. non-climate portfolios—relates to **subnational CO₂ emissions trajectories**, using a global, place-based empirical design that goes beyond country aggregates and donor self-labels. 
+I link geocoded finance from multilateral and bilateral donors to **night-time lights, emissions and land cover** in a global district-year panel, and compare districts that receive projects with districts whose first project comes later. One content classifier is applied to every donor's projects, and every effect is estimated with one design, so climate and non-climate portfolios, intervention classes, donors and financing types are compared on the same margins.
 
 ### Data & measurement
-- **Unit of analysis:** global panel at **ADM2–year** (2000–2022).
-- **Finance exposure:** geocoded aid projects (GODAD) aggregated to local “portfolios”; climate relevance inferred via **text classification (ClimateFinanceBERT)** rather than relying only on donor labels.   
-- **Outcomes & proxies:** ADM2 CO₂ emissions from EDGAR (spatial aggregation) and night-time lights (VIIRS) as a proxy for local economic activity.
-  
+- **Unit of analysis:** second-level administrative districts (ADM2, GADM 4.1) in 140 ODA-eligible low- and middle-income countries, 1985–2020.
+- **Finance:** geocoded aid projects from GODAD; climate relevance assigned by **text classification (ClimateFinanceBERT)** on project titles and descriptions, in place of donor self-labels.
+- **Outcomes:** fossil-fuel and industrial-process CO₂ and methane (EDGAR gridded inventory), measured activity from harmonised DMSP–VIIRS night-time lights (lit share), gross tree-cover loss (Hansen Global Forest Change) and cropland greenness (MODIS NDVI).
+
 ### Empirical strategy
-- **Staggered rollout / event studies:** modern DiD estimators with not-yet-treated controls to trace dynamic impacts around project adoption.
-- **Dose–response:** complementary analyses using cumulative post-treatment exposure to capture intensity and persistence. 
+- **Staggered difference-in-differences:** each newly financed district is compared with districts whose first project is still to come (Callaway & Sant'Anna not-yet-treated controls), so each estimate is the effect of a portfolio's first recorded project.
+- **Heterogeneity:** climate finance split by intervention class, donor group and financing type; results read through a model of establishments that buy energy on site or from the grid.
+
+### Main findings
+- **Non-climate finance** expands activity measured by night-time lights, a gain that holds with standard errors clustered by first-level region. The estimated **8.4% rise in CO₂** is less certain: it largely reflects national totals that the emissions inventory assigns to districts.
+- **Climate finance** has no detectable average effect on log CO₂; what it changes depends on what it funds. Sustainable land use cuts CO₂ with no detectable change in activity; adaptation lowers methane and forest loss, but also activity.
+- No set of projects robustly lowers combined emissions (CO₂, methane and forest carbon) while raising measured activity. **A climate label alone does not predict a project's activity and environmental effects**, so both must be measured for the same projects.
 
 ### Status
-**Preliminary.** Current work focuses on refining exposure construction, sectoral decomposition, and additional robustness/spillover tests. 
+**Preliminary version** (November 2026) — please do not cite or circulate without permission. [Latest version (PDF) ↗](https://drive.proton.me/urls/R8AMVCG800#lZca0H9bjWuQ)
 
 ---
 
